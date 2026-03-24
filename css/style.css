@@ -14,9 +14,13 @@
         }
        
        body {
-           font-family:'Pretendard-Regular';justify-content:center;display:flex;
-        }
-
+           font-family:'Pretendard-Regular';
+        justify-content:center;display:flex;
+        }                       
+        #quiz-container{
+            max-width:900px;padding-top:5%;
+            width:90vw;
+        }  
         .question {
             padding: 20px;
             font-size: 15pt;
