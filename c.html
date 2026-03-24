@@ -1,53 +1,45 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  
+<!DOCTYPE html><html lang="ko"><head>    <meta charset="UTF-8"><style>
+<link rel="stylesheet" href="css/style.css"></head>
     <div class="container">
-        <div id="question"></div>
-        <input type="text" id="answer" placeholder="정답을 입력하세요" oninput="autoCheckAnswer()">
-  
-        <button id="nextButton" onclick="nextQuestion()">다음 문제</button>
- 
-    </div>
-
+<div id="quiz"><div class="question">
+            <span class="number">1</span><span class="moonje">객관식1</span><label><input type="radio" name="q1" value="1">보기는</label><label><input type="radio" name="q1" value="2">최대</label><label><input type="radio" name="q1" value="3">5번까지</label><label><input type="radio" name="q1" value="4">사용가능</label></div><div class="question">
+            <span class="number">2</span><span class="moonje">객관식2</span><label><input type="radio" name="q2" value="1">보기에</label><label><input type="radio" name="q2" value="2">아무것도</label><label><input type="radio" name="q2" value="3">적히지않으면</label><label><input type="radio" name="q2" value="4">주관식으로</label><label><input type="radio" name="q2" value="5">처리합니다</label></div><div class="question">
+            <span class="number">3</span><span class="moonje">주관식(정답 1)</span><input type="text" name="q3" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
+            <span class="number">4</span><span class="moonje">정답은 안녕하세요</span><input type="text" name="q4" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
+            <span class="number">5</span><span class="moonje">객관식3</span><label><input type="radio" name="q5" value="1">중간부터</label><label><input type="radio" name="q5" value="2">채운경우</label><label><input type="radio" name="q5" value="3">이게3번입니다</label></div></div>
+ </div>
     <script>
-        const questions = [{question:"문제입력 (정답1)",answer:"1"},{question:"문제입력 (정답2)",answer:"2"},];        
-        let currentQuestionIndex = 0;
+        const answers = {"q1":"1","q2":"3","q3":"1","q4":"안녕하세요","q5":"3"};
+        document.querySelectorAll('.question input[type="radio"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const questionDiv = this.closest('.question');
+                const questionName = this.name;
+                const selectedValue = this.value;
+                const correctAnswer = answers[questionName];
+                
+                questionDiv.classList.remove('correct', 'wrong');
+                questionDiv.querySelectorAll('label').forEach(label => label.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+                
+                if (selectedValue === correctAnswer) {
+                    questionDiv.classList.add('correct');
+                } else {
+                    questionDiv.classList.add('wrong');
+                }
+            });
+        });
 
-        function loadQuestion() {
-            document.getElementById("question").innerHTML = 
-                `<span class="number">${currentQuestionIndex + 1}</span> ${questions[currentQuestionIndex].question}`;
-            document.getElementById("answer").value = "";
-
-            document.getElementById("nextButton").style.display = "none";
-        }     function autoCheckAnswer() {
-            const userAnswer = document.getElementById("answer").value.trim();
-            if (userAnswer === questions[currentQuestionIndex].answer) {
-              
-                document.getElementById("nextButton").style.display = "block";
-               document.getElementById('question').style.backgroundImage = "url('https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-O.png')";
-            } else {
-                document.getElementById("nextButton").style.display = "none";
-                document.getElementById('question').style.backgroundImage ='none';
-            }
-        }
-
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                loadQuestion();
-                document.getElementById('question').style.backgroundImage ='none';
-            } else {
-                document.getElementById("quiz-container").innerHTML = "<h2>모든 문제를 풀었습니다!</h2>";
-            }
-        }
-
-        loadQuestion();
-    </script>
-</body>
-</html>
+        document.querySelectorAll('.subjective-input').forEach(input => {
+            input.addEventListener('input', function() {
+                const questionDiv = this.closest('.question');
+                const questionName = this.name;
+                const userAnswer = this.value.trim();
+                const correctAnswer = answers[questionName];
+                
+                questionDiv.classList.remove('correct');
+                if (userAnswer === correctAnswer) {
+                    questionDiv.classList.add('correct');
+                }
+            });
+        });
+    </script></body></html>
