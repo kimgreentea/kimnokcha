@@ -39,11 +39,11 @@
        }           
 
         .question.correct {
-            background-image: url('images/check-O.png');
+            background-image: url('./images/check-O.png');
         }
 
         .question.wrong {
-            background-image: url('images/check-X.png');
+            background-image: url('./images/check-X.png');
         }
 
         .moonje {
