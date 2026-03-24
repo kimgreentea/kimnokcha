@@ -21,6 +21,18 @@
             max-width:900px;padding-top:5%;
             width:90vw;
         }  
+
+        
+        @media (max-width: 800px) {
+        body {
+        font-size: 1rem; 
+        }
+        .container {
+        width: 95vw;
+        padding-top: 10%; 
+        }
+        }
+
         .question {
             padding: 20px;
             font-size: 15pt;
