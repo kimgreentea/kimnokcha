@@ -29,17 +29,17 @@
 
         .question input[type="radio"] {
             margin-right: 10px;
-            width: 15px; /* 버튼 크기 조정 */
-            height: 15px; /* 버튼 크기 조정 */
+            width: 15px; 
+            height: 15px; 
             accent-color: #0078D6;
        }           
 
         .question.correct {
-            background-image: url('https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-O.png');
+            background-image: url('images/check-O.png');
         }
 
         .question.wrong {
-            background-image: url('https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-X.png');
+            background-image: url('images/check-X.png');
         }
 
         .moonje {
@@ -108,7 +108,7 @@
 
        input[type="file"]::file-selector-button:hover {  background-color: #005a9e;  }
 
-        /* 클릭한 답변 배경색 */
+       
         .question label.selected {
             background-color: rgba(230, 230, 230, 0.7);
         }
