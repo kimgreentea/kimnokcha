@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  
+    <div class="container">
+        <div id="question"></div>
+        <input type="text" id="answer" placeholder="정답을 입력하세요" oninput="autoCheckAnswer()">
+  
+        <button id="nextButton" onclick="nextQuestion()">다음 문제</button>
+ 
+    </div>
+
+    <script>
+        const questions = [{question:"문제입력 (정답1)",answer:"1"},{question:"문제입력 (정답2)",answer:"2"},];        
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            document.getElementById("question").innerHTML = 
+                `<span class="number">${currentQuestionIndex + 1}</span> ${questions[currentQuestionIndex].question}`;
+            document.getElementById("answer").value = "";
+
+            document.getElementById("nextButton").style.display = "none";
+        }     function autoCheckAnswer() {
+            const userAnswer = document.getElementById("answer").value.trim();
+            if (userAnswer === questions[currentQuestionIndex].answer) {
+              
+                document.getElementById("nextButton").style.display = "block";
+               document.getElementById('question').style.backgroundImage = "url('https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-O.png')";
+            } else {
+                document.getElementById("nextButton").style.display = "none";
+                document.getElementById('question').style.backgroundImage ='none';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+                document.getElementById('question').style.backgroundImage ='none';
+            } else {
+                document.getElementById("quiz-container").innerHTML = "<h2>모든 문제를 풀었습니다!</h2>";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
