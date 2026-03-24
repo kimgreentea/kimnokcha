@@ -14,7 +14,7 @@
         }
        
        body {
-           font-family:'Pretendard-Regular';
+           font-family:'Pretendard-Regular';font-size: 15pt;
         justify-content:center;display:flex;
         }                       
         .container{
