@@ -23,15 +23,15 @@
         }  
 
         
-        @media (max-width: 800px) {
-        body {
-        font-size: 1rem; 
-        }
-        .container {
-        width: 95vw;
-        padding-top: 10%; 
-        }
-        }
+        @media (max-width: 600px) {
+            body {
+            font-size: 3rem; 
+            }
+            .container {
+            width: 95vw;
+            padding-top: 10%; 
+            }
+            }
 
         .question {
             padding: 20px;
