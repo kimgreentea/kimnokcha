@@ -7,7 +7,8 @@
             <span class="number">3</span><span class="moonje">주관식(정답 1)</span><input type="text" name="q3" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
             <span class="number">4</span><span class="moonje">정답은 안녕하세요</span><input type="text" name="q4" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
             <span class="number">5</span><span class="moonje">객관식3</span><label><input type="radio" name="q5" value="1">중간부터</label><label><input type="radio" name="q5" value="2">채운경우</label><label><input type="radio" name="q5" value="3">이게3번입니다</label></div></div>
-    <script>
+    </div>
+        <script>
         const answers = {"q1":"1","q2":"3","q3":"1","q4":"안녕하세요","q5":"3"};
         document.querySelectorAll('.question input[type="radio"]').forEach(input => {
             input.addEventListener('change', function() {
