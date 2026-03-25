@@ -79,8 +79,6 @@
 
         input[type="text"] {
             padding: 20px;
-            font-size: 20pt;
-            font-family: 'NotoSerifKR';
             width: 100%;
             max-width: calc(100% - 40px);
             border-radius: 15pt;
