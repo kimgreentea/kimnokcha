@@ -67,7 +67,7 @@
   // 수파베이스
   const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   const commentSection = document.getElementById('comment-section');
   const articleId = commentSection ? commentSection.getAttribute('data-article-id') : 'default_post';
@@ -75,7 +75,7 @@
   async function loadComments() {
     const listDiv = document.getElementById('comment-list');
     
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from('comments')
       .select('*')
       .eq('article_num', articleId)
@@ -117,9 +117,9 @@
     }
 
     submitBtn.disabled = true;
-    submitBtn.innerText = '';
+    submitBtn.innerText = '등록 중';
 
-    const { error } = await supabase
+    const { error } = await db
       .from('comments')
       .insert([
         { 
