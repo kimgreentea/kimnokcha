@@ -32,7 +32,7 @@
             <span class="number">5</span><span class="moonje">선생님의 은혜는?</span><label><input type="radio" name="q5" value="1">높음</label><label><input type="radio" name="q5" value="2">짱높음</label><label><input type="radio" name="q5" value="3">짱짱높음</label></div></div>
     </div>
         <script>
-        const answers = {"q1":"1","q2":"3","q3":"6","q4":"은여울초등학교","q5":"3"};
+        const answers = {"q1":"2","q2":"3","q3":"6","q4":"은여울초등학교","q5":"3"};
         document.querySelectorAll('.question input[type="radio"]').forEach(input => {
             input.addEventListener('change', function() {
                 const questionDiv = this.closest('.question');
@@ -92,13 +92,14 @@
 
 
     listDiv.innerHTML = data.map(c => `
-      <div style="background-color:rgba(230,230,230,0.7); margin-bottom:10pt; padding:10pt; 
-                  font-family: 'Pretendard-Regular'; display:inline-block;margin-right:30%;
-                  border-radius:20pt; font-size:15pt;">
+
         <div style="display:flex; align-items:center;">
         <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
         <strong style="color: #333;">${c.name}</strong> 
         <small style="color: #999; margin-left: 10px;">${new Date(c.created_at).toLocaleString()}</small></div>
+      <div style="background-color:rgba(230,230,230,0.7); margin-bottom:10pt; padding:10pt; 
+                  font-family: 'Pretendard-Regular'; display:inline-block;margin-right:30%;
+                  border-radius:20pt; font-size:15pt;">
         <p style="margin: 8px 0 0; line-height: 1.5;">${c.content}</p>
       </div>
     `).join('');
