@@ -7,7 +7,7 @@
 <div id="comment-section" data-article-id="post_00c">
   <h3></h3>
   
-  <input type="text" id="nickname" placeholder="이름" style="width:300pt;">
+  <input type="text" id="nickname" placeholder="이름" style="width:150pt;">
  
   <textarea id="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." 
    style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
@@ -86,18 +86,16 @@
 
     if (error) {
       console.error('불러오기 에러:', error.message);
-      listDiv.innerHTML = '<p>댓글을 불러오지 못했어 ㅠㅠ</p>';
-      return;
-    }
-
-    if (data.length === 0) {
-      listDiv.innerHTML = '<p style="color: #999;">아직 댓글이 없네? 첫 댓글의 주인공이 되어봐 ㅋㅋㅋ</p>';
+      listDiv.innerHTML = '<p>불러오기 에러</p>';
       return;
     }
 
 
     listDiv.innerHTML = data.map(c => `
-      <div style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
+      <div style="background-color:rgba(230,230,230,0.7); margin-bottom:10pt; padding:10pt; 
+                  font-family: 'Pretendard-Regular'; display:inline-block;margin-right:30%;
+                  border-radius:20pt; font-size:15pt;">
+        <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
         <strong style="color: #333;">${c.name}</strong> 
         <small style="color: #999; margin-left: 10px;">${new Date(c.created_at).toLocaleString()}</small>
         <p style="margin: 8px 0 0; line-height: 1.5;">${c.content}</p>
@@ -115,7 +113,7 @@
     const content = contentInput.value.trim();
 
     if (!name || !content) {
-      alert('이름이랑 내용을 입력해줘 ㅋㅋㅋ');
+      alert('이름과 내용을 입력하세');
       return;
     }
 
