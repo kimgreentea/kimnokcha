@@ -68,7 +68,6 @@
 
          
 
-
   // 수파베이스
   const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
@@ -107,7 +106,7 @@ async function loadComments() {
                     <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${c.name} </strong>
                     <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
                 </div>
-                <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; 
+                <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; max-width:70%;
                             font-family: 'Pretendard-Regular'; display:inline-block; border-radius:20pt; font-size:15pt;">
                     <p>${c.content}</p>
                 </div>
@@ -122,21 +121,23 @@ async function loadComments() {
                 
 
 <!-- 답글모양 -->
-<div style="display:flex;align-items:center;justify-content:flex-end; margin-right:5pt;">
-                <div class="reply-list" style="margin-left: 50px;">
+
+   
                     ${childReplies.map(r => `
-                        <div style="margin-bottom: 5px;">
-                            <div style="display:flex; align-items:center;">
-                                <span style="margin-right:5px; color:#aaa;"></span>
-                                <strong onclick="deleteComment('${r.id}', '${r.password}')" style="color: #333;"> ${r.name} </strong>
-<img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50">
-                            </div>
-                            <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; margin-left:30%;font-size:15pt;color:white;font-family: 'Pretendard-Regular';">
+           
+                <div style="display:flex; align-items:center;justify-content:flex-end;">
+                    <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50" >	
+                    <strong onclick="deleteComment('${r.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${r.name} </strong>
+                   </div>
+
+<div style="display:flex; justify-content:flex-end;">
+                            <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; max-width:70%;font-size:15pt;color:white;font-family: 'Pretendard-Regular';">
                                 <p>${r.content}</p>
-                            </div>
-                        </div>
+                            </div></div>
+
+                        
                     `).join('')}
-                </div>
+                
             </div>
         `;
     }).join('');
