@@ -5,13 +5,16 @@
 
   
 <div id="comment-section" data-article-id="post_00c">
-  <h3>댓글 달기 💬</h3>
+  <h3></h3>
   
-  <input type="text" id="nickname" placeholder="닉네임">
+  <input type="text" id="nickname" placeholder="이름" style="width:300pt;">
+ 
+  <textarea id="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." 
+   style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
+   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';">></textarea>
   
-  <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
-  
-  <button id="submit-btn">등록하기</button>
+  <div style="text-align:right;">
+  <button id="submit-btn" style>등록</button></div>
 
 
   <div id="comment-list">
