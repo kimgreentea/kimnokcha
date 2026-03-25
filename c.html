@@ -6,7 +6,7 @@
   
 <div class="comment-section" data-article-id="post_00c">
   <h3>1+1=2 어떻게 읽을까요?</h3>
-  <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:150pt;">
+  <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
   <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
    style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
    width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
@@ -18,7 +18,7 @@
   <div class="comment-list"></div>
  </div>
 
-<div class="comment-section" data-article-id="post_00c">
+<div class="comment-section" data-article-id="post_00c.1">
   <h3>3+2=5 어떻게 읽을까요?</h3>
   <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:150pt;">
   <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
@@ -79,90 +79,100 @@
 
          
 
-  // 수파베이스
-  const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
-  const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 수파베이스 설정
+const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const commentSection = document.querySelector('.comment-section');
-  const articleId = commentSection ? commentSection.getAttribute('data-article-id') : 'default_post';
-
-// 댓글로드
-async function loadComments() {
-    const listDiv = document.querySelector('.comment-list');
+// 댓글 로드
+async function loadAllComments() {
+    const sections = document.querySelectorAll('.comment-section');
     
-    const { data, error } = await db
-      .from('nokcha.rep')
-      .select('*')
-      .eq('article_num', articleId)
-      .order('created_at', { ascending: true }); // 최신순정렬
+    for (const section of sections) {
+        const articleId = section.getAttribute('data-article-id');
+        const listDiv = section.querySelector('.comment-list');
+        
+        const { data, error } = await db
+            .from('nokcha.rep')
+            .select('*')
+            .eq('article_num', articleId)
+            .order('created_at', { ascending: true });
 
-    if (error) {
-      console.error('불러오기 에러:', error.message);
-      listDiv.innerHTML = '<p>불러오기 에러</p>';
-      return;
+        if (error) {
+            listDiv.innerHTML = '<p>불러오기 에러</p>';
+            continue;
+        }
+
+        const mainComments = data.filter(c => !c.parent_id);
+        const replies = data.filter(c => c.parent_id);
+
+        listDiv.innerHTML = mainComments.map(c => {
+            const childReplies = replies.filter(r => String(r.parent_id) === String(c.id));
+            return `
+                <!-- 댓글 모양 -->
+                <div style="margin-bottom: 20px;" data-id="${c.id}">
+                    <div style="display:flex; align-items:center;">
+                        <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >    
+                        <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${c.name} </strong>
+                        <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
+                    </div>
+                    <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; max-width:70%;
+                                font-family: 'Pretendard-Regular'; display:inline-block; border-radius:20pt; font-size:15pt;">
+                        <p>${c.content}</p>
+                    </div>
+                    <!-- 답글 모양 -->
+                    <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
+                        <input type="text" id="re-name-${c.id}" placeholder="이름" maxlength="5" style="width:150pt;">
+                        <textarea id="re-content-${c.id}" placeholder="답글을 입력하세요." maxlength="300"
+                            style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; width:calc(100% - 25pt);border-radius:20pt;"></textarea>
+                        <button onclick="saveReply('${c.id}', '${articleId}')">등록</button>
+                    </div>
+                    ${childReplies.map(r => `
+                        <div style="display:flex; justify-content:flex-end; align-items:center;">
+                            <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50" >    
+                            <strong style="color: #333;"> ${r.name} </strong>
+                        </div>
+                        <div style="display:flex; justify-content:flex-end;">
+                            <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; max-width:70%;font-size:15pt;color:white;">
+                                <p>${r.content}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>`;
+        }).join('');
+    }
+}
+
+// 댓글 저장
+async function saveComment(event) {
+    const btn = event.currentTarget;
+    const section = btn.closest('.comment-section');
+    const articleId = section.getAttribute('data-article-id');
+    const nameInput = section.querySelector('.nickname');
+    const contentInput = section.querySelector('.comment-content');
+
+    const name = nameInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!name || !content) {
+        alert('이름과 내용을 입력하세요');
+        return;
     }
 
-    const mainComments = data.filter(c => !c.parent_id);
-    const replies = data.filter(c => c.parent_id);
+    btn.disabled = true;
+    const { error } = await db.from('nokcha.rep').insert([{ name, content, article_num: articleId }]);
 
-    listDiv.innerHTML = mainComments.map(c => {
-        const childReplies = replies.filter(r => String(r.parent_id) === String(c.id));
-
-// 댓글모양
-        return `
-            <div style="margin-bottom: 20px;">
-                <div style="display:flex; align-items:center;">
-                    <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
-                    <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${c.name} </strong>
-                    <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
-                </div>
-                <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; max-width:70%;
-                            font-family: 'Pretendard-Regular'; display:inline-block; border-radius:20pt; font-size:15pt;">
-                    <p>${c.content}</p>
-                </div>
-
-                <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
-  <input type="text" id="re-name-${c.id}" placeholder="이름" maxlength="5" style="width:150pt;">
- 
-  <textarea id="re-content-${c.id}" placeholder="내용을 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
-   style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
-   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
-                     <button onclick="saveReply('${c.id}')">등록</button></div>
-                
-
-<!-- 답글모양 -->
-
-   
-                    ${childReplies.map(r => `
-           
-                <div style="display:flex; align-items:center;justify-content:flex-end;">
-                    <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50" >	
-                    <strong onclick="deleteComment('${r.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${r.name} </strong>
-                   </div>
-
-<div style="display:flex; justify-content:flex-end;">
-                            <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; max-width:70%;font-size:15pt;color:white;font-family: 'Pretendard-Regular';">
-                                <p>${r.content}</p>
-                            </div></div>
-
-                        
-                    `).join('')}
-                
-            </div>
-        `;
-    }).join('');
+    if (error) alert('저장 실패: ' + error.message);
+    else {
+        nameInput.value = '';
+        contentInput.value = '';
+        await loadAllComments();
+    }
+    btn.disabled = false;
 }
 
-
-// 답글 입력창 토글 함수
-function toggleReplyForm(id) {
-    const form = document.getElementById(`reply-form-${id}`);
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
-
-//  답글 저장
-async function saveReply(parentId) {
+// 답글 저장 
+async function saveReply(parentId, articleId) {
     const name = document.getElementById(`re-name-${parentId}`).value.trim();
     const content = document.getElementById(`re-content-${parentId}`).value.trim();
 
@@ -171,84 +181,33 @@ async function saveReply(parentId) {
         return;
     }
 
-    const { error } = await db
-      .from('nokcha.rep')
-      .insert([{ 
-          name: name, 
-          content: content, 
-          article_num: articleId,
-          parent_id: parentId 
-      }]);
+    const { error } = await db.from('nokcha.rep').insert([{ name, content, article_num: articleId, parent_id: parentId }]);
 
     if (error) alert('저장 실패: ' + error.message);
-    else loadComments();
+    else loadAllComments();
 }
 
-// 댓글 저장
-  async function saveComment() {
-    const nameInput = document.querySelector('.nickname');
-    const contentInput = document.querySelector('.comment-content');
-    const submitBtn = document.querySelector('.submit-btn');
+// 답글 창 토글
+function toggleReplyForm(id) {
+    const form = document.getElementById(`reply-form-${id}`);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
 
-    const name = nameInput.value.trim();
-    const content = contentInput.value.trim();
+// 모든 등록 버튼에 이벤트 연결
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.submit-btn').forEach(btn => {
+        btn.addEventListener('click', saveComment);
+    });
+    loadAllComments();
+});
 
-    if (!name || !content) {
-      alert('이름과 내용을 입력하세요');
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = '등록 중';
-
-    const { error } = await db
-      .from('nokcha.rep')
-      .insert([
-        { 
-          name: name, 
-          content: content, 
-          article_num: articleId 
-        }
-      ]);
-
-    if (error) {
-      alert('저장 실패: ' + error.message);
-    } else {
-      nameInput.value = '';
-      contentInput.value = '';
-      await loadComments();
-    }
-
-    submitBtn.disabled = false;
-    submitBtn.innerText = '등록하기';
-  }
-
-  document.querySelector('.submit-btn').addEventListener('click', saveComment);
-  window.addEventListener('DOMContentLoaded', loadComments);
-
-//댓글삭제
+// 댓글 삭제 
 async function deleteComment(id, correctPw) {
-  const inputPw = prompt("비밀번호");
-  
-  if (inputPw === null) return; 
-  
-  if (inputPw === correctPw) {
-    const { error } = await db
-      .from('nokcha.rep')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      alert("삭제실패");
-    } else {
-      alert("삭제완료");
-      loadComments(); // 목록 새로고침
+    const inputPw = prompt("비밀번호");
+    if (inputPw === correctPw) {
+        const { error } = await db.from('nokcha.rep').delete().eq('id', id);
+        if (!error) loadAllComments();
     }
-  } else {
-    alert("비밀번호를 확인하세요");
-  }
 }
-
-         
          
     </script></body></html>
