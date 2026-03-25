@@ -113,7 +113,7 @@ async function loadAllComments() {
                 <!-- 댓글 모양 -->
                 <div style="margin-bottom: 20px;" data-id="${c.id}">
                     <div style="display:flex; align-items:center;">
-                        <img src="../css/images/face1.png" width="50" >    
+                        <img src="/kimnokcha/css/images/face1.png" width="50" >    
                         <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333;"> ${c.name} </strong>
                         <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
                     </div>
@@ -130,7 +130,7 @@ async function loadAllComments() {
                     </div>
                     ${childReplies.map(r => `
                         <div style="display:flex; justify-content:flex-end; align-items:center;">
-                            <img src="../css/images/face2.png" width="50" >    
+                            <img src="/kimnokcha/css/images/face2.png" width="50" >    
                             <strong onclick="deleteComment('${r.id}', '${r.password}')" style="color: #333;"> ${r.name} </strong>
                         </div>
                         <div style="display:flex; justify-content:flex-end;">
