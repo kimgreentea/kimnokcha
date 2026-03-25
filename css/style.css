@@ -79,7 +79,7 @@
 
         input[type="text"] {
             padding: 20px;
-            width: calc(95% - 30pt);
+            width: calc(95% - 40pt);
             border-radius: 15pt;
             background-color: rgba(230, 230, 230, 0.7);
             border: none;
