@@ -76,7 +76,7 @@
     const listDiv = document.getElementById('comment-list');
     
     const { data, error } = await db
-      .from('comments')
+      .from('nokcha.rep')
       .select('*')
       .eq('article_num', articleId)
       .order('created_at', { ascending: false }); 
@@ -120,7 +120,7 @@
     submitBtn.innerText = '등록 중';
 
     const { error } = await db
-      .from('comments')
+      .from('nokcha.rep')
       .insert([
         { 
           name: name, 
