@@ -68,6 +68,7 @@
 
          
 
+
   // 수파베이스
   const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
@@ -112,13 +113,13 @@ async function loadComments() {
                 </div>
 
                 <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
-  <input type="text" id="nickname" placeholder="이름" maxlength="5" style="width:150pt;">
+  <input type="text" id="re-name-${c.id}" placeholder="이름" maxlength="5" style="width:150pt;">
  
-  <textarea id="comment-content" placeholder="내용을 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
+  <textarea id="re-content-${c.id}" placeholder="내용을 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
    style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
    width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
-                     <div style="text-align:right;"> <button onclick="saveReply('${c.id}')">등록</button></div>
-                </div>
+                     <button onclick="saveReply('${c.id}')">등록</button></div>
+                
 
 <!-- 답글모양 --!>
 <div style="display:flex;align-items:center;justify-content:flex-end; margin-right:5pt;">
@@ -136,7 +137,7 @@ async function loadComments() {
                         </div>
                     `).join('')}
                 </div>
-            </div></div>
+            </div>
         `;
     }).join('');
 }
@@ -235,6 +236,7 @@ async function deleteComment(id, correctPw) {
     alert("비밀번호를 확인하세요");
   }
 }
+
          
          
     </script></body></html>
