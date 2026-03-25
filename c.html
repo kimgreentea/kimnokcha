@@ -118,7 +118,7 @@ async function loadAllComments() {
                 <div style="margin-bottom: 20px;" data-id="${c.id}">
                     <div style="display:flex; align-items:center;">
                         <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >    
-                        <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${c.name} </strong>
+                        <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333;"> ${c.name} </strong>
                         <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
                     </div>
                     <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; max-width:70%;
@@ -135,7 +135,7 @@ async function loadAllComments() {
                     ${childReplies.map(r => `
                         <div style="display:flex; justify-content:flex-end; align-items:center;">
                             <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50" >    
-                            <strong style="color: #333;"> ${r.name} </strong>
+                            <strong onclick="deleteComment('${r.id}', '${r.password}')" style="color: #333;"> ${r.name} </strong>
                         </div>
                         <div style="display:flex; justify-content:flex-end;">
                             <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; max-width:70%;font-size:15pt;color:white;">
