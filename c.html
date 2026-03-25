@@ -4,22 +4,22 @@
  <body>   <div class="container">
 
   
-<div id="comment-section">
+<div id="comment-section" data-article-id="post_00c">
   <h3>댓글 달기 💬</h3>
   
   <input type="text" id="nickname" placeholder="닉네임">
+  
   <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
   
   <button id="submit-btn">등록하기</button>
 
-  <hr>
 
   <div id="comment-list">
-    <p>댓글을 불러오는 중</p>
+   
   </div>
 </div>
 
-<div id="comments"></div>
+
   
 <div id="quiz"><div class="question">
             <span class="number">1</span><span class="moonje">1+1=</span><label><input type="radio" name="q1" value="1">1</label><label><input type="radio" name="q1" value="2">2</label><label><input type="radio" name="q1" value="3">3</label><label><input type="radio" name="q1" value="4">4</label></div><div class="question">
@@ -69,6 +69,79 @@
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  const commentSection = document.getElementById('comment-section');
+  const articleId = commentSection ? commentSection.getAttribute('data-article-id') : 'default_post';
 
+  async function loadComments() {
+    const listDiv = document.getElementById('comment-list');
+    
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*')
+      .eq('article_num', articleId)
+      .order('created_at', { ascending: false }); 
+
+    if (error) {
+      console.error('불러오기 에러:', error.message);
+      listDiv.innerHTML = '<p>댓글을 불러오지 못했어 ㅠㅠ</p>';
+      return;
+    }
+
+    if (data.length === 0) {
+      listDiv.innerHTML = '<p style="color: #999;">아직 댓글이 없네? 첫 댓글의 주인공이 되어봐 ㅋㅋㅋ</p>';
+      return;
+    }
+
+
+    listDiv.innerHTML = data.map(c => `
+      <div style="padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
+        <strong style="color: #333;">${c.name}</strong> 
+        <small style="color: #999; margin-left: 10px;">${new Date(c.created_at).toLocaleString()}</small>
+        <p style="margin: 8px 0 0; line-height: 1.5;">${c.content}</p>
+      </div>
+    `).join('');
+  }
+
+
+  async function saveComment() {
+    const nameInput = document.getElementById('nickname');
+    const contentInput = document.getElementById('comment-content');
+    const submitBtn = document.getElementById('submit-btn');
+
+    const name = nameInput.value.trim();
+    const content = contentInput.value.trim();
+
+    if (!name || !content) {
+      alert('이름이랑 내용을 입력해줘 ㅋㅋㅋ');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = '';
+
+    const { error } = await supabase
+      .from('comments')
+      .insert([
+        { 
+          name: name, 
+          content: content, 
+          article_num: articleId 
+        }
+      ]);
+
+    if (error) {
+      alert('저장 실패: ' + error.message);
+    } else {
+      nameInput.value = '';
+      contentInput.value = '';
+      await loadComments();
+    }
+
+    submitBtn.disabled = false;
+    submitBtn.innerText = '등록하기';
+  }
+
+  document.getElementById('submit-btn').addEventListener('click', saveComment);
+  window.addEventListener('DOMContentLoaded', loadComments);
 
     </script></body></html>
