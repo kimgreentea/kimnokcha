@@ -80,7 +80,6 @@
         input[type="text"] {
             padding: 20px;
             width: 100%;
-            max-width: calc(100% - 40px);
             border-radius: 15pt;
             background-color: rgba(230, 230, 230, 0.7);
             border: none;
@@ -89,7 +88,7 @@
         }
 
         textarea {
-            width: calc(100%-25pt);
+            width: calc(100% - 25pt);
             height: 100px;
             font-family: 'Pretendard-Regular';
             font-size:16pt;
