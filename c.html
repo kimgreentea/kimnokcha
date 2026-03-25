@@ -67,6 +67,7 @@
         });
 
          
+
   // 수파베이스
   const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
@@ -75,14 +76,15 @@
   const commentSection = document.getElementById('comment-section');
   const articleId = commentSection ? commentSection.getAttribute('data-article-id') : 'default_post';
 
-  async function loadComments() {
+// 댓글로드
+async function loadComments() {
     const listDiv = document.getElementById('comment-list');
     
     const { data, error } = await db
       .from('nokcha.rep')
       .select('*')
       .eq('article_num', articleId)
-      .order('created_at', { ascending: false }); 
+      .order('created_at', { ascending: true }); // 최신순정렬
 
     if (error) {
       console.error('불러오기 에러:', error.message);
@@ -90,23 +92,86 @@
       return;
     }
 
+    const mainComments = data.filter(c => !c.parent_id);
+    const replies = data.filter(c => c.parent_id);
 
-    listDiv.innerHTML = data.map(c => `
+    listDiv.innerHTML = mainComments.map(c => {
+        const childReplies = replies.filter(r => String(r.parent_id) === String(c.id));
 
-        <div style="display:flex; align-items:center;">
-        <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
-        <strong  onclick="deleteComment('${c.id}', '${c.password}')"  style="color: #333;"> ${c.name} </strong>
-      
-        </div>
-      <div style="background-color:rgba(230,230,230,0.7); margin-bottom:10pt; padding:0pt 15pt 0pt 15pt; 
-                  font-family: 'Pretendard-Regular'; display:inline-block;margin-right:30%;
-                  border-radius:20pt; font-size:15pt;">
-        <p>${c.content}</p>
-     </div>
-    `).join('');
-  }
+// 댓글모양
+        return `
+            <div style="margin-bottom: 20px;">
+                <div style="display:flex; align-items:center;">
+                    <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
+                    <strong onclick="deleteComment('${c.id}', '${c.password}')" style="color: #333; cursor:pointer;"> ${c.name} </strong>
+                    <button onclick="toggleReplyForm('${c.id}')" style="margin-left:10px; font-size:10pt; cursor:pointer; background:none; border:none; color:gray;">답글</button>
+                </div>
+                <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; 
+                            font-family: 'Pretendard-Regular'; display:inline-block; border-radius:20pt; font-size:15pt;">
+                    <p>${c.content}</p>
+                </div>
 
-//댓글 저장
+                <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
+  <input type="text" id="nickname" placeholder="이름" maxlength="5" style="width:150pt;">
+ 
+  <textarea id="comment-content" placeholder="내용을 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
+   style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
+   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
+                     <div style="text-align:right;"> <button onclick="saveReply('${c.id}')">등록</button></div>
+                </div>
+
+<!-- 답글모양 --!>
+<div style="display:flex;align-items:center;justify-content:flex-end; margin-right:5pt;">
+                <div class="reply-list" style="margin-left: 50px;">
+                    ${childReplies.map(r => `
+                        <div style="margin-bottom: 5px;">
+                            <div style="display:flex; align-items:center;">
+                                <span style="margin-right:5px; color:#aaa;"></span>
+                                <strong onclick="deleteComment('${r.id}', '${r.password}')" style="color: #333;"> ${r.name} </strong>
+<img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/face4.png" width="50" height>
+                            </div>
+                            <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; margin-left:30%;font-size:15pt;color:white;font-family: 'Pretendard-Regular';">
+                                <p>${r.content}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div></div>
+        `;
+    }).join('');
+}
+
+
+// 답글 입력창 토글 함수
+function toggleReplyForm(id) {
+    const form = document.getElementById(`reply-form-${id}`);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+//  답글 저장
+async function saveReply(parentId) {
+    const name = document.getElementById(`re-name-${parentId}`).value.trim();
+    const content = document.getElementById(`re-content-${parentId}`).value.trim();
+
+    if (!name || !content) {
+        alert('이름과 내용을 입력하세요');
+        return;
+    }
+
+    const { error } = await db
+      .from('nokcha.rep')
+      .insert([{ 
+          name: name, 
+          content: content, 
+          article_num: articleId,
+          parent_id: parentId 
+      }]);
+
+    if (error) alert('저장 실패: ' + error.message);
+    else loadComments();
+}
+
+// 댓글 저장
   async function saveComment() {
     const nameInput = document.getElementById('nickname');
     const contentInput = document.getElementById('comment-content');
@@ -148,7 +213,6 @@
   document.getElementById('submit-btn').addEventListener('click', saveComment);
   window.addEventListener('DOMContentLoaded', loadComments);
 
-
 //댓글삭제
 async function deleteComment(id, correctPw) {
   const inputPw = prompt("비밀번호");
@@ -162,14 +226,15 @@ async function deleteComment(id, correctPw) {
       .eq('id', id);
 
     if (error) {
-      alert("삭제 실패");
+      alert("삭제실패");
     } else {
-      alert("삭제 완료");
-      loadComments(); 
+      alert("삭제완료");
+      loadComments(); // 목록 새로고침
     }
   } else {
     alert("비밀번호를 확인하세요");
   }
 }
+         
          
     </script></body></html>
