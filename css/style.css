@@ -89,9 +89,13 @@
         }
 
         textarea {
-            width: 100%;
+            width: calc(100%-25pt);
             height: 100px;
             font-family: 'Pretendard-Regular';
+            font-size:16pt;
+            border-radius:20pt;
+            resize:none; 
+            padding:10pt;
         }
 
         button  {
