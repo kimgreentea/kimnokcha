@@ -85,6 +85,7 @@
             background-color: rgba(230, 230, 230, 0.7);
             border: none;
             margin-bottom: 15pt;
+            font-family:'Pretendard-Regular';font-size: 16pt;
         }
 
         textarea {
