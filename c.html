@@ -140,7 +140,7 @@ async function loadAllComments() {
                         <input type="text" id="re-name-${c.id}" placeholder="이름" maxlength="5" style="width:150pt;">
                         <textarea id="re-content-${c.id}" placeholder="답글을 입력하세요." maxlength="300"
                             style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; width:calc(100% - 25pt);border-radius:20pt;"></textarea>
-                        <button onclick="saveReply('${c.id}', '${articleId}')">등록</button>
+                            <div style="text-align:right;"><button onclick="saveReply('${c.id}', '${articleId}')">등록</button></div>
                     </div>
                     ${childReplies.map(r => `
                         <div style="display:flex; justify-content:flex-end; align-items:center;">
@@ -208,7 +208,7 @@ function toggleReplyForm(id) {
     form.style.display = form.style.display === 'none' ? 'block' : 'none';
 }
 
-// 모든 등록 버튼에 이벤트 연결
+// 등록 연결
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.submit-btn').forEach(btn => {
         btn.addEventListener('click', saveComment);
