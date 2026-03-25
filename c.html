@@ -138,8 +138,8 @@ async function loadAllComments() {
                     <!-- 답글 모양 -->
                     <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
                         <input type="text" id="re-name-${c.id}" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
-                        <textarea id="re-content-${c.id}" placeholder="답글을 입력하세요." maxlength="300"
-                            style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; width:calc(100% - 25pt);border-radius:20pt;"></textarea>
+                        <textarea id="re-content-${c.id}" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
+                            style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; width:calc(100% - 25pt);border-radius:20pt;'Pretendard-Regular';""></textarea>
                             <div style="text-align:right;"><button onclick="saveReply('${c.id}', '${articleId}')">등록</button></div>
                     </div>
                     ${childReplies.map(r => `
