@@ -3,7 +3,7 @@
  <body>   <div class="container">
    
 <div id="questionsContainer"><div class="question">
-            <span class="number">1</span><span class="moonje">우리나라 첫 번째 대통령의 이름은 무엇인가요?</span><input type="text" name="q1" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
+            <span class="number">1</span><span class="moonje">우리나라 첫 번째 대통령의 이름은 무엇인가요?</span><label><input type="radio" name="q1" value="1">이승환</label><label><input type="radio" name="q1" value="2">이승기</label><label><input type="radio" name="q1" value="3">이승철</label><label><input type="radio" name="q1" value="4">이승만</label><label><input type="radio" name="q1" value="5">이승엽</label></div><div class="question">
             <span class="number">2</span><span class="moonje">이승만 정부가 권력을 유지하기 위해 대통령과 부통령을 뽑는 선거에서 대대적인 부정 행위를 저질렀습니다. 이를 뭐라고 하나요?</span><label><input type="radio" name="q2" value="1">3·15 부정 선거</label><label><input type="radio" name="q2" value="2">은여울 어린이회 선거</label><label><input type="radio" name="q2" value="3">회장 선거</label><label><input type="radio" name="q2" value="4">3·15 부정 앉은거</label><label><input type="radio" name="q2" value="5">4·19 부정 선거</label></div><div class="question">
             <span class="number">3</span><span class="moonje">3·15 부정선거에 항의하는 시위를 뭐라고 하나요?</span><label><input type="radio" name="q3" value="1">1·19 혁명</label><label><input type="radio" name="q3" value="2">2·19 혁명</label><label><input type="radio" name="q3" value="3">3·19 혁명</label><label><input type="radio" name="q3" value="4">4·19 혁명</label><label><input type="radio" name="q3" value="5">5·19 혁명</label></div><div class="question">
             <span class="number">4</span><span class="moonje">4·19 혁명의 결과로 이승만 대통령은 ㅁㅁ했습니다.</span><input type="text" name="q4" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
@@ -21,7 +21,7 @@
  </div>
    <script>
 
-        const answers = {"q1":"이승만","q2":"1","q3":"4","q4":"하야","q5":"박정희","q6":"유신","q7":"3","q8":"5","q9":"2","q10":"2","q11":"3","q12":"계엄군","q13":"박종철","q14":"1","q15":"5"};
+        const answers = {"q1":"4","q2":"1","q3":"4","q4":"하야","q5":"박정희","q6":"유신","q7":"3","q8":"5","q9":"2","q10":"2","q11":"3","q12":"계엄군","q13":"박종철","q14":"1","q15":"5"};
         document.querySelectorAll('.question input[type="radio"]').forEach(input => {
             input.addEventListener('change', function() {
                 const questionDiv = this.closest('.question');
