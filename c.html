@@ -2,9 +2,22 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="css/style.css"></head>
  <body>   <div class="container">
+
   
- <input id="commentInput" placeholder="댓글 입력">
-<button onclick="addComment()">등록</button>
+<div id="comment-section">
+  <h3>댓글 달기 💬</h3>
+  
+  <input type="text" id="nickname" placeholder="닉네임">
+  <textarea id="comment-content" placeholder="댓글을 입력하세요"></textarea>
+  
+  <button id="submit-btn">등록하기</button>
+
+  <hr>
+
+  <div id="comment-list">
+    <p>댓글을 불러오는 중</p>
+  </div>
+</div>
 
 <div id="comments"></div>
   
