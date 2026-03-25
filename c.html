@@ -66,7 +66,7 @@
             });
         });
 
-
+         
   // 수파베이스
   const SUPABASE_URL = 'https://naiaomvbsjrrtgdxttoy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_B_vOoZCCTQLB0E3Nn1lMRw_eS9rMAGc';
@@ -96,7 +96,8 @@
         <div style="display:flex; align-items:center;">
         <img src="https://tistory1.daumcdn.net/tistory/7206619/skin/images/chunsik.png" width="50" >	
         <strong style="color: #333;">${c.name}</strong> 
-        <small style="color: #999; margin-left: 10px;">${new Date(c.created_at).toLocaleString()}</small></div>
+        <button onclick="deleteComment('${c.id}', '${c.password}')" style="border:none; background:none;">${new Date(c.created_at).toLocaleString()}</button>
+        </div>
       <div style="background-color:rgba(230,230,230,0.7); margin-bottom:10pt; padding:0pt 15pt 0pt 15pt; 
                   font-family: 'Pretendard-Regular'; display:inline-block;margin-right:30%;
                   border-radius:20pt; font-size:15pt;">
@@ -105,7 +106,7 @@
     `).join('');
   }
 
-
+//댓글 저장
   async function saveComment() {
     const nameInput = document.getElementById('nickname');
     const contentInput = document.getElementById('comment-content');
@@ -147,4 +148,28 @@
   document.getElementById('submit-btn').addEventListener('click', saveComment);
   window.addEventListener('DOMContentLoaded', loadComments);
 
+
+//댓글삭제
+async function deleteComment(id, correctPw) {
+  const inputPw = prompt("비밀번호");
+  
+  if (inputPw === null) return; 
+  
+  if (inputPw === correctPw) {
+    const { error } = await db
+      .from('nokcha.rep')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      alert("삭제 실패");
+    } else {
+      alert("삭제 완료");
+      loadComments(); 
+    }
+  } else {
+    alert("비밀번호를 확인하세요");
+  }
+}
+         
     </script></body></html>
