@@ -1,46 +1,52 @@
 <!DOCTYPE html><html lang="ko"><head>    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="stylesheet" href="css/style.css"></head>
- <body>   <div class="container">
-
-  <!--문제1-->
-<div class="comment-section" data-article-id="post_00c">
-<span class="number">1</span>
-<span class="moonje">1+1=2 어떻게 읽을까요?</span>
- 
- <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
-  <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
-   style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
-   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
-  <div style="text-align:right;">
-  <button class="submit-btn" style>등록</button></div>
-  <div class="comment-list"></div>
- </div>
-
-    <!--문제2-->
-<div class="comment-section" data-article-id="post_00c.1">
-<span class="number">2</span>
-<span class="moonje">3+2=5 어떻게 읽을까요?</span>
- 
- <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
-  <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
-   style="margin-top:10pt;font-size:16pt; padding:10pt;resize:none; 
-   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
-  <div style="text-align:right;">
-  <button class="submit-btn" style>등록</button></div>
-  <div class="comment-list"></div>
- </div>
-
+<body>   <div class="container">
 
 
   
 <div id="quiz"><div class="question">
-            <span class="number">3</span><span class="moonje">1+1=</span><label><input type="radio" name="q1" value="1">1</label><label><input type="radio" name="q1" value="2">2</label><label><input type="radio" name="q1" value="3">3</label><label><input type="radio" name="q1" value="4">4</label></div><div class="question">
+            <span class="number">1</span><span class="moonje">1+1=</span><label><input type="radio" name="q1" value="1">1</label><label><input type="radio" name="q1" value="2">2</label><label><input type="radio" name="q1" value="3">3</label><label><input type="radio" name="q1" value="4">4</label></div>
+
+  <!--문제1-->
+<div class="comment-section" data-article-id="post_00c">
+<div class="question">
+<span class="number">2</span>
+<span class="moonje">1+2=3 어떻게 읽을까요?</span>
+ </div>
+ <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
+  <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
+   style="margin-top:10pt;font-size:16pt; padding:10pt;height:100px;resize:none; 
+   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
+  <div style="text-align:right;">
+  <button class="submit-btn" style>등록</button></div>
+  <div class="comment-list"></div>
+ </div>
+
+  <!--문제1끝-->
+
+    <!--문제2-->
+<div class="comment-section" data-article-id="post_00c.1">
+<div class="question">
+<span class="number">3</span>
+<span class="moonje">3+2=5 어떻게 읽을까요?</span>
+  </div>
+ <input type="text" class="nickname" placeholder="이름" maxlength="5" style="width:100pt;font-size:16pt;font-family: 'Pretendard-Regular'">
+  <textarea class="comment-content" placeholder="내용을 입력하세요. 등록 후 수정할 수 없으니 다시 한번 확인하세요." maxlength="300"
+   style="margin-top:10pt;font-size:16pt; padding:10pt;height:100px;resize:none; 
+   width:calc(100% - 25pt);border-radius:20pt;font-family: 'Pretendard-Regular';"></textarea>
+  <div style="text-align:right;">
+  <button class="submit-btn" style>등록</button></div>
+  <div class="comment-list"></div>
+ </div>
+
+<div class="question">
              <span class="number">4</span><span class="moonje">2+1=</span><label><input type="radio" name="q2" value="1">1</label><label><input type="radio" name="q2" value="2">2</label><label><input type="radio" name="q2" value="3">3</label><label><input type="radio" name="q2" value="4">4</label><label><input type="radio" name="q2" value="5">5</label></div><div class="question">
-            <span class="number">5</span><span class="moonje">2X3=</span><input type="text" name="q3" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
-            <span class="number">6</span><span class="moonje">우리 학교 이름은?</span><input type="text" name="q4" class="subjective-input" placeholder="정답을 입력하세요"></div><div class="question">
-            <span class="number">7</span><span class="moonje">선생님의 은혜는?</span><label><input type="radio" name="q5" value="1">높음</label><label><input type="radio" name="q5" value="2">짱높음</label><label><input type="radio" name="q5" value="3">짱짱높음</label></div></div>
+            <span class="number">5</span><span class="moonje">2X3=</span><input type="text" name="q3" class="subjective-input" placeholder="정답을 입력하세요"></div>
+
+</div>
     </div>
+
         <script>
         const answers = {"q1":"2","q2":"3","q3":"6","q4":"은여울초등학교","q5":"3"};
         document.querySelectorAll('.question input[type="radio"]').forEach(input => {
