@@ -15,7 +15,7 @@
        
        body {
            font-family:'Pretendard-Regular';font-size: 16pt;
-        justify-content:center;display:flex;padding-top:50px;padding-bottom:100px;
+        justify-content:center;display:flex;padding-top:60px;padding-bottom:60px;
         }                       
         .container{
             max-width:900px;
