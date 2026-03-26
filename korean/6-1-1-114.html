@@ -83,7 +83,7 @@ async function loadAllComments() {
                     </div>
                     <div style="background-color:rgba(230,230,230,0.7); margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; max-width:70%;
                                 font-family: 'Pretendard-Regular'; display:inline-block; border-radius:20pt; font-size:15pt;">
-                        <p>${c.content}</p>
+                        <p style="white-space: pre-wrap; word-break: break-all; margin: 10px 0;">${c.content}</p>
                     </div>
                     <!-- 답글 모양 -->
                     <div id="reply-form-${c.id}" style="display:none; margin-left:50px; margin-bottom:10px;">
@@ -99,7 +99,7 @@ async function loadAllComments() {
                         </div>
                         <div style="display:flex; justify-content:flex-end;">
                             <div style="background-color:#3674B5; margin-bottom:5pt; padding:0pt 15pt 0pt 15pt; border-radius:20pt; display:inline-block; max-width:70%;font-size:15pt;color:white;">
-                                <p>${r.content}</p>
+                                <p style="white-space: pre-wrap; word-break: break-all; margin: 10px 0;">${r.content}</p>
                             </div>
                         </div>
                     `).join('')}
