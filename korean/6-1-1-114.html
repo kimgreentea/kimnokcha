@@ -117,7 +117,7 @@ async function saveComment(event) {
     const contentInput = section.querySelector('.comment-content');
 
     const name = nameInput.value.trim();
-    const content = contentInput.value.trim();
+    const content = contentInput.value.trimEnd();
 
     if (!name || !content) {
         alert('이름과 내용을 입력하세요');
