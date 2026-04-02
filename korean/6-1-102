@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="ko"><head>    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="/kimnokcha/css/style.css"></head>
+<body>   <div class="container">
+
+
+<div id="quiz"><div class="question">
+소나기
+황순원
+
+소년은 개울가에서 소녀를 보자 곧 윤 초시네 증손녀 딸이라는 걸 알 수 있었다. 소녀는 개울에다 손을 잠그고 물장난을 하고 있는 것이다. 서울서는 이런 개울물을 보지 못하기나 한 듯이.
+벌써 며칠째 소녀는, 학교에서 돌아오는 길에 물장난이었다. 그런데, 어제까지 개울 기슭에서 하더니, 오늘은 징검다리 한가운데 앉아서 하고 있다.
+
+소년은 개울둑에 앉아 버렸다. 소녀가 비키기를 기다리자는 것이다.
+요행 지나가는 사람이 있어, 소녀가 길을 비켜 주었다.
+            <span class="number">1</span><span class="moonje">소년은 서울에서 전학 왔다</span><label><input type="radio" name="q1" value="1">O</label><label><input type="radio" name="q1" value="2">X</label></div><div class="question">
+            <span class="number">2</span><span class="moonje">소녀의 얼굴을 하얗다.</span><label><input type="radio" name="q2" value="1">O</label><label><input type="radio" name="q2" value="2">X</label></div><div class="question">
+            <span class="number">3</span><span class="moonje">소년은 소녀에게 조약돌을 던졌다.</span><label><input type="radio" name="q3" value="1">O</label><label><input type="radio" name="q3" value="2">X</label></div><div class="question">
+            <span class="number">4</span><span class="moonje">소년은 소녀가 던진 조약돌을 주머니에 넣었다.</span><label><input type="radio" name="q4" value="1">O</label><label><input type="radio" name="q4" value="2">X</label></div><div class="question">
+            <span class="number">5</span><span class="moonje">소년의 얼굴을 검게 탔다.</span><label><input type="radio" name="q5" value="1">O</label><label><input type="radio" name="q5" value="2">X</label></div><div class="question">
+            <span class="number">6</span><span class="moonje">소년과 소녀는 같이 산 너머로 갔다.</span><label><input type="radio" name="q6" value="1">O</label><label><input type="radio" name="q6" value="2">X</label></div><div class="question">
+            <span class="number">7</span><span class="moonje">소녀는 오늘 일찍 집에 가서 집안일을 해야 한다.</span><label><input type="radio" name="q7" value="1">O</label><label><input type="radio" name="q7" value="2">X</label></div><div class="question">
+            <span class="number">8</span><span class="moonje">소년은 소녀에게 수박을 가져다 주었다.</span><label><input type="radio" name="q8" value="1">O</label><label><input type="radio" name="q8" value="2">X</label></div><div class="question">
+            <span class="number">9</span><span class="moonje">소녀는 소년이 준 꽃을 버렸다.</span><label><input type="radio" name="q9" value="1">O</label><label><input type="radio" name="q9" value="2">X</label></div><div class="question">
+            <span class="number">10</span><span class="moonje">소녀가 다쳤을 때 소년이 응급처치를 했다.</span><label><input type="radio" name="q10" value="1">O</label><label><input type="radio" name="q10" value="2">X</label></div><div class="question">
+            <span class="number">11</span><span class="moonje">농부는 소년과 소녀를 크게 혼냈다.</span><label><input type="radio" name="q11" value="1">O</label><label><input type="radio" name="q11" value="2">X</label></div><div class="question">
+            <span class="number">12</span><span class="moonje">원두막은 비가 새지 않았다.</span><label><input type="radio" name="q12" value="1">O</label><label><input type="radio" name="q12" value="2">X</label></div><div class="question">
+            <span class="number">13</span><span class="moonje">소년과 소녀는 수숫단 속에 같이 앉았다.</span><label><input type="radio" name="q13" value="1">O</label><label><input type="radio" name="q13" value="2">X</label></div><div class="question">
+            <span class="number">14</span><span class="moonje">소년의 등에 소녀가 업혔다.</span><label><input type="radio" name="q14" value="1">O</label><label><input type="radio" name="q14" value="2">X</label></div><div class="question">
+            <span class="number">15</span><span class="moonje">소녀는 며칠 동안 앓았다.</span><label><input type="radio" name="q15" value="1">O</label><label><input type="radio" name="q15" value="2">X</label></div><div class="question">
+            <span class="number">16</span><span class="moonje">소년은 소녀에게 대추를 선물해주었다.</span><label><input type="radio" name="q16" value="1">O</label><label><input type="radio" name="q16" value="2">X</label></div><div class="question">
+            <span class="number">17</span><span class="moonje">소년과 소녀는 다시 만나기로 약속했다.</span><label><input type="radio" name="q17" value="1">O</label><label><input type="radio" name="q17" value="2">X</label></div><div class="question">
+            <span class="number">18</span><span class="moonje">소년의 아버지는 윤 초시 댁에 얼룩수탉을 가져다 주었다.</span><label><input type="radio" name="q18" value="1">O</label><label><input type="radio" name="q18" value="2">X</label></div><div class="question">
+            <span class="number">19</span><span class="moonje">소년은 소녀에게 호두를 선물해주었다.</span><label><input type="radio" name="q19" value="1">O</label><label><input type="radio" name="q19" value="2">X</label></div><div class="question">
+            <span class="number">20</span><span class="moonje">소녀의 오빠는 건강하다.</span><label><input type="radio" name="q20" value="1">O</label><label><input type="radio" name="q20" value="2">X</label></div></div>
+
+   </div> 
+    <script>
+        const answers = {"q1":"2","q2":"1","q3":"2","q4":"1","q5":"1","q6":"1","q7":"2","q8":"2","q9":"2","q10":"1","q11":"2","q12":"2","q13":"1","q14":"1","q15":"1","q16":"2","q17":"2","q18":"2","q19":"2","q20":"1"};
+        document.querySelectorAll('.question input[type="radio"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const questionDiv = this.closest('.question');
+                const questionName = this.name;
+                const selectedValue = this.value;
+                const correctAnswer = answers[questionName];
+                
+                questionDiv.classList.remove('correct', 'wrong');
+                questionDiv.querySelectorAll('label').forEach(label => label.classList.remove('selected'));
+                this.parentElement.classList.add('selected');
+                
+                if (selectedValue === correctAnswer) {
+                    questionDiv.classList.add('correct');
+                } else {
+                    questionDiv.classList.add('wrong');
+                }
+            });
+        });
+
+        document.querySelectorAll('.subjective-input').forEach(input => {
+            input.addEventListener('input', function() {
+                const questionDiv = this.closest('.question');
+                const questionName = this.name;
+                const userAnswer = this.value.trim();
+                const correctAnswer = answers[questionName];
+                
+                questionDiv.classList.remove('correct');
+                if (userAnswer === correctAnswer) {
+                    questionDiv.classList.add('correct');
+                }
+            });
+        });
+    </script></body></html>
