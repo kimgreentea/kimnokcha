@@ -1,25 +1,245 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+      initial-scale=1.0">
+
+<title>Android 카메라 진단</title>
+
+<style>
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+video {
+    width: 100%;
+    max-width: 640px;
+    background: #333;
+    display: block;
+    margin: 20px auto;
+}
+
+button {
+    font-size: 20px;
+    padding: 15px 30px;
+}
+
+#result {
+    text-align: left;
+    white-space: pre-wrap;
+    background: #222;
+    padding: 15px;
+    margin-top: 20px;
+    font-size: 15px;
+}
+
+</style>
+</head>
+
 <body>
+
+<h2>📷 Android 카메라 진단</h2>
 
 <video id="video"
        autoplay
        muted
-       playsinline
-       style="width:100%;"></video>
+       playsinline></video>
 
-<button onclick="camera()">카메라 시작</button>
+<button onclick="startCamera()">
+    카메라 시작
+</button>
+
+<div id="result">
+대기 중
+</div>
+
 
 <script>
 
-async function camera() {
+async function startCamera() {
 
-    const stream =
-        await navigator.mediaDevices.getUserMedia({
-            video: true
-        });
+    const video =
+        document.getElementById("video");
 
-    document.getElementById("video").srcObject = stream;
+    const result =
+        document.getElementById("result");
+
+
+    try {
+
+        result.textContent =
+            "① getUserMedia 요청 중...";
+
+
+        const stream =
+            await navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: false
+            });
+
+
+        result.textContent =
+            "② 카메라 스트림 획득 성공";
+
+
+        video.srcObject = stream;
+
+
+        const tracks =
+            stream.getVideoTracks();
+
+
+        result.textContent +=
+            "\n③ 비디오 트랙 개수: " +
+            tracks.length;
+
+
+        if (tracks.length > 0) {
+
+            const track =
+                tracks[0];
+
+
+            result.textContent +=
+                "\n\n④ 트랙 상태" +
+
+                "\nreadyState: " +
+                track.readyState +
+
+                "\nenabled: " +
+                track.enabled +
+
+                "\nmuted: " +
+                track.muted;
+
+
+            const settings =
+                track.getSettings();
+
+
+            result.textContent +=
+                "\n\n⑤ 카메라 설정" +
+
+                "\nwidth: " +
+                settings.width +
+
+                "\nheight: " +
+                settings.height +
+
+                "\nfacingMode: " +
+                settings.facingMode;
+
+
+            track.onended = () => {
+
+                result.textContent +=
+                    "\n\n❌ 카메라 트랙 종료";
+
+            };
+
+        }
+
+
+        /*
+         * video 이벤트 감시
+         */
+
+        video.onloadedmetadata = () => {
+
+            result.textContent +=
+                "\n\n⑥ loadedmetadata 발생" +
+
+                "\nvideoWidth: " +
+                video.videoWidth +
+
+                "\nvideoHeight: " +
+                video.videoHeight +
+
+                "\nreadyState: " +
+                video.readyState;
+
+        };
+
+
+        video.onplaying = () => {
+
+            result.textContent +=
+                "\n\n⑦ ⭐ VIDEO PLAYING";
+
+        };
+
+
+        video.oncanplay = () => {
+
+            result.textContent +=
+                "\n\n⑧ canplay";
+
+        };
+
+
+        video.onerror = () => {
+
+            result.textContent +=
+                "\n\n❌ VIDEO ERROR";
+
+        };
+
+
+        /*
+         * 영상 상태를 1초마다 확인
+         */
+
+        setInterval(() => {
+
+            result.textContent +=
+                "\n\n현재 상태" +
+
+                "\nvideoWidth: " +
+                video.videoWidth +
+
+                "\nvideoHeight: " +
+                video.videoHeight +
+
+                "\nreadyState: " +
+                video.readyState +
+
+                "\npaused: " +
+                video.paused +
+
+                "\nended: " +
+                video.ended;
+
+
+        }, 1000);
+
+
+    }
+
+    catch (error) {
+
+        result.textContent =
+            "❌ 오류\n\n" +
+
+            "name: " +
+            error.name +
+
+            "\n\nmessage: " +
+            error.message +
+
+            "\n\n" +
+            error.stack;
+
+    }
 
 }
 
@@ -27,3 +247,4 @@ async function camera() {
 
 </body>
 </html>
+```
