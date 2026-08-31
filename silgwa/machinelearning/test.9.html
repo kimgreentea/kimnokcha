@@ -106,8 +106,8 @@
     <div id="topArea" class="hide">
         <div id="help">
             🤖 <b>작동 방법</b><br>
-            - <b>class1</b>: ⬆️ 직진<br>
-            - <b>class2</b>: ↻ 회전<br>
+            - <b>Class 1</b>: ⬆️ 직진<br>
+            - <b>Class 2</b>: ↻ 회전<br>
             - 그 외: ⏹ 정지
         </div>
         <div id="cameraArea"></div>
@@ -198,13 +198,13 @@
 
         // 확률이 70% 이상일 때만 확실하게 움직임 (억까 방지)
         if (highestProb > 0.7) {
-            if (bestClass === "class1") {
+            if (bestClass === "Class 1") {
                 currentCommand = "FORWARD";
-                commandText.innerHTML = "⬆️ 직진 (class1)";
+                commandText.innerHTML = "⬆️ 직진";
                 statusText.innerHTML = `인식률: ${Math.round(highestProb * 100)}%`;
-            } else if (bestClass === "class2") {
+            } else if (bestClass === "Class 2") {
                 currentCommand = "ROTATE";
-                commandText.innerHTML = "↻ 회전 (class2)";
+                commandText.innerHTML = "↻ 회전";
                 statusText.innerHTML = `인식률: ${Math.round(highestProb * 100)}%`;
             } else {
                 currentCommand = "STOP";
