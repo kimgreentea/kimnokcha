@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>웹캠 손 추적 로봇 제어기</title>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1a1a1a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+      overflow: hidden;
+      touch-action: none; /* 태블릿 스와이프 방지 */
+    }
+    h1 {
+      margin: 15px 0;
+      font-size: 1.5rem;
+    }
+    .container {
+      position: relative;
+      width: 95vw;
+      height: 70vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      background: #2c3e50;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.6);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    video {
+      display: none; /* 비디오는 숨기고 캔버스만 보여줌 */
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #00e5ff;
+    }
+    .loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem;
+      color: #ffeb3b;
+    }
+  </style>
+</head>
+<body>
+  <h1>🤖 웹캠 손 추적 로봇 컨트롤러</h1>
+  <div class="container">
+    <div id="loader" class="loader">머신러닝 모델 불러오는 중... 쫌만 기달 ㅋㅋㅋ ⏳</div>
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+  </div>
+  <div id="status">상태: 카메라 대기 중 ✊</div>
+
+  <script>
+    const videoElement = document.getElementById('video');
+    const canvasElement = document.getElementById('canvas');
+    const canvasCtx = canvasElement.getContext('2d');
+    const statusEl = document.getElementById('status');
+    const loader = document.getElementById('loader');
+
+    // 캔버스 사이즈를 화면에 맞게 꽉 채움
+    function resizeCanvas() {
+      canvasElement.width = canvasElement.clientWidth;
+      canvasElement.height = canvasElement.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    setTimeout(resizeCanvas, 100);
+
+    // 로봇 상태 (좌표, 크기, 각도, 속도)
+    let robot = {
+      x: 200, y: 200, size: 25, angle: 0, speed: 6, turnSpeed: 0.12, state: 'stop'
+    };
+
+    // 손가락 접힘/펴짐 판단 로직 (y좌표가 작을수록 화면 위쪽)
+    function detectGesture(landmarks) {
+      const isFingerUp = (tip, pip) => landmarks[tip].y < landmarks[pip].y;
+
+      const indexUp = isFingerUp(8, 6);
+      const middleUp = isFingerUp(12, 10);
+      const ringUp = isFingerUp(16, 14);
+      const pinkyUp = isFingerUp(20, 18);
+
+      // 검지만 펴짐 ☝️
+      if (indexUp && !middleUp && !ringUp && !pinkyUp) {
+        return 'forward';
+      }
+      // 검지+중지 펴짐 ✌️
+      if (indexUp && middleUp && !ringUp && !pinkyUp) {
+        return 'spin';
+      }
+      // 그 외 (주먹 쥐거나 인식 안 될 때) ✊
+      return 'stop';
+    }
+
+    // 60fps 애니메이션 루프
+    function updateRobot() {
+      // 제스처에 따른 이동 로직
+      if (robot.state === 'forward') {
+        robot.x += Math.cos(robot.angle) * robot.speed;
+        robot.y += Math.sin(robot.angle) * robot.speed;
+      } else if (robot.state === 'spin') {
+        robot.angle += robot.turnSpeed;
+      }
+
+      // 벽 충돌 방지 로직 (운동장 밖으로 못 나가게 막음)
+      if (robot.x < robot.size) robot.x = robot.size;
+      if (robot.x > canvasElement.width - robot.size) robot.x = canvasElement.width - robot.size;
+      if (robot.y < robot.size) robot.y = robot.size;
+      if (robot.y > canvasElement.height - robot.size) robot.y = canvasElement.height - robot.size;
+
+      // 화면 지우기
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+
+      // 사이버펑크 느낌 나는 격자 배경 그리기
+      canvasCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      canvasCtx.lineWidth = 1;
+      for(let i = 0; i < canvasElement.width; i += 50) {
+        canvasCtx.beginPath(); canvasCtx.moveTo(i, 0); canvasCtx.lineTo(i, canvasElement.height); canvasCtx.stroke();
+      }
+      for(let i = 0; i < canvasElement.height; i += 50) {
+        canvasCtx.beginPath(); canvasCtx.moveTo(0, i); canvasCtx.lineTo(canvasElement.width, i); canvasCtx.stroke();
+      }
+
+      // 로봇(삼각형) 렌더링
+      canvasCtx.save();
+      canvasCtx.translate(robot.x, robot.y);
+      canvasCtx.rotate(robot.angle);
+
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(robot.size, 0);
+      canvasCtx.lineTo(-robot.size * 0.8, -robot.size * 0.7);
+      canvasCtx.lineTo(-robot.size * 0.4, 0);
+      canvasCtx.lineTo(-robot.size * 0.8, robot.size * 0.7);
+      canvasCtx.closePath();
+
+      // 상태별로 로봇 색깔이랑 글로우 효과 바뀜
+      if(robot.state === 'forward') {
+        canvasCtx.fillStyle = '#00e5ff';
+        canvasCtx.shadowColor = '#00e5ff';
+      } else if(robot.state === 'spin') {
+        canvasCtx.fillStyle = '#ff1744';
+        canvasCtx.shadowColor = '#ff1744';
+      } else {
+        canvasCtx.fillStyle = '#90a4ae';
+        canvasCtx.shadowColor = 'transparent';
+      }
+
+      canvasCtx.shadowBlur = 20;
+      canvasCtx.fill();
+      canvasCtx.restore();
+
+      requestAnimationFrame(updateRobot);
+    }
+
+    // MediaPipe Hands 초기 세팅
+    const hands = new Hands({locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+    }});
+    
+    hands.setOptions({
+      maxNumHands: 1, // 손 하나만 인식
+      modelComplexity: 1, // 태블릿 성능 고려해서 중간 옵션
+      minDetectionConfidence: 0.6,
+      minTrackingConfidence: 0.6
+    });
+
+    hands.onResults((results) => {
+      // 로딩 화면 숨기고 애니메이션 시작
+      if (loader.style.display !== 'none') {
+        loader.style.display = 'none';
+        resizeCanvas();
+        robot.x = canvasElement.width / 2;
+        robot.y = canvasElement.height / 2;
+        updateRobot();
+      }
+
+      if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+        const landmarks = results.multiHandLandmarks[0];
+        const gesture = detectGesture(landmarks);
+
+        robot.state = gesture;
+
+        if (gesture === 'forward') {
+           statusEl.innerText = '상태: 직진 중 ☝️ 가즈아~';
+           statusEl.style.color = '#00e5ff';
+        } else if (gesture === 'spin') {
+           statusEl.innerText = '상태: 뺑뺑이 도는 중 ✌️ ㅋㅋㅋ';
+           statusEl.style.color = '#ff1744';
+        } else {
+           statusEl.innerText = '상태: 정지 ✊';
+           statusEl.style.color = '#90a4ae';
+        }
+      } else {
+        // 카메라 프레임에 손이 없으면 즉시 정지
+        robot.state = 'stop';
+        statusEl.innerText = '상태: 손 실종됨 (정지) ✊';
+        statusEl.style.color = '#90a4ae';
+      }
+    });
+
+    // 태블릿 전면/후면 카메라 구동
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await hands.send({image: videoElement});
+      },
+      width: 640,
+      height: 480
+    });
+    camera.start();
+  </script>
+</body>
+</html>
