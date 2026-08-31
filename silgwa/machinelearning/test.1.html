@@ -1,141 +1,788 @@
-```html
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<meta charset="UTF-8">
+    <title>손가락으로 움직이는 AI 로봇</title>
 
-<meta name="viewport"
-      content="width=device-width,
-      initial-scale=1.0">
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+            crossorigin="anonymous"></script>
 
-<title>카메라 테스트</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+            crossorigin="anonymous"></script>
 
-<style>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
+            crossorigin="anonymous"></script>
 
-body {
-    margin: 0;
-    background: #111;
-    color: white;
-    text-align: center;
-    font-family: sans-serif;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-video {
-    width: 90%;
-    max-width: 640px;
-    margin-top: 20px;
-    background: #333;
-}
+        body {
+            margin: 0;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
 
-button {
-    padding: 15px 30px;
-    font-size: 20px;
-    margin: 20px;
-}
+        #container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
 
-</style>
+        /* 카메라 */
+        #cameraArea {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 280px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid white;
+            z-index: 10;
+            background: black;
+        }
 
+        #cameraCanvas {
+            width: 100%;
+            display: block;
+            transform: scaleX(-1);
+        }
+
+        /* 로봇 운동장 */
+        #field {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            top: 10px;
+            bottom: 120px;
+
+            background:
+                linear-gradient(#ddd 1px, transparent 1px),
+                linear-gradient(90deg, #ddd 1px, transparent 1px);
+
+            background-size: 50px 50px;
+            background-color: white;
+
+            border: 5px solid #333;
+            border-radius: 15px;
+
+            overflow: hidden;
+        }
+
+        /* 로봇 */
+        #robot {
+            position: absolute;
+
+            width: 60px;
+            height: 60px;
+
+            font-size: 50px;
+            line-height: 60px;
+            text-align: center;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%) rotate(0deg);
+
+            transition: transform 0.05s linear;
+            z-index: 5;
+        }
+
+        /* 명령 표시 */
+        #command {
+            position: absolute;
+
+            left: 50%;
+            bottom: 20px;
+
+            transform: translateX(-50%);
+
+            width: 90%;
+            max-width: 600px;
+
+            text-align: center;
+
+            padding: 15px;
+
+            background: #222;
+            border-radius: 15px;
+
+            font-size: 25px;
+            font-weight: bold;
+
+            z-index: 20;
+        }
+
+        #status {
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: normal;
+        }
+
+        #startButton {
+            position: absolute;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            padding: 20px 40px;
+
+            font-size: 25px;
+            font-weight: bold;
+
+            border: none;
+            border-radius: 15px;
+
+            background: #333;
+            color: white;
+
+            z-index: 100;
+        }
+
+        #help {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+
+            background: rgba(0,0,0,0.75);
+
+            padding: 15px;
+            border-radius: 10px;
+
+            font-size: 17px;
+
+            z-index: 20;
+        }
+
+        @media (max-width: 600px) {
+
+            #cameraArea {
+                width: 180px;
+            }
+
+            #help {
+                font-size: 13px;
+            }
+
+            #command {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<h2>📷 카메라 테스트</h2>
+<div id="container">
 
-<video id="video"
-       autoplay
-       muted
-       playsinline>
-</video>
+    <!-- 로봇 운동장 -->
+    <div id="field">
 
-<br>
+        <div id="robot">🤖</div>
 
-<button id="start">
-    카메라 시작
-</button>
+    </div>
 
-<p id="status">
-    대기 중
-</p>
+
+    <!-- 도움말 -->
+    <div id="help">
+        ☝️ 직진<br>
+        ✌️ 회전<br>
+        ✊ 정지
+    </div>
+
+
+    <!-- 카메라 -->
+    <div id="cameraArea">
+        <canvas id="cameraCanvas"></canvas>
+    </div>
+
+
+    <!-- 명령 표시 -->
+    <div id="command">
+
+        ⏹ 정지
+
+        <div id="status">
+            손을 카메라에 보여주세요.
+        </div>
+
+    </div>
+
+
+    <!-- 시작 버튼 -->
+    <button id="startButton">
+        📷 카메라 시작
+    </button>
+
+</div>
 
 
 <script>
 
-const video =
-    document.getElementById("video");
+    // ==========================
+    // HTML 요소
+    // ==========================
 
-const start =
-    document.getElementById("start");
+    const robot = document.getElementById("robot");
+    const field = document.getElementById("field");
 
-const status =
-    document.getElementById("status");
+    const commandText = document.getElementById("command");
+    const statusText = document.getElementById("status");
 
+    const startButton = document.getElementById("startButton");
 
-start.addEventListener("click", async () => {
-
-    try {
-
-        status.textContent =
-            "카메라 요청 중...";
+    const canvas = document.getElementById("cameraCanvas");
+    const ctx = canvas.getContext("2d");
 
 
-        const stream =
-            await navigator.mediaDevices
-                .getUserMedia({
-                    video: true,
-                    audio: false
-                });
+
+    // ==========================
+    // 로봇 상태
+    // ==========================
+
+    let robotX = 0;
+    let robotY = 0;
+
+    let robotAngle = 0;
+
+    let command = "STOP";
+
+    const MOVE_SPEED = 2.5;
+    const ROTATE_SPEED = 3;
 
 
-        console.log("STREAM", stream);
+
+    // ==========================
+    // 로봇 초기 위치
+    // ==========================
+
+    function resetRobot() {
+
+        robotX = field.clientWidth / 2;
+        robotY = field.clientHeight / 2;
+
+        robotAngle = 0;
+
+        updateRobot();
+
+    }
 
 
-        video.srcObject = stream;
+
+    // ==========================
+    // 로봇 화면 업데이트
+    // ==========================
+
+    function updateRobot() {
+
+        robot.style.left = robotX + "px";
+        robot.style.top = robotY + "px";
+
+        robot.style.transform =
+            `translate(-50%, -50%) rotate(${robotAngle}deg)`;
+
+    }
+
+
+
+    // ==========================
+    // 로봇 이동
+    // ==========================
+
+    function moveRobot() {
+
+        if (command === "FORWARD") {
+
+            const rad =
+                robotAngle * Math.PI / 180;
+
+            robotX += Math.sin(rad) * MOVE_SPEED;
+            robotY -= Math.cos(rad) * MOVE_SPEED;
+
+        }
+
+
+        else if (command === "ROTATE") {
+
+            robotAngle += ROTATE_SPEED;
+
+        }
+
+
+        // 운동장 밖으로 나가지 않게 제한
+
+        const margin = 30;
+
+        robotX =
+            Math.max(
+                margin,
+                Math.min(
+                    field.clientWidth - margin,
+                    robotX
+                )
+            );
+
+        robotY =
+            Math.max(
+                margin,
+                Math.min(
+                    field.clientHeight - margin,
+                    robotY
+                )
+            );
+
+
+        updateRobot();
+
+    }
+
+
+
+    // ==========================
+    // 반복적으로 로봇 움직이기
+    // ==========================
+
+    function gameLoop() {
+
+        moveRobot();
+
+        requestAnimationFrame(gameLoop);
+
+    }
+
+    gameLoop();
+
+
+
+    // ==========================
+    // 손가락 판정
+    // ==========================
+
+    function isFingerUp(landmarks, tip, pip) {
+
+        /*
+            손가락 끝(tip)이
+            손가락 중간 관절(pip)보다
+            위쪽에 있으면 펴진 것으로 판단
+        */
+
+        return landmarks[tip].y <
+               landmarks[pip].y;
+
+    }
+
+
+
+    // ==========================
+    // 엄지 판정
+    // ==========================
+
+    function isThumbUp(landmarks) {
+
+        /*
+            엄지는 다른 손가락과 방향이 달라서
+            단순한 y좌표 비교 대신
+            x좌표를 이용해 대략 판단한다.
+        */
+
+        return Math.abs(
+            landmarks[4].x - landmarks[2].x
+        ) > 0.10;
+
+    }
+
+
+
+    // ==========================
+    // 손가락 상태 분석
+    // ==========================
+
+    function analyzeHand(landmarks) {
+
+        const index =
+            isFingerUp(
+                landmarks,
+                8,
+                6
+            );
+
+        const middle =
+            isFingerUp(
+                landmarks,
+                12,
+                10
+            );
+
+        const ring =
+            isFingerUp(
+                landmarks,
+                16,
+                14
+            );
+
+        const pinky =
+            isFingerUp(
+                landmarks,
+                20,
+                18
+            );
+
+
+        const thumb =
+            isThumbUp(landmarks);
+
+
+        return {
+            index,
+            middle,
+            ring,
+            pinky,
+            thumb
+        };
+
+    }
+
+
+
+    // ==========================
+    // 명령 결정
+    // ==========================
+
+    function decideCommand(fingers) {
+
+        /*
+            ☝️
+            검지만 펴짐
+            → 직진
+        */
+
+        if (
+            fingers.index &&
+            !fingers.middle &&
+            !fingers.ring &&
+            !fingers.pinky
+        ) {
+
+            return "FORWARD";
+
+        }
 
 
         /*
-         * 중요
-         *
-         * video.play()를 호출하지 않는다.
-         *
-         * autoplay + muted + playsinline이
-         * 자동으로 재생하도록 맡긴다.
-         */
+            ✌️
+            검지 + 중지
+            → 회전
+        */
+
+        if (
+            fingers.index &&
+            fingers.middle &&
+            !fingers.ring &&
+            !fingers.pinky
+        ) {
+
+            return "ROTATE";
+
+        }
 
 
-        status.textContent =
-            "✅ 카메라 스트림 연결됨";
+        /*
+            ✊
+            손가락이 모두 접힘
+            → 정지
+        */
+
+        if (
+            !fingers.index &&
+            !fingers.middle &&
+            !fingers.ring &&
+            !fingers.pinky
+        ) {
+
+            return "STOP";
+
+        }
 
 
-        setTimeout(() => {
+        /*
+            애매한 손 모양도 정지
+        */
 
-            status.textContent =
-                "영상 크기: " +
-                video.videoWidth +
-                " × " +
-                video.videoHeight;
-
-        }, 1000);
-
+        return "STOP";
 
     }
 
-    catch (error) {
 
-        console.error(error);
 
-        status.textContent =
-            "❌ " +
-            error.name +
-            ": " +
-            error.message;
+    // ==========================
+    // 명령 표시
+    // ==========================
+
+    function showCommand(cmd, fingers) {
+
+        if (cmd === "FORWARD") {
+
+            commandText.innerHTML =
+                "⬆️ 직진";
+
+            statusText.innerHTML =
+                "검지 손가락";
+
+        }
+
+        else if (cmd === "ROTATE") {
+
+            commandText.innerHTML =
+                "🔄 회전";
+
+            statusText.innerHTML =
+                "검지 + 중지";
+
+        }
+
+        else {
+
+            commandText.innerHTML =
+                "⏹ 정지";
+
+            statusText.innerHTML =
+                "주먹 또는 인식되지 않음";
+
+        }
 
     }
 
-});
+
+
+    // ==========================
+    // MediaPipe 결과 처리
+    // ==========================
+
+    function onResults(results) {
+
+        canvas.width =
+            results.image.width;
+
+        canvas.height =
+            results.image.height;
+
+
+        // 카메라 영상 출력
+
+        ctx.save();
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        ctx.drawImage(
+            results.image,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        // 손이 발견되었는가?
+
+        if (
+            results.multiHandLandmarks &&
+            results.multiHandLandmarks.length > 0
+        ) {
+
+            const landmarks =
+                results.multiHandLandmarks[0];
+
+
+            // 손 관절 그리기
+
+            drawConnectors(
+                ctx,
+                landmarks,
+                HAND_CONNECTIONS,
+                {
+                    color: "#00FF00",
+                    lineWidth: 4
+                }
+            );
+
+
+            drawLandmarks(
+                ctx,
+                landmarks,
+                {
+                    color: "#FF0000",
+                    lineWidth: 2
+                }
+            );
+
+
+            // 손가락 분석
+
+            const fingers =
+                analyzeHand(landmarks);
+
+
+            // 명령 결정
+
+            command =
+                decideCommand(fingers);
+
+
+            // 명령 표시
+
+            showCommand(
+                command,
+                fingers
+            );
+
+        }
+
+        else {
+
+            // 손이 없으면 정지
+
+            command = "STOP";
+
+            commandText.innerHTML =
+                "⏹ 정지";
+
+            statusText.innerHTML =
+                "손이 인식되지 않았습니다.";
+
+        }
+
+
+        ctx.restore();
+
+    }
+
+
+
+    // ==========================
+    // MediaPipe Hands
+    // ==========================
+
+    const hands =
+        new Hands({
+
+            locateFile: function(file) {
+
+                return
+                    `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+
+            }
+
+        });
+
+
+    hands.setOptions({
+
+        maxNumHands: 1,
+
+        modelComplexity: 0,
+
+        minDetectionConfidence: 0.6,
+
+        minTrackingConfidence: 0.6
+
+    });
+
+
+    hands.onResults(onResults);
+
+
+
+    // ==========================
+    // 카메라 시작
+    // ==========================
+
+    let camera = null;
+
+
+    startButton.addEventListener(
+        "click",
+        async function() {
+
+            startButton.style.display =
+                "none";
+
+
+            const video =
+                document.createElement("video");
+
+
+            video.setAttribute(
+                "playsinline",
+                ""
+            );
+
+
+            video.muted = true;
+
+
+            camera =
+                new Camera(
+                    video,
+                    {
+
+                        onFrame:
+                            async function() {
+
+                                await hands.send({
+                                    image: video
+                                });
+
+                            },
+
+                        width: 640,
+
+                        height: 480
+
+                    }
+                );
+
+
+            camera.start();
+
+        }
+    );
+
+
+
+    // ==========================
+    // 시작할 때 로봇 위치 설정
+    // ==========================
+
+    window.addEventListener(
+        "load",
+        resetRobot
+    );
+
+
+    window.addEventListener(
+        "resize",
+        resetRobot
+    );
 
 </script>
 
 </body>
 </html>
-```
+
