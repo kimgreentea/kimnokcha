@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>티처블 머신 AI 로봇 조종기</title>
+
+    <!-- 텐서플로우 & 티처블 머신 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: #111; color: white;
+            font-family: Arial, sans-serif; overflow: hidden;
+        }
+        #container {
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column;
+            padding: 10px; gap: 10px;
+        }
+        
+        /* 링크 입력 구역 세팅 */
+        #inputArea {
+            display: flex; flex-direction: column; gap: 10px;
+            background: #222; padding: 15px; border-radius: 15px;
+            z-index: 100;
+        }
+        textarea {
+            width: 100%; height: 50px; resize: none;
+            padding: 10px; font-size: 14px;
+            border-radius: 8px; border: 2px solid #555;
+            background: #000; color: #00e5ff;
+        }
+        #startBtn {
+            padding: 15px; font-size: 18px; font-weight: bold;
+            border: none; border-radius: 8px;
+            background: #00e5ff; color: #000; cursor: pointer;
+        }
+
+        #topArea {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; width: 100%; flex-shrink: 0;
+        }
+        #help {
+            background: rgba(0,0,0,0.75); padding: 15px;
+            border-radius: 10px; font-size: 16px; line-height: 1.4;
+            flex-grow: 1; margin-right: 10px;
+        }
+        #cameraArea {
+            width: 200px; height: 200px; border-radius: 15px; overflow: hidden;
+            border: 3px solid white; background: black;
+            display: flex; justify-content: center; align-items: center;
+        }
+        /* 티처블머신 캔버스는 자동으로 생성돼서 들어감 */
+        #cameraArea canvas {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        #field {
+            position: relative; flex-grow: 1; width: 100%;
+            background: linear-gradient(#ddd 1px, transparent 1px),
+                        linear-gradient(90deg, #ddd 1px, transparent 1px);
+            background-size: 50px 50px; background-color: white;
+            border: 5px solid #333; border-radius: 15px; overflow: hidden;
+        }
+        #robot {
+            position: absolute; width: 60px; height: 60px;
+            font-size: 50px; line-height: 60px; text-align: center;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            transition: transform 0.05s linear; z-index: 5;
+        }
+
+        #command {
+            width: 100%; max-width: 600px; align-self: center;
+            text-align: center; padding: 15px; background: #222;
+            border-radius: 15px; font-size: 22px; font-weight: bold; flex-shrink: 0;
+        }
+        #status {
+            font-size: 16px; margin-top: 5px; font-weight: normal; color: #aaa;
+        }
+        
+        .hide { display: none !important; }
+
+        @media (max-width: 600px) {
+            #cameraArea { width: 140px; height: 140px; }
+            #help { font-size: 13px; padding: 10px; }
+            #command { font-size: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+    
+    <!-- 모델 링크 입력창 -->
+    <div id="inputArea">
+        <textarea id="modelUrl" placeholder="여기에 티처블 머신 모델 링크 (예: https://teachablemachine.withgoogle.com/models/~~/)"></textarea>
+        <button id="startBtn">🚀 시작하기</button>
+    </div>
+
+    <!-- 카메라 및 도움말 (처음엔 숨겨둠) -->
+    <div id="topArea" class="hide">
+        <div id="help">
+            🤖 <b>작동 방법</b><br>
+            - <b>class1</b>: ⬆️ 직진<br>
+            - <b>class2</b>: ↻ 회전<br>
+            - 그 외: ⏹ 정지
+        </div>
+        <div id="cameraArea"></div>
+    </div>
+
+    <div id="field">
+        <div id="robot">🤖</div>
+    </div>
+
+    <div id="command">
+        ⏹ 대기 중...
+        <div id="status">먼저 위에 링크를 넣으세요</div>
+    </div>
+
+</div>
+
+<script>
+    const robot = document.getElementById("robot");
+    const field = document.getElementById("field");
+    const commandText = document.getElementById("command");
+    const statusText = document.getElementById("status");
+    
+    const inputArea = document.getElementById("inputArea");
+    const topArea = document.getElementById("topArea");
+    const startBtn = document.getElementById("startBtn");
+    const urlInput = document.getElementById("modelUrl");
+    const cameraArea = document.getElementById("cameraArea");
+
+    let robotX = 0, robotY = 0, robotAngle = 0;
+    let currentCommand = "STOP";
+    const MOVE_SPEED = 2.5, ROTATE_SPEED = 3.5;
+
+    let model, webcam, maxPredictions;
+
+    // 로봇 위치 초기화
+    function resetRobot() {
+        robotX = field.clientWidth / 2;
+        robotY = field.clientHeight / 2;
+        robotAngle = 0;
+        updateRobot();
+    }
+
+    function updateRobot() {
+        robot.style.left = robotX + "px";
+        robot.style.top = robotY + "px";
+        robot.style.transform = `translate(-50%, -50%) rotate(${robotAngle}deg)`;
+    }
+
+    // 로봇 물리 엔진 ㅋㅋㅋ
+    function moveRobot() {
+        const rad = robotAngle * Math.PI / 180;
+
+        if (currentCommand === "FORWARD") {
+            robotX += Math.sin(rad) * MOVE_SPEED;
+            robotY -= Math.cos(rad) * MOVE_SPEED;
+        } else if (currentCommand === "ROTATE") {
+            robotAngle += ROTATE_SPEED;
+        }
+
+        // 벽 충돌 방지
+        const margin = 30;
+        robotX = Math.max(margin, Math.min(field.clientWidth - margin, robotX));
+        robotY = Math.max(margin, Math.min(field.clientHeight - margin, robotY));
+
+        updateRobot();
+    }
+
+    function gameLoop() {
+        moveRobot();
+        requestAnimationFrame(gameLoop);
+    }
+
+    // 티처블 머신 예측 루프
+    async function predictLoop() {
+        webcam.update(); // 웹캠 프레임 업데이트
+        const prediction = await model.predict(webcam.canvas);
+        
+        let highestProb = 0;
+        let bestClass = "";
+
+        // 확률 제일 높은 클래스 찾기
+        for (let i = 0; i < maxPredictions; i++) {
+            if (prediction[i].probability > highestProb) {
+                highestProb = prediction[i].probability;
+                bestClass = prediction[i].className;
+            }
+        }
+
+        // 확률이 70% 이상일 때만 확실하게 움직임 (억까 방지)
+        if (highestProb > 0.7) {
+            if (bestClass === "class1") {
+                currentCommand = "FORWARD";
+                commandText.innerHTML = "⬆️ 직진 (class1)";
+                statusText.innerHTML = `인식률: ${Math.round(highestProb * 100)}%`;
+            } else if (bestClass === "class2") {
+                currentCommand = "ROTATE";
+                commandText.innerHTML = "↻ 회전 (class2)";
+                statusText.innerHTML = `인식률: ${Math.round(highestProb * 100)}%`;
+            } else {
+                currentCommand = "STOP";
+                commandText.innerHTML = "⏹ 정지";
+                statusText.innerHTML = `알 수 없는 클래스: ${bestClass}`;
+            }
+        } else {
+            currentCommand = "STOP";
+            commandText.innerHTML = "⏹ 정지";
+            statusText.innerHTML = "확률 70% 미만";
+        }
+
+        requestAnimationFrame(predictLoop);
+    }
+
+    // 모델 로드 및 카메라 세팅
+    async function initAI() {
+        let url = urlInput.value.trim();
+        
+        if (!url) {
+            alert("링크 확인");
+            return;
+        }
+        
+        // 주소 끝에 / 안 붙이고 복붙하는 학생들 억까 방지용
+        if (!url.endsWith('/')) {
+            url += '/';
+        }
+
+        startBtn.innerText = "로딩 중 ⏳";
+        startBtn.disabled = true;
+
+        try {
+            const modelURL = url + "model.json";
+            const metadataURL = url + "metadata.json";
+
+            // 모델 로드
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // 티처블 머신 내장 웹캠 모듈 사용 (모바일 호환성 좋음)
+            const flip = true; // 거울 모드
+            webcam = new tmImage.Webcam(200, 200, flip);
+            await webcam.setup({ facingMode: "user" }); // 전면 카메라 요청
+            await webcam.play();
+
+            // UI 변경 (입력창 숨기고 카메라 띄우기)
+            inputArea.classList.add("hide");
+            topArea.classList.remove("hide");
+            
+            // 캔버스를 화면에 붙임
+            cameraArea.appendChild(webcam.canvas);
+
+            // 로봇 물리 루프랑 AI 예측 루프 둘 다 돌림
+            gameLoop();
+            requestAnimationFrame(predictLoop);
+
+        } catch (err) {
+            alert("링크 및 카메라 권한 확인 🥲: " + err.message);
+            startBtn.innerText = "다시 시도하기 🚀";
+            startBtn.disabled = false;
+        }
+    }
+
+    startBtn.addEventListener("click", initAI);
+
+    window.addEventListener("load", resetRobot);
+    window.addEventListener("resize", resetRobot);
+
+</script>
+</body>
+</html>
