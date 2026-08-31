@@ -22,7 +22,6 @@
             overflow: hidden;
         }
 
-        /* 플렉스박스로 화면 3등분 테트리스 세팅 ㅋㅋㅋ */
         #container {
             width: 100vw;
             height: 100vh;
@@ -32,7 +31,6 @@
             gap: 10px;
         }
 
-        /* 1. 상단 구역 (도움말이랑 카메라 양끝에 배치) */
         #topArea {
             display: flex;
             justify-content: space-between;
@@ -45,7 +43,8 @@
             background: rgba(0,0,0,0.75);
             padding: 15px;
             border-radius: 10px;
-            font-size: 17px;
+            font-size: 16px;
+            line-height: 1.4;
         }
 
         #cameraArea {
@@ -62,10 +61,9 @@
             transform: scaleX(-1);
         }
 
-        /* 2. 중간 구역 (로봇 운동장이 남는 공간 싹 다 흡수) */
         #field {
             position: relative;
-            flex-grow: 1; /* 핵심 폼 미친 속성 */
+            flex-grow: 1;
             width: 100%;
             background:
                 linear-gradient(#ddd 1px, transparent 1px),
@@ -91,7 +89,6 @@
             z-index: 5;
         }
 
-        /* 3. 하단 구역 (명령 표시) */
         #command {
             width: 100%;
             max-width: 600px;
@@ -109,6 +106,7 @@
             font-size: 16px;
             margin-top: 5px;
             font-weight: normal;
+            color: #aaa;
         }
 
         #startButton {
@@ -131,7 +129,7 @@
                 width: 160px;
             }
             #help {
-                font-size: 13px;
+                font-size: 12px;
                 padding: 10px;
             }
             #command {
@@ -144,33 +142,27 @@
 <body>
 
 <div id="container">
-
-    <!-- 상단: 도움말 & 카메라 -->
     <div id="topArea">
         <div id="help">
-            ☝️ 직진<br>
-            ✌️ 회전<br>
-            ✊ 정지
+            ☝️ 직진&nbsp;&nbsp;&nbsp;🖐️ 부스터<br>
+            ✌️ 우회전 🤘 좌회전<br>
+            👍 후진&nbsp;&nbsp;&nbsp;✊ 정지
         </div>
         <div id="cameraArea">
             <canvas id="cameraCanvas"></canvas>
         </div>
     </div>
 
-    <!-- 중단: 로봇 운동장 -->
     <div id="field">
         <div id="robot">🤖</div>
     </div>
 
-    <!-- 하단: 명령 표시 -->
     <div id="command">
         ⏹ 정지
         <div id="status">손을 카메라에 보여주세요.</div>
     </div>
 
-    <!-- 시작 버튼 -->
     <button id="startButton">📷 카메라 시작</button>
-
 </div>
 
 <script>
@@ -188,7 +180,7 @@
     let command = "STOP";
 
     const MOVE_SPEED = 2.5;
-    const ROTATE_SPEED = 3;
+    const ROTATE_SPEED = 3.5;
 
     function resetRobot() {
         robotX = field.clientWidth / 2;
@@ -204,12 +196,21 @@
     }
 
     function moveRobot() {
+        const rad = robotAngle * Math.PI / 180;
+
         if (command === "FORWARD") {
-            const rad = robotAngle * Math.PI / 180;
             robotX += Math.sin(rad) * MOVE_SPEED;
             robotY -= Math.cos(rad) * MOVE_SPEED;
-        } else if (command === "ROTATE") {
+        } else if (command === "BOOST") {
+            robotX += Math.sin(rad) * (MOVE_SPEED * 2.5); // 폼 미친 속도
+            robotY -= Math.cos(rad) * (MOVE_SPEED * 2.5);
+        } else if (command === "BACKWARD") {
+            robotX -= Math.sin(rad) * (MOVE_SPEED * 0.8); // 후진은 좀 천천히
+            robotY += Math.cos(rad) * (MOVE_SPEED * 0.8);
+        } else if (command === "ROTATE_RIGHT") {
             robotAngle += ROTATE_SPEED;
+        } else if (command === "ROTATE_LEFT") {
+            robotAngle -= ROTATE_SPEED;
         }
 
         const margin = 30;
@@ -244,21 +245,43 @@
     }
 
     function decideCommand(fingers) {
-        if (fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "FORWARD";
-        if (fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) return "ROTATE";
+        // 🖐️ 보자기 (부스터)
+        if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) return "BOOST";
+        
+        // ☝️ 검지만 (직진)
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "FORWARD";
+        
+        // ✌️ 검지+중지 (우회전)
+        if (!fingers.thumb && fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) return "ROTATE_RIGHT";
+        
+        // 🤘 검지+새끼 (좌회전)
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && fingers.pinky) return "ROTATE_LEFT";
+        
+        // 👍 엄지만 (후진)
+        if (fingers.thumb && !fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "BACKWARD";
+        
         return "STOP";
     }
 
     function showCommand(cmd) {
         if (cmd === "FORWARD") {
             commandText.innerHTML = "⬆️ 직진";
-            statusText.innerHTML = "검지 손가락";
-        } else if (cmd === "ROTATE") {
-            commandText.innerHTML = "🔄 회전";
-            statusText.innerHTML = "검지 + 중지";
+            statusText.innerHTML = "☝️ 검지 손가락";
+        } else if (cmd === "BOOST") {
+            commandText.innerHTML = "🔥 부스터 켜짐";
+            statusText.innerHTML = "🖐️ 보자기 (5손가락)";
+        } else if (cmd === "BACKWARD") {
+            commandText.innerHTML = "⬇️ 후진";
+            statusText.innerHTML = "👍 따봉 (엄지)";
+        } else if (cmd === "ROTATE_RIGHT") {
+            commandText.innerHTML = "↻ 우회전";
+            statusText.innerHTML = "✌️ 검지 + 중지";
+        } else if (cmd === "ROTATE_LEFT") {
+            commandText.innerHTML = "↺ 좌회전";
+            statusText.innerHTML = "🤘 검지 + 새끼 (로큰롤)";
         } else {
             commandText.innerHTML = "⏹ 정지";
-            statusText.innerHTML = "주먹 또는 인식되지 않음";
+            statusText.innerHTML = "✊ 주먹 또는 인식 안 됨";
         }
     }
 
@@ -282,13 +305,12 @@
         } else {
             command = "STOP";
             commandText.innerHTML = "⏹ 정지";
-            statusText.innerHTML = "손이 인식되지 않았습니다.";
+            statusText.innerHTML = "손이 안 보여 ㅋㅋㅋ";
         }
         ctx.restore();
     }
 
     const hands = new Hands({
-        // 줄바꿈 억까 해결 ㅋㅋㅋ
         locateFile: function(file) {
             return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
         }
@@ -310,10 +332,9 @@
 
         const video = document.createElement("video");
         video.setAttribute("playsinline", "");
-        video.setAttribute("autoplay", ""); // 크롬 비디오 정지 억까 해결 ㅋㅋㅋ
+        video.setAttribute("autoplay", ""); 
         video.muted = true;
         
-        // 안 보이는 비디오를 바디에 숨겨둠
         video.style.display = "none";
         document.body.appendChild(video);
 
