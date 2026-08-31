@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>프리미엄 로봇 제어 시스템</title>
+  <style>
+    :root {
+      --neon-green: #00ffcc;
+      --bg-dark: #0a0a0f;
+      --panel-bg: rgba(20, 20, 30, 0.9);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 사이버펑크 스타일 운동장 */
+    #playground {
+      flex: 1;
+      position: relative;
+      background-color: #12121a;
+      background-image: 
+        linear-gradient(rgba(0, 255, 204, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+      box-shadow: inset 0 0 50px rgba(0, 255, 204, 0.05);
+      overflow: hidden;
+    }
+
+    #robot {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      font-size: 50px;
+      line-height: 60px;
+      text-align: center;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      user-select: none;
+      filter: drop-shadow(0 0 15px rgba(0, 255, 204, 0.6));
+      z-index: 5;
+    }
+
+    /* 프리미엄 카메라 컨테이너 */
+    #camera-container {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 240px;
+      height: 180px;
+      border: 2px solid var(--neon-green);
+      border-radius: 12px;
+      background-color: #000;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    /* 영상과 캔버스를 겹치게 배치 (거울 모드 적용) */
+    #webcam, #output_canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+    
+    #output_canvas {
+      z-index: 2;
+    }
+
+    /* 상태바 튜닝 */
+    #status-bar {
+      height: 90px;
+      background-color: var(--panel-bg);
+      border-top: 2px solid rgba(0, 255, 204, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: bold;
+      z-index: 10;
+      box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    }
+
+    .cmd-text {
+      color: var(--neon-green);
+      margin-left: 15px;
+      text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    }
+
+    /* 시작 오버레이 */
+    #start-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    #start-btn {
+      padding: 20px 40px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #000;
+      background-color: var(--neon-green);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+      transition: transform 0.1s;
+    }
+
+    #start-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="start-overlay">
+    <button id="start-btn">👆 터치하여 시스템 가동</button>
+  </div>
+
+  <div id="playground">
+    <div id="robot">🤖</div>
+    <div id="camera-container">
+      <video id="webcam" autoplay playsinline muted></video>
+      <canvas id="output_canvas"></canvas>
+    </div>
+  </div>
+
+  <div id="status-bar">
+    현재 명령: <span id="command-display" class="cmd-text">대기 중...</span>
+  </div>
+
+  <script type="module">
+    import { HandLandmarker, FilesetResolver, DrawingUtils } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.js";
+
+    const video = document.getElementById("webcam");
+    const canvas = document.getElementById("output_canvas");
+    const canvasCtx = canvas.getContext("2d");
+    
+    const robot = document.getElementById("robot");
+    const commandDisplay = document.getElementById("command-display");
+    const playground = document.getElementById("playground");
+    const startOverlay = document.getElementById("start-overlay");
+    const startBtn = document.getElementById("start-btn");
+
+    let handLandmarker = null;
+    let drawingUtils = null;
+    let lastVideoTime = -1;
+
+    let robotState = {
+      x: 0,
+      y: 0,
+      angle: -90,
+      speed: 4,
+      rotationSpeed: 5,
+      currentCommand: "STOP"
+    };
+
+    function initRobotPosition() {
+      const rect = playground.getBoundingClientRect();
+      robotState.x = rect.width / 2;
+      robotState.y = rect.height / 2;
+    }
+
+    startBtn.addEventListener("click", async () => {
+      startOverlay.style.display = "none";
+      commandDisplay.innerText = "⏳ VIP 모델 로딩 중...";
+      await initPremiumFeatures();
+    });
+
+    async function initPremiumFeatures() {
+      try {
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+        );
+
+        handLandmarker = await HandLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
+            delegate: "GPU"
+          },
+          runningMode: "VIDEO",
+          numHands: 1
+        });
+
+        drawingUtils = new DrawingUtils(canvasCtx);
+        commandDisplay.innerText = "📷 카메라 권한 요청 중...";
+        await startCamera();
+      } catch (err) {
+        commandDisplay.innerText = "❌ 로딩 실패 (인터넷 확인)";
+        console.error(err);
+      }
+    }
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user", width: 640, height: 480 }
+        });
+        video.srcObject = stream;
+        
+        video.onloadedmetadata = () => {
+          // 캔버스 크기를 비디오 해상도에 맞춰서 뼈대가 정확한 위치에 그려지게 세팅
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          video.play();
+          commandDisplay.innerText = "✊ 정지";
+          requestAnimationFrame(predictWebcam);
+        };
+      } catch (err) {
+        commandDisplay.innerText = "❌ 카메라 권한 거부됨";
+      }
+    }
+
+    async function predictWebcam() {
+      if (handLandmarker && video.currentTime !== lastVideoTime) {
+        lastVideoTime = video.currentTime;
+        
+        const results = handLandmarker.detectForVideo(video, performance.now());
+        
+        // 캔버스 초기화 후 랜드마크 그리기 (프리미엄 기능)
+        canvasCtx.save();
+        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (results.landmarks && results.landmarks.length > 0) {
+          const landmarks = results.landmarks[0];
+          
+          // 형광 녹색 선과 빨간 점으로 손 뼈대 시각화
+          drawingUtils.drawConnectors(landmarks, HandLandmarker.HAND_CONNECTIONS, {
+            color: "#00ffcc", lineWidth: 3
+          });
+          drawingUtils.drawLandmarks(landmarks, { 
+            color: "#ff0055", lineWidth: 2, radius: 4 
+          });
+
+          processGesturePro(landmarks);
+        } else {
+          setCommand("STOP", "✊ 정지 (손 없음)");
+        }
+        canvasCtx.restore();
+      }
+      requestAnimationFrame(predictWebcam);
+    }
+
+    // 두 점 사이의 거리를 구하는 함수 (피타고라스 정리)
+    function getDistance(p1, p2) {
+      return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+    }
+
+    // 손목(0번) 기준으로 마디(PIP)보다 끝(Tip)이 더 멀리 있는지 확인하여 펴짐 판단
+    function isFingerExtended(lm, tipIdx, pipIdx, wristIdx = 0) {
+      const tipDist = getDistance(lm[tipIdx], lm[wristIdx]);
+      const pipDist = getDistance(lm[pipIdx], lm[wristIdx]);
+      return tipDist > pipDist;
+    }
+
+    function processGesturePro(lm) {
+      // 거리를 이용한 전천후 알고리즘 적용 (손을 옆으로 뉘어도 인식됨)
+      const isIndexExtended = isFingerExtended(lm, 8, 6);
+      const isMiddleExtended = isFingerExtended(lm, 12, 10);
+      const isRingExtended = isFingerExtended(lm, 16, 14);
+      const isPinkyExtended = isFingerExtended(lm, 20, 18);
+
+      if (isIndexExtended && isMiddleExtended && !isRingExtended && !isPinkyExtended) {
+        setCommand("ROTATE", "✌️ 회전");
+      } else if (isIndexExtended && !isMiddleExtended && !isRingExtended && !isPinkyExtended) {
+        setCommand("FORWARD", "☝️ 직진");
+      } else {
+        setCommand("STOP", "✊ 정지");
+      }
+    }
+
+    function setCommand(cmd, text) {
+      robotState.currentCommand = cmd;
+      commandDisplay.innerText = text;
+    }
+
+    function updateRobot() {
+      const pRect = playground.getBoundingClientRect();
+
+      if (robotState.currentCommand === "FORWARD") {
+        const rad = (robotState.angle * Math.PI) / 180;
+        robotState.x += Math.cos(rad) * robotState.speed;
+        robotState.y += Math.sin(rad) * robotState.speed;
+
+        // 벽 충돌 방지 로직
+        robotState.x = Math.max(40, Math.min(pRect.width - 40, robotState.x));
+        robotState.y = Math.max(40, Math.min(pRect.height - 40, robotState.y));
+      } else if (robotState.currentCommand === "ROTATE") {
+        robotState.angle = (robotState.angle + robotState.rotationSpeed) % 360;
+      }
+
+      robot.style.left = `${robotState.x}px`;
+      robot.style.top = `${robotState.y}px`;
+      robot.style.transform = `translate(-50%, -50%) rotate(${robotState.angle + 90}deg)`;
+
+      requestAnimationFrame(updateRobot);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initRobotPosition();
+      requestAnimationFrame(updateRobot);
+    });
+
+    window.addEventListener("resize", initRobotPosition);
+  </script>
+</body>
+</html>
