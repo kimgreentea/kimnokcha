@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>손동작 가상 로봇 제어</title>
   <!-- MediaPipe Tasks Vision CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision/vision_bundle.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.js" crossorigin="anonymous"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -22,18 +22,15 @@
       overflow: hidden;
     }
 
-    /* 메인 플레이 그라운드 */
     #playground {
       flex: 1;
       position: relative;
       background-color: #1e1e24;
-      background-image: 
-        radial-gradient(#333344 1px, transparent 1px);
+      background-image: radial-gradient(#333344 1px, transparent 1px);
       background-size: 20px 20px;
       overflow: hidden;
     }
 
-    /* 가상 로봇 */
     #robot {
       position: absolute;
       width: 50px;
@@ -48,7 +45,6 @@
       user-select: none;
     }
 
-    /* 카메라 미니 뷰어 (오른쪽 아래) */
     #camera-container {
       position: absolute;
       bottom: 16px;
@@ -60,16 +56,16 @@
       overflow: hidden;
       background-color: #000;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 10;
     }
 
     #webcam {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scaleX(-1); /* 좌우 반전 (거울 모드) */
+      transform: scaleX(-1);
     }
 
-    /* 하단 상태바 */
     #status-bar {
       height: 80px;
       background-color: #282c34;
@@ -77,133 +73,179 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: bold;
+      z-index: 10;
     }
 
     .cmd-text {
       color: #00e676;
       margin-left: 10px;
     }
+
+    /* 시작 버튼 오버레이 */
+    #start-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    #start-btn {
+      padding: 16px 32px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #00e676;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 230, 118, 0.4);
+    }
+
+    #start-btn:active {
+      transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
 
-  <!-- 가상 로봇 운동장 -->
+  <!-- 시작 터치 안내 오버레이 -->
+  <div id="start-overlay">
+    <button id="start-btn">👆 터치하여 카메라 및 로봇 시작</button>
+  </div>
+
   <div id="playground">
     <div id="robot">🤖</div>
-
-    <!-- 카메라 오버레이 -->
     <div id="camera-container">
       <video id="webcam" autoplay playsinline muted></video>
     </div>
   </div>
 
-  <!-- 현재 명령 안내 -->
   <div id="status-bar">
-    현재 명령: <span id="command-display" class="cmd-text">⏳ 모델 로딩 중...</span>
+    현재 명령: <span id="command-display" class="cmd-text">버튼을 눌러주세요</span>
   </div>
 
-  <script type="module">
-    import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.js";
-
+  <script>
     const video = document.getElementById("webcam");
     const robot = document.getElementById("robot");
     const commandDisplay = document.getElementById("command-display");
     const playground = document.getElementById("playground");
+    const startOverlay = document.getElementById("start-overlay");
+    const startBtn = document.getElementById("start-btn");
 
     let handLandmarker = null;
     let lastVideoTime = -1;
 
-    // 로봇 위치 및 방향 상태 변수
     let robotState = {
       x: 0,
       y: 0,
-      angle: -90, // 위쪽(12시 방향)을 0도 기준으로 맞추기 위해 초기값 설정
+      angle: -90,
       speed: 3,
       rotationSpeed: 4,
       currentCommand: "STOP"
     };
 
-    // 로봇 위치 초기화 (화면 중앙)
     function initRobotPosition() {
       const rect = playground.getBoundingClientRect();
       robotState.x = rect.width / 2;
       robotState.y = rect.height / 2;
     }
 
-    // 1. MediaPipe HandLandmarker 모델 초기화
-    async function createHandLandmarker() {
-      const vision = await FilesetResolver.forVisionTasks(
-        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
-      );
-      handLandmarker = await HandLandmarker.createFromOptions(vision, {
-        baseOptions: {
-          modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
-          delegate: "GPU"
-        },
-        runningMode: "VIDEO",
-        numHands: 1
-      });
-      
-      commandDisplay.innerText = "✊ 정지";
-      startCamera();
-    }
+    // 터치/클릭 시 동작 시작 (안드로이드 크롬 정책 대응)
+    startBtn.addEventListener("click", async () => {
+      startOverlay.style.display = "none";
+      commandDisplay.innerText = "⏳ AI 모델 로딩 중...";
+      await initMediaPipeAndCamera();
+    });
 
-    // 2. 안드로이드 전면 카메라 시작
-    async function startCamera() {
+    async function initMediaPipeAndCamera() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: "user", // 전면 카메라
-            width: { ideal: 640 },
-            height: { ideal: 480 }
-          }
+        // 1. MediaPipe Vision 객체 가져오기
+        const vision = await vision.FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+        );
+
+        handLandmarker = await vision.HandLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
+            delegate: "GPU"
+          },
+          runningMode: "VIDEO",
+          numHands: 1
         });
-        video.srcObject = stream;
-        video.addEventListener("loadeddata", predictWebcam);
+
+        commandDisplay.innerText = "📷 카메라 권한 요청 중...";
+        await startCamera();
       } catch (err) {
-        console.error("카메라 접근 실패:", err);
-        commandDisplay.innerText = "❌ 카메라 권한 필요";
+        console.error("초기화 에러:", err);
+        commandDisplay.innerText = "❌ 로딩 실패: " + err.message;
       }
     }
 
-    // 3. 실시간 프레임 분석
-    async function predictWebcam() {
-      if (lastVideoTime !== video.currentTime && handLandmarker) {
-        lastVideoTime = video.currentTime;
-        const results = handLandmarker.detectForVideo(video, performance.now());
+    async function startCamera() {
+      try {
+        const constraints = {
+          video: {
+            facingMode: "user",
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+          }
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
         
-        if (results.landmarks && results.landmarks.length > 0) {
-          const landmarks = results.landmarks[0];
-          processGesture(landmarks);
+        video.onloadedmetadata = () => {
+          video.play();
+          commandDisplay.innerText = "✊ 정지";
+          requestAnimationFrame(predictWebcam);
+        };
+      } catch (err) {
+        console.error("카메라 에러:", err);
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          commandDisplay.innerText = "❌ 카메라 권한 거부됨 (주소창 튜너/자물쇠 아이콘 터치)";
         } else {
-          // 손이 안 보이면 안전을 위해 정지
-          setCommand("STOP", "✊ 정지 (손 없음)");
+          commandDisplay.innerText = "❌ 카메라 접근 실패: " + err.name;
+        }
+      }
+    }
+
+    async function predictWebcam() {
+      if (handLandmarker && video.currentTime !== lastVideoTime) {
+        lastVideoTime = video.currentTime;
+        try {
+          const results = handLandmarker.detectForVideo(video, performance.now());
+          if (results.landmarks && results.landmarks.length > 0) {
+            processGesture(results.landmarks[0]);
+          } else {
+            setCommand("STOP", "✊ 정지 (손 없음)");
+          }
+        } catch (e) {
+          console.error("인식 에러:", e);
         }
       }
       requestAnimationFrame(predictWebcam);
     }
 
-    // 4. 손가락 펴짐/접힘 판단 및 명령 생성
     function processGesture(lm) {
-      // 카메라 전면 거울모드 감안 및 Y축 기준(위가 값 작음) 비교
-      // 랜드마크 마디 끝(Tip)과 PIP 마디 높이 비교
       const isIndexExtended = lm[8].y < lm[6].y;
       const isMiddleExtended = lm[12].y < lm[10].y;
       const isRingExtended = lm[16].y < lm[14].y;
       const isPinkyExtended = lm[20].y < lm[18].y;
 
-      // ✌️ 검지 + 중지 펴짐 -> 회전 (약지, 새끼는 접힘)
       if (isIndexExtended && isMiddleExtended && !isRingExtended && !isPinkyExtended) {
         setCommand("ROTATE", "✌️ 회전");
-      }
-      // ☝️ 검지만 펴짐 -> 직진
-      else if (isIndexExtended && !isMiddleExtended && !isRingExtended && !isPinkyExtended) {
+      } else if (isIndexExtended && !isMiddleExtended && !isRingExtended && !isPinkyExtended) {
         setCommand("FORWARD", "☝️ 직진");
-      }
-      // ✊ 주먹 또는 기타 -> 정지
-      else {
+      } else {
         setCommand("STOP", "✊ 정지");
       }
     }
@@ -213,26 +255,20 @@
       commandDisplay.innerText = text;
     }
 
-    // 5. 로봇 애니메이션 루프 (화면 갱신)
     function updateRobot() {
       const pRect = playground.getBoundingClientRect();
 
       if (robotState.currentCommand === "FORWARD") {
-        // 현재 각도 방향으로 이동 (라디안 변환)
         const rad = (robotState.angle * Math.PI) / 180;
         robotState.x += Math.cos(rad) * robotState.speed;
         robotState.y += Math.sin(rad) * robotState.speed;
 
-        // 벽면 충돌 체크 (운동장 밖으로 안 나가는 처리)
         robotState.x = Math.max(30, Math.min(pRect.width - 30, robotState.x));
         robotState.y = Math.max(30, Math.min(pRect.height - 30, robotState.y));
-      } 
-      else if (robotState.currentCommand === "ROTATE") {
-        // 제자리 제자리 제자리 돌기 
+      } else if (robotState.currentCommand === "ROTATE") {
         robotState.angle = (robotState.angle + robotState.rotationSpeed) % 360;
       }
 
-      // 화면에 로봇 위치 및 회전각 적용 (기본 🤖 이모티콘은 0도가 오른쪽을 보므로 조정)
       robot.style.left = `${robotState.x}px`;
       robot.style.top = `${robotState.y}px`;
       robot.style.transform = `translate(-50%, -50%) rotate(${robotState.angle + 90}deg)`;
@@ -240,10 +276,8 @@
       requestAnimationFrame(updateRobot);
     }
 
-    // 초기화 진행
     window.addEventListener("DOMContentLoaded", () => {
       initRobotPosition();
-      createHandLandmarker();
       requestAnimationFrame(updateRobot);
     });
 
