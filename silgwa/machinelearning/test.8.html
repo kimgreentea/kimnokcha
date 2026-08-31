@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>손가락으로 움직이는 AI 로봇 (TFJS 버전)</title>
+
+    <!-- 텐서플로우 뇌 이식 🧠 -->
+    <script src="https://unpkg.com/@tensorflow/tfjs"></script>
+    <script src="https://unpkg.com/@tensorflow-models/hand-pose-detection"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: #111; color: white;
+            font-family: Arial, sans-serif; overflow: hidden;
+        }
+        #container {
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column;
+            padding: 10px; gap: 10px;
+        }
+        #topArea {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; width: 100%; flex-shrink: 0;
+        }
+        #help {
+            background: rgba(0,0,0,0.75); padding: 15px;
+            border-radius: 10px; font-size: 16px; line-height: 1.4;
+        }
+        #cameraArea {
+            width: 280px; border-radius: 15px; overflow: hidden;
+            border: 3px solid white; background: black;
+        }
+        #cameraCanvas {
+            width: 100%; display: block;
+            transform: scaleX(-1); /* 거울 모드 */
+        }
+        #field {
+            position: relative; flex-grow: 1; width: 100%;
+            background: linear-gradient(#ddd 1px, transparent 1px),
+                        linear-gradient(90deg, #ddd 1px, transparent 1px);
+            background-size: 50px 50px; background-color: white;
+            border: 5px solid #333; border-radius: 15px; overflow: hidden;
+        }
+        #robot {
+            position: absolute; width: 60px; height: 60px;
+            font-size: 50px; line-height: 60px; text-align: center;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            transition: transform 0.05s linear; z-index: 5;
+        }
+        #command {
+            width: 100%; max-width: 600px; align-self: center;
+            text-align: center; padding: 15px; background: #222;
+            border-radius: 15px; font-size: 25px; font-weight: bold; flex-shrink: 0;
+        }
+        #status {
+            font-size: 16px; margin-top: 5px; font-weight: normal; color: #aaa;
+        }
+        #startButton {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%); padding: 20px 40px;
+            font-size: 25px; font-weight: bold; border: none;
+            border-radius: 15px; background: #333; color: white; z-index: 100;
+        }
+
+        @media (max-width: 600px) {
+            #cameraArea { width: 160px; }
+            #help { font-size: 12px; padding: 10px; }
+            #command { font-size: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+    <div id="topArea">
+        <div id="help">
+            ☝️ 직진&nbsp;&nbsp;&nbsp;🖐️ 부스터<br>
+            ✌️ 우회전 🤘 좌회전<br>
+            👍 후진&nbsp;&nbsp;&nbsp;✊ 정지
+        </div>
+        <div id="cameraArea">
+            <canvas id="cameraCanvas"></canvas>
+        </div>
+    </div>
+
+    <div id="field">
+        <div id="robot">🤖</div>
+    </div>
+
+    <div id="command">
+        ⏹ 정지
+        <div id="status">손을 카메라에 보여주세요.</div>
+    </div>
+
+    <button id="startButton">📷 카메라 시작</button>
+</div>
+
+<script>
+    const robot = document.getElementById("robot");
+    const field = document.getElementById("field");
+    const commandText = document.getElementById("command");
+    const statusText = document.getElementById("status");
+    const startButton = document.getElementById("startButton");
+    const canvas = document.getElementById("cameraCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let robotX = 0, robotY = 0, robotAngle = 0;
+    let command = "STOP";
+    const MOVE_SPEED = 2.5, ROTATE_SPEED = 3.5;
+
+    function resetRobot() {
+        robotX = field.clientWidth / 2;
+        robotY = field.clientHeight / 2;
+        robotAngle = 0;
+        updateRobot();
+    }
+
+    function updateRobot() {
+        robot.style.left = robotX + "px";
+        robot.style.top = robotY + "px";
+        robot.style.transform = `translate(-50%, -50%) rotate(${robotAngle}deg)`;
+    }
+
+    function moveRobot() {
+        const rad = robotAngle * Math.PI / 180;
+
+        if (command === "FORWARD") {
+            robotX += Math.sin(rad) * MOVE_SPEED;
+            robotY -= Math.cos(rad) * MOVE_SPEED;
+        } else if (command === "BOOST") {
+            robotX += Math.sin(rad) * (MOVE_SPEED * 2.5); 
+            robotY -= Math.cos(rad) * (MOVE_SPEED * 2.5);
+        } else if (command === "BACKWARD") {
+            robotX -= Math.sin(rad) * (MOVE_SPEED * 0.8);
+            robotY += Math.cos(rad) * (MOVE_SPEED * 0.8);
+        } else if (command === "ROTATE_RIGHT") {
+            robotAngle += ROTATE_SPEED;
+        } else if (command === "ROTATE_LEFT") {
+            robotAngle -= ROTATE_SPEED;
+        }
+
+        const margin = 30;
+        robotX = Math.max(margin, Math.min(field.clientWidth - margin, robotX));
+        robotY = Math.max(margin, Math.min(field.clientHeight - margin, robotY));
+
+        updateRobot();
+    }
+
+    function gameLoop() {
+        moveRobot();
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+
+    // TFJS는 픽셀 좌표를 쓰기 때문에 위치 비교 로직 동일하게 적용 가능
+    function isFingerUp(keypoints, tip, pip) {
+        return keypoints[tip].y < keypoints[pip].y;
+    }
+
+    function isThumbUp(keypoints) {
+        // TFJS 픽셀 기준: 엄지 끝과 마디의 x좌표 차이가 25픽셀 이상 나면 펴진 걸로 판정
+        return Math.abs(keypoints[4].x - keypoints[2].x) > 25;
+    }
+
+    function analyzeHand(keypoints) {
+        return {
+            index: isFingerUp(keypoints, 8, 6),
+            middle: isFingerUp(keypoints, 12, 10),
+            ring: isFingerUp(keypoints, 16, 14),
+            pinky: isFingerUp(keypoints, 20, 18),
+            thumb: isThumbUp(keypoints)
+        };
+    }
+
+    function decideCommand(fingers) {
+        if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) return "BOOST";
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "FORWARD";
+        if (!fingers.thumb && fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) return "ROTATE_RIGHT";
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && fingers.pinky) return "ROTATE_LEFT";
+        if (fingers.thumb && !fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "BACKWARD";
+        return "STOP";
+    }
+
+    function showCommand(cmd) {
+        if (cmd === "FORWARD") {
+            commandText.innerHTML = "⬆️ 직진"; statusText.innerHTML = "☝️ 검지 손가락";
+        } else if (cmd === "BOOST") {
+            commandText.innerHTML = "🔥 부스터 켜짐"; statusText.innerHTML = "🖐️ 보자기 (5손가락)";
+        } else if (cmd === "BACKWARD") {
+            commandText.innerHTML = "⬇️ 후진"; statusText.innerHTML = "👍 따봉 (엄지)";
+        } else if (cmd === "ROTATE_RIGHT") {
+            commandText.innerHTML = "↻ 우회전"; statusText.innerHTML = "✌️ 검지 + 중지";
+        } else if (cmd === "ROTATE_LEFT") {
+            commandText.innerHTML = "↺ 좌회전"; statusText.innerHTML = "🤘 검지 + 새끼 (로큰롤)";
+        } else {
+            commandText.innerHTML = "⏹ 정지"; statusText.innerHTML = "✊ 주먹 또는 인식 안 됨";
+        }
+    }
+
+    // TFJS용 수제 뼈대 그리기 함수 ㅋㅋㅋ
+    function drawHand(ctx, keypoints) {
+        const connections = [
+            [0, 1], [1, 2], [2, 3], [3, 4],       // 엄지
+            [0, 5], [5, 6], [6, 7], [7, 8],       // 검지
+            [5, 9], [9, 10], [10, 11], [11, 12],  // 중지
+            [9, 13], [13, 14], [14, 15], [15, 16],// 약지
+            [13, 17], [17, 18], [18, 19], [19, 20],// 새끼
+            [0, 17] // 손목-새끼 연결
+        ];
+
+        ctx.strokeStyle = "#00FF00";
+        ctx.lineWidth = 4;
+        connections.forEach(([i, j]) => {
+            const kp1 = keypoints[i];
+            const kp2 = keypoints[j];
+            ctx.beginPath();
+            ctx.moveTo(kp1.x, kp1.y);
+            ctx.lineTo(kp2.x, kp2.y);
+            ctx.stroke();
+        });
+
+        ctx.fillStyle = "#FF0000";
+        keypoints.forEach(kp => {
+            ctx.beginPath();
+            ctx.arc(kp.x, kp.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+        });
+    }
+
+    let detector;
+
+    // TFJS 추적 루프
+    async function detectLoop(video) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        ctx.save();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const hands = await detector.estimateHands(video, {flipHorizontal: false});
+
+        if (hands.length > 0) {
+            const keypoints = hands[0].keypoints;
+            
+            // 뼈대 장인 정신으로 그려줌
+            drawHand(ctx, keypoints);
+
+            const fingers = analyzeHand(keypoints);
+            command = decideCommand(fingers);
+            showCommand(command);
+        } else {
+            command = "STOP";
+            commandText.innerHTML = "⏹ 정지";
+            statusText.innerHTML = "손이 안 보여 ㅋㅋㅋ";
+        }
+        ctx.restore();
+
+        // 무한 반복 드가자~
+        requestAnimationFrame(() => detectLoop(video));
+    }
+
+    startButton.addEventListener("click", async function() {
+        if (typeof handPoseDetection === 'undefined') {
+            alert("TFJS 라이브러리 로딩 실패 🥲 새로고침 ㄱㄱ");
+            return;
+        }
+
+        startButton.innerText = "텐서플로우 뇌 이식 중... ⏳";
+        startButton.disabled = true;
+
+        try {
+            const video = document.createElement("video");
+            video.setAttribute("playsinline", "");
+            video.setAttribute("autoplay", ""); 
+            video.muted = true;
+            video.style.display = "none";
+            document.body.appendChild(video);
+
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'user', width: 640, height: 480 },
+                audio: false
+            });
+            video.srcObject = stream;
+
+            await new Promise((resolve) => {
+                video.onloadedmetadata = () => resolve();
+            });
+            video.play();
+
+            const model = handPoseDetection.SupportedModels.MediaPipeHands;
+            const detectorConfig = { runtime: 'tfjs', modelType: 'lite' };
+            detector = await handPoseDetection.createDetector(model, detectorConfig);
+
+            startButton.style.display = "none"; // 버튼 숨기고
+            detectLoop(video); // 본격적인 추적 시작!
+
+        } catch (err) {
+            alert("카메라 에러 뜸 ㅠㅠ: " + err.message);
+            startButton.innerText = "에러 발생 🥲";
+        }
+    });
+
+    window.addEventListener("load", resetRobot);
+    window.addEventListener("resize", resetRobot);
+
+</script>
+</body>
+</html>
