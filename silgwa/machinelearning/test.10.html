@@ -42,7 +42,6 @@
             width: 100%; display: block; transform: scaleX(-1);
         }
 
-        /* 🧩 블록코딩 버튼 */
         #blockCodeBtn {
             position: absolute; top: 8px; right: 8px;
             background: #ffab19; color: #000; border: none;
@@ -51,7 +50,6 @@
             box-shadow: 0 3px 0 #c88000; z-index: 20;
         }
 
-        /* 🧩 스크래치 스타일 블록 조립 모달 */
         #blockModal {
             display: none; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -68,7 +66,6 @@
             padding: 8px; border-radius: 12px; flex-wrap: wrap;
         }
 
-        /* 주황색 이벤트 감지 블록 */
         .event-block {
             background: #ffab19; color: #000; font-weight: bold;
             padding: 8px 12px; border-radius: 8px 0 0 8px;
@@ -76,7 +73,6 @@
             display: flex; align-items: center; gap: 4px;
         }
 
-        /* 파란색 동작 조립 블록 */
         .action-block {
             background: #4c97ff; color: #fff; font-weight: bold;
             padding: 8px 12px; border-radius: 0 8px 8px 0;
@@ -86,7 +82,6 @@
         }
         .action-block:active { transform: translateY(2px); }
 
-        /* 블록 팔레트 선택 모달 */
         #paletteModal {
             display: none; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -134,7 +129,7 @@
         }
 
         #status {
-            font-size: 15px; margin-top: 5px; font-weight: normal; color: #aaa;
+            font-size: 14px; margin-top: 5px; font-weight: normal; color: #aaa;
         }
 
         #startButton {
@@ -158,8 +153,7 @@
 
 <div id="container">
     <div id="topArea">
-        <div id="help">
-            </div>
+        <div id="help"></div>
         <div id="cameraArea">
             <canvas id="cameraCanvas"></canvas>
             <button id="blockCodeBtn">🧩 블록 코딩</button>
@@ -213,7 +207,6 @@
     const MOVE_SPEED = 2.5;
     const ROTATE_SPEED = 3.5;
 
-    // 감지 이벤트 블록 정의
     const GESTURES = {
         "INDEX": { emoji: "☝️", name: "검지 펴짐" },
         "V_SIGN": { emoji: "✌️", name: "V자 펴짐" },
@@ -223,7 +216,6 @@
         "FIST": { emoji: "✊", name: "주먹 쥠" }
     };
 
-    // 실행 동작 블록 정의
     const ACTIONS = {
         "FORWARD": { emoji: "⬆️", name: "직진하기" },
         "BACKWARD": { emoji: "⬇️", name: "후진하기" },
@@ -233,7 +225,6 @@
         "STOP": { emoji: "⏹", name: "정지하기" }
     };
 
-    // 기본 블록 맵핑 세팅
     let gestureMapping = {
         "INDEX": "FORWARD",
         "V_SIGN": "ROTATE_RIGHT",
@@ -243,7 +234,6 @@
         "FIST": "STOP"
     };
 
-    // 스크래치 스타일 블록 조립 UI 생성
     function renderBlocksAndHelp() {
         blockContainer.innerHTML = "";
         let helpHTML = "";
@@ -258,22 +248,18 @@
             ruleDiv.innerHTML = `
                 <div class="event-block">
                     <span>⚡ 만약</span>
-                    <span>${gestureInfo.emoji}</span>
-                    <span>${gestureInfo.name}</span>
+                    <span>${gestureInfo.emoji} ${gestureInfo.name}</span>
                 </div>
                 <div class="action-block" onclick="openPalette('${gestureKey}')">
                     <span>▶️ ${actionInfo.emoji} ${actionInfo.name}</span>
-                    <span style="font-size: 10px; opacity: 0.8;">(클릭)</span>
                 </div>
             `;
             blockContainer.appendChild(ruleDiv);
-
             helpHTML += `${gestureInfo.emoji} ➔ ${actionInfo.emoji} ${actionInfo.name}<br>`;
         }
         helpBox.innerHTML = helpHTML;
     }
 
-    // 동작 선택 팔레트 오픈
     window.openPalette = function(gestureKey) {
         activeEditingGesture = gestureKey;
         paletteGrid.innerHTML = "";
@@ -316,7 +302,6 @@
 
     function moveRobot() {
         const rad = robotAngle * Math.PI / 180;
-
         if (currentCommand === "FORWARD") {
             robotX += Math.sin(rad) * MOVE_SPEED;
             robotY -= Math.cos(rad) * MOVE_SPEED;
@@ -335,7 +320,6 @@
         const margin = 30;
         robotX = Math.max(margin, Math.min(field.clientWidth - margin, robotX));
         robotY = Math.max(margin, Math.min(field.clientHeight - margin, robotY));
-
         updateRobot();
     }
 
@@ -345,12 +329,22 @@
     }
     gameLoop();
 
+    // 손 방향 무관
     function isFingerUp(landmarks, tip, pip) {
-        return landmarks[tip].y < landmarks[pip].y;
+        // 손목(0번)에서 손가락 끝(tip)까지의 거리가 관절(pip)까지의 거리보다 멀면 펴진 것
+        const tipDist = Math.hypot(landmarks[tip].x - landmarks[0].x, landmarks[tip].y - landmarks[0].y);
+        const pipDist = Math.hypot(landmarks[pip].x - landmarks[0].x, landmarks[pip].y - landmarks[0].y);
+        return tipDist > pipDist;
     }
+
     function isThumbUp(landmarks) {
-        return Math.abs(landmarks[4].x - landmarks[2].x) > 0.10;
+        // 손바닥 너비(5번~17번)와 엄지 뻗은 거리(4번~9번)의 비율 계산 
+        const palmSize = Math.hypot(landmarks[5].x - landmarks[17].x, landmarks[5].y - landmarks[17].y);
+        const thumbDist = Math.hypot(landmarks[4].x - landmarks[9].x, landmarks[4].y - landmarks[9].y);
+        // 엄지 끝이 손바닥 너비보다 1.1배 이상 떨어져 있으면 확실히 펴진 것으로 판정
+        return thumbDist > palmSize * 1.1; 
     }
+
     function analyzeHand(landmarks) {
         return {
             index: isFingerUp(landmarks, 8, 6),
@@ -371,10 +365,19 @@
         return "UNKNOWN";
     }
 
-    function showCommand(cmd, gestureType) {
+    function showCommand(cmd, gestureType, fingers) {
         if (cmd === "STOP" || gestureType === "UNKNOWN") {
             commandText.innerHTML = "⏹ 정지";
-            statusText.innerHTML = gestureType === "UNKNOWN" ? "등록 안 된 손모양 감지 ㅋㅋㅋ" : "로봇 정지 상태";
+            
+            // 디버깅 멘트
+            const detected = [
+                fingers.thumb ? "엄지" : "", fingers.index ? "검지" : "", 
+                fingers.middle ? "중지" : "", fingers.ring ? "약지" : "", fingers.pinky ? "새끼" : ""
+            ].filter(Boolean).join(" ");
+            
+            statusText.innerHTML = gestureType === "UNKNOWN" 
+                ? `인식 실패 🤷‍♂️ (현재 펴진 손가락: ${detected || "없음"})` 
+                : "로봇 정지 상태";
         } else {
             const act = ACTIONS[cmd];
             commandText.innerHTML = `${act.emoji} ${act.name}`;
@@ -400,7 +403,7 @@
             const gestureType = detectGestureType(fingers);
             
             currentCommand = gestureMapping[gestureType] || "STOP";
-            showCommand(currentCommand, gestureType);
+            showCommand(currentCommand, gestureType, fingers);
         } else {
             currentCommand = "STOP";
             commandText.innerHTML = "⏹ 정지";
