@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>블록 코딩 AI 로봇 컨트롤러</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; background: #1e1e24; color: white;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
+        }
+
+        #container {
+            width: 100vw; height: 100vh; display: flex;
+            flex-direction: column; padding: 10px; gap: 10px;
+        }
+
+        #topArea {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; width: 100%; flex-shrink: 0; position: relative;
+        }
+
+        #help {
+            background: rgba(0,0,0,0.75); padding: 12px;
+            border-radius: 12px; font-size: 13px; line-height: 1.5;
+            min-width: 140px; border: 1px solid #333;
+        }
+
+        #cameraArea {
+            width: 240px; border-radius: 15px; overflow: hidden;
+            border: 3px solid #ffab19; background: black;
+            position: relative;
+        }
+
+        #cameraCanvas {
+            width: 100%; display: block; transform: scaleX(-1);
+        }
+
+        /* 🧩 블록코딩 버튼 */
+        #blockCodeBtn {
+            position: absolute; top: 8px; right: 8px;
+            background: #ffab19; color: #000; border: none;
+            border-radius: 8px; padding: 6px 12px;
+            font-size: 14px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 3px 0 #c88000; z-index: 20;
+        }
+
+        /* 🧩 스크래치 스타일 블록 조립 모달 */
+        #blockModal {
+            display: none; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #282a36; border: 3px solid #ffab19; border-radius: 20px;
+            padding: 20px; z-index: 200; width: 95%; max-width: 460px;
+            max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+        #blockModal h2 { margin-top: 0; text-align: center; color: #ffab19; font-size: 20px; }
+
+        .block-rule {
+            display: flex; align-items: center; gap: 4px;
+            margin-bottom: 12px; background: rgba(0,0,0,0.3);
+            padding: 8px; border-radius: 12px; flex-wrap: wrap;
+        }
+
+        /* 주황색 이벤트 감지 블록 */
+        .event-block {
+            background: #ffab19; color: #000; font-weight: bold;
+            padding: 8px 12px; border-radius: 8px 0 0 8px;
+            font-size: 13px; box-shadow: 0 3px 0 #c88000;
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        /* 파란색 동작 조립 블록 */
+        .action-block {
+            background: #4c97ff; color: #fff; font-weight: bold;
+            padding: 8px 12px; border-radius: 0 8px 8px 0;
+            font-size: 13px; box-shadow: 0 3px 0 #2b5cb8;
+            cursor: pointer; display: flex; align-items: center; gap: 4px;
+            transition: transform 0.1s;
+        }
+        .action-block:active { transform: translateY(2px); }
+
+        /* 블록 팔레트 선택 모달 */
+        #paletteModal {
+            display: none; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #44475a; border: 2px solid #4c97ff; border-radius: 15px;
+            padding: 15px; z-index: 300; width: 85%; max-width: 320px;
+            text-align: center;
+        }
+        .palette-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;
+        }
+        .palette-item {
+            background: #4c97ff; color: white; font-weight: bold;
+            padding: 10px; border-radius: 8px; cursor: pointer;
+            box-shadow: 0 3px 0 #2b5cb8; font-size: 13px;
+        }
+
+        #closeBlockBtn {
+            width: 100%; padding: 12px; margin-top: 10px;
+            background: #ffab19; color: black; border: none;
+            border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 0 #c88000;
+        }
+
+        #field {
+            position: relative; flex-grow: 1; width: 100%;
+            background: linear-gradient(#ddd 1px, transparent 1px),
+                        linear-gradient(90deg, #ddd 1px, transparent 1px);
+            background-size: 50px 50px; background-color: white;
+            border: 5px solid #333; border-radius: 15px; overflow: hidden;
+        }
+
+        #robot {
+            position: absolute; width: 60px; height: 60px;
+            font-size: 50px; line-height: 60px; text-align: center;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -50%) rotate(0deg);
+            transition: transform 0.05s linear; z-index: 5;
+        }
+
+        #command {
+            width: 100%; max-width: 600px; align-self: center;
+            text-align: center; padding: 15px; background: #222;
+            border-radius: 15px; font-size: 22px; font-weight: bold; flex-shrink: 0;
+            border: 1px solid #444;
+        }
+
+        #status {
+            font-size: 15px; margin-top: 5px; font-weight: normal; color: #aaa;
+        }
+
+        #startButton {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%); padding: 20px 40px;
+            font-size: 22px; font-weight: bold; border: none;
+            border-radius: 15px; background: #ffab19; color: black;
+            box-shadow: 0 6px 0 #c88000; z-index: 100; cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            #cameraArea { width: 150px; }
+            #help { font-size: 11px; padding: 8px; }
+            #command { font-size: 18px; }
+            .event-block, .action-block { font-size: 11px; padding: 6px 8px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="container">
+    <div id="topArea">
+        <div id="help">
+            </div>
+        <div id="cameraArea">
+            <canvas id="cameraCanvas"></canvas>
+            <button id="blockCodeBtn">🧩 블록 코딩</button>
+        </div>
+    </div>
+
+    <div id="blockModal">
+        <h2>🧩 블록 코딩 조립기</h2>
+        <div id="blockContainer"></div>
+        <button id="closeBlockBtn">코드 적용하고 실행하기</button>
+    </div>
+
+    <div id="paletteModal">
+        <h3 style="margin: 0; color: white;">동작 블록 선택</h3>
+        <div id="paletteGrid" class="palette-grid"></div>
+    </div>
+
+    <div id="field">
+        <div id="robot">🤖</div>
+    </div>
+
+    <div id="command">
+        ⏹ 정지
+        <div id="status">손을 카메라에 보여주세요.</div>
+    </div>
+
+    <button id="startButton">📷 카메라 시작</button>
+</div>
+
+<script>
+    const robot = document.getElementById("robot");
+    const field = document.getElementById("field");
+    const commandText = document.getElementById("command");
+    const statusText = document.getElementById("status");
+    const startButton = document.getElementById("startButton");
+    const canvas = document.getElementById("cameraCanvas");
+    const ctx = canvas.getContext("2d");
+    
+    const blockCodeBtn = document.getElementById("blockCodeBtn");
+    const blockModal = document.getElementById("blockModal");
+    const closeBlockBtn = document.getElementById("closeBlockBtn");
+    const blockContainer = document.getElementById("blockContainer");
+    const helpBox = document.getElementById("help");
+    const paletteModal = document.getElementById("paletteModal");
+    const paletteGrid = document.getElementById("paletteGrid");
+
+    let robotX = 0, robotY = 0, robotAngle = 0;
+    let currentCommand = "STOP";
+    let activeEditingGesture = null;
+
+    const MOVE_SPEED = 2.5;
+    const ROTATE_SPEED = 3.5;
+
+    // 감지 이벤트 블록 정의
+    const GESTURES = {
+        "INDEX": { emoji: "☝️", name: "검지 펴짐" },
+        "V_SIGN": { emoji: "✌️", name: "V자 펴짐" },
+        "ROCK": { emoji: "🤘", name: "로큰롤" },
+        "THUMB": { emoji: "👍", name: "따봉" },
+        "FIVE": { emoji: "🖐️", name: "보자기" },
+        "FIST": { emoji: "✊", name: "주먹 쥠" }
+    };
+
+    // 실행 동작 블록 정의
+    const ACTIONS = {
+        "FORWARD": { emoji: "⬆️", name: "직진하기" },
+        "BACKWARD": { emoji: "⬇️", name: "후진하기" },
+        "ROTATE_RIGHT": { emoji: "↻", name: "우회전하기" },
+        "ROTATE_LEFT": { emoji: "↺", name: "좌회전하기" },
+        "BOOST": { emoji: "🔥", name: "부스터 달리기" },
+        "STOP": { emoji: "⏹", name: "정지하기" }
+    };
+
+    // 기본 블록 맵핑 세팅
+    let gestureMapping = {
+        "INDEX": "FORWARD",
+        "V_SIGN": "ROTATE_RIGHT",
+        "ROCK": "ROTATE_LEFT",
+        "THUMB": "BACKWARD",
+        "FIVE": "BOOST",
+        "FIST": "STOP"
+    };
+
+    // 스크래치 스타일 블록 조립 UI 생성
+    function renderBlocksAndHelp() {
+        blockContainer.innerHTML = "";
+        let helpHTML = "";
+
+        for (const [gestureKey, gestureInfo] of Object.entries(GESTURES)) {
+            const actionKey = gestureMapping[gestureKey];
+            const actionInfo = ACTIONS[actionKey];
+
+            const ruleDiv = document.createElement("div");
+            ruleDiv.className = "block-rule";
+
+            ruleDiv.innerHTML = `
+                <div class="event-block">
+                    <span>⚡ 만약</span>
+                    <span>${gestureInfo.emoji}</span>
+                    <span>${gestureInfo.name}</span>
+                </div>
+                <div class="action-block" onclick="openPalette('${gestureKey}')">
+                    <span>▶️ ${actionInfo.emoji} ${actionInfo.name}</span>
+                    <span style="font-size: 10px; opacity: 0.8;">(클릭)</span>
+                </div>
+            `;
+            blockContainer.appendChild(ruleDiv);
+
+            helpHTML += `${gestureInfo.emoji} ➔ ${actionInfo.emoji} ${actionInfo.name}<br>`;
+        }
+        helpBox.innerHTML = helpHTML;
+    }
+
+    // 동작 선택 팔레트 오픈
+    window.openPalette = function(gestureKey) {
+        activeEditingGesture = gestureKey;
+        paletteGrid.innerHTML = "";
+
+        for (const [actionKey, actionInfo] of Object.entries(ACTIONS)) {
+            const item = document.createElement("div");
+            item.className = "palette-item";
+            item.innerHTML = `${actionInfo.emoji} ${actionInfo.name}`;
+            item.onclick = () => selectAction(actionKey);
+            paletteGrid.appendChild(item);
+        }
+        paletteModal.style.display = "block";
+    };
+
+    function selectAction(actionKey) {
+        if (activeEditingGesture) {
+            gestureMapping[activeEditingGesture] = actionKey;
+            renderBlocksAndHelp();
+        }
+        paletteModal.style.display = "none";
+    }
+
+    blockCodeBtn.onclick = () => blockModal.style.display = "block";
+    closeBlockBtn.onclick = () => blockModal.style.display = "none";
+
+    renderBlocksAndHelp();
+
+    function resetRobot() {
+        robotX = field.clientWidth / 2;
+        robotY = field.clientHeight / 2;
+        robotAngle = 0;
+        updateRobot();
+    }
+
+    function updateRobot() {
+        robot.style.left = robotX + "px";
+        robot.style.top = robotY + "px";
+        robot.style.transform = `translate(-50%, -50%) rotate(${robotAngle}deg)`;
+    }
+
+    function moveRobot() {
+        const rad = robotAngle * Math.PI / 180;
+
+        if (currentCommand === "FORWARD") {
+            robotX += Math.sin(rad) * MOVE_SPEED;
+            robotY -= Math.cos(rad) * MOVE_SPEED;
+        } else if (currentCommand === "BOOST") {
+            robotX += Math.sin(rad) * (MOVE_SPEED * 2.5);
+            robotY -= Math.cos(rad) * (MOVE_SPEED * 2.5);
+        } else if (currentCommand === "BACKWARD") {
+            robotX -= Math.sin(rad) * (MOVE_SPEED * 0.8);
+            robotY += Math.cos(rad) * (MOVE_SPEED * 0.8);
+        } else if (currentCommand === "ROTATE_RIGHT") {
+            robotAngle += ROTATE_SPEED;
+        } else if (currentCommand === "ROTATE_LEFT") {
+            robotAngle -= ROTATE_SPEED;
+        }
+
+        const margin = 30;
+        robotX = Math.max(margin, Math.min(field.clientWidth - margin, robotX));
+        robotY = Math.max(margin, Math.min(field.clientHeight - margin, robotY));
+
+        updateRobot();
+    }
+
+    function gameLoop() {
+        moveRobot();
+        requestAnimationFrame(gameLoop);
+    }
+    gameLoop();
+
+    function isFingerUp(landmarks, tip, pip) {
+        return landmarks[tip].y < landmarks[pip].y;
+    }
+    function isThumbUp(landmarks) {
+        return Math.abs(landmarks[4].x - landmarks[2].x) > 0.10;
+    }
+    function analyzeHand(landmarks) {
+        return {
+            index: isFingerUp(landmarks, 8, 6),
+            middle: isFingerUp(landmarks, 12, 10),
+            ring: isFingerUp(landmarks, 16, 14),
+            pinky: isFingerUp(landmarks, 20, 18),
+            thumb: isThumbUp(landmarks)
+        };
+    }
+
+    function detectGestureType(fingers) {
+        if (fingers.thumb && fingers.index && fingers.middle && fingers.ring && fingers.pinky) return "FIVE";
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "INDEX";
+        if (!fingers.thumb && fingers.index && fingers.middle && !fingers.ring && !fingers.pinky) return "V_SIGN";
+        if (!fingers.thumb && fingers.index && !fingers.middle && !fingers.ring && fingers.pinky) return "ROCK";
+        if (fingers.thumb && !fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "THUMB";
+        if (!fingers.thumb && !fingers.index && !fingers.middle && !fingers.ring && !fingers.pinky) return "FIST";
+        return "UNKNOWN";
+    }
+
+    function showCommand(cmd, gestureType) {
+        if (cmd === "STOP" || gestureType === "UNKNOWN") {
+            commandText.innerHTML = "⏹ 정지";
+            statusText.innerHTML = gestureType === "UNKNOWN" ? "등록 안 된 손모양 감지 ㅋㅋㅋ" : "로봇 정지 상태";
+        } else {
+            const act = ACTIONS[cmd];
+            commandText.innerHTML = `${act.emoji} ${act.name}`;
+            statusText.innerHTML = `블록 코딩 동작 실행 중 ㅋㅋㅋ (${GESTURES[gestureType].name})`;
+        }
+    }
+
+    function onResults(results) {
+        canvas.width = results.image.width;
+        canvas.height = results.image.height;
+
+        ctx.save();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(results.image, 0, 0, canvas.width, canvas.height);
+
+        if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
+            const landmarks = results.multiHandLandmarks[0];
+
+            drawConnectors(ctx, landmarks, HAND_CONNECTIONS, { color: "#00FF00", lineWidth: 4 });
+            drawLandmarks(ctx, landmarks, { color: "#FF0000", lineWidth: 2 });
+
+            const fingers = analyzeHand(landmarks);
+            const gestureType = detectGestureType(fingers);
+            
+            currentCommand = gestureMapping[gestureType] || "STOP";
+            showCommand(currentCommand, gestureType);
+        } else {
+            currentCommand = "STOP";
+            commandText.innerHTML = "⏹ 정지";
+            statusText.innerHTML = "손이 인식되지 않음 ㅋㅋㅋ";
+        }
+        ctx.restore();
+    }
+
+    const hands = new Hands({
+        locateFile: function(file) {
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+        }
+    });
+
+    hands.setOptions({
+        maxNumHands: 1, modelComplexity: 0,
+        minDetectionConfidence: 0.6, minTrackingConfidence: 0.6
+    });
+    hands.onResults(onResults);
+
+    let camera = null;
+
+    startButton.addEventListener("click", async function() {
+        startButton.style.display = "none";
+        const video = document.createElement("video");
+        video.setAttribute("playsinline", "");
+        video.setAttribute("autoplay", ""); 
+        video.muted = true;
+        video.style.display = "none";
+        document.body.appendChild(video);
+
+        camera = new Camera(video, {
+            onFrame: async function() { await hands.send({ image: video }); },
+            width: 640, height: 480
+        });
+        camera.start();
+    });
+
+    window.addEventListener("load", resetRobot);
+    window.addEventListener("resize", resetRobot);
+</script>
+</body>
+</html>
