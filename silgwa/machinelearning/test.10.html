@@ -26,6 +26,19 @@
             align-items: flex-start; width: 100%; flex-shrink: 0; position: relative;
         }
 
+        /* 왼쪽 구역  */
+        #leftTop {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+
+        #blockCodeBtn {
+            background: #ffab19; color: #000; border: none;
+            border-radius: 8px; padding: 8px 12px;
+            font-size: 14px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 3px 0 #c88000; z-index: 20;
+            align-self: flex-start; /* 버튼이 딱 자기 크기만 차지하도록 */
+        }
+
         #help {
             background: rgba(0,0,0,0.75); padding: 12px;
             border-radius: 12px; font-size: 13px; line-height: 1.5;
@@ -42,14 +55,7 @@
             width: 100%; display: block; transform: scaleX(-1);
         }
 
-        #blockCodeBtn {
-            position: absolute; top: 8px; right: 8px;
-            background: #ffab19; color: #000; border: none;
-            border-radius: 8px; padding: 6px 12px;
-            font-size: 14px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 3px 0 #c88000; z-index: 20;
-        }
-
+        /* 🧩 스크래치 스타일 블록 조립 모달 */
         #blockModal {
             display: none; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -145,6 +151,7 @@
             #help { font-size: 11px; padding: 8px; }
             #command { font-size: 18px; }
             .event-block, .action-block { font-size: 11px; padding: 6px 8px; }
+            #blockCodeBtn { font-size: 12px; padding: 6px 10px; }
         }
     </style>
 </head>
@@ -153,10 +160,12 @@
 
 <div id="container">
     <div id="topArea">
-        <div id="help"></div>
+        <div id="leftTop">
+            <button id="blockCodeBtn">🧩 블록 코딩</button>
+            <div id="help"></div>
+        </div>
         <div id="cameraArea">
             <canvas id="cameraCanvas"></canvas>
-            <button id="blockCodeBtn">🧩 블록 코딩</button>
         </div>
     </div>
 
@@ -177,7 +186,7 @@
 
     <div id="command">
         ⏹ 정지
-        <div id="status">손을 카메라에 보여주세요.</div>
+        <div id="status">카메라 시작 버튼을 누르세요.</div>
     </div>
 
     <button id="startButton">📷 카메라 시작</button>
@@ -208,21 +217,21 @@
     const ROTATE_SPEED = 3.5;
 
     const GESTURES = {
-        "INDEX": { emoji: "☝️", name: "검지 펴짐" },
-        "V_SIGN": { emoji: "✌️", name: "V자 펴짐" },
+        "INDEX": { emoji: "☝️", name: "검지" },
+        "V_SIGN": { emoji: "✌️", name: "브이" },
         "ROCK": { emoji: "🤘", name: "로큰롤" },
         "THUMB": { emoji: "👍", name: "따봉" },
         "FIVE": { emoji: "🖐️", name: "보자기" },
-        "FIST": { emoji: "✊", name: "주먹 쥠" }
+        "FIST": { emoji: "✊", name: "주먹" }
     };
 
     const ACTIONS = {
-        "FORWARD": { emoji: "⬆️", name: "직진하기" },
-        "BACKWARD": { emoji: "⬇️", name: "후진하기" },
-        "ROTATE_RIGHT": { emoji: "↻", name: "우회전하기" },
-        "ROTATE_LEFT": { emoji: "↺", name: "좌회전하기" },
-        "BOOST": { emoji: "🔥", name: "부스터 달리기" },
-        "STOP": { emoji: "⏹", name: "정지하기" }
+        "FORWARD": { emoji: "⬆️", name: "직진" },
+        "BACKWARD": { emoji: "⬇️", name: "후진" },
+        "ROTATE_RIGHT": { emoji: "↻", name: "우회전" },
+        "ROTATE_LEFT": { emoji: "↺", name: "좌회전" },
+        "BOOST": { emoji: "🔥", name: "부스터" },
+        "STOP": { emoji: "⏹", name: "정지" }
     };
 
     let gestureMapping = {
@@ -329,19 +338,15 @@
     }
     gameLoop();
 
-    // 손 방향 무관
     function isFingerUp(landmarks, tip, pip) {
-        // 손목(0번)에서 손가락 끝(tip)까지의 거리가 관절(pip)까지의 거리보다 멀면 펴진 것
         const tipDist = Math.hypot(landmarks[tip].x - landmarks[0].x, landmarks[tip].y - landmarks[0].y);
         const pipDist = Math.hypot(landmarks[pip].x - landmarks[0].x, landmarks[pip].y - landmarks[0].y);
         return tipDist > pipDist;
     }
 
     function isThumbUp(landmarks) {
-        // 손바닥 너비(5번~17번)와 엄지 뻗은 거리(4번~9번)의 비율 계산 
         const palmSize = Math.hypot(landmarks[5].x - landmarks[17].x, landmarks[5].y - landmarks[17].y);
         const thumbDist = Math.hypot(landmarks[4].x - landmarks[9].x, landmarks[4].y - landmarks[9].y);
-        // 엄지 끝이 손바닥 너비보다 1.1배 이상 떨어져 있으면 확실히 펴진 것으로 판정
         return thumbDist > palmSize * 1.1; 
     }
 
@@ -368,11 +373,9 @@
     function showCommand(cmd, gestureType, fingers) {
         if (cmd === "STOP" || gestureType === "UNKNOWN") {
             commandText.innerHTML = "⏹ 정지";
-            
-            // 디버깅 멘트
             const detected = [
                 fingers.thumb ? "엄지" : "", fingers.index ? "검지" : "", 
-                fingers.middle ? "중지" : "", fingers.ring ? "약지" : "", fingers.pinky ? "새끼" : ""
+                fingers.middle ? "중지" : "", fingers.ring ? "약지" : "", fingers.pinky ? "소지" : ""
             ].filter(Boolean).join(" ");
             
             statusText.innerHTML = gestureType === "UNKNOWN" 
@@ -381,7 +384,7 @@
         } else {
             const act = ACTIONS[cmd];
             commandText.innerHTML = `${act.emoji} ${act.name}`;
-            statusText.innerHTML = `블록 코딩 동작 실행 중 ㅋㅋㅋ (${GESTURES[gestureType].name})`;
+            statusText.innerHTML = `블록 코딩 동작 실행 중 (${GESTURES[gestureType].name})`;
         }
     }
 
@@ -407,7 +410,7 @@
         } else {
             currentCommand = "STOP";
             commandText.innerHTML = "⏹ 정지";
-            statusText.innerHTML = "손이 인식되지 않음 ㅋㅋㅋ";
+            statusText.innerHTML = "손이 인식되지 않음";
         }
         ctx.restore();
     }
