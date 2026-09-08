@@ -2,34 +2,38 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>멀티 파이썬 브라우저 컴파일러</title>
+    <title>연습하</title>
     <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
     <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 <style>
-        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px;  }
+        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px; }
         h2 { text-align: center; color: #fff; margin-bottom: 30px; }
         
         .compiler-row { 
             display: flex; 
-            gap: 20px; 
+            flex-direction: column; 
+            gap: 15px;
             margin-bottom: 30px; 
             background: #252526; 
             padding: 15px; 
             border-radius: 8px; 
             border: 1px solid #333; 
-            align-items: stretch; 
+        }
+
+        .editor-group {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
         }
         
         .pane { 
             flex: 1; 
             display: flex; 
-            font-size:12pt;
             flex-direction: column; 
         }
         
         h4 { margin: 0 0 8px 0; color: #9cdcfe; }
         
-
         textarea.code-input { 
             width: 100%; 
             flex: 1; 
@@ -42,7 +46,6 @@
             resize: none; 
             border-radius: 4px; 
             box-sizing: border-box;
-            font-size:13pt;
         }
         
         button.run-btn { 
@@ -57,7 +60,6 @@
         }
         button.run-btn:hover { background: #005999; }
         
-
         .output { 
             background: #111; 
             border: 1px solid #333; 
@@ -69,7 +71,16 @@
             color: #4ec9b0; 
             border-radius: 4px; 
             box-sizing: border-box; 
-            font-size:13pt;
+        }
+
+        /* 설명란 스타일 */
+        .desc-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            padding: 10px 15px;
+            border-radius: 4px;
+            color: #ce9178;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -80,7 +91,7 @@
     <!-- 에디터 세트 -->
     <div class="compiler-row" data-id="1">
         <div class="pane">
-            <h4>실습 1: 기본 출력</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
 print("안녕하세요")
 </textarea>
@@ -90,12 +101,49 @@ print("안녕하세요")
             <h4>결과</h4>
             <div class="output">준비 중...</div>
         </div>
+<div class="desc-box">
+            💡 <b>실습 1:</b> 기본적인 출력문과 반복문을 테스트해볼 수 있는 공간임. 코드를 고치고 실행을 눌러보자 ㅋㅋ
+        </div>
     </div>
 
+        <!-- 에디터 세트 -->
+    <div class="compiler-row" data-id="1">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+print("안녕하세요")
+# print("반갑습니다")                
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+
+        <!-- 에디터 세트 -->
+    <div class="compiler-row" data-id="1">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+print("안녕하세요")
+print("반갑습니다") # print("좋은 하루 보내세요")
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    
     <!-- 에디터 세트 -->
     <div class="compiler-row" data-id="2">
         <div class="pane">
-            <h4>실습 2: 변수</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
 name = "철수"
 print(name)              
@@ -111,7 +159,7 @@ print(name)
     <!--  에디터 세트 -->
     <div class="compiler-row" data-id="3">
         <div class="pane">
-            <h4>실습 3: 변수 사용</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
 name = "철수"
 print(f"{name}님 안녕하세요")            
@@ -127,10 +175,11 @@ print(f"{name}님 안녕하세요")
     <!--  에디터 세트 -->
     <div class="compiler-row" data-id="4">
         <div class="pane">
-            <h4>실습 4: 변수 계산</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
 number = 10
 print(number) 
+                
 number = 11
 print(number)            
 </textarea>
@@ -145,10 +194,11 @@ print(number)
     <!--  에디터 세트 -->
     <div class="compiler-row" data-id="4">
         <div class="pane">
-            <h4>실습 5: 변수 계산</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
 number = 10
 print(number) 
+                
 number = number + 1
 print(number)            
 </textarea>
@@ -164,9 +214,9 @@ print(number)
       <!--  에디터 세트 -->
     <div class="compiler-row" data-id="4">
         <div class="pane">
-            <h4>실습 6: 변수 입력</h4>
+            <h4>코드 입력</h4>
             <textarea class="code-input">
-number = input("숫자를 입력하세요")
+number = input("숫자를 입력하세요 :")
 print(number)            
 </textarea>
             <button class="run-btn">실행 ▶</button>
@@ -178,6 +228,42 @@ print(number)
     </div>
 
 
+          <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="4">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+fruit = input("좋아하는 과일 :")
+print(f"저도 {fruit}을 좋아해요")            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+
+
+          <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="4">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+fruit = input("좋아하는 과일 :")
+name = input("당신의 이름 :")
+print(f"반갑습니다. {name}님. 저도 {fruit}을/를 좋아해요")            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    
 
   
     <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
