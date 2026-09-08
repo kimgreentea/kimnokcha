@@ -61,6 +61,9 @@
         }
         button.run-btn:hover { background: #005999; }
         
+button.run-btn.hidden {
+            display: none;
+        }
         .output { 
             background: #111; 
             border: 1px solid #333; 
@@ -399,12 +402,12 @@ while i <= 9:
             <div class="pane">
                 <h4>코드 입력</h4>
                 <textarea class="code-input">
-#오류가 발생하니 실행하지 말 것
+#실행 시 오류 발생
 
 while True :
     print("무한 반복")                  
   </textarea>
-                <button class="run-btn">실행 ▶</button>
+                <button class="run-btn hidden">실행 ▶</button> 
             </div>
             <div class="pane">
                 <h4>결과</h4>
@@ -417,6 +420,35 @@ while True :
         </div>
     </div>
   
+
+    <!-- 실습 14 (문제 템플릿) -->
+    <div class="compiler-row" data-id="14">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+while input("2+3=? ") != "5" : 
+    print("다시 한 번 풀어보세요")
+print("맞았습니다") 
+    
+  </textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>!= 와 == </b></p>
+            <p>!=은 '다르다', ==는 '같다'</p>
+            <p>==와 =를 혼동하지 않도록 유의 </p>
+        </div>
+    </div>
+
+
+
+
     <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
     <script type="py">
         import js
