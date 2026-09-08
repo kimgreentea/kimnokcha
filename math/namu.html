@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>쌓기나무 3D</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+    background: #f3f5f7;
+    color: #222;
+}
+
+header {
+    background: #222;
+    color: white;
+    padding: 14px 18px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+button, select {
+    font-size: 15px;
+    padding: 8px 12px;
+    border: 1px solid #bbb;
+    border-radius: 7px;
+    background: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #eee;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(450px, 1fr) 430px;
+    gap: 14px;
+    padding: 14px;
+    max-width: 1450px;
+    margin: auto;
+}
+
+#scene {
+    width: 100%;
+    height: 700px;
+    background: #dfe8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.hint {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    z-index: 5;
+    background: rgba(255,255,255,.92);
+    padding: 8px 10px;
+    border-radius: 7px;
+    font-size: 13px;
+    line-height: 1.5;
+    pointer-events: none;
+}
+
+.info {
+    background: white;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+#status {
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+/* 방향별 모양 제목 + 전체 숨기기 버튼 */
+.views-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.views-header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+#toggleViews {
+    font-size: 13px;
+    padding: 6px 10px;
+}
+
+.views {
+    display: grid;
+    gap: 12px;
+}
+
+.view {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+}
+
+.view h2 {
+    font-size: 17px;
+    margin: 0 0 8px;
+}
+
+.grid {
+    display: grid;
+    gap: 3px;
+    justify-content: center;
+    align-content: center;
+    background: #fafafa;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 7px;
+}
+
+.cell {
+    width: 42px;
+    height: 42px;
+    border: 2px solid #666;
+    background: #ffffff;
+}
+
+.cell.filled {
+    background: #dbeafe;
+    border-color: #2563eb;
+}
+
+.legend {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    #scene {
+        height: 520px;
+    }
+}
+</style>
+
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+}
+</script>
+</head>
+
+<body>
+
+<header>쌓기나무 3D</header>
+
+<div class="controls">
+
+    <label>
+        바닥 크기:
+        <select id="sizeSelect">
+            <option value="3" selected>3 × 3</option>
+            <option value="4">4 × 4</option>
+            <option value="5">5 × 5</option>
+        </select>
+    </label>
+
+    <button id="randomBtn">랜덤 생성</button>
+    <button id="clearBtn">전체 지우기</button>
+
+</div>
+
+
+<div class="layout">
+
+    <!-- 3D 영역 -->
+    <div>
+
+        <div id="scene">
+
+            <div class="hint">
+                블럭 쌓기 : 클릭<br>
+                블럭 제거 : 우클릭 / 길게 클릭<br>
+                시점 변경 : 드래그 / 끌기<br>
+                확대/축소 : 휠 / 두손가락
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- 오른쪽 영역 -->
+    <div>
+
+        <!-- 방향별 모양 제목 + 전체 숨기기 -->
+        <div class="views-header">
+
+            <h2>👀 방향별 모양</h2>
+
+            <button id="toggleViews">
+                 숨기기
+            </button>
+
+        </div>
+
+
+        <!-- 앞 / 위 / 옆 전체 -->
+        <div class="views">
+
+            <div class="view">
+
+                <h2>앞에서 본 모양</h2>
+
+                <div
+                    id="front"
+                    class="grid"
+                ></div>
+
+                <div class="legend">
+                    앞쪽에서 바라본 모습
+                </div>
+
+            </div>
+
+
+            <div class="view">
+
+                <h2>위에서 본 모양</h2>
+
+                <div
+                    id="top"
+                    class="grid"
+                ></div>
+
+                <div class="legend">
+                    위쪽에서 바라본 모습
+                </div>
+
+            </div>
+
+
+            <div class="view">
+
+                <h2>옆에서 본 모양</h2>
+
+                <div
+                    id="side"
+                    class="grid"
+                ></div>
+
+                <div class="legend">
+                    옆에서 바라본 모습
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+
+let N = 3;
+
+const MAX_H = 9;
+
+let heights = [];
+
+
+let scene;
+let camera;
+let renderer;
+let controls;
+let raycaster;
+let mouse;
+
+
+let blocks = [];
+let floorCells = [];
+
+
+const sceneDiv =
+    document.getElementById("scene");
+
+
+// --------------------------------------------------
+// 데이터
+// --------------------------------------------------
+
+function makeData() {
+
+    heights =
+        Array.from(
+            { length: N },
+            () => Array(N).fill(0)
+        );
+
+}
+
+
+// --------------------------------------------------
+// 3D 초기화
+// --------------------------------------------------
+
+function initThree() {
+
+    scene =
+        new THREE.Scene();
+
+    scene.background =
+        new THREE.Color(0xdfe8f0);
+
+
+    camera =
+        new THREE.PerspectiveCamera(
+            45,
+            sceneDiv.clientWidth /
+            sceneDiv.clientHeight,
+            0.1,
+            1000
+        );
+
+
+    camera.position.set(
+        N * 2.35,
+        N * 2.0,
+        N * 2.35
+    );
+
+
+    renderer =
+        new THREE.WebGLRenderer({
+            antialias: true
+        });
+
+
+    renderer.setPixelRatio(
+        Math.min(
+            window.devicePixelRatio,
+            2
+        )
+    );
+
+
+    renderer.setSize(
+        sceneDiv.clientWidth,
+        sceneDiv.clientHeight
+    );
+
+
+    sceneDiv.appendChild(
+        renderer.domElement
+    );
+
+
+    controls =
+        new OrbitControls(
+            camera,
+            renderer.domElement
+        );
+
+
+    controls.enableDamping = true;
+
+    controls.target.set(
+        0,
+        1,
+        0
+    );
+
+
+    raycaster =
+        new THREE.Raycaster();
+
+    mouse =
+        new THREE.Vector2();
+
+
+    // 조명
+    scene.add(
+        new THREE.HemisphereLight(
+            0xffffff,
+            0x777777,
+            2.2
+        )
+    );
+
+
+    const light =
+        new THREE.DirectionalLight(
+            0xffffff,
+            2
+        );
+
+
+    light.position.set(
+        6,
+        10,
+        7
+    );
+
+
+    scene.add(light);
+
+
+    draw();
+
+
+    // 클릭
+    renderer.domElement.addEventListener(
+        "pointerdown",
+        onPointerDown
+    );
+
+
+    // 우클릭 메뉴 방지
+    renderer.domElement.addEventListener(
+        "contextmenu",
+        event => {
+            event.preventDefault();
+        }
+    );
+
+
+    // PC / 모바일 모두 길게 클릭하면 제거
+    renderer.domElement.addEventListener(
+        "pointerdown",
+        event => {
+
+            if (event.button !== 0)
+                return;
+
+            longPressTriggered = false;
+
+            longPressTimer =
+                setTimeout(() => {
+
+                    longPressTriggered = true;
+
+                    removeOneAtPointer(event);
+
+                }, 550);
+
+        }
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointerup",
+        () => {
+
+            if (longPressTimer) {
+
+                clearTimeout(
+                    longPressTimer
+                );
+
+                longPressTimer = null;
+
+            }
+
+        }
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointercancel",
+        () => {
+
+            if (longPressTimer) {
+
+                clearTimeout(
+                    longPressTimer
+                );
+
+                longPressTimer = null;
+
+            }
+
+        }
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointermove",
+        event => {
+
+            if (
+                event.button === 0 &&
+                longPressTimer
+            ) {
+
+                if (
+                    Math.abs(event.movementX) > 8 ||
+                    Math.abs(event.movementY) > 8
+                ) {
+
+                    clearTimeout(
+                        longPressTimer
+                    );
+
+                    longPressTimer = null;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    renderer.domElement.addEventListener(
+        "pointermove",
+        onPointerMove
+    );
+
+
+    window.addEventListener(
+        "resize",
+        resize
+    );
+
+
+    animate();
+
+}
+
+
+// --------------------------------------------------
+// 방향 표시 글자
+// --------------------------------------------------
+
+function makeTextSprite(
+    message,
+    color
+) {
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    canvas.width = 320;
+    canvas.height = 180;
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    ctx.font =
+        'bold 70px "Malgun Gothic", Arial, sans-serif';
+
+
+    ctx.fillStyle = color;
+
+    ctx.textAlign = "center";
+
+    ctx.textBaseline = "middle";
+
+
+    ctx.fillText(
+        message,
+        160,
+        90
+    );
+
+
+    const texture =
+        new THREE.CanvasTexture(
+            canvas
+        );
+
+
+    texture.needsUpdate = true;
+
+
+    const spriteMat =
+        new THREE.SpriteMaterial({
+            map: texture,
+            transparent: true,
+            depthTest: true,
+            depthWrite: false
+        });
+
+
+    const sprite =
+        new THREE.Sprite(
+            spriteMat
+        );
+
+
+    sprite.scale.set(
+        1.55,
+        0.88,
+        1
+    );
+
+
+    sprite.userData.directionMarker =
+        true;
+
+
+    scene.add(sprite);
+
+
+    return sprite;
+
+}
+
+
+// --------------------------------------------------
+// 앞 / 옆 방향 표시
+// --------------------------------------------------
+
+function addDirectionMarkers() {
+
+    const outside =
+        N / 2 + 0.8;
+
+
+    const frontLabel =
+        makeTextSprite(
+            "앞",
+            "#d90429"
+        );
+
+
+    frontLabel.position.set(
+        0,
+        0.45,
+        outside
+    );
+
+
+    const sideLabel =
+        makeTextSprite(
+            "옆",
+            "#007f5f"
+        );
+
+
+    sideLabel.position.set(
+        outside,
+        0.45,
+        0
+    );
+
+
+    // 앞쪽 화살표
+    const frontArrow =
+        new THREE.ArrowHelper(
+            new THREE.Vector3(
+                0,
+                0,
+                1
+            ),
+
+            new THREE.Vector3(
+                0,
+                0.08,
+                N / 2 - 0.05
+            ),
+
+            0.6,
+
+            0xd90429,
+
+            0.18,
+
+            0.12
+        );
+
+
+    frontArrow.userData.directionMarker =
+        true;
+
+
+    scene.add(
+        frontArrow
+    );
+
+
+    // 옆쪽 화살표
+    const sideArrow =
+        new THREE.ArrowHelper(
+            new THREE.Vector3(
+                1,
+                0,
+                0
+            ),
+
+            new THREE.Vector3(
+                N / 2 - 0.05,
+                0.08,
+                0
+            ),
+
+            0.6,
+
+            0x007f5f,
+
+            0.18,
+
+            0.12
+        );
+
+
+    sideArrow.userData.directionMarker =
+        true;
+
+
+    scene.add(
+        sideArrow
+    );
+
+}
+
+
+// --------------------------------------------------
+// 바닥
+// --------------------------------------------------
+
+function addGrid() {
+
+    floorCells = [];
+
+
+    const grid =
+        new THREE.GridHelper(
+            N,
+            N,
+            0x555555,
+            0x999999
+        );
+
+
+    grid.position.y =
+        0.02;
+
+
+    scene.add(grid);
+
+
+    const geo =
+        new THREE.PlaneGeometry(
+            0.98,
+            0.98
+        );
+
+
+    for (
+        let r = 0;
+        r < N;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < N;
+            c++
+        ) {
+
+            const material =
+                new THREE.MeshBasicMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.08,
+                    side: THREE.DoubleSide
+                });
+
+
+            const cell =
+                new THREE.Mesh(
+                    geo,
+                    material
+                );
+
+
+            cell.rotation.x =
+                -Math.PI / 2;
+
+
+            cell.position.set(
+                c - (N - 1) / 2,
+                0.035,
+                r - (N - 1) / 2
+            );
+
+
+            cell.userData = {
+
+                floor: true,
+
+                row: r,
+
+                col: c
+
+            };
+
+
+            scene.add(cell);
+
+            floorCells.push(cell);
+
+        }
+
+    }
+
+
+    addDirectionMarkers();
+
+}
+
+
+// --------------------------------------------------
+// 3D 블록 그리기
+// --------------------------------------------------
+
+function draw() {
+
+    // 기존 블록 삭제
+    for (const block of blocks) {
+
+        scene.remove(block);
+
+        block.geometry.dispose();
+
+        block.material.dispose();
+
+
+        if (block.children.length) {
+
+            for (
+                const child of block.children
+            ) {
+
+                if (child.geometry)
+                    child.geometry.dispose();
+
+                if (child.material)
+                    child.material.dispose();
+
+            }
+
+        }
+
+    }
+
+
+    blocks = [];
+
+
+    // 기존 바닥 / 표시 삭제
+    for (
+        const obj of [...scene.children]
+    ) {
+
+        if (
+            obj.userData?.floor ||
+            obj.userData?.directionMarker ||
+            obj.type === "GridHelper"
+        ) {
+
+            scene.remove(obj);
+
+
+            if (obj.material) {
+
+                if (obj.material.map) {
+
+                    obj.material.map.dispose();
+
+                }
+
+                obj.material.dispose();
+
+            }
+
+        }
+
+    }
+
+
+    addGrid();
+
+
+    const cubeGeo =
+        new THREE.BoxGeometry(
+            0.95,
+            0.95,
+            0.95
+        );
+
+
+    const edgeGeo =
+        new THREE.EdgesGeometry(
+            cubeGeo
+        );
+
+
+    for (
+        let r = 0;
+        r < N;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < N;
+            c++
+        ) {
+
+            for (
+                let h = 0;
+                h < heights[r][c];
+                h++
+            ) {
+
+                const material =
+                    new THREE.MeshStandardMaterial({
+                        color: 0x5b8def,
+                        roughness: 0.65
+                    });
+
+
+                const cube =
+                    new THREE.Mesh(
+                        cubeGeo.clone(),
+                        material
+                    );
+
+
+                cube.position.set(
+
+                    c - (N - 1) / 2,
+
+                    h + 0.5,
+
+                    r - (N - 1) / 2
+
+                );
+
+
+                cube.userData = {
+
+                    row: r,
+
+                    col: c,
+
+                    height: h
+
+                };
+
+
+                scene.add(cube);
+
+                blocks.push(cube);
+
+
+                const edge =
+                    new THREE.LineSegments(
+                        edgeGeo.clone(),
+
+                        new THREE.LineBasicMaterial({
+                            color: 0x1f3f72
+                        })
+                    );
+
+
+                cube.add(edge);
+
+            }
+
+        }
+
+    }
+
+
+    updateViews();
+
+}
+
+
+// --------------------------------------------------
+// 클릭 좌표
+// --------------------------------------------------
+
+function getMouse(event) {
+
+    const rect =
+        renderer.domElement
+        .getBoundingClientRect();
+
+
+    mouse.x =
+        (
+            (event.clientX - rect.left) /
+            rect.width
+        ) * 2 - 1;
+
+
+    mouse.y =
+        -(
+            (event.clientY - rect.top) /
+            rect.height
+        ) * 2 + 1;
+
+}
+
+
+// --------------------------------------------------
+// 블록 제거
+// --------------------------------------------------
+
+function removeOneAtPointer(event) {
+
+    getMouse(event);
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    const blockHits =
+        raycaster.intersectObjects(
+            blocks,
+            false
+        );
+
+
+    if (blockHits.length) {
+
+        const block =
+            blockHits[0].object;
+
+
+        const row =
+            block.userData.row;
+
+
+        const col =
+            block.userData.col;
+
+
+        heights[row][col] =
+            Math.max(
+                0,
+                heights[row][col] - 1
+            );
+
+
+        draw();
+
+        return true;
+
+    }
+
+
+    const floorHits =
+        raycaster.intersectObjects(
+            floorCells,
+            false
+        );
+
+
+    if (floorHits.length) {
+
+        const cell =
+            floorHits[0].object;
+
+
+        const row =
+            cell.userData.row;
+
+
+        const col =
+            cell.userData.col;
+
+
+        heights[row][col] =
+            Math.max(
+                0,
+                heights[row][col] - 1
+            );
+
+
+        draw();
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+// --------------------------------------------------
+// 클릭
+// --------------------------------------------------
+
+function onPointerDown(event) {
+
+    // 우클릭
+    if (event.button === 2) {
+
+        removeOneAtPointer(event);
+
+        return;
+
+    }
+
+
+    // 길게 클릭으로 제거된 경우
+    // 일반 클릭을 막음
+    if (longPressTriggered) {
+
+        longPressTriggered = false;
+
+        return;
+
+    }
+
+
+    getMouse(event);
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    const blockHits =
+        raycaster.intersectObjects(
+            blocks,
+            false
+        );
+
+
+    if (blockHits.length) {
+
+        const block =
+            blockHits[0].object;
+
+
+        const row =
+            block.userData.row;
+
+
+        const col =
+            block.userData.col;
+
+
+        heights[row][col] =
+            Math.min(
+                MAX_H,
+                heights[row][col] + 1
+            );
+
+
+        draw();
+
+        return;
+
+    }
+
+
+    const floorHits =
+        raycaster.intersectObjects(
+            floorCells,
+            false
+        );
+
+
+    if (floorHits.length) {
+
+        const cell =
+            floorHits[0].object;
+
+
+        const row =
+            cell.userData.row;
+
+
+        const col =
+            cell.userData.col;
+
+
+        heights[row][col] =
+            Math.min(
+                MAX_H,
+                heights[row][col] + 1
+            );
+
+
+        draw();
+
+    }
+
+}
+
+
+// --------------------------------------------------
+// 마우스 올렸을 때 바닥 강조
+// --------------------------------------------------
+
+let hoveredCell = null;
+
+let longPressTriggered = false;
+
+let longPressTimer = null;
+
+
+function onPointerMove(event) {
+
+    getMouse(event);
+
+
+    raycaster.setFromCamera(
+        mouse,
+        camera
+    );
+
+
+    if (hoveredCell) {
+
+        hoveredCell.material.opacity =
+            0.08;
+
+
+        hoveredCell.material.color.set(
+            0xffffff
+        );
+
+
+        hoveredCell = null;
+
+    }
+
+
+    const hits =
+        raycaster.intersectObjects(
+            floorCells,
+            false
+        );
+
+
+    if (hits.length) {
+
+        hoveredCell =
+            hits[0].object;
+
+
+        hoveredCell.material.opacity =
+            0.38;
+
+
+        hoveredCell.material.color.set(
+            0x4488ff
+        );
+
+
+        renderer.domElement.style.cursor =
+            "pointer";
+
+    } else {
+
+        renderer.domElement.style.cursor =
+            "default";
+
+    }
+
+}
+
+
+// --------------------------------------------------
+// 앞 / 위 / 옆에서 본 모양
+// --------------------------------------------------
+
+function makeView(
+    elementId,
+    data,
+    showFilled
+) {
+
+    const el =
+        document.getElementById(
+            elementId
+        );
+
+
+    el.innerHTML = "";
+
+
+    const rows =
+        data.length;
+
+
+    const cols =
+        data[0].length;
+
+
+    el.style.gridTemplateColumns =
+        `repeat(${cols}, 42px)`;
+
+
+    for (
+        let r = 0;
+        r < rows;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < cols;
+            c++
+        ) {
+
+            const value =
+                data[r][c];
+
+
+            const cell =
+                document.createElement(
+                    "div"
+                );
+
+
+            cell.className =
+                "cell" +
+                (
+                    value > 0
+                        ? " filled"
+                        : ""
+                );
+
+
+            el.appendChild(cell);
+
+        }
+
+    }
+
+}
+
+
+// --------------------------------------------------
+// 방향별 모양 계산
+// --------------------------------------------------
+
+function updateViews() {
+
+    // 앞에서 본 모양
+    const front =
+        Array(N).fill(0);
+
+
+    for (
+        let c = 0;
+        c < N;
+        c++
+    ) {
+
+        for (
+            let r = 0;
+            r < N;
+            r++
+        ) {
+
+            front[c] =
+                Math.max(
+                    front[c],
+                    heights[r][c]
+                );
+
+        }
+
+    }
+
+
+    // 옆에서 본 모양
+    const side =
+        Array(N).fill(0);
+
+
+    for (
+        let r = 0;
+        r < N;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < N;
+            c++
+        ) {
+
+            side[r] =
+                Math.max(
+                    side[r],
+                    heights[r][c]
+                );
+
+        }
+
+    }
+
+
+    // 필요한 높이까지만 표시
+    // 최소 3층
+    const viewH =
+        Math.max(
+            3,
+            Math.max(
+                ...front,
+                ...side
+            )
+        );
+
+
+    // 앞 모양
+    const frontGrid =
+        Array.from(
+            { length: viewH },
+            () => Array(N).fill(0)
+        );
+
+
+    for (
+        let h = 0;
+        h < viewH;
+        h++
+    ) {
+
+        for (
+            let c = 0;
+            c < N;
+            c++
+        ) {
+
+            frontGrid[
+                viewH - 1 - h
+            ][c] =
+                front[c] > h
+                    ? 1
+                    : 0;
+
+        }
+
+    }
+
+
+    // 옆 모양
+    const sideGrid =
+        Array.from(
+            { length: viewH },
+            () => Array(N).fill(0)
+        );
+
+
+    for (
+        let h = 0;
+        h < viewH;
+        h++
+    ) {
+
+        for (
+            let r = 0;
+            r < N;
+            r++
+        ) {
+
+            sideGrid[
+                viewH - 1 - h
+            ][N - 1 - r] =
+                side[r] > h
+                    ? 1
+                    : 0;
+
+        }
+
+    }
+
+
+    // 위에서 본 모양
+    const topGrid =
+        heights.map(
+            row =>
+                row.map(
+                    h =>
+                        h > 0
+                            ? 1
+                            : 0
+                )
+        );
+
+
+    makeView(
+        "front",
+        frontGrid,
+        true
+    );
+
+
+    makeView(
+        "top",
+        topGrid,
+        true
+    );
+
+
+    makeView(
+        "side",
+        sideGrid,
+        true
+    );
+
+}
+
+
+// --------------------------------------------------
+// 랜덤 생성
+// --------------------------------------------------
+
+function randomize() {
+
+    makeData();
+
+
+    for (
+        let r = 0;
+        r < N;
+        r++
+    ) {
+
+        for (
+            let c = 0;
+            c < N;
+            c++
+        ) {
+
+            heights[r][c] =
+                Math.floor(
+                    Math.random() * 4
+                );
+
+        }
+
+    }
+
+
+    draw();
+
+}
+
+
+// --------------------------------------------------
+// 전체 지우기
+// --------------------------------------------------
+
+function clearAll() {
+
+    makeData();
+
+    draw();
+
+}
+
+
+// --------------------------------------------------
+// 크기 변경
+// --------------------------------------------------
+
+function resize() {
+
+    camera.aspect =
+        sceneDiv.clientWidth /
+        sceneDiv.clientHeight;
+
+
+    camera.updateProjectionMatrix();
+
+
+    renderer.setSize(
+        sceneDiv.clientWidth,
+        sceneDiv.clientHeight
+    );
+
+}
+
+
+// --------------------------------------------------
+// 애니메이션
+// --------------------------------------------------
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+
+    controls.update();
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+
+// --------------------------------------------------
+// 버튼
+// --------------------------------------------------
+
+document
+    .getElementById("sizeSelect")
+    .addEventListener(
+        "change",
+        e => {
+
+            N =
+                Number(
+                    e.target.value
+                );
+
+
+            makeData();
+
+
+            camera.position.set(
+                N * 2.35,
+                N * 2.0,
+                N * 2.35
+            );
+
+
+            controls.target.set(
+                0,
+                1,
+                0
+            );
+
+
+            draw();
+
+        }
+    );
+
+
+document
+    .getElementById("randomBtn")
+    .addEventListener(
+        "click",
+        randomize
+    );
+
+
+document
+    .getElementById("clearBtn")
+    .addEventListener(
+        "click",
+        clearAll
+    );
+
+
+// --------------------------------------------------
+// 앞 / 위 / 옆 전체 숨기기 / 펼치기
+// --------------------------------------------------
+
+const toggleViews =
+    document.getElementById(
+        "toggleViews"
+    );
+
+
+const views =
+    document.querySelector(
+        ".views"
+    );
+
+
+toggleViews.addEventListener(
+    "click",
+    () => {
+
+        if (
+            views.style.display ===
+            "none"
+        ) {
+
+            views.style.display =
+                "grid";
+
+            toggleViews.textContent =
+                "숨기기";
+
+        } else {
+
+            views.style.display =
+                "none";
+
+            toggleViews.textContent =
+                "펼치기";
+
+        }
+
+    }
+);
+
+
+// --------------------------------------------------
+// 시작
+// --------------------------------------------------
+
+makeData();
+
+initThree();
+
+</script>
+
+</body>
+</html>
