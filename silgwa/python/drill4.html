@@ -446,8 +446,80 @@ print("맞았습니다")
         </div>
     </div>
 
+    <!-- 실습 14 (문제 템플릿) -->
+    <div class="compiler-row" data-id="14">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+sum = 0
+i = 1
+
+while i < 6:
+    sum = sum + i
+    i = i + 1
+print(sum)
+    
+  </textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>1부터 5까지의 합을 구하는 프로그램 </b></p>
+            <p>sum = sum + i, i = i + 1이 하는 역할을 살펴보기</p>
+        </div>
+    </div>
+
+    
+    <!-- 실습 14 (문제 템플릿) -->
+    <div class="compiler-row" data-id="14">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+sum = 0
+sum_s = "0"
+i = 1
+print("i가 5보다 작은 동안 반복합니다")
+print()
+while i < 5:
+    print(f"현재 합: {sum}")
+    print(f"현재 i 값: {i}")
+    sum = sum + i
+    sum_s = sum_s + "+" + str(i)
+    print(f"더한 결과: {sum_s}")
+    print("i에 1 더함")
+
+    i = i + 1
+    print(f"현재 i 값: {i}")
+
+    if i<5 :
+        print("i가 5보다 작기 때문에 반복합니다.")
+    else :
+        print("i가 5보다 크거나 같기 때문에 반복을 종료합니다.")
+    print()
+print(f"총합은 {sum}")
+    
+  </textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>1부터 4까지의 합을 구하는 프로그램 </b></p>
+            <p>코드를 이해하려고 하지 말고 실행 결과를 보면서 흐름을 이해 </p>
+        </div>
+    </div>
 
 
+    
 
     <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
     <script type="py">
