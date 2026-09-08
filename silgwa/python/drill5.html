@@ -9,6 +9,33 @@
         body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px; }
         h2 { text-align: center; color: #fff; margin-bottom: 30px; }
         
+        .nav-bar {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;   
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .nav-btn {
+            width: 200px;        
+            text-align: center;
+            padding: 10px 16px;
+            background: #2d2d2d;
+            color: #d4d4d4;
+            border: 1px solid #444;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: monospace;
+            transition: all 0.2s;
+        }
+        
+        .nav-btn:hover {
+            background: #007acc; 
+            color: #fff;
+            border-color: #007acc;
+        }
+
         .compiler-row { 
             display: flex; 
             flex-direction: column; 
@@ -124,7 +151,13 @@ if는 다음 주에 하자..
     </div>
 
 
-    
+
+
+
+    <!-- 목록으로 돌아가기 -->
+<div class="nav-bar">
+<a href="https://kimgreentea.github.io/kimnokcha/silgwa/python/drill" class="nav-btn">목록으로</a>
+</div>   
 
     <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
     <script type="py">
