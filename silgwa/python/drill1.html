@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>멀티 파이썬 브라우저 컴파일러</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+<style>
+        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px;  }
+        h2 { text-align: center; color: #fff; margin-bottom: 30px; }
+        
+        .compiler-row { 
+            display: flex; 
+            gap: 20px; 
+            margin-bottom: 30px; 
+            background: #252526; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            align-items: stretch; 
+        }
+        
+        .pane { 
+            flex: 1; 
+            display: flex; 
+            font-size:12pt;
+            flex-direction: column; 
+        }
+        
+        h4 { margin: 0 0 8px 0; color: #9cdcfe; }
+        
+
+        textarea.code-input { 
+            width: 100%; 
+            flex: 1; 
+            min-height: 150px; 
+            background: #1e1e1e; 
+            color: #fff; 
+            border: 1px solid #444; 
+            padding: 10px; 
+            font-family: monospace; 
+            resize: none; 
+            border-radius: 4px; 
+            box-sizing: border-box;
+            font-size:13pt;
+        }
+        
+        button.run-btn { 
+            margin-top: 10px; 
+            padding: 8px; 
+            background: #007acc; 
+            color: #fff; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            border-radius: 4px; 
+        }
+        button.run-btn:hover { background: #005999; }
+        
+
+        .output { 
+            background: #111; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            flex: 1; 
+            min-height: 150px; 
+            overflow-y: auto; 
+            white-space: pre-wrap; 
+            color: #4ec9b0; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            font-size:13pt;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>파이썬 연습하기</h2>
+
+    <!-- 에디터 세트 -->
+    <div class="compiler-row" data-id="1">
+        <div class="pane">
+            <h4>실습 1: 기본 출력</h4>
+            <textarea class="code-input">
+print("안녕하세요")
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    <!-- 에디터 세트 -->
+    <div class="compiler-row" data-id="2">
+        <div class="pane">
+            <h4>실습 2: 변수</h4>
+            <textarea class="code-input">
+name = "철수"
+print(name)              
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="3">
+        <div class="pane">
+            <h4>실습 3: 변수 사용</h4>
+            <textarea class="code-input">
+name = "철수"
+print(f"{name}님 안녕하세요")            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="4">
+        <div class="pane">
+            <h4>실습 4: 변수 계산</h4>
+            <textarea class="code-input">
+number = 10
+print(number) 
+number = 11
+print(number)            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+    <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="4">
+        <div class="pane">
+            <h4>실습 5: 변수 계산</h4>
+            <textarea class="code-input">
+number = 10
+print(number) 
+number = number + 1
+print(number)            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+
+      <!--  에디터 세트 -->
+    <div class="compiler-row" data-id="4">
+        <div class="pane">
+            <h4>실습 6: 변수 입력</h4>
+            <textarea class="code-input">
+number = input("숫자를 입력하세요")
+print(number)            
+</textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+
+
+
+  
+    <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
+    <script type="py">
+        import js
+        import sys
+        import io
+        from pyodide.ffi import create_proxy
+
+        def make_web_input(output_div, current_stdout):
+            def web_input(prompt_msg=""):
+                res = js.prompt(str(prompt_msg))
+                if res is None:
+                    res = ""
+                # 프롬프트 입력값도 터미널에 남기기
+                current_stdout.write(f"{prompt_msg}{res}\n")
+                output_div.innerText = current_stdout.getvalue()
+                return res
+            return web_input
+
+        def create_runner(row):
+            code_textarea = row.querySelector('.code-input')
+            output_div = row.querySelector('.output')
+            
+            def run_python_code(event):
+                code = code_textarea.value
+                
+                # 각 컴파일러마다 독립된 stdout 스트림 생성
+                new_stdout = io.StringIO()
+                
+                global_env = {
+                    '__name__': '__main__',
+                    'input': make_web_input(output_div, new_stdout)
+                }
+                
+                # 표준 출력 가로채기 대피소
+                old_stdout = sys.stdout
+                sys.stdout = new_stdout
+                
+                try:
+                    exec(code, global_env)
+                    result = new_stdout.getvalue()
+                except Exception as e:
+                    result = str(e)
+                finally:
+                    sys.stdout = old_stdout
+                    
+                output_div.innerText = result
+
+            return run_python_code
+
+        def setup_all():
+            # 페이지에 있는 모든 .compiler-row 요소를 찾아서 각각 이벤트 바인딩
+            rows = js.document.querySelectorAll('.compiler-row')
+            for i in range(rows.length):
+                row = rows.item(i)
+                btn = row.querySelector('.run-btn')
+                runner = create_runner(row)
+                btn.addEventListener("click", create_proxy(runner))
+                row.querySelector('.output').innerText = "준비 완료!"
+
+        setup_all()
+    </script>
+
+</body>
+</html>
