@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>while 반복문 연습하기</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <style>
+        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px; }
+        h2 { text-align: center; color: #fff; margin-bottom: 30px; }
+        
+        .compiler-row { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px;
+            margin-bottom: 30px; 
+            background: #252526; 
+            padding: 15px; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+        }
+
+        /* 에디터와 결과창을 좌우로 나란히 배치 */
+        .editor-group {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
+        }
+        
+        .pane { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        
+        h4 { margin: 0 0 8px 0; color: #9cdcfe; }
+        
+        textarea.code-input { 
+            width: 100%; 
+            flex: 1; 
+            min-height: 150px; 
+            background: #1e1e1e; 
+            color: #fff; 
+            border: 1px solid #444; 
+            padding: 10px; 
+            font-family: monospace; 
+            resize: none; 
+            border-radius: 4px; 
+            box-sizing: border-box;
+        }
+        
+        button.run-btn { 
+            margin-top: 10px; 
+            padding: 8px; 
+            background: #007acc; 
+            color: #fff; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: bold; 
+            border-radius: 4px; 
+        }
+        button.run-btn:hover { background: #005999; }
+        
+        .output { 
+            background: #111; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            flex: 1; 
+            min-height: 150px; 
+            overflow-y: auto; 
+            white-space: pre-wrap; 
+            color: #4ec9b0; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+        }
+
+        .desc-box {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            padding: 12px 15px;
+            border-radius: 4px;
+            color: #ce9178;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .desc-box p {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>while 반복문 연습하기</h2> 
+
+    <!-- 실습 1 -->
+    <div class="compiler-row" data-id="1">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 0
+while i < 5:
+    print("안녕하세요")
+    i = i + 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>while 조건 :</b></p>
+            <p>조건이 참(True)인 동안 아래의 명령문을 계속 반복하는 코드</p>
+            <p>콜론(:)을 빼지 않도록 유</p>
+        </div>
+    </div>
+
+    <!-- 실습 2 -->
+    <div class="compiler-row" data-id="2">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+i = 1
+while i <= 5:
+    print(f"{i}번째 실행")
+    i = i + 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>while 변수 <= 숫자 :</b></p>
+            <p>>=은 '크거나 같다', <=은 '작거나 같다'</p>
+        </div>
+    </div>
+
+    <!-- 실습 3 -->
+    <div class="compiler-row" data-id="3">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 1
+while i <= 3:
+    print("안녕하세요")
+    print("반복합니다")
+    i += 1
+print("들여쓰기가 다르면 반복이 끝난 후 실행됩니다")</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>while 문과 들여쓰기</b></p>
+            <p>while 아래 같은 들여쓰기 된 블록만 반복한다.</p>
+            <p>들여쓰기가 끝난 코드는 while 반복이 모두 끝난 뒤 한 번만 실행</p>
+        </div>
+    </div>
+
+    <!-- 실습 4 -->
+    <div class="compiler-row" data-id="4">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 1
+while i <= 3:
+    j = 1
+    while j <= 2:
+        print("내부 반복문")
+        j += 1
+    print("외부 반복문")
+    i += 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>중첩 while 문</b></p>
+            <p>while 문 안에 또 다른 while 문을 넣을 수 있다.</p>
+            <p>들여쓰기에 유의</p>
+        </div>
+    </div>
+
+    <!-- 실습 5 -->
+    <div class="compiler-row" data-id="5">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 1
+while i <= 3:
+    j = 1
+    while j <= 2:
+        print("내부 반복문")
+        print("외부 반복문") 
+        j += 1
+    i += 1
+
+# 들여쓰기에 따라 의도대로 작동하지 않을 수 있다</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>중첩 반복문과 들여쓰기</b></p>
+            <p>반복문 안에서 들여쓰기 위치에 따라 결과가 달라진다.</p>
+            <p>코드 작성 시 들여쓰기를 잘 확인</p>
+        </div>
+    </div>
+
+
+
+    <!-- 실습 8 -->
+    <div class="compiler-row" data-id="8">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 5
+while i > 0:
+    print(i)
+    i = i - 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>숫자 거꾸로 세기</b></p>
+            <p>i를 큰 숫자로 두고 i = i - 1을 활용하면 숫자를 뺄면서 거꾸로 카운트할 수 있다</p>
+        </div>
+    </div>
+
+    <!-- 실습 9 -->
+    <div class="compiler-row" data-id="9">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">print("출발 카운트")
+
+i = 10
+while i > 0:
+    print(i)
+    i = i - 1
+
+print("출발")</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>카운트다운 프로그램</b></p>
+            <p>while 문으로 10부터 1까지 출력한 후, 반복이 끝나면 "출발"을 출력함</p>
+        </div>
+    </div>
+
+    <!-- 실습 10 -->
+    <div class="compiler-row" data-id="10">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 1
+while i <= 5:
+    print(f"{i}번 문제")
+    print("2 + 3 = ?")
+    print()
+    i = i + 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>문제 자동 생성기</b></p>
+            <p>while 문을 사용해 문제 번호를 늘려가며 반복 출력해 주는 코드</p>
+        </div>
+    </div>
+
+    <!-- 실습 11 -->
+    <div class="compiler-row" data-id="11">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">num = int(input("몇 번 반복할까요? "))
+i = 1
+while i <= num:
+    print(f"{i}번째 반복")
+    i = i + 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>입력받은 수만큼 반복하기</b></p>
+            <p>사용자가 입력한 변수를 while 조건에 적용해 원하는 횟수만큼 실행함</p>
+        </div>
+    </div>
+
+    <!-- 실습 12 -->
+    <div class="compiler-row" data-id="12">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">num = int(input("몇까지 카운트할까요? "))
+print("출발 카운트")
+
+i = num
+while i > 0:
+    print(i)
+    i = i - 1
+
+print("출발")</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>카운트다운 프로그램</b></p>
+            <p>원하는 카운트 숫자를 입력받아 감소하며 출력하는 반복문</p>
+        </div>
+    </div>
+
+    <!-- 실습 13 -->
+    <div class="compiler-row" data-id="13">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">i = 1
+while i <= 9:
+    print(f"5 X {i} = {5 * i}")
+    i = i + 1</textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>구구단 5단 출력하기</b></p>
+            <p>i 값을 1씩 늘려주며 5단을 반복 계산해서 출력함</p>
+        </div>
+    </div>
+
+    <!-- 실습 14 (문제 템플릿) -->
+    <div class="compiler-row" data-id="14">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+dan = 
+i = 1
+while i <= 9:
+
+    
+  </textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>원하는 단수의 구구단 출력하기</b></p>
+            <p>단수를 물어보고 대답하면 해당 단의 구구단을 출력하는 프로그램을 만들어보자.</p>
+        </div>
+    </div>
+
+
+    <!-- 실습 14 (문제 템플릿) -->
+    <div class="compiler-row" data-id="14">
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+#오류가 발생하니 실행하지 말 것
+
+while True :
+    print("무한 반복")                  
+  </textarea>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
+        </div>
+        <div class="desc-box">
+            <p>💡 <b>while True :</b></p>
+            <p>while True는 명령문을 무한 반복한다.</p>
+        </div>
+    </div>
+  
+    <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
+    <script type="py">
+        import js
+        import sys
+        import io
+        from pyodide.ffi import create_proxy
+
+        def make_web_input(output_div, current_stdout):
+            def web_input(prompt_msg=""):
+                res = js.prompt(str(prompt_msg))
+                if res is None:
+                    res = ""
+                current_stdout.write(f"{prompt_msg}{res}\n")
+                output_div.innerText = current_stdout.getvalue()
+                return res
+            return web_input
+
+        def create_runner(row):
+            code_textarea = row.querySelector('.code-input')
+            output_div = row.querySelector('.output')
+            
+            def run_python_code(event):
+                code = code_textarea.value
+                new_stdout = io.StringIO()
+                
+                global_env = {
+                    '__name__': '__main__',
+                    'input': make_web_input(output_div, new_stdout)
+                }
+                
+                old_stdout = sys.stdout
+                sys.stdout = new_stdout
+                
+                try:
+                    exec(code, global_env)
+                    result = new_stdout.getvalue()
+                except Exception as e:
+                    result = str(e)
+                finally:
+                    sys.stdout = old_stdout
+                    
+                output_div.innerText = result
+
+            return run_python_code
+
+        def setup_all():
+            rows = js.document.querySelectorAll('.compiler-row')
+            for i in range(rows.length):
+                row = rows.item(i)
+                btn = row.querySelector('.run-btn')
+                runner = create_runner(row)
+                btn.addEventListener("click", create_proxy(runner))
+                row.querySelector('.output').innerText = "준비 완료!"
+
+        setup_all()
+    </script>
+
+</body>
+</html>
