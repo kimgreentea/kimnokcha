@@ -92,7 +92,7 @@
 </head>
 <body>
 
-    <h2>파이썬 연습하기</h2>
+    <h2>출력문 연습하기</h2>
 
 <!-- 실습 세트 -->
     <div class="compiler-row" data-id="1">
@@ -115,165 +115,99 @@ print("안녕하세요!")
         </div>
     </div>
 
-        <!-- 에디터 세트 -->
+
+<!-- 실습 세트 -->
     <div class="compiler-row" data-id="1">
 
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-print("안녕하세요")
-# print("반갑습니다")                
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+print("안녕하세요!")
+print("반갑습니다.")
 </textarea>
-            <button class="run-btn">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
         </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
+        <div class="desc-box">
+             💡<b>print()</b> </br>문장을 출력하고 나면 자동으로 줄을 바꾼다. 
         </div>
     </div>
 
-
-        <!-- 에디터 세트 -->
+<!-- 실습 세트 -->
     <div class="compiler-row" data-id="1">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-print("안녕하세요")
-print("반갑습니다") # print("좋은 하루 보내세요")
+
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+# 이 코드는 출력문이다.  
+print("안녕하세요!")
+
+# print에서 따옴표를 빼면 작동하지 않는다.  
+print(반갑습니다)               
 </textarea>
-            <button class="run-btn">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
         </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
+        <div class="desc-box">
+             💡<b>#</b> </br>설명문을 쓰는 명령문</br># 뒤에 있는 문장은 실행하지 않는다. 
         </div>
     </div>
-
     
-    <!-- 에디터 세트 -->
-    <div class="compiler-row" data-id="2">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-name = "철수"
-print(name)              
+
+<!-- 실습 세트 -->
+    <div class="compiler-row" data-id="1">
+
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+print("안녕하세요!")
+print("반갑습니다." ) # 이 코드는 출력문이다.             
 </textarea>
-            <button class="run-btn">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
         </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
+        <div class="desc-box">
+             💡<b>#</b> </br>줄 중간에 넣을 수도 있다.</br>마찬가지로 # 뒤에 있는 문장은 실행하지 않는다. 
         </div>
     </div>
 
-    <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="3">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-name = "철수"
-print(f"{name}님 안녕하세요")            
+<!-- 실습 세트 -->
+    <div class="compiler-row" data-id="1">
+
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+print("안녕하세요!")
+
+# print("반갑습니다.")            
 </textarea>
-            <button class="run-btn">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
         </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
+        <div class="desc-box">
+             💡<b>#</b> </br>명령문 맨 앞에 #을 넣어 해당 줄을 임시로 비활성화할 수 있다.  
         </div>
     </div>
-
-    <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="4">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-number = 10
-print(number) 
-                
-number = 11
-print(number)            
-</textarea>
-            <button class="run-btn">실행 ▶</button>
-        </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-    </div>
-
-    <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="4">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-number = 10
-print(number) 
-                
-number = number + 1
-print(number)            
-</textarea>
-            <button class="run-btn">실행 ▶</button>
-        </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-    </div>
-
-
-      <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="4">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-number = input("숫자를 입력하세요 :")
-print(number)            
-</textarea>
-            <button class="run-btn">실행 ▶</button>
-        </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-    </div>
-
-
-          <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="4">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-fruit = input("좋아하는 과일 :")
-print(f"저도 {fruit}을 좋아해요")            
-</textarea>
-            <button class="run-btn">실행 ▶</button>
-        </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-    </div>
-
-
-
-          <!--  에디터 세트 -->
-    <div class="compiler-row" data-id="4">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-fruit = input("좋아하는 과일 :")
-name = input("당신의 이름 :")
-print(f"반갑습니다. {name}님. 저도 {fruit}을/를 좋아해요")            
-</textarea>
-            <button class="run-btn">실행 ▶</button>
-        </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-    </div>
-
-    
 
   
     <!-- 다중 실행을 처리하는 파이썬 스크립트 -->
