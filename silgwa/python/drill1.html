@@ -12,7 +12,7 @@
         .compiler-row { 
             display: flex; 
             flex-direction: column; 
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 30px; 
             background: #252526; 
             padding: 15px; 
@@ -20,6 +20,7 @@
             border: 1px solid #333; 
         }
 
+        /* 에디터와 결과창을 좌우로 나란히 배치 */
         .editor-group {
             display: flex;
             gap: 20px;
@@ -73,14 +74,19 @@
             box-sizing: border-box; 
         }
 
-        /* 설명란 스타일 */
-        .desc-box {
+.desc-box {
             background: #1e1e1e;
             border: 1px solid #333;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border-radius: 4px;
             color: #ce9178;
             font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .desc-box p {
+            margin: 0;
+            padding: 0;
         }
     </style>
 </head>
@@ -88,26 +94,30 @@
 
     <h2>파이썬 연습하기</h2>
 
-    <!-- 에디터 세트 -->
+<!-- 실습 세트 -->
     <div class="compiler-row" data-id="1">
-        <div class="pane">
-            <h4>코드 입력</h4>
-            <textarea class="code-input">
-print("안녕하세요")
+
+        <div class="editor-group">
+            <div class="pane">
+                <h4>코드 입력</h4>
+                <textarea class="code-input">
+print("안녕하세요!")
 </textarea>
-            <button class="run-btn">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
+            </div>
+            <div class="pane">
+                <h4>결과</h4>
+                <div class="output">준비 중...</div>
+            </div>
         </div>
-        <div class="pane">
-            <h4>결과</h4>
-            <div class="output">준비 중...</div>
-        </div>
-<div class="desc-box">
-            💡 <b>실습 1:</b> 기본적인 출력문과 반복문을 테스트해볼 수 있는 공간임. 코드를 고치고 실행을 눌러보자 ㅋㅋ
+        <div class="desc-box">
+             💡<b>print()</b> </br>괄호 안에 있는 문장을 출력하는 명령문 </br>문자를 출력하는 경우 따옴표로 감싸줘야 한다. 
         </div>
     </div>
 
         <!-- 에디터 세트 -->
     <div class="compiler-row" data-id="1">
+
         <div class="pane">
             <h4>코드 입력</h4>
             <textarea class="code-input">
