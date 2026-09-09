@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>머신러닝 체험</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+    background: #f3f4f6;
+    color: #222;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.panel {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.panel h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background: #f1f1f1;
+}
+
+td input {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center;
+}
+
+button {
+    border: none;
+    border-radius: 7px;
+    padding: 9px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: #2563eb;
+    color: white;
+    margin-top: 15px;
+}
+
+.train-btn {
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+}
+
+.delete-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.predict-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-weight: bold;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 16px;
+}
+
+.predict-btn {
+    margin-top: 20px;
+    background: #2563eb;
+    color: white;
+    width: 100%;
+    font-size: 17px;
+    padding: 13px;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 25px;
+    background: #f8fafc;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.result-title {
+    font-size: 18px;
+    color: #555;
+}
+
+.result-size {
+    font-size: 55px;
+    font-weight: bold;
+    margin: 10px;
+    color: #7c3aed;
+}
+
+.status {
+    margin-top: 10px;
+    color: #555;
+}
+
+.message {
+    margin-top: 10px;
+    color: #dc2626;
+}
+
+.tree-info {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 8px;
+    line-height: 1.7;
+}
+
+@media (max-width: 700px) {
+    .predict-area {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>머신러닝 >_<</h1>
+
+    <div class="description">
+        옷 사이즈를 추천해주는 AI
+    </div>
+
+
+    <!-- 데이터 -->
+    <div class="panel">
+
+        <h2>① 학습 데이터</h2>
+
+        <p>
+            아래 데이터를 추가하거나 수정할 수 있습니다.
+        </p>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>키 (cm)</th>
+                    <th>몸무게 (kg)</th>
+                    <th>사이즈</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+
+            <tbody id="dataTable">
+            </tbody>
+
+        </table>
+
+        <button class="add-btn" onclick="addData()">
+            + 데이터 추가
+        </button>
+
+    </div>
+
+
+    <!-- 학습 -->
+    <div class="panel">
+
+        <h2>② AI 학습</h2>
+
+        <p>
+            현재 입력된 데이터를 이용하여 학습합니다.
+        </p>
+
+        <button class="train-btn" onclick="trainModel()">
+            AI 학습하기
+        </button>
+
+        <div class="tree-info" id="treeInfo">
+            아직 학습하지 않았습니다.
+        </div>
+
+    </div>
+
+
+    <!-- 추천 -->
+    <div class="panel">
+
+        <h2>③ 사이즈 추천</h2>
+
+        <div class="predict-area">
+
+            <div class="input-group">
+                <label>키 (cm)</label>
+                <input
+                    type="number"
+                    id="heightInput"
+                    placeholder="예: 172"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>몸무게 (kg)</label>
+                <input
+                    type="number"
+                    id="weightInput"
+                    placeholder="예: 68"
+                >
+            </div>
+
+        </div>
+
+        <button class="predict-btn" onclick="predict()">
+            AI 추천
+        </button>
+
+
+        <div class="result">
+
+    <!-- 추천
+            <div class="result-title">
+                AI의 추천
+            </div>
+ -->
+            <div class="result-size" id="result">
+                
+            </div>
+              <div class="status" id="resultMessage">
+                먼저 AI를 학습해주세요. 
+            </div>
+ 
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   기본 데이터
+========================================================= */
+
+let data = [
+    { height: 150, weight: 45, size: "S" },
+    { height: 155, weight: 48, size: "S" },
+    { height: 160, weight: 50, size: "M" },
+    { height: 165, weight: 55, size: "M" },
+    { height: 168, weight: 60, size: "L" },
+    { height: 170, weight: 65, size: "L" },
+    { height: 175, weight: 70, size: "L" },
+    { height: 180, weight: 75, size: "XL" },
+    { height: 185, weight: 82, size: "XL" }
+];
+
+
+/* =========================================================
+   Decision Tree
+========================================================= */
+
+let model = null;
+
+const MAX_DEPTH = 5;
+
+
+/*
+    불순도(Gini)
+*/
+function gini(rows) {
+
+    if (rows.length === 0) {
+        return 0;
+    }
+
+    const counts = {};
+
+    rows.forEach(row => {
+
+        if (!counts[row.size]) {
+            counts[row.size] = 0;
+        }
+
+        counts[row.size]++;
+
+    });
+
+    let impurity = 1;
+
+    for (const size in counts) {
+
+        const probability =
+            counts[size] / rows.length;
+
+        impurity -= probability * probability;
+    }
+
+    return impurity;
+}
+
+
+/*
+    가장 많이 등장하는 사이즈
+*/
+function majority(rows) {
+
+    const counts = {};
+
+    rows.forEach(row => {
+
+        if (!counts[row.size]) {
+            counts[row.size] = 0;
+        }
+
+        counts[row.size]++;
+
+    });
+
+    let best = null;
+    let bestCount = -1;
+
+    for (const size in counts) {
+
+        if (counts[size] > bestCount) {
+
+            best = size;
+            bestCount = counts[size];
+
+        }
+    }
+
+    return best;
+}
+
+
+/*
+    가장 좋은 분할 찾기
+*/
+function findBestSplit(rows) {
+
+    let bestFeature = null;
+    let bestThreshold = null;
+    let bestScore = Infinity;
+
+    const features = ["height", "weight"];
+
+    for (const feature of features) {
+
+        const values = rows
+            .map(row => row[feature])
+            .sort((a, b) => a - b);
+
+        const uniqueValues = [...new Set(values)];
+
+
+        /*
+            두 값의 중간값을 기준으로 분할
+        */
+        for (let i = 0; i < uniqueValues.length - 1; i++) {
+
+            const threshold =
+                (uniqueValues[i] + uniqueValues[i + 1]) / 2;
+
+
+            const left = rows.filter(
+                row => row[feature] <= threshold
+            );
+
+            const right = rows.filter(
+                row => row[feature] > threshold
+            );
+
+
+            if (
+                left.length === 0 ||
+                right.length === 0
+            ) {
+                continue;
+            }
+
+
+            /*
+                가중 Gini
+            */
+            const score =
+                (left.length / rows.length) * gini(left) +
+                (right.length / rows.length) * gini(right);
+
+
+            if (score < bestScore) {
+
+                bestScore = score;
+                bestFeature = feature;
+                bestThreshold = threshold;
+
+            }
+        }
+    }
+
+
+    if (bestFeature === null) {
+        return null;
+    }
+
+
+    return {
+        feature: bestFeature,
+        threshold: bestThreshold,
+        score: bestScore
+    };
+}
+
+
+/*
+    트리 만들기
+*/
+function buildTree(rows, depth = 0) {
+
+    /*
+        데이터가 없는 경우
+    */
+    if (rows.length === 0) {
+        return null;
+    }
+
+
+    /*
+        모든 데이터의 사이즈가 같은 경우
+    */
+    const classes =
+        [...new Set(rows.map(row => row.size))];
+
+    if (classes.length === 1) {
+
+        return {
+            type: "leaf",
+            prediction: classes[0],
+            count: rows.length
+        };
+
+    }
+
+
+    /*
+        최대 깊이에 도달
+    */
+    if (depth >= MAX_DEPTH) {
+
+        return {
+            type: "leaf",
+            prediction: majority(rows),
+            count: rows.length
+        };
+
+    }
+
+
+    /*
+        가장 좋은 분할 찾기
+    */
+    const split = findBestSplit(rows);
+
+
+    /*
+        더 이상 나눌 수 없음
+    */
+    if (!split) {
+
+        return {
+            type: "leaf",
+            prediction: majority(rows),
+            count: rows.length
+        };
+
+    }
+
+
+    const left = rows.filter(
+        row => row[split.feature] <= split.threshold
+    );
+
+    const right = rows.filter(
+        row => row[split.feature] > split.threshold
+    );
+
+
+    return {
+
+        type: "node",
+
+        feature: split.feature,
+
+        threshold: split.threshold,
+
+        left: buildTree(left, depth + 1),
+
+        right: buildTree(right, depth + 1)
+
+    };
+}
+
+
+/*
+    모델 학습
+*/
+function trainModel() {
+
+    const cleanData = [];
+
+
+    /*
+        데이터 검사
+    */
+    for (let i = 0; i < data.length; i++) {
+
+        const row = data[i];
+
+        const height = Number(row.height);
+        const weight = Number(row.weight);
+        const size = String(row.size).trim();
+
+
+        if (
+            !Number.isFinite(height) ||
+            !Number.isFinite(weight) ||
+            height <= 0 ||
+            weight <= 0 ||
+            size === ""
+        ) {
+
+            alert(
+                `${i + 1}번째 데이터가 올바르지 않습니다.`
+            );
+
+            return;
+        }
+
+
+        cleanData.push({
+            height: height,
+            weight: weight,
+            size: size
+        });
+    }
+
+
+   
+    if (cleanData.length < 2) {
+
+        alert("학습 데이터가 최소 2개 필요합니다.");
+
+        return;
+    }
+  
+
+    /*
+        Decision Tree 학습
+    */
+    model = buildTree(cleanData);
+
+
+    /*
+        화면에 학습 정보 표시
+    */
+    document.getElementById("treeInfo").innerHTML =
+        `
+        <b>학습 완료</b><br>
+        학습 데이터: ${cleanData.length}개<br>
+        `;
+
+
+    document.getElementById("resultMessage").textContent =
+        "학습이 완료되었습니다. 키와 몸무게를 입력하세요.";
+
+}
+
+
+/* =========================================================
+   예측
+========================================================= */
+
+function predictTree(node, height, weight) {
+
+    if (node.type === "leaf") {
+
+        return node.prediction;
+    }
+
+
+    let value;
+
+
+    if (node.feature === "height") {
+        value = height;
+    } else {
+        value = weight;
+    }
+
+
+    if (value <= node.threshold) {
+
+        return predictTree(
+            node.left,
+            height,
+            weight
+        );
+
+    } else {
+
+        return predictTree(
+            node.right,
+            height,
+            weight
+        );
+    }
+}
+
+
+function predict() {
+
+    if (model === null) {
+
+        alert("먼저 AI를 학습해주세요.");
+
+        return;
+    }
+
+
+    const height =
+        Number(document.getElementById("heightInput").value);
+
+    const weight =
+        Number(document.getElementById("weightInput").value);
+
+
+    /*
+        Python 코드의 입력 검사와 동일한 역할
+    */
+    if (
+        !Number.isFinite(height) ||
+        height <= 0
+    ) {
+
+        alert("키는 0보다 큰 숫자를 입력해주세요.");
+
+        return;
+    }
+
+
+    if (
+        !Number.isFinite(weight) ||
+        weight <= 0
+    ) {
+
+        alert("몸무게는 0보다 큰 숫자를 입력해주세요.");
+
+        return;
+    }
+
+
+    /*
+        AI 예측
+    */
+    const result =
+        predictTree(model, height, weight);
+
+
+    document.getElementById("result").textContent =
+        result;
+
+
+    document.getElementById("resultMessage").textContent =
+        `${height}cm, ${weight}kg이신 분에게는 ${result} 사이즈를 추천합니다!`;
+}
+
+
+/* =========================================================
+   데이터 테이블
+========================================================= */
+
+function renderTable() {
+
+    const table =
+        document.getElementById("dataTable");
+
+    table.innerHTML = "";
+
+
+    data.forEach((row, index) => {
+
+        const tr =
+            document.createElement("tr");
+
+
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+
+            <td>
+                <input
+                    type="number"
+                    value="${row.height}"
+                    onchange="updateData(${index}, 'height', this.value)"
+                >
+            </td>
+
+            <td>
+                <input
+                    type="number"
+                    value="${row.weight}"
+                    onchange="updateData(${index}, 'weight', this.value)"
+                >
+            </td>
+
+            <td>
+                <input
+                    type="text"
+                    value="${row.size}"
+                    onchange="updateData(${index}, 'size', this.value)"
+                >
+            </td>
+
+            <td>
+                <button
+                    class="delete-btn"
+                    onclick="deleteData(${index})"
+                >
+                    삭제
+                </button>
+            </td>
+        `;
+
+
+        table.appendChild(tr);
+
+    });
+
+}
+
+
+/*
+    데이터 수정
+*/
+function updateData(index, key, value) {
+
+    data[index][key] = value;
+
+    /*
+        데이터를 수정하면 기존 AI는 무효화
+    */
+    model = null;
+
+    document.getElementById("treeInfo").textContent =
+        "데이터가 수정되었습니다. 다시 학습해주세요.";
+
+}
+
+
+/*
+    데이터 추가
+*/
+function addData() {
+
+    data.push({
+        height: 170,
+        weight: 65,
+        size: "M"
+    });
+
+
+    renderTable();
+
+
+    /*
+        새 데이터가 생겼으므로 다시 학습해야 함
+    */
+    model = null;
+
+    document.getElementById("treeInfo").textContent =
+        "데이터가 추가되었습니다. 다시 학습해주세요.";
+}
+
+
+/* 
+    데이터 삭제
+*/
+function deleteData(index) {
+/*  
+    if (data.length <= 2) {
+
+        alert("학습 데이터는 최소 2개가 필요합니다.");
+
+        return;
+    }
+
+*/
+    data.splice(index, 1);
+
+    renderTable();
+
+
+    model = null;
+
+    document.getElementById("treeInfo").textContent =
+        "데이터가 삭제되었습니다. 다시 학습해주세요.";
+}
+
+
+/* =========================================================
+   처음 실행
+========================================================= */
+
+renderTable();
+
+</script>
+
+</body>
+</html>
