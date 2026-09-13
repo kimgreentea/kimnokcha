@@ -37,7 +37,7 @@
         }
 
         .compiler-row { 
-            display: flex; 
+        //    display: flex; 
             flex-direction: column; 
             gap: 12px;
             margin-bottom: 30px; 
@@ -47,12 +47,13 @@
             border: 1px solid #333; 
         }
 
-        /* 에디터와 결과창을 좌우로 나란히 배치 */
+        /* 에디터와 결과창을 좌우로 나란히 배치
         .editor-group {
             display: flex;
             gap: 20px;
             align-items: stretch;
         }
+ */
         
         .pane { 
             flex: 1; 
@@ -66,6 +67,7 @@
             width: 100%; 
             flex: 1; 
             min-height: 150px; 
+
             background: #1e1e1e; 
             color: #fff; 
             border: 1px solid #444; 
@@ -78,6 +80,7 @@
         
         button.run-btn { 
             margin-top: 10px; 
+            margin-bottom: 10px;
             padding: 8px; 
             background: #007acc; 
             color: #fff; 
@@ -130,13 +133,10 @@ button.run-btn.hidden {
             <div class="pane">
                 <h4>코드 입력</h4>
                 <textarea class="code-input">
-if는 다음 주에 하자..
-                  
-얘들아 공부해라..    
-모른다고 포기하지 말고.. 
-좀.. 하는 척이라도 해라.. 
+if True :
+    print("안녕하세요")
                 </textarea>
-                <button class="run-btn hidden">실행 ▶</button>
+                <button class="run-btn">실행 ▶</button>
             </div>
             <div class="pane">
                 <h4>결과</h4>
@@ -145,10 +145,365 @@ if는 다음 주에 하자..
         </div>
         <div class="desc-box">
             <p>💡 <b>if 조건 :</b></p>
-            <p>조건이 참(True)이라면 아래의 명령문을 계속 반복하는 코드</p>
+            <p>조건이 참(True)이라면 아래의 명령문을 실행하는 코드</p>
             <p>콜론(:)을 빼지 않도록 유의</p>
         </div>
     </div>
+
+
+
+    <!-- 실습 14 -->
+<div class="compiler-row" data-id="14">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+if 2 > 1 :
+    print("안녕하세요")
+    print("반갑습니다")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>if 조건 :</b></p>
+        <p>여러 개의 명령어를 들여쓰기로 구분하여 넣을 수 있습니다.</p>
+        <p>들여쓰기는 띄어쓰기 4개 혹은 tab 1개</p>
+    </div>
+</div>
+
+
+<!-- 실습 15 -->
+<div class="compiler-row" data-id="15">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+if False:
+    print("조건이 거짓이면 실행되지 않습니다")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>조건이 거짓이라면?</b></p>
+        <p>조건이 False이면 들여쓰기 된 명령을 실행하지 않습니다.</p>
+    </div>
+</div>
+
+<!-- 실습 15 -->
+<div class="compiler-row" data-id="15">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+if 3 < 2 :
+    print("조건이 거짓이면 실행되지 않습니다")
+
+print("들여쓰기 되지 않은 명령어")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>조건이 거짓이라면?</b></p>
+        <p>조건이 False이면 들여쓰기 된 명령을 실행하지 않습니다.</p>
+    </div>
+</div>
+
+
+<!-- 실습 16 -->
+<div class="compiler-row" data-id="16">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+num = 10
+
+if num > 5:
+    print("5보다 큽니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>숫자 비교하기</b></p>
+        <p>num이 5보다 큰지 확인합니다.</p>
+    </div>
+</div>
+
+
+<!-- 실습 16 -->
+<div class="compiler-row" data-id="16">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+num = int(input("숫자를 입력하세요"))
+
+if num > 5:
+    print("5보다 큽니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>숫자 비교하기</b></p>
+        <p>입력한 숫자가 5보다 큰지 확인합니다.</p>
+    </div>
+</div>
+
+
+<!-- 실습 17 -->
+<div class="compiler-row" data-id="17">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+num = 5
+
+if num == 5:
+    print("숫자가 5입니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>같은지 확인하기</b></p>
+        <p>==는 두 값이 같은지 확인합니다.</p>
+        <p>=와 혼동하지 않도록 유의</p>
+    </div>
+</div>
+
+
+<!-- 실습 18 -->
+<div class="compiler-row" data-id="18">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+num = 3
+
+if num != 5:
+    print("5가 아닙니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>다른지 확인하기</b></p>
+        <p>!=는 두 값이 다른지 확인합니다.</p>
+    </div>
+</div>
+
+
+<!-- 실습 19 -->
+<div class="compiler-row" data-id="19">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+age = 12
+
+if age >= 10:
+    print("10살 이상입니다.")
+else:
+    print("10살 미만입니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>else :</b></p>
+        <p>if의 조건이 거짓일 때 실행합니다.</p>
+        <p>콜론(:)을 빼지 않도록 유의</p>
+    </div>
+</div>
+
+
+<!-- 실습 20 -->
+<div class="compiler-row" data-id="20">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+score = 80
+
+if score >= 80:
+    print("합격입니다.")
+else:
+    print("다시 도전하세요.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>else :</b></p>
+        <p>if의 조건이 거짓일 때 실행합니다.</p>
+        <p>콜론(:)을 빼지 않도록 유의</p>
+    </div>
+</div>
+
+
+<!-- 실습 20 -->
+<div class="compiler-row" data-id="20">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+score = int(input("점수를 입력하세요"))
+print()
+print(f"당신의 점수는 {score}점입니다.")
+
+if score >= 80:
+    print("합격입니다.")
+else:
+    print("다시 도전하세요.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>else :</b></p>
+        <p>if의 조건이 거짓일 때 실행합니다.</p>
+        <p>콜론(:)을 빼지 않도록 유의</p>
+    </div>
+</div>
+
+
+<!-- 실습 21 -->
+<div class="compiler-row" data-id="21">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+score = 85
+
+if score >= 90:
+    print("A")
+elif score >= 80:
+    print("B")
+else:
+    print("C")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>elif 조건 :</b></p>
+        <p>if 조건이 거짓일 때 다른 조건을 확인하려면 elif를 사용합니다.</p>
+        <p>콜론(:)을 빼지 않도록 유의</p>
+    </div>
+</div>
+
+
+<!-- 실습 22 -->
+<div class="compiler-row" data-id="22">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+num = 7
+
+if num > 20:
+    print("20보다 큽니다.")
+elif num > 10:
+    print("10보다 크고 20 이하입니다.")
+elif num > 5:
+    print("5보다 크고 10 이하입니다.")
+else:
+    print("5 이하입니다.")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>elif 조건 :</b></p>
+        <p>elif는 여러 개를 연달아 사용할 수 있습니다.</p>
+    </div>
+</div>
+
+
+<!-- 실습 23 -->
+<div class="compiler-row" data-id="23">
+    <div class="editor-group">
+        <div class="pane">
+            <h4>코드 입력</h4>
+            <textarea class="code-input">
+age = int(input("나이를 입력하세요"))
+gender = input("성별을 입력하세요(남/여)")
+
+if age >= 14:
+    if gender == "남" :
+        print("아저씨입니다")
+    else :
+        print("아줌마입니다")
+else:
+    if gender == "남" :
+        print("소년입니다")
+    else :
+        print("소녀입니다")
+            </textarea>
+            <button class="run-btn">실행 ▶</button>
+        </div>
+        <div class="pane">
+            <h4>결과</h4>
+            <div class="output">준비 중...</div>
+        </div>
+    </div>
+    <div class="desc-box">
+        <p>💡 <b>중첩 조건문</b></p>
+        <p>여러 개의 if문을 중첩하여 활용할 수 있습니다.</p>
+    </div>
+</div>
 
 
 
