@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>메모장</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, "Noto Sans KR", sans-serif;
+    background: #f3f3f3;
+}
+
+
+/* =========================
+   시계
+========================= */
+
+#clock {
+    background: #222;
+    color: white;
+
+    text-align: center;
+
+    font-size: 50px;
+    font-weight: bold;
+
+    padding: 12px;
+}
+
+
+/* =========================
+   메모 영역
+========================= */
+
+#memoArea {
+    padding: 10px;
+
+    
+}
+
+
+/* 메모 입력 */
+
+#memo {
+    display: block;
+
+    width: 100%;
+    height: 300px;
+
+    resize: vertical;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    padding: 12px;
+
+    font-family: inherit;
+    font-size: 60px;
+
+    background: white;
+}
+
+
+
+
+/* =========================
+   표 영역
+========================= */
+
+#sheetArea {
+    padding: 0 10px 10px;
+}
+
+
+/* =========================
+   표
+========================= */
+
+table {
+    border-collapse: collapse;
+
+    width: max-content;
+    min-width: 100%;
+
+    background: white;
+}
+
+td {
+    border: 1px solid #ccc;
+
+    min-width: 110px;
+    height: 50px;
+
+    padding: 6px 8px;
+
+    font-size: 40px;
+
+    cursor: text;
+
+    white-space: nowrap;
+}
+
+td:focus {
+    outline: 2px solid #4285f4;
+
+    background: #eef5ff;
+}
+
+
+/* =========================
+   저장 표시
+========================= */
+
+#status {
+    position: fixed;
+
+    right: 15px;
+    bottom: 15px;
+
+    padding: 8px 12px;
+
+    background: #222;
+    color: white;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+
+    opacity: 0;
+
+    transition: opacity 0.2s;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     시계
+========================= -->
+
+<div id="clock"></div>
+
+
+<!-- =========================
+     메모
+========================= -->
+
+<div id="memoArea">
+
+    <textarea
+        id="memo"
+        placeholder=""></textarea>
+
+</div>
+
+
+<!-- =========================
+     표
+========================= -->
+
+<div id="sheetArea">
+
+    <table id="sheet"></table>
+
+</div>
+
+
+<!-- 저장 표시 -->
+
+<div id="status">
+    저장됨
+</div>
+
+
+<script>
+
+
+/* ==================================================
+   시계
+================================================== */
+
+function updateClock() {
+
+    const now = new Date();
+
+    const month =
+        String(now.getMonth() + 1)
+        .padStart(2, "0");
+
+    const day =
+        String(now.getDate())
+        .padStart(2, "0");
+
+    const hour =
+        String(now.getHours())
+        .padStart(2, "0");
+
+    const minute =
+        String(now.getMinutes())
+        .padStart(2, "0");
+
+    const second =
+        String(now.getSeconds())
+        .padStart(2, "0");
+
+    const days = [
+        "일요일",
+        "월요일",
+        "화요일",
+        "수요일",
+        "목요일",
+        "금요일",
+        "토요일"
+    ];
+
+    const dayOfWeek =
+        days[now.getDay()];
+
+    document.getElementById("clock").innerHTML =
+        `${month}월 ${day}일 ${dayOfWeek}<br>
+         ${hour}:${minute}:${second}`;
+}
+
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+
+/* ==================================================
+   메모
+================================================== */
+
+const memo =
+    document.getElementById("memo");
+
+memo.value =
+    localStorage.getItem("memo") || "";
+
+memo.addEventListener("input", () => {
+
+    localStorage.setItem(
+        "memo",
+        memo.value
+    );
+
+    showStatus("저장됨");
+
+});
+
+/* ==================================================
+   표
+================================================== */
+
+const ROWS = 15;
+const COLS = 6;
+
+const table =
+    document.getElementById("sheet");
+
+
+/* 저장된 데이터 */
+
+let savedData =
+    JSON.parse(
+        localStorage.getItem("sheetData") || "null"
+    );
+
+
+/* ==================================================
+   표 생성
+================================================== */
+
+function createSheet() {
+
+    table.innerHTML = "";
+
+
+    for (let row = 0; row < ROWS; row++) {
+
+        const tr =
+            document.createElement("tr");
+
+
+        for (let col = 0; col < COLS; col++) {
+
+            const td =
+                document.createElement("td");
+
+
+            td.contentEditable = true;
+
+
+            /* 셀 위치 저장 */
+
+            td.dataset.row = row;
+            td.dataset.col = col;
+
+
+            /* 기존 데이터 */
+
+            if (
+                savedData &&
+                savedData[row] &&
+                savedData[row][col] !== undefined
+            ) {
+
+                td.textContent =
+                    savedData[row][col];
+
+            }
+
+
+            /* 셀 수정 */
+
+            td.addEventListener(
+                "input",
+                saveSheet
+            );
+
+
+            /* 키보드 */
+
+            td.addEventListener(
+                "keydown",
+                moveCell
+            );
+
+
+            tr.appendChild(td);
+
+        }
+
+
+        table.appendChild(tr);
+
+    }
+
+}
+
+
+/* ==================================================
+   셀 이동
+================================================== */
+
+function moveCell(event) {
+
+    const cell =
+        event.target;
+
+
+    const row =
+        Number(cell.dataset.row);
+
+    const col =
+        Number(cell.dataset.col);
+
+
+    let newRow = row;
+    let newCol = col;
+
+
+    if (event.key === "ArrowUp") {
+
+        newRow--;
+
+    }
+
+    else if (event.key === "ArrowDown") {
+
+        newRow++;
+
+    }
+
+    else if (event.key === "ArrowLeft") {
+
+        newCol--;
+
+    }
+
+    else if (event.key === "ArrowRight") {
+
+        newCol++;
+
+    }
+
+    else {
+
+        return;
+
+    }
+
+
+    /* 범위 밖 */
+
+    if (
+        newRow < 0 ||
+        newRow >= ROWS ||
+        newCol < 0 ||
+        newCol >= COLS
+    ) {
+
+        return;
+
+    }
+
+
+    event.preventDefault();
+
+
+    const nextCell =
+        table.querySelector(
+            `td[data-row="${newRow}"][data-col="${newCol}"]`
+        );
+
+
+    if (nextCell) {
+
+        nextCell.focus();
+
+
+        /*
+         * 텍스트 커서를 끝으로 이동
+         */
+
+        const range =
+            document.createRange();
+
+        const selection =
+            window.getSelection();
+
+        range.selectNodeContents(nextCell);
+
+        range.collapse(false);
+
+        selection.removeAllRanges();
+
+        selection.addRange(range);
+
+    }
+
+}
+
+
+/* ==================================================
+   표 저장
+================================================== */
+
+function saveSheet() {
+
+    const data = [];
+
+
+    const rows =
+        table.querySelectorAll("tr");
+
+
+    rows.forEach(row => {
+
+        const rowData = [];
+
+
+        row.querySelectorAll("td")
+            .forEach(cell => {
+
+                rowData.push(
+                    cell.textContent
+                );
+
+            });
+
+
+        data.push(rowData);
+
+    });
+
+
+    localStorage.setItem(
+        "sheetData",
+        JSON.stringify(data)
+    );
+
+
+    showStatus("저장됨");
+
+}
+
+
+/* ==================================================
+   저장 표시
+================================================== */
+
+let statusTimer;
+
+
+function showStatus(text) {
+
+    const status =
+        document.getElementById("status");
+
+
+    status.textContent =
+        text;
+
+    status.style.opacity =
+        "1";
+
+
+    clearTimeout(statusTimer);
+
+
+    statusTimer =
+        setTimeout(() => {
+
+            status.style.opacity =
+                "0";
+
+        }, 1000);
+
+}
+
+
+/* ==================================================
+   실행
+================================================== */
+
+createSheet();
+
+</script>
+
+</body>
+</html>
