@@ -34,4 +34,323 @@
         "examples": ["금속", "황금", "금요일"],
         "strokeCount": 8
     }
+
+    {
+        "hanja": "一",
+        "meaning": "하나",
+        "reading": "일",
+        "examples": ["일일", "일등", "통일"],
+        "strokeCount": 1
+    },
+    {
+        "hanja": "二",
+        "meaning": "둘",
+        "reading": "이",
+        "examples": ["이월", "이등", "십이"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "三",
+        "meaning": "셋",
+        "reading": "삼",
+        "examples": ["삼월", "삼각", "삼일"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "四",
+        "meaning": "넷",
+        "reading": "사",
+        "examples": ["사월", "사방", "사계"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "五",
+        "meaning": "다섯",
+        "reading": "오",
+        "examples": ["오월", "오십", "오일"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "六",
+        "meaning": "여섯",
+        "reading": "육",
+        "examples": ["육이오", "육십"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "七",
+        "meaning": "일곱",
+        "reading": "칠",
+        "examples": ["칠월", "칠십", "칠일"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "八",
+        "meaning": "여덟",
+        "reading": "팔",
+        "examples": ["팔월", "팔십", "팔방"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "九",
+        "meaning": "아홉",
+        "reading": "구",
+        "examples": ["구월", "구구단", "구일"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "十",
+        "meaning": "열",
+        "reading": "십",
+        "examples": ["십월", "십자", "십년"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "人",
+        "meaning": "사람",
+        "reading": "인",
+        "examples": ["인간", "인구", "인물"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "大",
+        "meaning": "크다",
+        "reading": "대",
+        "examples": ["대학", "대부분"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "小",
+        "meaning": "작다",
+        "reading": "소",
+        "examples": ["소형", "소학교", "소수"],
+        "strokeCount": 3
+    },
+
+    {
+        "hanja": "川",
+        "meaning": "내",
+        "reading": "천",
+        "examples": ["하천", "천변", "산천"],
+        "strokeCount": 3
+    },
+
+    {
+        "hanja": "土",
+        "meaning": "흙",
+        "reading": "토",
+        "examples": ["토지", "토양", "국토"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "日",
+        "meaning": "날",
+        "reading": "일",
+        "examples": ["일요일", "매일", "생일"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "月",
+        "meaning": "달",
+        "reading": "월",
+        "examples": ["월요일", "월급", "월식"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "年",
+        "meaning": "해",
+        "reading": "년",
+        "examples": ["연도", "매년", "학년"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "天",
+        "meaning": "하늘",
+        "reading": "천",
+        "examples": ["천국", "천상", "천재"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "地",
+        "meaning": "땅",
+        "reading": "지",
+        "examples": ["지구", "토지", "지하"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "東",
+        "meaning": "동녘",
+        "reading": "동",
+        "examples": ["동쪽", "동해", "동문"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "西",
+        "meaning": "서녘",
+        "reading": "서",
+        "examples": ["서쪽", "서해", "서문"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "南",
+        "meaning": "남녘",
+        "reading": "남",
+        "examples": ["남쪽", "남한", "남부"],
+        "strokeCount": 9
+    },
+    {
+        "hanja": "北",
+        "meaning": "북녘",
+        "reading": "북",
+        "examples": ["북쪽", "북한", "북부"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "中",
+        "meaning": "가운데",
+        "reading": "중",
+        "examples": ["중간", "중앙", "중학교"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "上",
+        "meaning": "위",
+        "reading": "상",
+        "examples": ["상하", "상위", "지상"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "下",
+        "meaning": "아래",
+        "reading": "하",
+        "examples": ["상하", "하위", "지하"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "左",
+        "meaning": "왼쪽",
+        "reading": "좌",
+        "examples": ["좌우", "좌측", "좌석"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "右",
+        "meaning": "오른쪽",
+        "reading": "우",
+        "examples": ["좌우", "우측", "우수"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "王",
+        "meaning": "임금",
+        "reading": "왕",
+        "examples": ["왕궁", "왕자", "국왕"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "子",
+        "meaning": "아들",
+        "reading": "자",
+        "examples": ["자녀", "왕자", "자식"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "女",
+        "meaning": "여자",
+        "reading": "녀",
+        "examples": ["여성", "소녀", "남녀"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "男",
+        "meaning": "남자",
+        "reading": "남",
+        "examples": ["남성", "소년", "남녀"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "父",
+        "meaning": "아버지",
+        "reading": "부",
+        "examples": ["부모", "부친", "조부"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "母",
+        "meaning": "어머니",
+        "reading": "모",
+        "examples": ["부모", "모친", "모교"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "兄",
+        "meaning": "형",
+        "reading": "형",
+        "examples": ["형제", "형수", "친형"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "弟",
+        "meaning": "아우",
+        "reading": "제",
+        "examples": ["형제", "제자"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "學",
+        "meaning": "배우다",
+        "reading": "학",
+        "examples": ["학교", "학생", "학습"],
+        "strokeCount": 16
+    },
+    {
+        "hanja": "校",
+        "meaning": "학교",
+        "reading": "교",
+        "examples": ["학교", "교실", "교장"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "先",
+        "meaning": "먼저",
+        "reading": "선",
+        "examples": ["선생", "선수", "우선"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "生",
+        "meaning": "나다",
+        "reading": "생",
+        "examples": ["학생", "생일", "생활"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "心",
+        "meaning": "마음",
+        "reading": "심",
+        "examples": ["심장", "관심", "중심"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "力",
+        "meaning": "힘",
+        "reading": "력",
+        "examples": ["노력", "실력", "체력"],
+        "strokeCount": 2
+    },
+    {
+        "hanja": "口",
+        "meaning": "입",
+        "reading": "구",
+        "examples": ["입구", "인구", "구두"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "目",
+        "meaning": "눈",
+        "reading": "목",
+        "examples": ["목표", "과목", "주목"],
+        "strokeCount": 5
+    }
+
 ]
