@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>타자연습 조아</title>
+<style>
+#word1 {font-size:30pt; width:90vw; height:80px;}
+#count1 {font-size:30pt;}
+#word2 {font-size:30pt; width:90vw; height:80px;}
+#count2 {font-size:30pt;}
+</style>
+</head>
+
+<body>
+<h1>가나다라마바사아자차카타파하</h1>
+    <h1 id="count1">0</h1>
+
+    <input id="word1" type="text">
+
+<h1>가갸개거겨게고교구규그기긔</h1>
+    <h1 id="count2">0</h1>
+
+    <input id="word2" type="text">
+
+
+
+<script>
+
+let word1 = '가나다라마바사아자차카타파하';
+let count1 = 0;
+
+let input1 = document.getElementById("word1");
+
+
+input1.addEventListener("paste", function(event) {
+    event.preventDefault();
+});
+
+input1.addEventListener("drop", function(event) {
+    event.preventDefault();
+});
+
+input1.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+});
+
+
+input1.addEventListener("input", function() {
+
+    if (input1.value == word1) {
+
+        input1.value = "";
+
+        count1 = count1 + 1;
+
+        document.getElementById("count1").innerText = count1;
+    }
+
+});
+
+
+
+let word2 = '가갸개거겨게고교구규그기긔';
+let count2 = 0;
+
+let input2 = document.getElementById("word2");
+
+
+input2.addEventListener("paste", function(event) {
+    event.preventDefault();
+});
+
+input2.addEventListener("drop", function(event) {
+    event.preventDefault();
+});
+
+input2.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+});
+
+
+input2.addEventListener("input", function() {
+
+    if (input2.value == word2) {
+
+        input2.value = "";
+
+        count2 = count1 + 1;
+
+        document.getElementById("count2").innerText = count2;
+    }
+
+});
+
+
+
+</script>
+
+</body>
+</html>
