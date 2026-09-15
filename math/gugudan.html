@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>구구단 연습</title>
+
+<style>
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+body {
+    font-size: 50px;           
+font-family:'Pretendard-Regular';
+}
+
+#answer {
+    width: 200px;
+    height: 80px;
+    border-radius: 8px;
+    font-size: 45px;
+}
+
+#number {
+    color: #0078D6;
+
+    margin-right: 10pt;
+}
+
+</style>
+</head>
+
+<body>
+
+<span id="number"></span>
+<span id="question"></span>    <input id="answer" >
+
+
+
+<script>
+
+let number = document.getElementById("number");
+let question = document.getElementById("question");
+let input_answer = document.getElementById("answer");
+
+let num1;
+let num2;
+let count = 1
+
+// 문제 만들기
+function makeQuestion() {
+
+    num1 = Math.floor(Math.random() * 8) + 2;
+    num2 = Math.floor(Math.random() * 9) + 1;
+
+    number.innerText = count + "."
+    question.innerText = num1 + " × " + num2 + " = ";
+
+}
+
+
+// 입력할 때 정답 확인
+input_answer.addEventListener("input", function() {
+
+    if (Number(input_answer.value) == num1 * num2) {
+
+        input_answer.value = "";
+        count += 1
+        makeQuestion();
+
+    }
+
+});
+
+
+// 처음 문제 만들기
+makeQuestion();
+
+</script>
+
+</body>
+</html>
