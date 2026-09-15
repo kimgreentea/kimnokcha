@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>한자 공부</title>
+
+<style>
+
+body {
+    margin: 0;
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+#card {
+    width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px #ccc;
+}
+
+#result {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+
+/* 뜻 / 음 */
+
+#infoBox {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 20px;
+}
+
+.info {
+    font-size: 30px;
+}
+
+.label {
+    font-size: 20px;
+    color: gray;
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
+
+
+/* 예시 단어 */
+
+#examples {
+    font-size: 22px;
+}
+
+
+/* 획수 */
+
+#strokeCount {
+    margin-top: 10px;
+    font-size: 20px;
+    color: gray;
+}
+
+
+/* 버튼 */
+
+button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="card">
+
+    <div id="result"></div>
+
+
+    <div id="infoBox">
+
+        <div class="info">
+
+            <div class="label">뜻</div>
+
+            <div id="meaning"></div>
+
+        </div>
+
+
+        <div class="info">
+
+            <div class="label">음</div>
+
+            <div id="reading"></div>
+
+        </div>
+
+    </div>
+
+
+    <div class="label">예시단어</div>
+
+    <div id="examples"></div>
+
+
+    <div id="strokeCount"></div>
+
+
+    <button onclick="makeQuestion()">
+        다음
+    </button>
+
+</div>
+
+
+<script>
+
+
+/* =========================
+   한자 데이터
+========================= */
+
+let words = [];
+
+
+/* =========================
+   현재 상태
+========================= */
+
+let number;
+
+let animationTimer = null;
+
+let currentHanja = "";
+
+
+/* =========================
+   JSON 불러오기
+========================= */
+
+async function loadWords() {
+
+    try {
+
+        let response =
+            await fetch("words.json");
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "words.json을 불러올 수 없습니다."
+            );
+
+        }
+
+
+        words =
+            await response.json();
+
+
+        /*
+            JSON을 다 불러온 뒤
+            첫 번째 문제 출제
+        */
+
+        makeQuestion();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "데이터 로딩 실패:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================
+   문제 만들기
+========================= */
+
+function makeQuestion() {
+
+
+    /*
+        랜덤 번호
+    */
+
+    number =
+        Math.floor(
+            Math.random() * words.length
+        );
+
+
+    let word =
+        words[number];
+
+
+    /*
+        현재 한자 저장
+    */
+
+    currentHanja =
+        word.hanja;
+
+
+    /*
+        뜻
+    */
+
+    document.getElementById("meaning").innerText =
+        word.meaning;
+
+
+    /*
+        음
+    */
+
+    document.getElementById("reading").innerText =
+        word.reading;
+
+
+    /*
+        예시 단어
+    */
+
+    document.getElementById("examples").innerText =
+        word.examples.join(", ");
+
+
+    /*
+        획수
+    */
+
+    document.getElementById("strokeCount").innerText =
+        word.strokeCount + "획";
+
+
+    /*
+        이전 애니메이션 중지
+    */
+
+    if (animationTimer !== null) {
+
+        clearTimeout(animationTimer);
+
+        animationTimer = null;
+
+    }
+
+
+    /*
+        새로운 한자 SVG 가져오기
+    */
+
+    getUnicodeLink(currentHanja);
+
+}
+
+
+/* =========================
+   한자 SVG 가져오기
+========================= */
+
+async function getUnicodeLink(hanja) {
+
+
+    let result =
+        document.getElementById("result");
+
+
+    result.innerHTML = "";
+
+
+    /*
+        한자의 유니코드
+    */
+
+    let unicode =
+        hanja.charCodeAt(0);
+
+
+    let url =
+        "https://raw.githubusercontent.com/skishore/makemeahanzi/618dbab8a8ddefb958763c8b4afbaa741a4460de/svgs/"
+        + unicode
+        + ".svg";
+
+
+    try {
+
+        let response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "SVG 파일을 찾을 수 없습니다."
+            );
+
+        }
+
+
+        let svg =
+            await response.text();
+
+
+        /*
+            SVG 수정
+        */
+
+        let lines =
+            svg.split("\n");
+
+
+        lines.splice(2, 4);
+
+
+        let modifiedSvg =
+            lines
+                .join("\n")
+                .replace(
+                    /stroke:\s*blue;/g,
+                    "stroke: black;"
+                );
+
+
+        /*
+            각 획의 animation-delay 찾기
+        */
+
+        let animations =
+            modifiedSvg.match(
+                /animation-delay:\s*(\d+\.?\d*)s/g
+            );
+
+
+        let maxDelay = 0;
+
+
+        if (animations) {
+
+            maxDelay =
+                Math.max(
+                    ...animations.map(
+                        anim =>
+                            parseFloat(
+                                anim.match(
+                                    /(\d+\.?\d*)s/
+                                )[1]
+                            )
+                    )
+                );
+
+        }
+
+
+        /*
+            한자마다 다른 반복 시간
+
+            마지막 획 시작 시간
+            +
+            1.4초
+        */
+
+        let repeatTime =
+            (maxDelay + 1.4) * 1000;
+
+
+        /*
+            첫 번째 재생
+        */
+
+        playAnimation(modifiedSvg);
+
+
+        /*
+            반복 함수
+        */
+
+        function repeatAnimation() {
+
+
+            /*
+                다른 한자로 바뀌었다면 중지
+            */
+
+            if (currentHanja !== hanja) {
+
+                return;
+
+            }
+
+
+            playAnimation(modifiedSvg);
+
+
+            animationTimer =
+                setTimeout(
+                    repeatAnimation,
+                    repeatTime
+                );
+
+        }
+
+
+        /*
+            첫 애니메이션 종료 후
+            다시 재생
+        */
+
+        animationTimer =
+            setTimeout(
+                repeatAnimation,
+                repeatTime
+            );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "SVG 로딩 실패:",
+            error
+        );
+
+
+        result.innerHTML = "";
+
+    }
+
+}
+
+
+/* =========================
+   SVG 애니메이션 재생
+========================= */
+
+function playAnimation(svg) {
+
+
+    let result =
+        document.getElementById("result");
+
+
+    /*
+        기존 SVG 제거
+    */
+
+    result.innerHTML = "";
+
+
+    /*
+        새로운 SVG 삽입
+    */
+
+    result.innerHTML = svg;
+
+
+    /*
+        SVG 찾기
+    */
+
+    let svgElement =
+        result.querySelector("svg");
+
+
+    if (svgElement) {
+
+        /*
+            애니메이션 초기화
+        */
+
+        svgElement.style.animation = "none";
+
+
+        /*
+            강제로 다시 그리게 함
+        */
+
+        void svgElement.offsetWidth;
+
+
+        /*
+            애니메이션 시작
+        */
+
+        svgElement.style.animation = "";
+
+    }
+
+}
+
+
+/* =========================
+   프로그램 시작
+========================= */
+
+loadWords();
+
+
+</script>
+
+</body>
+</html>
