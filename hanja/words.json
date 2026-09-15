@@ -460,5 +460,124 @@
         "reading": "청",
         "examples": ["청색", "청춘", "청소년"],
         "strokeCount": 8
+    },
+        {
+        "hanja": "高",
+        "meaning": "높을",
+        "reading": "고",
+        "examples": ["고급", "고속", "최고"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "長",
+        "meaning": "길",
+        "reading": "장",
+        "examples": ["장기간", "장점", "성장"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "愛",
+        "meaning": "사랑",
+        "reading": "애",
+        "examples": ["애정", "애국", "사랑"],
+        "strokeCount": 13
+    },
+    {
+        "hanja": "有",
+        "meaning": "있을",
+        "reading": "유",
+        "examples": ["유무", "유명", "보유"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "無",
+        "meaning": "없을",
+        "reading": "무",
+        "examples": ["무리", "무료", "무게"],
+        "strokeCount": 12
+    },
+    {
+        "hanja": "多",
+        "meaning": "많을",
+        "reading": "다",
+        "examples": ["다수", "다양", "다량"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "少",
+        "meaning": "적을",
+        "reading": "소",
+        "examples": ["소수", "감소", "소량"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "白",
+        "meaning": "흰",
+        "reading": "백",
+        "examples": ["백색", "백설", "고백"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "百",
+        "meaning": "일백",
+        "reading": "백",
+        "examples": ["백만", "백화점", "백일"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "老",
+        "meaning": "늙을",
+        "reading": "로",
+        "examples": ["노인", "노화", "경로"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "文",
+        "meaning": "글월",
+        "reading": "문",
+        "examples": ["문장", "문화", "문자"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "門",
+        "meaning": "문",
+        "reading": "문",
+        "examples": ["문밖", "정문", "입문"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "立",
+        "meaning": "설",
+        "reading": "립",
+        "examples": ["입장", "설립", "독립"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "內",
+        "meaning": "안",
+        "reading": "내",
+        "examples": ["내용", "국내", "실내"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "外",
+        "meaning": "바깥",
+        "reading": "외",
+        "examples": ["외부", "해외", "외국"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "全",
+        "meaning": "온전할",
+        "reading": "전",
+        "examples": ["전체", "전국", "완전"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "前",
+        "meaning": "앞",
+        "reading": "전",
+        "examples": ["전방", "이전", "사전"],
+        "strokeCount": 9
     }
 ]
