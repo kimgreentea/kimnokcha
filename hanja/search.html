@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>한자 획순 보기</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+
+/* 전체 카드 */
+
+#card {
+    width: 90%;
+    max-width: 700px;
+
+    margin: 50px auto;
+
+    padding: 30px;
+
+    background: white;
+
+    border-radius: 25px;
+
+    box-shadow: 0 5px 25px rgba(0,0,0,0.12);
+
+    text-align: center;
+}
+
+
+/* 입력창 */
+
+#hanja {
+    width: 220px;
+
+    padding: 15px;
+
+    font-size: 35px;
+
+    text-align: center;
+
+    border: 2px solid #ddd;
+
+    border-radius: 15px;
+
+    outline: none;
+}
+
+#hanja:focus {
+    border-color: #888;
+}
+
+
+/* SVG */
+
+#result {
+    width: 50vw;
+
+    max-width: 400px;
+
+    margin: 20px auto;
+}
+
+
+/* 뜻 */
+
+#result_mean {
+    margin-top: 10px;
+
+    font-size: 40px;
+
+    font-weight: bold;
+}
+
+
+
+
+
+/* 모바일 */
+
+@media (max-width: 600px) {
+
+    #card {
+        margin-top: 20px;
+
+        padding: 20px;
+    }
+
+    #hanja {
+        width: 180px;
+
+        font-size: 30px;
+    }
+
+    #result_mean {
+        font-size: 32px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div id="card">
+
+
+    <input
+        type="text"
+        id="hanja"
+        placeholder="한자 입력"
+        maxlength="1"
+        oninput="getUnicodeLink()"
+    >
+
+
+    <div id="result"></div>
+
+
+    <div id="result_mean"></div>
+
+
+
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================
+   현재 애니메이션 타이머
+===================================== */
+
+let animationTimer = null;
+
+
+/* =====================================
+   현재 입력된 한자
+===================================== */
+
+let currentHanja = "";
+
+
+/* =====================================
+   한자 SVG 가져오기
+===================================== */
+
+async function getUnicodeLink() {
+
+
+    let hanja =
+        document.getElementById("hanja").value.trim();
+
+
+    let result =
+        document.getElementById("result");
+
+
+    /*
+        입력값이 없으면
+        SVG와 뜻 모두 지움
+    */
+
+    if (hanja === "") {
+
+        currentHanja = "";
+
+        result.innerHTML = "";
+
+        document.getElementById("result_mean").innerHTML = "";
+
+        if (animationTimer !== null) {
+
+            clearTimeout(animationTimer);
+
+            animationTimer = null;
+
+        }
+
+        return;
+    }
+
+
+    /*
+        첫 번째 한자만 사용
+    */
+
+    hanja = hanja.charAt(0);
+
+    currentHanja = hanja;
+
+
+    /*
+        이전 애니메이션 중지
+    */
+
+    if (animationTimer !== null) {
+
+        clearTimeout(animationTimer);
+
+        animationTimer = null;
+
+    }
+
+
+    /*
+        유니코드
+    */
+
+    let unicode =
+        hanja.charCodeAt(0);
+
+
+    /*
+        SVG 주소
+    */
+
+    let url =
+        "https://raw.githubusercontent.com/skishore/makemeahanzi/618dbab8a8ddefb958763c8b4afbaa741a4460de/svgs/"
+        + unicode
+        + ".svg";
+
+
+    try {
+
+
+        let response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "파일을 찾을 수 없습니다 (404)"
+            );
+
+        }
+
+
+        let svg =
+            await response.text();
+
+
+        /*
+            SVG 수정
+        */
+
+        let lines =
+            svg.split("\n");
+
+
+        lines.splice(2, 4);
+
+
+        let modifiedSvg =
+            lines
+                .join("\n")
+                .replace(
+                    /stroke:\s*blue;/g,
+                    "stroke: black;"
+                );
+
+
+        /*
+            한자마다 마지막 획이 시작되는
+            animation-delay가 다름
+        */
+
+        let animations =
+            modifiedSvg.match(
+                /animation-delay:\s*(\d+\.?\d*)s/g
+            );
+
+
+        let maxDelay = 0;
+
+
+        if (animations) {
+
+            maxDelay =
+                Math.max(
+                    ...animations.map(
+                        anim =>
+                            parseFloat(
+                                anim.match(
+                                    /(\d+\.?\d*)s/
+                                )[1]
+                            )
+                    )
+                );
+
+        }
+
+
+        /*
+            기존 코드의 +1400ms를 유지
+
+            예:
+            마지막 획 시작 = 1.2초
+
+            1.2 + 1.4
+            = 2.6초마다 반복
+        */
+
+        let repeatTime =
+            maxDelay * 1000 + 1400;
+
+
+        /*
+            첫 번째 재생
+        */
+
+        playAnimation(modifiedSvg);
+
+
+        /*
+            반복 재생
+        */
+
+        function repeatAnimation() {
+
+
+            /*
+                다른 한자로 바뀌었으면
+                이 애니메이션은 종료
+            */
+
+            if (currentHanja !== hanja) {
+
+                return;
+
+            }
+
+
+            playAnimation(modifiedSvg);
+
+
+            animationTimer =
+                setTimeout(
+                    repeatAnimation,
+                    repeatTime
+                );
+
+        }
+
+
+        /*
+            첫 애니메이션이 끝난 후
+            다시 시작
+        */
+
+        animationTimer =
+            setTimeout(
+                repeatAnimation,
+                repeatTime
+            );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "SVG 로딩 실패:",
+            error
+        );
+
+        result.innerHTML = "";
+
+    }
+
+
+    /*
+        뜻 검색
+    */
+
+    searchHanja(hanja);
+
+}
+
+
+
+/* =====================================
+   SVG 애니메이션 재생
+===================================== */
+
+function playAnimation(svg) {
+
+
+    let result =
+        document.getElementById("result");
+
+
+    /*
+        기존 SVG 삭제
+    */
+
+    result.innerHTML = "";
+
+
+    /*
+        새 SVG 삽입
+    */
+
+    result.innerHTML = svg;
+
+
+    /*
+        SVG 찾기
+    */
+
+    let svgElement =
+        result.querySelector("svg");
+
+
+    if (svgElement) {
+
+        /*
+            애니메이션 초기화
+        */
+
+        svgElement.style.animation = "none";
+
+
+        /*
+            강제로 다시 그리게 함
+        */
+
+        void svgElement.offsetWidth;
+
+
+        /*
+            애니메이션 다시 시작
+        */
+
+        svgElement.style.animation = "";
+
+    }
+
+}
+
+
+
+/* =====================================
+   한자의 뜻 검색
+===================================== */
+
+async function fetchHanjaData() {
+
+
+    const response =
+        await fetch(
+            "https://raw.githubusercontent.com/myungcheol/hanja/refs/heads/master/hanja.txt"
+        );
+
+
+    const text =
+        await response.text();
+
+
+    return text
+        .split("\n")
+        .map(line => line.split("="));
+
+}
+
+
+
+/* =====================================
+   뜻 표시
+===================================== */
+
+async function searchHanja(hanja) {
+
+
+    const result_meanDiv =
+        document.getElementById("result_mean");
+
+
+    if (!hanja) {
+
+        result_meanDiv.innerHTML = "";
+
+        return;
+
+    }
+
+
+    try {
+
+
+        const hanjaData =
+            await fetchHanjaData();
+
+
+        const entry =
+            hanjaData.find(
+                ([character]) =>
+                    character === hanja
+            );
+
+
+        if (entry) {
+
+            const meaning =
+                entry[1]
+                    .split(",")[0]
+                    .trim();
+
+
+            result_meanDiv.innerHTML =
+                meaning;
+
+        }
+
+        else {
+
+            result_meanDiv.innerHTML = "";
+
+        }
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "한자 뜻 검색 실패:",
+            error
+        );
+
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>
