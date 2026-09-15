@@ -1,0 +1,37 @@
+[
+    {
+        "hanja": "山",
+        "meaning": "산",
+        "reading": "산",
+        "examples": ["산악", "등산", "화산"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "水",
+        "meaning": "물",
+        "reading": "수",
+        "examples": ["수영", "수도", "홍수"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "火",
+        "meaning": "불",
+        "reading": "화",
+        "examples": ["화재", "화산", "화요일"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "木",
+        "meaning": "나무",
+        "reading": "목",
+        "examples": ["목재", "목성", "목요일"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "金",
+        "meaning": "쇠",
+        "reading": "금",
+        "examples": ["금속", "황금", "금요일"],
+        "strokeCount": 8
+    }
+]
