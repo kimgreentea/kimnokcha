@@ -146,7 +146,7 @@
         "hanja": "日",
         "meaning": "날",
         "reading": "일",
-        "examples": ["일요일", "매일", "생일"],
+        "examples": ["일요일", "일본", "생일"],
         "strokeCount": 4
     },
     {
@@ -352,5 +352,117 @@
         "examples": ["목표", "과목", "주목"],
         "strokeCount": 5
     }
+    {
+        "hanja": "韓",
+        "meaning": "한국",
+        "reading": "한",
+        "examples": ["한국", "한복", "대한"],
+        "strokeCount": 17
+    },
+    {
+        "hanja": "美",
+        "meaning": "아름답다",
+        "reading": "미",
+        "examples": ["미국", "미술", "미인"],
+        "strokeCount": 9
+    },
+    {
+        "hanja": "國",
+        "meaning": "나라",
+        "reading": "국",
+        "examples": ["국가", "한국", "외국"],
+        "strokeCount": 11
+    },
+    {
+        "hanja": "福",
+        "meaning": "복",
+        "reading": "복",
+        "examples": ["행복", "복지", "축복"],
+        "strokeCount": 14
+    },
+    {
+        "hanja": "新",
+        "meaning": "새롭다",
+        "reading": "신",
+        "examples": ["신제품", "신문", "신학기"],
+        "strokeCount": 13
+    }
 
+        {
+        "hanja": "家",
+        "meaning": "집",
+        "reading": "가",
+        "examples": ["가족", "가정", "국가"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "江",
+        "meaning": "강",
+        "reading": "강",
+        "examples": ["강산", "한강", "강변"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "車",
+        "meaning": "수레",
+        "reading": "차 / 거",
+        "examples": ["자동차", "기차", "자전거"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "軍",
+        "meaning": "군사",
+        "reading": "군",
+        "examples": ["군대", "군인", "육군"],
+        "strokeCount": 9
+    },
+    {
+        "hanja": "萬",
+        "meaning": "일만",
+        "reading": "만",
+        "examples": ["만세", "만물", "만원"],
+        "strokeCount": 13
+    },
+    {
+        "hanja": "道",
+        "meaning": "길",
+        "reading": "도",
+        "examples": ["도로", "도리", "도덕"],
+        "strokeCount": 12
+    },
+    {
+        "hanja": "明",
+        "meaning": "밝다",
+        "reading": "명",
+        "examples": ["명확", "설명", "문명"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "食",
+        "meaning": "먹다",
+        "reading": "식",
+        "examples": ["식사", "음식", "식당"],
+        "strokeCount": 9
+    },
+    {
+        "hanja": "孝",
+        "meaning": "효도",
+        "reading": "효",
+        "examples": ["효도", "효자", "효녀"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "海",
+        "meaning": "바다",
+        "reading": "해",
+        "examples": ["해변", "해외", "동해"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "靑",
+        "meaning": "푸르다",
+        "reading": "청",
+        "examples": ["청색", "청춘", "청소년"],
+        "strokeCount": 8
+    }
 ]
