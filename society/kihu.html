@@ -354,147 +354,90 @@
        모바일
     ========================================================= */
 
-    @media (max-width: 768px) {
-
-        body {
-
-            width: 100%;
-
-            max-width: 100%;
-
-            margin-top: 30px;
-
-            padding: 0 12px;
-        }
-
-
-        .question {
-
-            padding: 10px;
-
-            font-size: 15pt;
-
-            line-height: 1.6;
-        }
-
-
-        .moonje {
-
-            font-size: 5vw;
-
-            margin-bottom: 12px;
-        }
-
-
-        .number {
-
-            font-size: 5vw;
-
-            width: auto;
-
-            margin-right: 8px;
-
-            margin-bottom: 10px;
-        }
-
-
-        .explanation {
-
-            margin: 8px 0 5px 0;
-
-            padding: 10px 12px;
-
-            font-size: 4vw;
-
-            line-height: 1.5;
-        }
-
-
-        .bogi {
-
-            padding: 10px;
-
-            margin-bottom: 8px;
-        }
-
-
-        .question label {
-
-            padding: 10px 5px;
-
-            margin-bottom: 8px;
-
-            font-size: 4.5vw;
-
-            line-height: 1.5;
-        }
-
-
-        .question input[type="radio"] {
-
-            width: 20px;
-
-            height: 20px;
-
-            margin-right: 8px;
-
-            vertical-align: middle;
-        }
-
-
-        input[type="text"] {
-
-            width: 100%;
-
-            max-width: 100%;
-
-            padding: 15px;
-
-            font-size: 5vw;
-
-            box-sizing: border-box;
-        }
-
-
-        input[type="file"] {
-
-            width: 100%;
-
-            font-size: 4vw;
-        }
-
-
-        input[type="file"]::file-selector-button {
-
-            font-size: 4vw;
-
-            padding: 10px 15px;
-        }
-
-
-        textarea {
-
-            width: 100%;
-
-            height: 250px;
-
-            font-size: 11px;
-
-            box-sizing: border-box;
-        }
-
-
-        button {
-
-            font-size: 4vw;
-
-            padding: 10px 16px;
-
-            margin-bottom: 8px;
-        }
-
+@media (max-width: 768px) {
+
+    body {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 30px;
+        padding: 0 12px;
     }
 
+    .question {
+        padding: 10px;
+        font-size: 15pt;
+        line-height: 1.6;
+    }
+
+    .moonje {
+        font-size: clamp(20px, 5vw, 30px);
+        margin-bottom: 12px;
+    }
+
+    .number {
+        font-size: clamp(20px, 5vw, 30px);
+        width: auto;
+        margin-right: 8px;
+        margin-bottom: 10px;
+    }
+
+    .explanation {
+        margin: 8px 0 5px 0;
+        padding: 10px 12px;
+        font-size: clamp(16px, 4vw, 24px);
+        line-height: 1.5;
+    }
+
+    .bogi {
+        padding: 10px;
+        margin-bottom: 8px;
+    }
+
+    .question label {
+        padding: 10px 5px;
+        margin-bottom: 8px;
+        font-size: clamp(17px, 4.5vw, 25px);
+        line-height: 1.5;
+    }
+
+    .question input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        max-width: 100%;
+        padding: 15px;
+        font-size: clamp(18px, 5vw, 28px);
+        box-sizing: border-box;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        font-size: clamp(16px, 4vw, 22px);
+    }
+
+    input[type="file"]::file-selector-button {
+        font-size: clamp(16px, 4vw, 22px);
+        padding: 10px 15px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 250px;
+        font-size: 11px;
+        box-sizing: border-box;
+    }
+
+    button {
+        font-size: clamp(16px, 4vw, 22px);
+        padding: 10px 16px;
+        margin-bottom: 8px;
+    }
+}
 </style>
 
 </style>
