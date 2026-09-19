@@ -321,13 +321,7 @@
         "examples": ["학생", "생일", "생활"],
         "strokeCount": 5
     },
-    {
-        "hanja": "心",
-        "meaning": "마음",
-        "reading": "심",
-        "examples": ["심장", "관심", "중심"],
-        "strokeCount": 4
-    },
+
     {
         "hanja": "力",
         "meaning": "힘",
@@ -384,20 +378,7 @@
         "examples": ["신제품", "신문", "신학기"],
         "strokeCount": 13
     },
-    {
-        "hanja": "家",
-        "meaning": "집",
-        "reading": "가",
-        "examples": ["가족", "가정", "국가"],
-        "strokeCount": 10
-    },
-    {
-        "hanja": "江",
-        "meaning": "강",
-        "reading": "강",
-        "examples": ["강산", "한강", "강변"],
-        "strokeCount": 6
-    },
+
     {
         "hanja": "車",
         "meaning": "수레",
