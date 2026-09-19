@@ -1,58 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-          href="https://pyscript.net/releases/2024.1.1/core.css">
-
-    <script type="module"
-            src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    <title>한자 검사</title>
 </head>
-
 <body>
 
-<button id="run">실행</button>
+<h1>한자 검사</h1>
 
-<pre id="output"></pre>
+<p>전체 개수: <span id="total"></span></p>
 
-<script type="py">
-import js
-import sys
-import io
-from pyodide.ffi import create_proxy
+<h2>중복된 한자</h2>
+<div id="duplicate"></div>
 
+<h2>전체 한자</h2>
+<div id="list"></div>
 
-async def run(event):
-    output = js.document.querySelector("#output")
+<script>
 
-    try:
-        # check.py 가져오기
-        response = await js.fetch("check.py")
-        code = await response.text()
+fetch("https://kimgreentea.github.io/kimnokcha/hanja/words.json")
+    .then(response => response.json())
+    .then(data => {
 
-        # print() 결과를 저장
-        new_stdout = io.StringIO()
-        old_stdout = sys.stdout
-        sys.stdout = new_stdout
+        // 1. 중복 검사
+        const count = {};
 
-        try:
-            exec(code, {"__name__": "__main__"})
-        finally:
-            sys.stdout = old_stdout
+        for (let item of data) {
 
-        output.innerText = new_stdout.getvalue()
+            const hanja = item.hanja;
 
-    except Exception as e:
-        output.innerText = str(e)
+            if (count[hanja]) {
+                count[hanja]++;
+            }
+            else {
+                count[hanja] = 1;
+            }
+
+        }
 
 
-button = js.document.querySelector("#run")
+        // 중복 출력
+        let duplicate = "";
 
-button.addEventListener(
-    "click",
-    create_proxy(run)
-)
+        for (let hanja in count) {
+
+            if (count[hanja] > 1) {
+                duplicate += `${hanja} : ${count[hanja]}번<br>`;
+            }
+
+        }
+
+        if (duplicate === "") {
+            duplicate = "중복 없음";
+        }
+
+        document.querySelector("#duplicate").innerHTML = duplicate;
+
+
+        // 2. 전체 개수
+        document.querySelector("#total").textContent = data.length;
+
+
+        // 3. 중복 여부와 관계없이 모든 한자 출력
+        let list = "";
+
+        for (let item of data) {
+            list += item.hanja + " ";
+        }
+
+        document.querySelector("#list").textContent = list;
+
+    });
+
 </script>
 
 </body>
