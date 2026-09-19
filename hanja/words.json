@@ -1711,6 +1711,27 @@
     "reading": "간",
     "examples": ["시간", "인간", "간식"],
     "strokeCount": 12
+},
+{
+    "hanja": "空",
+    "meaning": "비다",
+    "reading": "공",
+    "examples": ["공간", "공백", "공군"],
+    "strokeCount": 8
+},
+{
+    "hanja": "洋",
+    "meaning": "큰바다",
+    "reading": "양",
+    "examples": ["양말", "태평양", "양복"],
+    "strokeCount": 8
+},
+{
+    "hanja": "色",
+    "meaning": "빛",
+    "reading": "색",
+    "examples": ["백색", "특색", "색맹"],
+    "strokeCount": 7
 }
     
 ]
