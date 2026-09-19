@@ -1788,6 +1788,356 @@
     "reading": "운",
     "examples": ["운무", "청운", "백운"],
     "strokeCount": 12
+},
+{
+    "hanja": "勇",
+    "meaning": "날래다",
+    "reading": "용",
+    "examples": ["용기", "용감", "용맹"],
+    "strokeCount": 9
+},
+{
+    "hanja": "助",
+    "meaning": "돕다",
+    "reading": "조",
+    "examples": ["보조", "조력", "원조"],
+    "strokeCount": 7
+},
+{
+    "hanja": "勝",
+    "meaning": "이기다",
+    "reading": "승",
+    "examples": ["승리", "승부", "우승"],
+    "strokeCount": 12
+},
+{
+    "hanja": "負",
+    "meaning": "지다",
+    "reading": "부",
+    "examples": ["승부", "부담", "자부심"],
+    "strokeCount": 9
+},
+{
+    "hanja": "異",
+    "meaning": "다르다",
+    "reading": "이",
+    "examples": ["이상", "차이", "이견"],
+    "strokeCount": 11
+},
+{
+    "hanja": "合",
+    "meaning": "합하다",
+    "reading": "합",
+    "examples": ["합계", "결합", "합동"],
+    "strokeCount": 6
+},
+{
+    "hanja": "別",
+    "meaning": "나누다",
+    "reading": "별",
+    "examples": ["별도", "이별", "구별"],
+    "strokeCount": 7
+},
+{
+    "hanja": "始",
+    "meaning": "비로소",
+    "reading": "시",
+    "examples": ["시작", "개시", "시초"],
+    "strokeCount": 8
+},
+{
+    "hanja": "終",
+    "meaning": "마치다",
+    "reading": "종",
+    "examples": ["종료", "최종", "종말"],
+    "strokeCount": 11
+},
+{
+    "hanja": "早",
+    "meaning": "이르",
+    "reading": "조",
+    "examples": ["조기", "조속", "조급"],
+    "strokeCount": 6
+},
+{
+    "hanja": "晩",
+    "meaning": "늦다",
+    "reading": "만",
+    "examples": ["만년", "만추", "조만간"],
+    "strokeCount": 11
+},
+{
+    "hanja": "近",
+    "meaning": "가깝다",
+    "reading": "근",
+    "examples": ["근처", "최근", "근접"],
+    "strokeCount": 8
+},
+{
+    "hanja": "遠",
+    "meaning": "멀다",
+    "reading": "원",
+    "examples": ["원거리", "원격", "영원"],
+    "strokeCount": 13
+},
+{
+    "hanja": "廣",
+    "meaning": "넓다",
+    "reading": "광",
+    "examples": ["광장", "광범위", "광역"],
+    "strokeCount": 15
+},
+{
+    "hanja": "狹",
+    "meaning": "좁다",
+    "reading": "협",
+    "examples": ["협소", "협곡", "협로"],
+    "strokeCount": 10
+},
+{
+    "hanja": "古",
+    "meaning": "옛",
+    "reading": "고",
+    "examples": ["고대", "고전", "고향"],
+    "strokeCount": 5
+},
+{
+    "hanja": "晝",
+    "meaning": "낮",
+    "reading": "주",
+    "examples": ["주야", "백주", "주간"],
+    "strokeCount": 11
+},
+{
+    "hanja": "室",
+    "meaning": "집",
+    "reading": "실",
+    "examples": ["교실", "실내", "왕실"],
+    "strokeCount": 9
+},
+{
+    "hanja": "窓",
+    "meaning": "창문",
+    "reading": "창",
+    "examples": ["창문", "창가", "철창"],
+    "strokeCount": 11
+},
+{
+    "hanja": "店",
+    "meaning": "가게",
+    "reading": "점",
+    "examples": ["상점", "서점", "점포"],
+    "strokeCount": 8
+},
+{
+    "hanja": "場",
+    "meaning": "마당",
+    "reading": "장",
+    "examples": ["시장", "공장", "장소"],
+    "strokeCount": 12
+},
+{
+    "hanja": "所",
+    "meaning": "바",
+    "reading": "소",
+    "examples": ["장소", "주소", "소원"],
+    "strokeCount": 8
+},
+{
+    "hanja": "飲",
+    "meaning": "마시다",
+    "reading": "음",
+    "examples": ["음료", "음주", "음식"],
+    "strokeCount": 13
+},
+{
+    "hanja": "飯",
+    "meaning": "밥",
+    "reading": "반",
+    "examples": ["식반", "조반", "반찬"],
+    "strokeCount": 12
+},
+{
+    "hanja": "服",
+    "meaning": "옷",
+    "reading": "복",
+    "examples": ["의복", "교복", "복장"],
+    "strokeCount": 8
+},
+{
+    "hanja": "客",
+    "meaning": "손님",
+    "reading": "객",
+    "examples": ["고객", "승객", "관객"],
+    "strokeCount": 9
+},
+{
+    "hanja": "族",
+    "meaning": "겨레",
+    "reading": "족",
+    "examples": ["가족", "민족", "부족"],
+    "strokeCount": 11
+},
+{
+    "hanja": "親",
+    "meaning": "친하다",
+    "reading": "친",
+    "examples": ["친구", "친척", "친밀"],
+    "strokeCount": 16
+},
+{
+    "hanja": "理",
+    "meaning": "다스리다",
+    "reading": "리",
+    "examples": ["논리", "원리", "관리"],
+    "strokeCount": 11
+},
+{
+    "hanja": "由",
+    "meaning": "말미암다",
+    "reading": "유",
+    "examples": ["이유", "자유", "유래"],
+    "strokeCount": 5
+},
+{
+    "hanja": "意",
+    "meaning": "뜻",
+    "reading": "의",
+    "examples": ["의미", "의견", "주의"],
+    "strokeCount": 13
+},
+{
+    "hanja": "思",
+    "meaning": "생각하",
+    "reading": "사",
+    "examples": ["사고", "사상", "사유"],
+    "strokeCount": 9
+},
+{
+    "hanja": "題",
+    "meaning": "제목",
+    "reading": "제",
+    "examples": ["문제", "제목", "과제"],
+    "strokeCount": 18
+},
+{
+    "hanja": "方",
+    "meaning": "모",
+    "reading": "방",
+    "examples": ["방법", "방향", "방면"],
+    "strokeCount": 4
+},
+{
+    "hanja": "向",
+    "meaning": "향하다",
+    "reading": "향",
+    "examples": ["방향", "향상", "경향"],
+    "strokeCount": 6
+},
+{
+    "hanja": "回",
+    "meaning": "돌아오다",
+    "reading": "회",
+    "examples": ["회전", "회복", "일회용"],
+    "strokeCount": 6
+},
+{
+    "hanja": "起",
+    "meaning": "일어나다",
+    "reading": "기",
+    "examples": ["기상", "기립", "기원"],
+    "strokeCount": 10
+},
+{
+    "hanja": "止",
+    "meaning": "그치다",
+    "reading": "지",
+    "examples": ["정지", "중지", "금지"],
+    "strokeCount": 4
+},
+{
+    "hanja": "入",
+    "meaning": "들어오다",
+    "reading": "입",
+    "examples": ["입구", "입학", "출입"],
+    "strokeCount": 2
+},
+{
+    "hanja": "出",
+    "meaning": "나가다",
+    "reading": "출",
+    "examples": ["출구", "출발", "외출"],
+    "strokeCount": 5
+},
+{
+    "hanja": "開",
+    "meaning": "열다",
+    "reading": "개",
+    "examples": ["개방", "개학", "공개"],
+    "strokeCount": 12
+},
+{
+    "hanja": "閉",
+    "meaning": "닫다",
+    "reading": "폐",
+    "examples": ["폐쇄", "폐문", "개폐"],
+    "strokeCount": 11
+},
+{
+    "hanja": "收",
+    "meaning": "거두다",
+    "reading": "수",
+    "examples": ["수입", "수확", "수집"],
+    "strokeCount": 6
+},
+{
+    "hanja": "送",
+    "meaning": "보내다",
+    "reading": "송",
+    "examples": ["배송", "송금", "전송"],
+    "strokeCount": 9
+},
+{
+    "hanja": "受",
+    "meaning": "받다",
+    "reading": "수",
+    "examples": ["수업", "수고", "인수"],
+    "strokeCount": 8
+},
+{
+    "hanja": "君",
+    "meaning": "임금",
+    "reading": "군",
+    "examples": ["군주", "군자", "제군"],
+    "strokeCount": 7
+},
+{
+    "hanja": "臣",
+    "meaning": "신하",
+    "reading": "신",
+    "examples": ["신하", "충신", "대신"],
+    "strokeCount": 6
+},
+{
+    "hanja": "民",
+    "meaning": "백성",
+    "reading": "민",
+    "examples": ["국민", "시민", "민족"],
+    "strokeCount": 5
+},
+{
+    "hanja": "官",
+    "meaning": "벼슬",
+    "reading": "관",
+    "examples": ["기관", "관청", "관리"],
+    "strokeCount": 8
+},
+{
+    "hanja": "私",
+    "meaning": "사사롭다",
+    "reading": "사",
+    "examples": ["사유", "사립", "사생활"],
+    "strokeCount": 7
 }
     
 ]
