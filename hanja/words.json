@@ -1689,7 +1689,28 @@
     "meaning": "바르다",
     "reading": "정",
     "examples": ["공정", "개정", "정규"],
-    "strokeCount": 7
+    "strokeCount": 5
+}    ,
+{
+    "hanja": "答",
+    "meaning": "대답",
+    "reading": "답",
+    "examples": ["대답", "답안", "정답"],
+    "strokeCount": 12
+},
+{
+    "hanja": "問",
+    "meaning": "묻다",
+    "reading": "문",
+    "examples": ["질문", "문제", "문답"],
+    "strokeCount": 11
+},
+{
+    "hanja": "間",
+    "meaning": "사이",
+    "reading": "간",
+    "examples": ["시간", "인간", "간식"],
+    "strokeCount": 12
 }
     
 ]
