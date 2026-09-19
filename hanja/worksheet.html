@@ -4,13 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오늘의 한자</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     background: #eee;
     font-family: "Malgun Gothic", sans-serif;
 }
+
 .controls {
     width: 210mm;
     margin: 15px auto;
@@ -18,10 +23,24 @@ body {
     background: white;
     text-align: center;
 }
-.controls input { width: 60px; font-size: 16px; padding: 4px; }
-.controls button { font-size: 16px; padding: 6px 15px; margin-left: 8px; }
 
-.pages { display: flex; flex-direction: column; align-items: center; }
+.controls input {
+    width: 60px;
+    font-size: 16px;
+    padding: 4px;
+}
+
+.controls button {
+    font-size: 16px;
+    padding: 6px 15px;
+    margin-left: 8px;
+}
+
+.pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .page {
     width: 210mm;
@@ -58,9 +77,17 @@ table {
     table-layout: fixed;
 }
 
-col.hanja-col { width: 12.5%; }
-col.info-col { width: 25%; }
-col.write-col { width: 12.5%; }
+col.hanja-col {
+    width: 12.5%;
+}
+
+col.info-col {
+    width: 25%;
+}
+
+col.write-col {
+    width: 12.5%;
+}
 
 td {
     border: 1px solid #222;
@@ -85,34 +112,87 @@ td {
     margin-bottom: 3px;
 }
 
-.examples { font-size: 14px; }
+.examples {
+    font-size: 14px;
+}
 
 .write-cell {
     background-image:
-        linear-gradient(to right, transparent 49.5%, #d7eeee 49.5%, #d7eeee 50.5%, transparent 50.5%),
-        linear-gradient(to bottom, transparent 49.5%, #d7eeee 49.5%, #d7eeee 50.5%, transparent 50.5%);
+        linear-gradient(
+            to right,
+            transparent 49.5%,
+            #d7eeee 49.5%,
+            #d7eeee 50.5%,
+            transparent 50.5%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 49.5%,
+            #d7eeee 49.5%,
+            #d7eeee 50.5%,
+            transparent 50.5%
+        );
 }
 
 .write-cell::before {
     content: "";
     display: block;
     height: 100%;
+
     background:
-        linear-gradient(to right, transparent 24.5%, #d7eeee 24.5%, #d7eeee 25%, transparent 25%),
-        linear-gradient(to bottom, transparent 24.5%, #d7eeee 24.5%, #d7eeee 25%, transparent 25%),
-        linear-gradient(to right, transparent 74.5%, #d7eeee 74.5%, #d7eeee 75%, transparent 75%),
-        linear-gradient(to bottom, transparent 74.5%, #d7eeee 74.5%, #d7eeee 75%, transparent 75%);
+        linear-gradient(
+            to right,
+            transparent 24.5%,
+            #d7eeee 24.5%,
+            #d7eeee 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 24.5%,
+            #d7eeee 24.5%,
+            #d7eeee 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            to right,
+            transparent 74.5%,
+            #d7eeee 74.5%,
+            #d7eeee 75%,
+            transparent 75%
+        ),
+        linear-gradient(
+            to bottom,
+            transparent 74.5%,
+            #d7eeee 74.5%,
+            #d7eeee 75%,
+            transparent 75%
+        );
 }
 
 @media print {
-    @page { size: A4 portrait; margin: 0; }
-    body { background: white; }
-    .controls { display: none; }
+
+    @page {
+        size: A4 portrait;
+        margin: 0;
+    }
+
+    body {
+        background: white;
+    }
+
+    .controls {
+        display: none;
+    }
+
     .page {
         margin: 0;
         page-break-after: always;
     }
-    .page:last-child { page-break-after: auto; }
+
+    .page:last-child {
+        page-break-after: auto;
+    }
 }
 </style>
 </head>
@@ -120,51 +200,114 @@ td {
 <body>
 
 <div class="controls">
+
     학습지 개수:
-    <input id="pageCount" type="number" value="1" min="1" max="50">
+    <input
+        id="pageCount"
+        type="number"
+        value="1"
+        min="1"
+        max="50"
+    >
 
     한 장당 한자:
-    <input id="wordCount" type="number" value="10" min="1">
+    <input
+        id="wordCount"
+        type="number"
+        value="10"
+        min="1"
+    >
 
     목표 총획수:
-    <input id="strokeTarget" type="number" value="50" min="1">
+    <input
+        id="strokeTarget"
+        type="number"
+        value="50"
+        min="1"
+    >
 
-    <button onclick="makeWorksheets()">학습지 만들기</button>
-    <button onclick="window.print()">인쇄</button>
+    <button onclick="makeWorksheets()">
+        학습지 만들기
+    </button>
+
+    <button onclick="window.print()">
+        인쇄
+    </button>
 
     <div id="status"></div>
+
 </div>
 
 <div id="pages" class="pages"></div>
 
+
 <script>
+
 let words = [];
 
+
+/* =========================
+   words.json 불러오기
+   ========================= */
+
 async function loadWords() {
+
     try {
+
         const response = await fetch("words.json");
-        if (!response.ok) throw new Error("words.json을 불러올 수 없습니다.");
+
+        if (!response.ok) {
+            throw new Error(
+                "words.json을 불러올 수 없습니다."
+            );
+        }
+
         words = await response.json();
+
+        console.log(
+            "불러온 한자 개수:",
+            words.length
+        );
+
+        console.log(
+            "불러온 데이터:",
+            words
+        );
+
+        /*
+            JSON을 정상적으로 불러온 뒤
+            학습지를 처음 한 번 생성
+        */
+
         makeWorksheets();
+
     } catch (error) {
+
         document.getElementById("pages").innerHTML =
             "<p>words.json을 불러오지 못했습니다.</p>";
-        console.error(error);
+
+        console.error(
+            "JSON 로딩 실패:",
+            error
+        );
     }
 }
 
-function loadWords() {
-    makeWorksheets();
-}
 
-function getRandomWordsByStrokeTarget(wordCount, target) {
+/* =========================
+   정확한 총획수 조합 찾기
+   ========================= */
+
+function getRandomWordsByStrokeTarget(
+    wordCount,
+    target
+) {
 
     /*
-        정확히 wordCount개의 한자를 고르면서
-        획수의 합이 target이 되도록 찾는다.
+        words를 먼저 섞는다.
 
-        words를 먼저 섞기 때문에 같은 조건에서도
-        매번 다른 조합이 나올 수 있다.
+        같은 조건이라도
+        매번 다른 한자가 선택될 수 있다.
     */
 
     let shuffled =
@@ -174,11 +317,20 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
 
 
     /*
-        dp[count][sum] = 선택한 한자들의 배열
+        dp[count][sum]
+
+        count:
+        현재까지 선택한 한자 개수
+
+        sum:
+        현재까지의 총획수
 
         예:
+
         dp[10][50]
-        → 10개의 한자를 골라 총 50획
+
+        → 10개의 한자를 골랐고
+          총획수가 50
     */
 
     let dp =
@@ -186,6 +338,14 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
             { length: wordCount + 1 },
             () => new Map()
         );
+
+
+    /*
+        아직 아무것도 선택하지 않은 상태
+
+        한자 0개
+        총획수 0
+    */
 
     dp[0].set(0, []);
 
@@ -197,8 +357,10 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
 
 
         /*
-            뒤에서부터 갱신해야
-            같은 한자를 두 번 사용하는 것을 막을 수 있다.
+            뒤에서부터 갱신
+
+            그래야 같은 한자가
+            한 조합에서 여러 번 사용되지 않는다.
         */
 
         for (
@@ -208,7 +370,8 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
         ) {
 
             for (
-                let [sum, selected] of dp[count]
+                let [sum, selected]
+                of dp[count]
             ) {
 
                 let newSum =
@@ -220,7 +383,15 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
                 }
 
 
-                if (!dp[count + 1].has(newSum)) {
+                /*
+                    같은 개수 + 같은 총획수의
+                    조합은 하나만 저장
+                */
+
+                if (
+                    !dp[count + 1]
+                        .has(newSum)
+                ) {
 
                     dp[count + 1].set(
                         newSum,
@@ -236,68 +407,122 @@ function getRandomWordsByStrokeTarget(wordCount, target) {
     }
 
 
-    return dp[wordCount].get(target) || null;
+    /*
+        정확히 wordCount개이고
+        총획수가 target인 조합 반환
+    */
+
+    return (
+        dp[wordCount].get(target)
+        || null
+    );
 }
 
 
+/* =========================
+   학습지 만들기
+   ========================= */
+
 function makeWorksheets() {
 
+
+    /* 한자 데이터가 충분한지 확인 */
+
     if (words.length < 10) {
-        alert("한자가 충분하지 않습니다.");
+
+        alert(
+            "한자가 충분하지 않습니다.\n\n" +
+            `현재 불러온 한자: ${words.length}개`
+        );
+
         return;
     }
 
 
+    /* 입력값 가져오기 */
+
     const pageCount =
         Number(
-            document.getElementById("pageCount").value
+            document.getElementById(
+                "pageCount"
+            ).value
         );
 
 
     const wordCount =
         Number(
-            document.getElementById("wordCount").value
+            document.getElementById(
+                "wordCount"
+            ).value
         );
 
 
     const target =
         Number(
-            document.getElementById("strokeTarget").value
+            document.getElementById(
+                "strokeTarget"
+            ).value
         );
 
 
-    if (wordCount < 1 || wordCount > words.length) {
+    /* 한 장당 한자 개수 확인 */
+
+    if (
+        wordCount < 1 ||
+        wordCount > words.length
+    ) {
+
         alert(
-            "한 장당 한자 수는 1 이상, 전체 한자 수 이하로 입력하세요."
+            "한 장당 한자 수는 1 이상, " +
+            "전체 한자 수 이하로 입력하세요."
         );
+
         return;
     }
 
 
+    /* 총획수 확인 */
+
     if (target < 1) {
-        alert("목표 총획수는 1 이상으로 입력하세요.");
+
+        alert(
+            "목표 총획수는 1 이상으로 입력하세요."
+        );
+
         return;
     }
 
 
     let pages =
-        document.getElementById("pages");
+        document.getElementById(
+            "pages"
+        );
+
 
     let status =
-        document.getElementById("status");
+        document.getElementById(
+            "status"
+        );
+
 
     pages.innerHTML = "";
-    status.innerText = "학습지를 만드는 중...";
 
+    status.innerText =
+        "학습지를 만드는 중...";
 
-    /*
-        각 학습지를 목표 총획수에 맞춰 만든다.
-    */
 
     let worksheetData = [];
 
 
-    for (let p = 0; p < pageCount; p++) {
+    /* =========================
+       학습지별 한자 조합 찾기
+       ========================= */
+
+    for (
+        let p = 0;
+        p < pageCount;
+        p++
+    ) {
 
         let selected =
             getRandomWordsByStrokeTarget(
@@ -306,6 +531,8 @@ function makeWorksheets() {
             );
 
 
+        /* 조합을 찾지 못한 경우 */
+
         if (!selected) {
 
             status.innerText = "";
@@ -313,7 +540,8 @@ function makeWorksheets() {
             alert(
                 `${p + 1}번째 학습지를 만들 수 없습니다.\n\n` +
                 `${wordCount}개의 한자 총획수를 ` +
-                `${target}획으로 맞출 수 있는 조합이 없습니다.\n\n` +
+                `${target}획으로 맞출 수 있는 ` +
+                `조합이 없습니다.\n\n` +
                 `목표 총획수를 바꿔보세요.`
             );
 
@@ -321,22 +549,27 @@ function makeWorksheets() {
         }
 
 
-        worksheetData.push(selected);
-
+        worksheetData.push(
+            selected
+        );
     }
 
 
-    /*
-        찾은 조합을 화면에 출력
-    */
+    /* =========================
+       화면에 학습지 출력
+       ========================= */
 
     worksheetData.forEach(
         (selected, p) => {
 
             const page =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
-            page.className = "page";
+
+            page.className =
+                "page";
 
 
             page.innerHTML = `
@@ -346,89 +579,131 @@ function makeWorksheets() {
                 </div>
 
                 <div class="info">
-                    <span>날짜 (　　/　　/　　)</span>
-                    <span>이름 (　　　　　)</span>
-                    <span>사유 (　　　　　　　　　)</span>
+
+                    <span>
+                        날짜 (　　/　　/　　)
+                    </span>
+
+                    <span>
+                        이름 (　　　　　)
+                    </span>
+
+                    <span>
+                        사유 (　　　　　　　　　)
+                    </span>
+
                 </div>
 
                 <div class="instruction">
-                    글자의 모양을 생각하며 바르게 글씨를 써봅시다.
+                    글자의 모양을 생각하며
+                    바르게 글씨를 써봅시다.
                 </div>
 
                 <table>
+
                     <colgroup>
+
                         <col class="hanja-col">
                         <col class="info-col">
+
                         <col class="write-col">
                         <col class="write-col">
                         <col class="write-col">
                         <col class="write-col">
                         <col class="write-col">
+
                     </colgroup>
+
                     <tbody></tbody>
+
                 </table>
             `;
 
 
             const tbody =
-                page.querySelector("tbody");
+                page.querySelector(
+                    "tbody"
+                );
 
 
-            selected.forEach(word => {
+            /* 한자 하나씩 행 생성 */
 
-                const row =
-                    document.createElement("tr");
+            selected.forEach(
+                word => {
 
-
-                const examples =
-                    Array.isArray(word.examples)
-                        ? word.examples.join(", ")
-                        : word.examples;
-
-
-                row.innerHTML = `
-
-                    <td class="hanja">
-                        ${word.hanja}
-                    </td>
-
-                    <td class="word-info">
-
-                        <div class="meaning-reading">
-                            ${word.meaning} ${word.reading}
-                        </div>
-
-                        <div class="examples">
-                            ${examples}
-                        </div>
-
-                    </td>
-
-                    <td class="write-cell"></td>
-                    <td class="write-cell"></td>
-                    <td class="write-cell"></td>
-                    <td class="write-cell"></td>
-                    <td class="write-cell"></td>
-
-                `;
+                    const row =
+                        document.createElement(
+                            "tr"
+                        );
 
 
-                tbody.appendChild(row);
+                    const examples =
+                        Array.isArray(
+                            word.examples
+                        )
+                            ? word.examples.join(", ")
+                            : word.examples;
 
-            });
+
+                    row.innerHTML = `
+
+                        <td class="hanja">
+                            ${word.hanja}
+                        </td>
+
+                        <td class="word-info">
+
+                            <div
+                                class="meaning-reading"
+                            >
+                                ${word.meaning}
+                                ${word.reading}
+                            </div>
+
+                            <div class="examples">
+                                ${examples}
+                            </div>
+
+                        </td>
+
+                        <td class="write-cell"></td>
+                        <td class="write-cell"></td>
+                        <td class="write-cell"></td>
+                        <td class="write-cell"></td>
+                        <td class="write-cell"></td>
+
+                    `;
 
 
-            pages.appendChild(page);
+                    tbody.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            pages.appendChild(
+                page
+            );
 
         }
     );
 
 
     status.innerText =
-        `${pageCount}장 생성 완료 · 모든 학습지 ${wordCount}자 · ${target}획`;
+        `${pageCount}장 생성 완료 · ` +
+        `모든 학습지 ${wordCount}자 · ` +
+        `${target}획`;
 }
 
+
+/* =========================
+   페이지가 열리면 JSON 불러오기
+   ========================= */
+
 loadWords();
+
 </script>
 
 </body>
