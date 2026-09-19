@@ -1,12 +1,11 @@
 from pyodide.http import open_url
 from collections import Counter
+import json
 
 url = "https://kimgreentea.github.io/kimnokcha/hanja/words.json"
 
 response = open_url(url)
-response.raise_for_status()
-
-words = response.json()
+words = json.load(response)
 
 counts = Counter(word["hanja"] for word in words)
 
