@@ -6,7 +6,7 @@
 
     <meta charset="UTF-8">
 
-    <title>생성</title>
+    <title>랜덤 생성</title>
 
 
     <style>
@@ -364,7 +364,7 @@
     <button
         onclick="
             window.location.href=
-            'template2026.xlsx';
+            'https://kimgreentea.github.io/kimnokcha/quiz/template2026.xlsx';
         "
     >
         다운로드
@@ -465,7 +465,7 @@
                 if (!file) {
                     return;
                 }
-
+                event.target.value = '';
 
                 /* 파일을 읽기 위한 FileReader */
 
@@ -1015,7 +1015,7 @@
 
 
             const quizScript = `
-
+(() => {
 
 /* =========================================================
    정답 데이터
@@ -1056,6 +1056,7 @@ let questions =
             '.question'
         )
     );
+
 
 
 
@@ -1469,7 +1470,16 @@ document
     }
 );
 
+})();
 `;
+
+/* 주석을 제거한 JavaScript */
+const cleanJS =
+    quizScript
+        .replace(
+            /\/\*[\s\S]*?\*\//g,
+            ''
+        );
 
 
 
@@ -1519,7 +1529,7 @@ document
 
             htmlCode += `<script>
 
-${quizScript}
+${cleanJS}
 
 <\/script>`;
 
@@ -1532,7 +1542,23 @@ ${quizScript}
 
             ========================================================= */
 
-            codeContainer.value =
+const cleanCSS =
+    document
+        .querySelector('style')
+        .innerHTML
+        .replace(
+            /\/\*[\s\S]*?\*\//g,
+            ''
+        );
+
+const cleanHTML =
+    htmlCode.replace(
+        /<!--[\s\S]*?-->/g,
+        ''
+    );
+
+
+codeContainer.value =
 
 `<!DOCTYPE html>
 <html lang="ko">
@@ -1545,7 +1571,7 @@ ${quizScript}
 
 <style>
 
-${document.querySelector('style').innerHTML}
+${cleanCSS}
 
 </style>
 
@@ -1553,7 +1579,7 @@ ${document.querySelector('style').innerHTML}
 
 <body>
 
-${htmlCode}
+${cleanHTML}
 
 </body>
 
