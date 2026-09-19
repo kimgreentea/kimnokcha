@@ -2145,6 +2145,91 @@
     "reading": "전",
     "examples": ["전답", "화전", "염전"],
     "strokeCount": 5
+},
+{
+    "hanja": "要",
+    "meaning": "중요하다",
+    "reading": "요",
+    "examples": ["요구", "필요", "요점"],
+    "strokeCount": 9
+},
+{
+    "hanja": "曜",
+    "meaning": "빛나다",
+    "reading": "요",
+    "examples": ["요일", "흑요석", "월요병"],
+    "strokeCount": 18
+},
+{
+    "hanja": "黑",
+    "meaning": "검다",
+    "reading": "흑",
+    "examples": ["흑백", "흑색", "암흑"],
+    "strokeCount": 12
+},
+{
+    "hanja": "黨",
+    "meaning": "무리",
+    "reading": "당",
+    "examples": ["정당", "당원", "여당"],
+    "strokeCount": 20
+},
+{
+    "hanja": "堂",
+    "meaning": "집",
+    "reading": "당",
+    "examples": ["강당", "식당", "서당"],
+    "strokeCount": 11
+},
+{
+    "hanja": "兵",
+    "meaning": "병사",
+    "reading": "병",
+    "examples": ["병사", "병기", "병력"],
+    "strokeCount": 7
+},
+{
+    "hanja": "病",
+    "meaning": "병",
+    "reading": "병",
+    "examples": ["질병", "병원", "병세"],
+    "strokeCount": 10
+},
+{
+    "hanja": "包",
+    "meaning": "싸",
+    "reading": "포",
+    "examples": ["포장", "포함", "포대"],
+    "strokeCount": 5
+},
+{
+    "hanja": "楚",
+    "meaning": "초나라",
+    "reading": "초",
+    "examples": ["사면초가", "초왕", "초한"],
+    "strokeCount": 13
+},
+{
+    "hanja": "鹿",
+    "meaning": "사슴",
+    "reading": "록",
+    "examples": ["녹용", "지록위마"],
+    "strokeCount": 11
+},
+{
+    "hanja": "虎",
+    "meaning": "범",
+    "reading": "호",
+    "examples": ["백호", "용호상"],
+    "strokeCount": 8
+},
+{
+    "hanja": "好",
+    "meaning": "좋다",
+    "reading": "호",
+    "examples": ["기호식품", "호감", "선호"],
+    "strokeCount": 6
 }
+    
     
 ]
