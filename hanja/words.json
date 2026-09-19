@@ -27,6 +27,7 @@
         "examples": ["목재", "목성", "목요일"],
         "strokeCount": 4
     },
+
     {
         "hanja": "金",
         "meaning": "쇠",
@@ -407,13 +408,7 @@
         "examples": ["도로", "도리", "도덕"],
         "strokeCount": 12
     },
-    {
-        "hanja": "明",
-        "meaning": "밝다",
-        "reading": "명",
-        "examples": ["명확", "설명", "문명"],
-        "strokeCount": 8
-    },
+
     {
         "hanja": "食",
         "meaning": "먹다",
@@ -428,13 +423,7 @@
         "examples": ["효도", "효자", "효녀"],
         "strokeCount": 7
     },
-    {
-        "hanja": "海",
-        "meaning": "바다",
-        "reading": "해",
-        "examples": ["해변", "해외", "동해"],
-        "strokeCount": 10
-    },
+
     {
         "hanja": "靑",
         "meaning": "푸르다",
@@ -568,13 +557,7 @@
     "examples": ["우주", "우주선"],
     "strokeCount": 6
 },
-{
-    "hanja": "雨",
-    "meaning": "비",
-    "reading": "우",
-    "examples": ["우천", "강우", "우산"],
-    "strokeCount": 8
-},
+
 {
     "hanja": "主",
     "meaning": "주인",
@@ -1015,5 +998,549 @@
     "reading": "조",
     "examples": ["조류","백조"],
     "strokeCount": 11
+},
+
+
+   {
+        "hanja": "化",
+        "meaning": "되다",
+        "reading": "화",
+        "examples": ["변화", "화학", "현대화"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "和",
+        "meaning": "화하다",
+        "reading": "화",
+        "examples": ["화목", "평화", "조화"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "花",
+        "meaning": "꽃",
+        "reading": "화",
+        "examples": ["화초", "화분", "개화"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "平",
+        "meaning": "평평하다",
+        "reading": "평",
+        "examples": ["평화", "평등", "평균"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "發",
+        "meaning": "일어나다",
+        "reading": "발",
+        "examples": ["발생", "발견", "출발"],
+        "strokeCount": 12
+    },
+    {
+        "hanja": "集",
+        "meaning": "모으다",
+        "reading": "집",
+        "examples": ["집합", "수집", "모집"],
+        "strokeCount": 12
+    },
+    {
+        "hanja": "完",
+        "meaning": "완전하다",
+        "reading": "완",
+        "examples": ["완성", "완료", "완벽"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "體",
+        "meaning": "몸",
+        "reading": "체",
+        "examples": ["신체", "체육", "전체"],
+        "strokeCount": 23
+    },
+    {
+        "hanja": "用",
+        "meaning": "쓰다",
+        "reading": "용",
+        "examples": ["사용", "이용", "활용"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "容",
+        "meaning": "얼굴",
+        "reading": "용",
+        "examples": ["용모", "내용", "수용"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "里",
+        "meaning": "마을",
+        "reading": "리",
+        "examples": ["이장", "십리", "삼천리"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "育",
+        "meaning": "기르다",
+        "reading": "육",
+        "examples": ["교육", "육성", "체육"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "京",
+        "meaning": "서울",
+        "reading": "경",
+        "examples": ["경복궁", "북경", "동경"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "光",
+        "meaning": "빛",
+        "reading": "광",
+        "examples": ["광선", "광합성"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "今",
+        "meaning": "이제",
+        "reading": "금",
+        "examples": ["금일", "지금", "금주"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "急",
+        "meaning": "급하다",
+        "reading": "급",
+        "examples": ["급행", "긴급", "성급"],
+        "strokeCount": 9
+    },
+    {
+        "hanja": "分",
+        "meaning": "나누다",
+        "reading": "분",
+        "examples": ["구분", "분리", "분배"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "時",
+        "meaning": "때",
+        "reading": "시",
+        "examples": ["시간", "시기", "당시"],
+        "strokeCount": 10
+    },
+    {
+        "hanja": "市",
+        "meaning": "저자",
+        "reading": "시",
+        "examples": ["시장", "도시", "시민"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "本",
+        "meaning": "근본",
+        "reading": "본",
+        "examples": ["기본", "본질", "본래"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "末",
+        "meaning": "끝",
+        "reading": "말",
+        "examples": ["주말", "연말", "말단"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "未",
+        "meaning": "아니다",
+        "reading": "미",
+        "examples": ["미래", "미완성", "미정"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "米",
+        "meaning": "쌀",
+        "reading": "미",
+        "examples": ["백미", "현미"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "味",
+        "meaning": "맛",
+        "reading": "미",
+        "examples": ["미각", "미뢰"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "行",
+        "meaning": "다니다",
+        "reading": "행",
+        "examples": ["여행", "행동", "실행"],
+        "strokeCount": 6
+    },
+    {
+        "hanja": "士",
+        "meaning": "선비",
+        "reading": "사",
+        "examples": ["박사", "병사", "변호사"],
+        "strokeCount": 3
+    },
+    {
+        "hanja": "史",
+        "meaning": "역사",
+        "reading": "사",
+        "examples": ["역사", "자연사", "사서"],
+        "strokeCount": 5
+    },
+    {
+        "hanja": "德",
+        "meaning": "덕",
+        "reading": "덕",
+        "examples": ["도덕", "덕목"],
+        "strokeCount": 15
+    },
+    {
+        "hanja": "李",
+        "meaning": "오얏",
+        "reading": "리",
+        "examples": ["장삼이사", "이화"],
+        "strokeCount": 7
+    },
+    {
+        "hanja": "區",
+        "meaning": "구역",
+        "reading": "구",
+        "examples": ["구청", "구역", "구별"],
+        "strokeCount": 11
+    },
+    {
+        "hanja": "野",
+        "meaning": "들",
+        "reading": "야",
+        "examples": ["야외", "야생", "야당"],
+        "strokeCount": 11
+    },
+    {
+        "hanja": "與",
+        "meaning": "주다",
+        "reading": "여",
+        "examples": ["참여", "여당", "관여"],
+        "strokeCount": 14
+    },
+    {
+        "hanja": "夜",
+        "meaning": "밤",
+        "reading": "야",
+        "examples": ["야간", "야경", "심야"],
+        "strokeCount": 8
+    },
+    {
+        "hanja": "太",
+        "meaning": "크다",
+        "reading": "태",
+        "examples": ["태양", "태평양"],
+        "strokeCount": 4
+    },
+    {
+        "hanja": "敎",
+        "meaning": "가르치다",
+        "reading": "교",
+        "examples": ["교육", "교사", "종교"],
+        "strokeCount": 11
+    },
+    {
+        "hanja": "交",
+        "meaning": "사귀다",
+        "reading": "교",
+        "examples": ["교류", "교환", "교통"],
+        "strokeCount": 6
+    },
+
+{
+    "hanja": "工",
+    "meaning": "장인",
+    "reading": "공",
+    "examples": ["공업", "공사", "공장"],
+    "strokeCount": 3
+},
+{
+    "hanja": "漢",
+    "meaning": "한나라",
+    "reading": "한",
+    "examples": ["한자", "한문", "한강"],
+    "strokeCount": 14
+},
+{
+    "hanja": "村",
+    "meaning": "마을",
+    "reading": "촌",
+    "examples": ["농촌", "어촌", "촌락"],
+    "strokeCount": 7
+},
+{
+    "hanja": "寸",
+    "meaning": "마디",
+    "reading": "촌",
+    "examples": ["촌수", "촌각", "촌철살인"],
+    "strokeCount": 3
+},
+{
+    "hanja": "竹",
+    "meaning": "대나무",
+    "reading": "죽",
+    "examples": ["죽림", "죽순"],
+    "strokeCount": 6
+},
+{
+    "hanja": "海",
+    "meaning": "바다",
+    "reading": "해",
+    "examples": ["해변", "해상", "해양"],
+    "strokeCount": 10
+},
+{
+    "hanja": "賣",
+    "meaning": "팔다",
+    "reading": "매",
+    "examples": ["매매", "판매", "매출"],
+    "strokeCount": 15
+},
+{
+    "hanja": "買",
+    "meaning": "사다",
+    "reading": "매",
+    "examples": ["매매", "구매", "매입"],
+    "strokeCount": 12
+},
+{
+    "hanja": "梅",
+    "meaning": "매화",
+    "reading": "매",
+    "examples": ["매화", "매실", "매화주"],
+    "strokeCount": 11
+},
+{
+    "hanja": "每",
+    "meaning": "매양",
+    "reading": "매",
+    "examples": ["매일", "매번", "매년"],
+    "strokeCount": 7
+},
+{
+    "hanja": "不",
+    "meaning": "아니다",
+    "reading": "불",
+    "examples": ["불가능", "불만", "불평"],
+    "strokeCount": 4
+},
+{
+    "hanja": "夫",
+    "meaning": "남편",
+    "reading": "부",
+    "examples": ["부부", "농부"],
+    "strokeCount": 4
+},
+{
+    "hanja": "婦",
+    "meaning": "아내",
+    "reading": "부",
+    "examples": ["부인", "부녀", "부부"],
+    "strokeCount": 11
+},
+{
+    "hanja": "石",
+    "meaning": "돌",
+    "reading": "석",
+    "examples": ["석굴", "석상", "보석"],
+    "strokeCount": 5
+},
+{
+    "hanja": "夕",
+    "meaning": "저녁",
+    "reading": "석",
+    "examples": ["석양", "조석", "추석"],
+    "strokeCount": 3
+},
+{
+    "hanja": "面",
+    "meaning": "낯",
+    "reading": "면",
+    "examples": ["면담", "면접", "표면"],
+    "strokeCount": 9
+},
+
+{
+    "hanja": "動",
+    "meaning": "움직이다",
+    "reading": "동",
+    "examples": ["운동", "이동", "동작"],
+    "strokeCount": 11
+},
+{
+    "hanja": "同",
+    "meaning": "같다",
+    "reading": "동",
+    "examples": ["동일", "동료", "동감"],
+    "strokeCount": 6
+},
+{
+    "hanja": "重",
+    "meaning": "무겁다",
+    "reading": "중",
+    "examples": ["중요", "중량", "중대"],
+    "strokeCount": 9
+},
+{
+    "hanja": "草",
+    "meaning": "풀",
+    "reading": "초",
+    "examples": ["초원", "약초", "잡초"],
+    "strokeCount": 9
+},
+{
+    "hanja": "初",
+    "meaning": "처음",
+    "reading": "초",
+    "examples": ["초등", "초보", "최초"],
+    "strokeCount": 7
+},
+{
+    "hanja": "各",
+    "meaning": "각각",
+    "reading": "각",
+    "examples": ["각각", "각자", "각국"],
+    "strokeCount": 6
+},
+{
+    "hanja": "角",
+    "meaning": "뿔",
+    "reading": "각",
+    "examples": ["각도", "삼각형", "예각"],
+    "strokeCount": 7
+},
+{
+    "hanja": "公",
+    "meaning": "공평하다",
+    "reading": "공",
+    "examples": ["공공", "공원", "공평"],
+    "strokeCount": 4
+},
+{
+    "hanja": "對",
+    "meaning": "대하다",
+    "reading": "대",
+    "examples": ["대상", "대응", "상대"],
+    "strokeCount": 14
+},
+{
+    "hanja": "明",
+    "meaning": "밝다",
+    "reading": "명",
+    "examples": ["명확", "설명", "문명"],
+    "strokeCount": 8
+},
+{
+    "hanja": "成",
+    "meaning": "이루다",
+    "reading": "성",
+    "examples": ["성공", "완성", "성립"],
+    "strokeCount": 7
+},
+{
+    "hanja": "在",
+    "meaning": "있다",
+    "reading": "재",
+    "examples": ["존재", "재학", "현재"],
+    "strokeCount": 6
+},
+{
+    "hanja": "才",
+    "meaning": "재주",
+    "reading": "재",
+    "examples": ["재능", "천재", "재주"],
+    "strokeCount": 3
+},
+{
+    "hanja": "戰",
+    "meaning": "싸우다",
+    "reading": "전",
+    "examples": ["전쟁", "전투", "전략"],
+    "strokeCount": 16
+},
+{
+    "hanja": "電",
+    "meaning": "번개",
+    "reading": "전",
+    "examples": ["전기", "전화", "전력"],
+    "strokeCount": 13
+},
+{
+    "hanja": "風",
+    "meaning": "바람",
+    "reading": "풍",
+    "examples": ["풍속", "강풍", "태풍"],
+    "strokeCount": 9
+},
+{
+    "hanja": "雨",
+    "meaning": "비",
+    "reading": "우",
+    "examples": ["우산", "강우", "우기"],
+    "strokeCount": 8
+},
+{
+    "hanja": "雪",
+    "meaning": "눈",
+    "reading": "설",
+    "examples": ["설경", "폭설", "제설"],
+    "strokeCount": 11
+},
+{
+    "hanja": "半",
+    "meaning": "반",
+    "reading": "반",
+    "examples": ["절반", "반년", "과반"],
+    "strokeCount": 5
+},
+{
+    "hanja": "反",
+    "meaning": "돌이키다",
+    "reading": "반",
+    "examples": ["반대", "반응", "반격"],
+    "strokeCount": 4
+},
+{
+    "hanja": "現",
+    "meaning": "나타나다",
+    "reading": "현",
+    "examples": ["현재", "현상", "표현"],
+    "strokeCount": 11
+},
+{
+    "hanja": "衣",
+    "meaning": "옷",
+    "reading": "의",
+    "examples": ["의복", "의상", "탈의"],
+    "strokeCount": 6
+},
+{
+    "hanja": "黃",
+    "meaning": "누렇다",
+    "reading": "황",
+    "examples": ["황금", "황색", "황토"],
+    "strokeCount": 12
+},
+{
+    "hanja": "鮮",
+    "meaning": "곱다",
+    "reading": "선",
+    "examples": ["조선", "생선", "선명"],
+    "strokeCount": 17
+},
+{
+    "hanja": "情",
+    "meaning": "뜻",
+    "reading": "정",
+    "examples": ["감정", "우정", "애정"],
+    "strokeCount": 11
 }
+
 ]
