@@ -2243,6 +2243,20 @@
     "reading": "하",
     "examples": ["하여간", "기하학", "하필"],
     "strokeCount": 7
-}   
+},
+{
+    "hanja": "干",
+    "meaning": "방패",
+    "reading": "간",
+    "examples": ["간섭", "간척", "천간"],
+    "strokeCount": 3
+},
+{
+    "hanja": "看",
+    "meaning": "보다",
+    "reading": "간",
+    "examples": ["간과", "간병", "간호"],
+    "strokeCount": 9
+}      
     
 ]
