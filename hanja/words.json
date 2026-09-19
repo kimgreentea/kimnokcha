@@ -39,70 +39,70 @@
         "hanja": "一",
         "meaning": "하나",
         "reading": "일",
-        "examples": ["일일", "일등", "통일"],
+        "examples": ["균일", "삼일", "통일"],
         "strokeCount": 1
     },
     {
         "hanja": "二",
         "meaning": "둘",
         "reading": "이",
-        "examples": ["이월", "이등", "십이"],
+        "examples": ["이진법", "이분법", "십이"],
         "strokeCount": 2
     },
     {
         "hanja": "三",
         "meaning": "셋",
         "reading": "삼",
-        "examples": ["삼월", "삼각", "삼일"],
+        "examples": ["삼국지", "삼각", "삼한사온"],
         "strokeCount": 3
     },
     {
         "hanja": "四",
         "meaning": "넷",
         "reading": "사",
-        "examples": ["사월", "사방", "사계"],
+        "examples": ["사주", "사방", "사계"],
         "strokeCount": 5
     },
     {
         "hanja": "五",
         "meaning": "다섯",
         "reading": "오",
-        "examples": ["오월", "오십", "오일"],
+        "examples": ["오곡", "오미자", "삼강오륜"],
         "strokeCount": 4
     },
     {
         "hanja": "六",
         "meaning": "여섯",
         "reading": "육",
-        "examples": ["육이오", "육십"],
+        "examples": ["사육신", "오장육부"],
         "strokeCount": 4
     },
     {
         "hanja": "七",
         "meaning": "일곱",
         "reading": "칠",
-        "examples": ["칠월", "칠십", "칠일"],
+        "examples": ["북두칠성", "칠지도"],
         "strokeCount": 2
     },
     {
         "hanja": "八",
         "meaning": "여덟",
         "reading": "팔",
-        "examples": ["팔월", "팔십", "팔방"],
+        "examples": ["팔방미인", "팔도강산"],
         "strokeCount": 2
     },
     {
         "hanja": "九",
         "meaning": "아홉",
         "reading": "구",
-        "examples": ["구월", "구구단", "구일"],
+        "examples": ["구미호", "구구단", "구공탄"],
         "strokeCount": 2
     },
     {
         "hanja": "十",
         "meaning": "열",
         "reading": "십",
-        "examples": ["십월", "십자", "십년"],
+        "examples": ["십장생", "십자", "왕십리"],
         "strokeCount": 2
     },
     {
