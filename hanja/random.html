@@ -22,7 +22,13 @@ body {
     padding: 30px;
     background-color: white;
     border-radius: 20px;
+    box-sizing: border-box;
     box-shadow: 0 5px 20px #ccc;
+}
+@media (max-width: 550px) {
+    #card {
+        width: 95%;
+    }
 }
 
 #result {
@@ -30,7 +36,12 @@ body {
     height: 300px;
     margin: 0 auto;
 }
-
+@media (max-width: 450px) {
+   #result {
+        width: 80%;
+        height:80%;
+    }
+}
 
 /* 뜻 / 음 */
 
@@ -157,7 +168,7 @@ async function loadWords() {
     try {
 
         let response =
-            await fetch("words.json");
+            await fetch("https://kimgreentea.github.io/kimnokcha/hanja/words.json");
 
 
         if (!response.ok) {
