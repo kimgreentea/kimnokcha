@@ -2222,7 +2222,27 @@
     "reading": "호",
     "examples": ["기호식품", "호감", "선호"],
     "strokeCount": 6
-}
+},
+{
+    "hanja": "慶",
+    "meaning": "경사",
+    "reading": "경",
+    "examples": ["경축", "경사", "경하"],
+    "strokeCount": 15
+},
+{
+    "hanja": "祝",
+    "meaning": "빌다",
+    "reading": "축",
+    "examples": ["축하", "축복", "경축"],
+    "strokeCount": 9
+},
+{
+    "hanja": "何",
+    "meaning": "어찌",
+    "reading": "하",
+    "examples": ["하여간", "기하학", "하필"],
+    "strokeCount": 7
     
     
 ]
