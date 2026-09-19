@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet"
+          href="https://pyscript.net/releases/2024.1.1/core.css">
+
+    <script type="module"
+            src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</head>
+
+<body>
+
+<button id="run">실행</button>
+
+<pre id="output"></pre>
+
+<script type="py">
+import js
+import sys
+import io
+from pyodide.ffi import create_proxy
+
+
+async def run(event):
+    output = js.document.querySelector("#output")
+
+    try:
+        # check.py 가져오기
+        response = await js.fetch("check.py")
+        code = await response.text()
+
+        # print() 결과를 저장
+        new_stdout = io.StringIO()
+        old_stdout = sys.stdout
+        sys.stdout = new_stdout
+
+        try:
+            exec(code, {"__name__": "__main__"})
+        finally:
+            sys.stdout = old_stdout
+
+        output.innerText = new_stdout.getvalue()
+
+    except Exception as e:
+        output.innerText = str(e)
+
+
+button = js.document.querySelector("#run")
+
+button.addEventListener(
+    "click",
+    create_proxy(run)
+)
+</script>
+
+</body>
+</html>
