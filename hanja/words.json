@@ -1549,5 +1549,139 @@
     "examples": ["사망", "사인", "생사"],
     "strokeCount": 11
 }
-
+,
+{
+    "hanja": "名",
+    "meaning": "이름",
+    "reading": "명",
+    "examples": ["명품", "성명", "명명"],
+    "strokeCount": 11
+},
+{
+    "hanja": "春",
+    "meaning": "봄",
+    "reading": "춘",
+    "examples": ["춘분", "청춘", "입춘"],
+    "strokeCount": 9
+},
+{
+    "hanja": "夏",
+    "meaning": "여름",
+    "reading": "하",
+    "examples": ["하계", "하지", "초하"],
+    "strokeCount": 10
+},
+{
+    "hanja": "秋",
+    "meaning": "가을",
+    "reading": "추",
+    "examples": ["추분", "추수", "추석"],
+    "strokeCount": 9
+},
+{
+    "hanja": "冬",
+    "meaning": "겨울",
+    "reading": "동",
+    "examples": ["동계", "동절", "월동"],
+    "strokeCount": 5
+},
+{
+    "hanja": "言",
+    "meaning": "말씀",
+    "reading": "언",
+    "examples": ["언어", "발언", "언론"],
+    "strokeCount": 7
+},
+{
+    "hanja": "性",
+    "meaning": "성품",
+    "reading": "성",
+    "examples": ["성격", "성질", "본성"],
+    "strokeCount": 8
+},
+{
+    "hanja": "姓",
+    "meaning": "성",
+    "reading": "성",
+    "examples": ["성씨", "성명", "복성"],
+    "strokeCount": 8
+},
+{
+    "hanja": "豆",
+    "meaning": "콩",
+    "reading": "두",
+    "examples": ["두부", "대두", "녹두"],
+    "strokeCount": 7
+},
+{
+    "hanja": "羊",
+    "meaning": "양",
+    "reading": "양",
+    "examples": ["양모", "산양"],
+    "strokeCount": 6
+},
+{
+    "hanja": "眞",
+    "meaning": "참",
+    "reading": "진",
+    "examples": ["진실", "사진", "진리"],
+    "strokeCount": 10
+},
+{
+    "hanja": "安",
+    "meaning": "편안",
+    "reading": "안",
+    "examples": ["안전", "안심", "평안"],
+    "strokeCount": 6
+},
+{
+    "hanja": "因",
+    "meaning": "인하다",
+    "reading": "인",
+    "examples": ["원인", "인과", "인연"],
+    "strokeCount": 6
+},
+{
+    "hanja": "鼻",
+    "meaning": "코",
+    "reading": "비",
+    "examples": ["비염", "비공", "비강"],
+    "strokeCount": 14
+},
+{
+    "hanja": "亡",
+    "meaning": "망하다",
+    "reading": "망",
+    "examples": ["망국", "망명", "사망"],
+    "strokeCount": 3
+},
+{
+    "hanja": "比",
+    "meaning": "견주다",
+    "reading": "비",
+    "examples": ["비교", "비례", "대비"],
+    "strokeCount": 4
+},
+{
+    "hanja": "河",
+    "meaning": "물",
+    "reading": "하",
+    "examples": ["하천", "은하", "운하"],
+    "strokeCount": 8
+},
+{
+    "hanja": "冷",
+    "meaning": "차다",
+    "reading": "랭",
+    "examples": ["냉면", "냉장", "냉방"],
+    "strokeCount": 7
+},
+{
+    "hanja": "低",
+    "meaning": "낮다",
+    "reading": "저",
+    "examples": ["저가", "저학년", "저지대"],
+    "strokeCount": 7
+}
+    
 ]
