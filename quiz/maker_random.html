@@ -1,0 +1,1751 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>📄 문제 생성기</title>
+
+
+    <style>
+
+        /* =========================================================
+           한글 폰트
+        ========================================================= */
+
+        @font-face {
+            font-family: 'NotoSerifKR';
+
+            src: url(
+                'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff'
+            ) format('woff');
+
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+
+            src: url(
+                'https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff'
+            ) format('woff');
+
+            font-weight: 400;
+            font-style: normal;
+        }
+
+
+        /* =========================================================
+           전체 페이지
+        ========================================================= */
+
+        body {
+            font-family: 'Pretendard-Regular';
+        }
+
+
+        /* =========================================================
+           문제 하나의 전체 영역
+        ========================================================= */
+
+        .question {
+
+            padding: 20px;
+
+            font-size: 15pt;
+
+            font-family: 'NotoSerifKR';
+
+            line-height: 1.6;
+
+            background-size: auto;
+
+            background-position: left top;
+
+            background-repeat: no-repeat;
+        }
+
+
+        /* =========================================================
+           정답 / 오답 표시 이미지
+
+
+        ========================================================= */
+
+        .question.correct {
+
+            background-image:
+                url(
+                    'https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-O.png'
+                );
+        }
+
+
+        .question.wrong {
+
+            background-image:
+                url(
+                    'https://tistory2.daumcdn.net/tistory/4700529/skin/images/check-X.png'
+                );
+        }
+
+
+        /* =========================================================
+           문제 문장
+        ========================================================= */
+
+        .moonje {
+
+            font-family: 'Pretendard-Regular';
+
+            font-size: 20pt;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================================================
+           문제 번호
+        ========================================================= */
+
+        .number {
+
+            font-family: 'Pretendard-Regular';
+
+            font-size: 20pt;
+
+            margin-bottom: 15px;
+
+            margin-right: 10px;
+
+            color: #0078D6;
+
+            font-weight: bold;
+
+            vertical-align: top;
+
+            width: 40px;
+        }
+
+
+        /* =========================================================
+           문제 설명
+
+        ========================================================= */
+
+        .explanation {
+
+            margin: 10px 0 15px 50px;
+
+            padding: 12px 15px;
+
+            font-family: 'Pretendard-Regular';
+
+            font-size: 14pt;
+
+            color: #666;
+
+            background-color:
+                rgba(240, 240, 240, 0.7);
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           보기 전체 영역
+        ========================================================= */
+
+        .bogi {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+
+        }
+
+
+        /* =========================================================
+           객관식 보기 하나
+        ========================================================= */
+
+        .question label {
+
+            display: block;
+
+            margin-bottom: 10px;
+
+            padding: 5px;
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           라디오 버튼
+        ========================================================= */
+
+        .question input[type="radio"] {
+
+            margin-right: 10px;
+
+            width: 15px;
+
+            height: 15px;
+
+            accent-color: #0078D6;
+        }
+
+
+        /* =========================================================
+           사용자가 선택한 보기
+        ========================================================= */
+
+        .question label.selected {
+
+            background-color:
+                rgba(210, 210, 210, 0.8);
+        }
+
+
+        /* =========================================================
+           주관식 입력창
+        ========================================================= */
+
+        input[type="text"] {
+
+            padding: 20px;
+
+            font-size: 20px;
+
+            font-family: 'NotoSerifKR';
+
+            width: 100%;
+
+            max-width:
+                calc(100% - 40px);
+
+            border-radius: 15pt;
+
+            background-color:
+                rgba(230, 230, 230, 0.7);
+
+            border: none;
+
+            margin-bottom: 15pt;
+        }
+
+
+        /* =========================================================
+           파일 업로드 버튼
+        ========================================================= */
+
+        input[type="file"] {
+
+            font-size: 20px;
+
+            font-family: 'NotoSerifKR';
+
+            border: none;
+        }
+
+
+        input[type="file"]::file-selector-button {
+
+            background-color: #0078D4;
+
+            color: white;
+
+            font-size: 16px;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.3s ease;
+
+            margin-right: 10px;
+        }
+
+
+        input[type="file"]::file-selector-button:hover {
+
+            background-color: #005a9e;
+        }
+
+
+        /* =========================================================
+           생성된 HTML 코드 표시창
+        ========================================================= */
+
+        textarea {
+
+            width: 100%;
+
+            height: 300px;
+
+            font-size: 12px;
+
+            font-family: monospace;
+        }
+
+
+        /* =========================================================
+           일반 버튼
+        ========================================================= */
+
+        button {
+
+            background-color: #0078D4;
+
+            color: white;
+
+            font-size: 16px;
+
+            padding: 10px 20px;
+
+            border: none;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.3s ease;
+
+            margin-right: 10px;
+        }
+
+
+        button:hover {
+
+            background-color: #005a9e;
+        }
+
+
+        /* =========================================================
+           다음 문제 버튼
+
+        ========================================================= */
+
+        .next-btn {
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         1. 엑셀 양식 다운로드
+    ========================================================== -->
+
+    <h2>💾 양식 파일 다운로드</h2>
+
+
+    <button
+        onclick="
+            window.location.href=
+            'https://tistory1.daumcdn.net/tistory/7206619/skin/images/template.xlsx';
+        "
+    >
+        다운로드
+    </button>
+
+
+
+    <!-- =========================================================
+         2. 엑셀 파일 업로드
+    ========================================================== -->
+
+    <h2>📂 엑셀 파일 업로드</h2>
+
+
+    <input
+        type="file"
+        id="fileInput"
+        accept=".xlsx,.xls"
+    >
+
+
+
+    <!-- =========================================================
+         3. 생성된 HTML 코드
+    ========================================================== -->
+
+    <h2>📝 생성된 HTML 코드</h2>
+
+
+    <textarea
+        id="codeContainer"
+        readonly
+    ></textarea>
+
+
+    <br><br>
+
+
+    <button id="copyButton">
+        📋 복사하기
+    </button>
+
+
+    <button
+        id="saveButton"
+        onclick="saveAsHtml()"
+    >
+        💾 HTML로 저장
+    </button>
+
+
+
+    <!-- =========================================================
+         4. 미리보기
+    ========================================================== -->
+
+    <h2>👀 미리보기</h2>
+
+
+    <div id="questionsContainer"></div>
+
+
+
+    <!-- =========================================================
+         SheetJS
+
+         엑셀 파일 라이브러리
+    ========================================================== -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
+    </script>
+
+
+
+    <script>
+
+
+        /* =========================================================
+           엑셀 파일 업로드 처리
+        ========================================================== */
+
+        document
+        .getElementById('fileInput')
+        .addEventListener(
+            'change',
+            function(event) {
+
+
+                /* 사용자가 선택한 파일 */
+
+                const file =
+                    event.target.files[0];
+
+
+                /* 파일이 없으면 종료 */
+
+                if (!file) {
+                    return;
+                }
+
+
+                /* 파일을 읽기 위한 FileReader */
+
+                const reader =
+                    new FileReader();
+
+
+                /* 파일 읽기가 끝났을 때 실행 */
+
+                reader.onload =
+                    function(e) {
+
+
+                        /* 엑셀 파일의 바이너리 데이터 */
+
+                        const data =
+                            new Uint8Array(
+                                e.target.result
+                            );
+
+
+                        /* 엑셀 파일 열기 */
+
+                        const workbook =
+                            XLSX.read(
+                                data,
+                                {
+                                    type: 'array'
+                                }
+                            );
+
+
+                        /* 첫 번째 시트 가져오기 */
+
+                        const sheet =
+                            workbook.Sheets[
+                                workbook.SheetNames[0]
+                            ];
+
+
+                        /*
+
+                           엑셀을 배열 형태로 변환
+
+                           예:
+
+                           [
+                               ["문제", "설명", "보기1", ...],
+                               ["1+1=?", "덧셈", "1", ...],
+                               ...
+                           ]
+
+                        */
+
+                        const jsonData =
+                            XLSX.utils.sheet_to_json(
+                                sheet,
+                                {
+                                    header: 1
+                                }
+                            );
+
+
+                        /* 문제 생성 */
+
+                        generateQuestions(
+                            jsonData
+                        );
+
+                    };
+
+
+                /* 파일을 ArrayBuffer 형태로 읽기 */
+
+                reader.readAsArrayBuffer(
+                    file
+                );
+
+            }
+        );
+
+
+
+        /* =========================================================
+           문제 생성 함수
+
+        ========================================================== */
+
+        function generateQuestions(data) {
+
+
+            /* =====================================================
+               미리보기 영역
+            ===================================================== */
+
+            const container =
+                document.getElementById(
+                    'questionsContainer'
+                );
+
+
+            /* =====================================================
+               생성된 HTML 코드 표시 영역
+            ===================================================== */
+
+            const codeContainer =
+                document.getElementById(
+                    'codeContainer'
+                );
+
+
+            /* 이전 문제 제거 */
+
+            container.innerHTML = '';
+
+
+            /* =====================================================
+               정답 저장 객체
+
+            ===================================================== */
+
+            const answers = {};
+
+
+
+            /* =====================================================
+               실제 다운로드될 HTML 코드
+
+               문제 부분부터 문자열로 만들어 나감
+            ===================================================== */
+
+            let htmlCode =
+                `<div id="questionsContainer">`;
+
+
+
+            /* =====================================================
+               엑셀의 각 행을 처리
+
+            ===================================================== */
+
+            for (
+                let i = 1;
+                i < data.length;
+                i++
+            ) {
+
+
+                const row =
+                    data[i];
+
+
+                /* 빈 행은 건너뜀 */
+
+                if (
+                    !row ||
+                    row.length < 2
+                ) {
+                    continue;
+                }
+
+
+
+                /* =================================================
+                   A열
+                   문제
+                ================================================= */
+
+                const questionText =
+                    row[0] ?? '';
+
+
+
+                /* =================================================
+                   B열
+                   문제 설명
+                ================================================= */
+
+                const explanation =
+                    row[1] ?? '';
+
+
+
+                /* =================================================
+                   C~G열
+                   객관식 보기
+
+                   row[2] → C열
+                   row[3] → D열
+                   row[4] → E열
+                   row[5] → F열
+                   row[6] → G열
+                ================================================= */
+
+                const options =
+                    row
+                    .slice(2, 7)
+                    .filter(
+                        opt =>
+                            opt !== undefined &&
+                            opt !== null &&
+                            opt !== ''
+                    );
+
+
+
+                /* =================================================
+                   H열
+                   정답
+                ================================================= */
+
+                const answer =
+                    row[7]
+                    ?.toString()
+                    .trim() ?? '';
+
+
+
+                /* =================================================
+                   정답 저장
+
+                ================================================= */
+
+                const questionName =
+                    `q${i}`;
+
+
+                answers[questionName] =
+                    answer;
+
+
+
+                /* =================================================
+                   미리보기용 문제 DIV 생성
+                ================================================= */
+
+                const questionDiv =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                questionDiv.className =
+                    'question';
+
+
+
+                /* =================================================
+                   문제 번호 + 문제 + 설명
+
+                   설명이 비어 있으면
+                   explanation DIV를 만들지 않음
+                ================================================= */
+
+                questionDiv.innerHTML = `
+
+                    <span class="number">
+                        ${i}
+                    </span>
+
+                    <span class="moonje">
+                        ${questionText}
+                    </span>
+
+                    ${
+                        explanation
+                        ?
+                        `
+                        <div class="explanation">
+                            ${explanation}
+                        </div>
+                        `
+                        :
+                        ''
+                    }
+
+                `;
+
+
+
+                /* =================================================
+                   보기 영역 생성
+                ================================================= */
+
+                const bogiDiv =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                bogiDiv.className =
+                    'bogi';
+
+
+
+                /* =================================================
+                   객관식인지 주관식인지 판단
+
+                   보기의 개수가 1개 이상이면 객관식
+
+                   보기가 하나도 없으면 주관식
+                ================================================= */
+
+                if (
+                    options.length > 0
+                ) {
+
+
+                    /* ---------------------------------------------
+                       객관식 보기 생성
+                    --------------------------------------------- */
+
+                    options.forEach(
+                        (option, index) => {
+
+
+                            const label =
+                                document.createElement(
+                                    'label'
+                                );
+
+
+                            label.innerHTML = `
+
+                                <input
+                                    type="radio"
+                                    name="${questionName}"
+                                    value="${index + 1}"
+                                >
+
+                                ${option}
+
+                            `;
+
+
+                            bogiDiv.appendChild(
+                                label
+                            );
+
+                        }
+                    );
+
+
+                }
+
+                else {
+
+
+                    /* ---------------------------------------------
+                       주관식 입력창 생성
+                    --------------------------------------------- */
+
+                    const input =
+                        document.createElement(
+                            'input'
+                        );
+
+
+                    input.type =
+                        'text';
+
+
+                    input.name =
+                        questionName;
+
+
+                    input.classList.add(
+                        'subjective-input'
+                    );
+
+
+                    input.placeholder =
+                        '정답을 입력하세요';
+
+
+                    bogiDiv.appendChild(
+                        input
+                    );
+
+                }
+
+
+
+                /* 보기 영역을 문제에 추가 */
+
+                questionDiv.appendChild(
+                    bogiDiv
+                );
+
+
+
+                /* =================================================
+                   완성된 문제를 미리보기 화면에 추가
+                ================================================= */
+
+                container.appendChild(
+                    questionDiv
+                );
+
+
+
+                /* =================================================
+                   여기부터는 다운로드할 HTML 코드 생성
+                ================================================= */
+
+
+                let questionHTML = `
+
+<div class="question">
+
+    <span class="number">
+        ${i}
+    </span>
+
+    <span class="moonje">
+        ${questionText}
+    </span>
+
+    ${
+        explanation
+        ?
+        `
+    <div class="explanation">
+        ${explanation}
+    </div>
+        `
+        :
+        ''
+    }
+
+    <div class="bogi">
+`;
+
+
+
+                /* =================================================
+                   다운로드 HTML의 객관식 보기 생성
+                ================================================= */
+
+                if (
+                    options.length > 0
+                ) {
+
+
+                    options.forEach(
+                        (option, index) => {
+
+
+                            questionHTML += `
+
+        <label>
+
+            <input
+                type="radio"
+                name="${questionName}"
+                value="${index + 1}"
+            >
+
+            ${option}
+
+        </label>
+
+`;
+
+                        }
+                    );
+
+
+                }
+
+                else {
+
+
+                    /* =================================================
+                       다운로드 HTML의 주관식 입력창
+                    ================================================= */
+
+                    questionHTML += `
+
+        <input
+            type="text"
+            name="${questionName}"
+            class="subjective-input"
+            placeholder="정답을 입력하세요"
+        >
+
+`;
+
+                }
+
+
+
+                /* 문제 HTML 닫기 */
+
+                questionHTML += `
+
+    </div>
+
+</div>
+
+`;
+
+
+
+                /* 완성된 문제를 htmlCode에 추가 */
+
+                htmlCode +=
+                    questionHTML;
+
+            }
+
+
+
+            /* =========================================================
+               문제 HTML 종료
+            ========================================================= */
+
+            htmlCode += `
+
+</div>
+`;
+
+
+
+            /* =========================================================
+               정답 객체를 JSON 문자열로 변환
+
+            ========================================================= */
+
+            const answersJSON =
+                JSON.stringify(
+                    answers
+                );
+
+
+
+            /* =========================================================
+               중요!
+
+               여기 있는 스크립트가
+
+               1. 미리보기
+               2. 다운로드되는 HTML
+
+               양쪽에서 동일하게 사용됨.
+            ========================================================= */
+
+
+            const quizScript = `
+
+
+/* =========================================================
+   정답 데이터
+========================================================= */
+
+const answers =
+    ${answersJSON};
+
+
+
+/* =========================================================
+   현재 풀고 있는 문제 번호
+
+========================================================= */
+
+let currentQuestion = 0;
+
+
+
+/* =========================================================
+   문제 전체를 담는 컨테이너
+========================================================= */
+
+const quiz =
+    document.getElementById(
+        "questionsContainer"
+    );
+
+
+
+/* =========================================================
+   현재 존재하는 모든 문제 가져오기
+========================================================= */
+
+let questions =
+    Array.from(
+        document.querySelectorAll(
+            '.question'
+        )
+    );
+
+
+
+/* =========================================================
+   문제 랜덤 섞기
+
+   Fisher-Yates 알고리즘
+========================================================= */
+
+for (
+    let i = questions.length - 1;
+    i > 0;
+    i--
+) {
+
+    const j =
+        Math.floor(
+            Math.random() * (i + 1)
+        );
+
+
+    [
+        questions[i],
+        questions[j]
+    ] =
+    [
+        questions[j],
+        questions[i]
+    ];
+
+}
+
+
+
+/* =========================================================
+   랜덤으로 섞인 문제를
+   실제 DOM에도 다시 배치
+========================================================= */
+
+questions.forEach(
+    question => {
+
+        quiz.appendChild(
+            question
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   랜덤으로 섞은 뒤 문제 번호 다시 매기기
+
+========================================================= */
+
+questions.forEach(
+    (question, index) => {
+
+        const number =
+            question.querySelector(
+                '.number'
+            );
+
+
+        if (number) {
+
+            number.textContent =
+                index + 1;
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   처음에는 첫 번째 문제만 표시
+
+   나머지는 display:none
+========================================================= */
+
+questions.forEach(
+    (question, index) => {
+
+        if (index !== 0) {
+
+            question.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   다음 문제 버튼 생성 함수
+
+   문제를 맞혔을 때만 실행됨.
+========================================================= */
+
+function showNextButton(questionDiv) {
+
+
+    /* 이미 버튼이 있다면 또 만들지 않음 */
+
+    if (
+        questionDiv.querySelector(
+            '.next-btn'
+        )
+    ) {
+
+        return;
+
+    }
+
+
+
+    /* 버튼 생성 */
+
+    const btn =
+        document.createElement(
+            "button"
+        );
+
+
+    btn.textContent =
+        "다음 문제";
+
+
+    btn.className =
+        "next-btn";
+
+
+
+    /* =====================================================
+       버튼을 눌렀을 때
+    ===================================================== */
+
+    btn.onclick =
+        function() {
+
+
+            /* 현재 문제 숨기기 */
+
+            questions[
+                currentQuestion
+            ].style.display =
+                "none";
+
+
+
+            /* 다음 문제로 이동 */
+
+            currentQuestion++;
+
+
+
+            /* =================================================
+               다음 문제가 있으면 표시
+            ================================================= */
+
+            if (
+                questions[
+                    currentQuestion
+                ]
+            ) {
+
+
+                questions[
+                    currentQuestion
+                ].style.display =
+                    "block";
+
+
+            }
+
+            else {
+
+
+                /* =================================================
+                   모든 문제를 다 풀었을 때
+                ================================================= */
+
+                quiz.innerHTML +=
+                    "<h2>모든 문제를 풀었습니다!</h2>";
+
+            }
+
+
+
+            /* 사용한 버튼 제거 */
+
+            btn.remove();
+
+        };
+
+
+    /* 버튼을 현재 문제에 추가 */
+
+    questionDiv.appendChild(
+        btn
+    );
+
+}
+
+
+
+/* =========================================================
+   다음 문제 버튼 제거
+
+   오답을 선택하거나
+   주관식 답을 다시 틀렸을 때 사용
+========================================================= */
+
+function removeNextButton(
+    questionDiv
+) {
+
+    const btn =
+        questionDiv.querySelector(
+            '.next-btn'
+        );
+
+
+    if (btn) {
+
+        btn.remove();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   객관식 채점
+========================================================= */
+
+document
+.querySelectorAll(
+    '.question input[type="radio"]'
+)
+.forEach(
+    input => {
+
+
+        input.addEventListener(
+            'change',
+            function() {
+
+
+                /* 현재 문제 */
+
+                const questionDiv =
+                    this.closest(
+                        '.question'
+                    );
+
+
+
+                /* 현재 문제의 이름
+
+                   예:
+                   q1
+                   q2
+                   q3
+                */
+
+                const questionName =
+                    this.name;
+
+
+
+                /* 사용자가 선택한 보기 번호 */
+
+                const selectedValue =
+                    this.value;
+
+
+
+                /* 정답 가져오기 */
+
+                const correctAnswer =
+                    answers[
+                        questionName
+                    ];
+
+
+
+                /* 이전 정답/오답 상태 제거 */
+
+                questionDiv.classList.remove(
+                    'correct',
+                    'wrong'
+                );
+
+
+
+                /* 이전에 선택되어 있던 보기의
+                   selected 클래스 제거 */
+
+                questionDiv
+                .querySelectorAll(
+                    'label'
+                )
+                .forEach(
+                    label => {
+
+                        label.classList.remove(
+                            'selected'
+                        );
+
+                    }
+                );
+
+
+
+                /* 현재 선택한 보기 표시 */
+
+                this.parentElement
+                    .classList.add(
+                        'selected'
+                    );
+
+
+
+                /* =================================================
+                   정답 확인
+                ================================================= */
+
+                if (
+                    selectedValue ===
+                    correctAnswer
+                ) {
+
+
+                    /* 정답 */
+
+                    questionDiv.classList.add(
+                        'correct'
+                    );
+
+
+                    /* 다음 문제 버튼 표시 */
+
+                    showNextButton(
+                        questionDiv
+                    );
+
+
+                }
+
+                else {
+
+
+                    /* 오답 */
+
+                    questionDiv.classList.add(
+                        'wrong'
+                    );
+
+
+                    /* 다음 문제 버튼 제거 */
+
+                    removeNextButton(
+                        questionDiv
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   주관식 채점
+========================================================= */
+
+document
+.querySelectorAll(
+    '.subjective-input'
+)
+.forEach(
+    input => {
+
+
+        input.addEventListener(
+            'input',
+            function() {
+
+
+                /* 현재 문제 */
+
+                const questionDiv =
+                    this.closest(
+                        '.question'
+                    );
+
+
+
+                /* 현재 문제 이름 */
+
+                const questionName =
+                    this.name;
+
+
+
+                /* 사용자가 입력한 답
+
+                   앞뒤 공백 제거
+                */
+
+                const userAnswer =
+                    this.value.trim();
+
+
+
+                /* 정답 */
+
+                const correctAnswer =
+                    answers[
+                        questionName
+                    ];
+
+
+
+                /* 이전 상태 제거 */
+
+                questionDiv.classList.remove(
+                    'correct',
+                    'wrong'
+                );
+
+
+
+                /* =================================================
+                   정답이면
+                ================================================= */
+
+                if (
+                    userAnswer ===
+                    correctAnswer
+                ) {
+
+
+                    questionDiv.classList.add(
+                        'correct'
+                    );
+
+
+                    /* 다음 문제 버튼 생성 */
+
+                    showNextButton(
+                        questionDiv
+                    );
+
+                }
+
+
+                /* =================================================
+                   아직 틀렸으면
+                ================================================= */
+
+                else {
+
+                    removeNextButton(
+                        questionDiv
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+`;
+
+
+
+            /* =========================================================
+               ① 미리보기에서 위 스크립트 실행
+
+               현재 페이지의 DOM에는 이미 문제가 생성되어 있으므로
+               script 요소를 만들어 실행함.
+
+               따라서 미리보기에서도
+
+               - 문제 랜덤
+               - 번호 재배치
+               - 객관식 채점
+               - 주관식 채점
+               - O/X 표시
+               - 다음 문제
+
+               가 모두 작동함.
+            ========================================================= */
+
+
+            const previewScript =
+                document.createElement(
+                    'script'
+                );
+
+
+            previewScript.textContent =
+                quizScript;
+
+
+            document.body.appendChild(
+                previewScript
+            );
+
+
+
+            /* =========================================================
+               ② 다운로드될 HTML에 같은 스크립트 삽입
+
+               여기에는 미리보기와 똑같은 quizScript가 들어감.
+
+
+            ========================================================= */
+
+
+            htmlCode += `<script>
+
+${quizScript}
+
+<\/script>`;
+
+
+
+            /* =========================================================
+               최종 HTML 전체 만들기
+
+               현재 페이지의 CSS도 같이 복사함.
+
+            ========================================================= */
+
+            codeContainer.value =
+
+`<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>문제</title>
+
+<style>
+
+${document.querySelector('style').innerHTML}
+
+</style>
+
+</head>
+
+<body>
+
+${htmlCode}
+
+</body>
+
+</html>`;
+
+        }
+
+
+
+        /* =========================================================
+           생성된 HTML 코드 복사하기
+        ========================================================= */
+
+        document
+        .getElementById(
+            'copyButton'
+        )
+        .addEventListener(
+            'click',
+            function() {
+
+
+                const textarea =
+                    document.getElementById(
+                        'codeContainer'
+                    );
+
+
+                /* 전체 코드 선택 */
+
+                textarea.select();
+
+
+                /* 클립보드에 복사 */
+
+                document.execCommand(
+                    'copy'
+                );
+
+
+                /* 복사 완료 알림 */
+
+                alert(
+                    '코드가 복사되었습니다!'
+                );
+
+            }
+        );
+
+
+
+        /* =========================================================
+           HTML 파일로 저장
+        ========================================================= */
+
+        function saveAsHtml() {
+
+
+            /* textarea에 들어 있는
+               완성된 HTML 코드 가져오기 */
+
+            const html =
+                document
+                    .getElementById(
+                        'codeContainer'
+                    )
+                    .value;
+
+
+
+            /* HTML 문자열을 파일 데이터로 변환 */
+
+            const blob =
+                new Blob(
+                    [html],
+                    {
+                        type: 'text/html'
+                    }
+                );
+
+
+
+            /* 임시 다운로드 링크 생성 */
+
+            const a =
+                document.createElement(
+                    'a'
+                );
+
+
+            a.href =
+                URL.createObjectURL(
+                    blob
+                );
+
+
+            /* 파일 이름 */
+
+            a.download =
+                'quiz.html';
+
+
+
+            /* 자동으로 다운로드 실행 */
+
+            a.click();
+
+
+
+            /* 임시 URL 제거 */
+
+            URL.revokeObjectURL(
+                a.href
+            );
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
