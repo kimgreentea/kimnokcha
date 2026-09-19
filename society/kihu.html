@@ -9,316 +9,493 @@
 
 <style>
 
+    /* =========================================================
+       한글 폰트
+    ========================================================= */
+
+    @font-face {
+        font-family: 'NotoSerifKR';
+
+        src: url(
+            'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff'
+        ) format('woff');
+
+        font-weight: normal;
+        font-style: normal;
+    }
 
 
-        
+    @font-face {
+        font-family: 'Pretendard-Regular';
 
-        @font-face {
-            font-family: 'NotoSerifKR';
+        src: url(
+            'https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff'
+        ) format('woff');
 
-            src: url(
-                'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff'
-            ) format('woff');
-
-            font-weight: normal;
-            font-style: normal;
-        }
+        font-weight: 400;
+        font-style: normal;
+    }
 
 
-        @font-face {
-            font-family: 'Pretendard-Regular';
+    /* =========================================================
+       전체 페이지
+    ========================================================= */
 
-            src: url(
-                'https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff'
-            ) format('woff');
+    body {
+        width: 1200px;
+        max-width: 100%;
+        margin: 0 auto;
+        margin-top: 60px;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
 
-            font-weight: 400;
-            font-style: normal;
-        }
+
+    /* =========================================================
+       문제 하나의 전체 영역
+    ========================================================= */
+
+    .question {
+
+        padding: 20px;
+
+        font-size: 15pt;
+
+        font-family: 'NotoSerifKR';
+
+        line-height: 1.6;
+
+        background-size: auto;
+
+        background-position: left top;
+
+        background-repeat: no-repeat;
+    }
 
 
-        
+    /* =========================================================
+       정답 / 오답 표시 이미지
+    ========================================================= */
+
+    .question.correct {
+
+        background-image:
+            url(
+                'https://kimgreentea.github.io/kimnokcha/quiz/check-O.png'
+            );
+    }
+
+
+    .question.wrong {
+
+        background-image:
+            url(
+                'https://kimgreentea.github.io/kimnokcha/quiz/check-X.png'
+            );
+    }
+
+
+    /* =========================================================
+       문제 문장
+    ========================================================= */
+
+    .moonje {
+
+        font-family: 'Pretendard-Regular';
+
+        font-size: 20pt;
+
+        margin-bottom: 15px;
+    }
+
+
+    /* =========================================================
+       문제 번호
+    ========================================================= */
+
+    .number {
+
+        font-family: 'Pretendard-Regular';
+
+        font-size: 20pt;
+
+        margin-bottom: 15px;
+
+        margin-right: 10px;
+
+        color: #0078D6;
+
+        font-weight: bold;
+
+        vertical-align: top;
+
+        width: 40px;
+    }
+
+
+    /* =========================================================
+       문제 설명
+    ========================================================= */
+
+    .explanation {
+
+        margin: 10px 0 5px 5px;
+
+        padding: 12px 15px;
+
+        font-family: 'Pretendard-Regular';
+
+        font-size: 17pt;
+
+        color: #666;
+
+        background-color:
+            rgba(240, 240, 240, 0.7);
+
+        border-radius: 10px;
+    }
+
+
+    /* =========================================================
+       보기 전체 영역
+    ========================================================= */
+
+    .bogi {
+
+        display: block;
+
+        margin-bottom: 10px;
+
+        padding: 20px;
+
+        border-radius: 10px;
+    }
+
+
+    /* =========================================================
+       객관식 보기 하나
+    ========================================================= */
+
+    .question label {
+
+        display: block;
+
+        margin-bottom: 10px;
+
+        padding: 5px;
+
+        border-radius: 10px;
+    }
+
+
+    /* =========================================================
+       라디오 버튼
+    ========================================================= */
+
+    .question input[type="radio"] {
+
+        margin-right: 10px;
+
+        width: 15px;
+
+        height: 15px;
+
+        accent-color: #0078D6;
+    }
+
+
+    /* =========================================================
+       사용자가 선택한 보기
+    ========================================================= */
+
+    .question label.selected {
+
+        background-color:
+            rgba(210, 210, 210, 0.8);
+    }
+
+
+    /* =========================================================
+       주관식 입력창
+    ========================================================= */
+
+    input[type="text"] {
+
+        padding: 20px;
+
+        font-size: 20px;
+
+        font-family: 'NotoSerifKR';
+
+        width: 100%;
+
+        max-width:
+            calc(100% - 40px);
+
+        border-radius: 15pt;
+
+        background-color:
+            rgba(230, 230, 230, 0.7);
+
+        border: none;
+
+        margin-bottom: 15pt;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       파일 업로드 버튼
+    ========================================================= */
+
+    input[type="file"] {
+
+        font-size: 20px;
+
+        font-family: 'NotoSerifKR';
+
+        border: none;
+
+        max-width: 100%;
+    }
+
+
+    input[type="file"]::file-selector-button {
+
+        background-color: #0078D4;
+
+        color: white;
+
+        font-size: 16px;
+
+        padding: 10px 20px;
+
+        border: none;
+
+        border-radius: 5px;
+
+        cursor: pointer;
+
+        transition:
+            background-color 0.3s ease;
+
+        margin-right: 10px;
+    }
+
+
+    input[type="file"]::file-selector-button:hover {
+
+        background-color: #005a9e;
+    }
+
+
+    /* =========================================================
+       생성된 HTML 코드 표시창
+    ========================================================= */
+
+    textarea {
+
+        width: 100%;
+
+        height: 300px;
+
+        font-size: 12px;
+
+        font-family: monospace;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =========================================================
+       일반 버튼
+    ========================================================= */
+
+    button {
+
+        background-color: #0078D4;
+
+        color: white;
+
+        font-size: 16px;
+
+        padding: 10px 20px;
+
+        border: none;
+
+        border-radius: 5px;
+
+        cursor: pointer;
+
+        transition:
+            background-color 0.3s ease;
+
+        margin-right: 10px;
+    }
+
+
+    button:hover {
+
+        background-color: #005a9e;
+    }
+
+
+    /* =========================================================
+       다음 문제 버튼
+    ========================================================= */
+
+    .next-btn {
+
+    }
+
+
+    /* =========================================================
+       모바일
+    ========================================================= */
+
+    @media (max-width: 768px) {
+
         body {
-            width: 1200px;
+
+            width: 100%;
+
             max-width: 100%;
-            margin: 0 auto;
-            margin-top: 60px;
-            padding: 0 20px;
+
+            margin-top: 30px;
+
+            padding: 0 12px;
+        }
+
+
+        .question {
+
+            padding: 10px;
+
+            font-size: 15pt;
+
+            line-height: 1.6;
+        }
+
+
+        .moonje {
+
+            font-size: 5vw;
+
+            margin-bottom: 12px;
+        }
+
+
+        .number {
+
+            font-size: 5vw;
+
+            width: auto;
+
+            margin-right: 8px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .explanation {
+
+            margin: 8px 0 5px 0;
+
+            padding: 10px 12px;
+
+            font-size: 4vw;
+
+            line-height: 1.5;
+        }
+
+
+        .bogi {
+
+            padding: 10px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .question label {
+
+            padding: 10px 5px;
+
+            margin-bottom: 8px;
+
+            font-size: 4.5vw;
+
+            line-height: 1.5;
+        }
+
+
+        .question input[type="radio"] {
+
+            width: 20px;
+
+            height: 20px;
+
+            margin-right: 8px;
+
+            vertical-align: middle;
+        }
+
+
+        input[type="text"] {
+
+            width: 100%;
+
+            max-width: 100%;
+
+            padding: 15px;
+
+            font-size: 5vw;
+
             box-sizing: border-box;
         }
 
 
-        
-
-        .question {
-
-            padding: 20px;
-
-            font-size: 15pt;
-
-            font-family: 'NotoSerifKR';
-
-            line-height: 1.6;
-
-            background-size: auto;
-
-            background-position: left top;
-
-            background-repeat: no-repeat;
-        }
-
-
-        
-
-        .question.correct {
-
-            background-image:
-                url(
-                    'https://kimgreentea.github.io/kimnokcha/quiz/check-O.png'
-                );
-        }
-
-
-        .question.wrong {
-
-            background-image:
-                url(
-                    'https://kimgreentea.github.io/kimnokcha/quiz/check-X.png'
-                );
-        }
-
-
-        
-
-        .moonje {
-
-            font-family: 'Pretendard-Regular';
-
-            font-size: 20pt;
-
-            margin-bottom: 15px;
-        }
-
-
-        
-
-        .number {
-
-            font-family: 'Pretendard-Regular';
-
-            font-size: 20pt;
-
-            margin-bottom: 15px;
-
-            margin-right: 10px;
-
-            color: #0078D6;
-
-            font-weight: bold;
-
-            vertical-align: top;
-
-            width: 40px;
-        }
-
-
-        
-
-        .explanation {
-
-            margin: 10px 0 5px 5px;
-
-            padding: 12px 15px;
-
-            font-family: 'Pretendard-Regular';
-
-            font-size: 17pt;
-
-            color: #666;
-
-            background-color:
-                rgba(240, 240, 240, 0.7);
-
-            border-radius: 10px;
-        }
-
-
-        
-
-        .bogi {
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            padding: 20px;
-
-            border-radius: 10px;
-
-
-        }
-
-
-        
-
-        .question label {
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            padding: 5px;
-
-            border-radius: 10px;
-        }
-
-
-        
-
-        .question input[type="radio"] {
-
-            margin-right: 10px;
-
-            width: 15px;
-
-            height: 15px;
-
-            accent-color: #0078D6;
-        }
-
-
-        
-
-        .question label.selected {
-
-            background-color:
-                rgba(210, 210, 210, 0.8);
-        }
-
-
-        
-
-        input[type="text"] {
-
-            padding: 20px;
-
-            font-size: 20px;
-
-            font-family: 'NotoSerifKR';
+        input[type="file"] {
 
             width: 100%;
 
-            max-width:
-                calc(100% - 40px);
-
-            border-radius: 15pt;
-
-            background-color:
-                rgba(230, 230, 230, 0.7);
-
-            border: none;
-
-            margin-bottom: 15pt;
-        }
-
-
-        
-
-        input[type="file"] {
-
-            font-size: 20px;
-
-            font-family: 'NotoSerifKR';
-
-            border: none;
+            font-size: 4vw;
         }
 
 
         input[type="file"]::file-selector-button {
 
-            background-color: #0078D4;
+            font-size: 4vw;
 
-            color: white;
-
-            font-size: 16px;
-
-            padding: 10px 20px;
-
-            border: none;
-
-            border-radius: 5px;
-
-            cursor: pointer;
-
-            transition:
-                background-color 0.3s ease;
-
-            margin-right: 10px;
+            padding: 10px 15px;
         }
 
-
-        input[type="file"]::file-selector-button:hover {
-
-            background-color: #005a9e;
-        }
-
-
-        
 
         textarea {
 
             width: 100%;
 
-            height: 300px;
+            height: 250px;
 
-            font-size: 12px;
+            font-size: 11px;
 
-            font-family: monospace;
+            box-sizing: border-box;
         }
 
-
-        
 
         button {
 
-            background-color: #0078D4;
+            font-size: 4vw;
 
-            color: white;
+            padding: 10px 16px;
 
-            font-size: 16px;
-
-            padding: 10px 20px;
-
-            border: none;
-
-            border-radius: 5px;
-
-            cursor: pointer;
-
-            transition:
-                background-color 0.3s ease;
-
-            margin-right: 10px;
+            margin-bottom: 8px;
         }
 
-
-        button:hover {
-
-            background-color: #005a9e;
-        }
-
-
-        
-
-        .next-btn {
-
-        }
-
-    @media (max-width: 768px) {
-    body {
-        zoom: 1.3;
     }
-}
+
+</style>
 
 </style>
 
