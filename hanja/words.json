@@ -1541,6 +1541,13 @@
     "reading": "정",
     "examples": ["감정", "우정", "애정"],
     "strokeCount": 11
+},
+{
+    "hanja": "死",
+    "meaning": "죽다",
+    "reading": "사",
+    "examples": ["사망", "사인", "생사"],
+    "strokeCount": 11
 }
 
 ]
