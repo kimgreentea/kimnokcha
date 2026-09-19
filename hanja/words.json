@@ -1759,7 +1759,35 @@
     "meaning": "물건",
     "reading": "물",
     "examples": ["물건", "만물", "고물"],
-    "strokeCount": 18
+    "strokeCount": 8
+},
+{
+    "hanja": "後",
+    "meaning": "뒤",
+    "reading": "후",
+    "examples": ["후반", "전후", "후배"],
+    "strokeCount": 9
+},
+{
+    "hanja": "酒",
+    "meaning": "술",
+    "reading": "주",
+    "examples": ["음주", "맥주", "약주"],
+    "strokeCount": 10
+},
+{
+    "hanja": "曰",
+    "meaning": "말하다",
+    "reading": "왈",
+    "examples": ["왈가왈부", "공자왈", "혹왈"],
+    "strokeCount": 4
+},
+{
+    "hanja": "雲",
+    "meaning": "구름",
+    "reading": "운",
+    "examples": ["운무", "청운", "백운"],
+    "strokeCount": 12
 }
     
 ]
