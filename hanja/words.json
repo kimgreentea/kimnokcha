@@ -479,7 +479,7 @@
         "hanja": "愛",
         "meaning": "사랑",
         "reading": "애",
-        "examples": ["애정", "애국", "사랑"],
+        "examples": ["애정", "애국", "편애"],
         "strokeCount": 13
     },
     {
@@ -493,7 +493,7 @@
         "hanja": "無",
         "meaning": "없다",
         "reading": "무",
-        "examples": ["무리", "무료", "무게"],
+        "examples": ["무리", "무료", "무가지"],
         "strokeCount": 12
     },
     {
@@ -542,7 +542,7 @@
         "hanja": "門",
         "meaning": "문",
         "reading": "문",
-        "examples": ["문밖", "정문", "입문"],
+        "examples": ["정문", "가문"],
         "strokeCount": 8
     },
     {
@@ -584,7 +584,7 @@
     "hanja": "宇",
     "meaning": "집",
     "reading": "우",
-    "examples": ["우주", "우주선", "기우"],
+    "examples": ["우주", "우주선"],
     "strokeCount": 6
 },
 {
@@ -612,7 +612,7 @@
     "hanja": "州",
     "meaning": "고을",
     "reading": "주",
-    "examples": ["제주", "주도", "삼주"],
+    "examples": ["경주", "광주"],
     "strokeCount": 6
 },
 {
@@ -668,7 +668,7 @@
     "hanja": "字",
     "meaning": "글자",
     "reading": "자",
-    "examples": ["한자", "문자", "글자"],
+    "examples": ["한자", "문자", "습자"],
     "strokeCount": 6
 },
 {
@@ -787,7 +787,7 @@
     "hanja": "橘",
     "meaning": "귤",
     "reading": "귤",
-    "examples": ["귤", "감귤", "귤화위지"],
+    "examples": ["감귤", "귤화위지"],
     "strokeCount": 16
 },
 {
@@ -829,7 +829,7 @@
     "hanja": "事",
     "meaning": "일",
     "reading": "사",
-    "examples": ["사건", "사실", "일사"],
+    "examples": ["사건", "사실", "봉사"],
     "strokeCount": 8
 },
 {
@@ -871,14 +871,14 @@
     "hanja": "强",
     "meaning": "강하다",
     "reading": "강",
-    "examples": ["강하다", "강력", "강화"],
+    "examples": ["강점", "강력", "강화"],
     "strokeCount": 11
 },
 {
     "hanja": "弱",
     "meaning": "약하다",
     "reading": "약",
-    "examples": ["약하다", "약점", "강약"],
+    "examples": ["약점", "강약"],
     "strokeCount": 10
 },
 {
@@ -899,28 +899,28 @@
     "hanja": "鷄",
     "meaning": "닭",
     "reading": "계",
-    "examples": ["계란", "양계", "토계"],
+    "examples": ["계란", "양계", "계육"],
     "strokeCount": 19
 },
 {
     "hanja": "馬",
     "meaning": "말",
     "reading": "마",
-    "examples": ["말", "경마", "마차"],
+    "examples": ["마력", "경마", "마차"],
     "strokeCount": 10
 },
 {
     "hanja": "想",
     "meaning": "생각",
     "reading": "상",
-    "examples": ["상상", "생각", "구상"],
+    "examples": ["상상", "사상", "구상"],
     "strokeCount": 13
 },
 {
     "hanja": "象",
     "meaning": "코끼리",
     "reading": "상",
-    "examples": ["현상", "상징", "코끼리"],
+    "examples": ["현상", "상징", "상아"],
     "strokeCount": 12
 },
 {
@@ -941,7 +941,7 @@
     "hanja": "龍",
     "meaning": "용",
     "reading": "용",
-    "examples": ["용", "용궁", "청룡"],
+    "examples": ["용두사미", "용궁", "청룡"],
     "strokeCount": 16
 },
 {
