@@ -1732,6 +1732,34 @@
     "reading": "색",
     "examples": ["백색", "특색", "색맹"],
     "strokeCount": 7
+},
+{
+    "hanja": "佛",
+    "meaning": "부처",
+    "reading": "불",
+    "examples": ["불교", "불어", "염불"],
+    "strokeCount": 7
+},
+{
+    "hanja": "弗",
+    "meaning": "아니다",
+    "reading": "불",
+    "examples": ["불소", "백만불"],
+    "strokeCount": 5
+},
+{
+    "hanja": "簡",
+    "meaning": "간략하다",
+    "reading": "간",
+    "examples": ["간결", "간단", "간이"],
+    "strokeCount": 18
+},
+{
+    "hanja": "物",
+    "meaning": "물건",
+    "reading": "물",
+    "examples": ["물건", "만물", "고물"],
+    "strokeCount": 18
 }
     
 ]
