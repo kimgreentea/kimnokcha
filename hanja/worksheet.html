@@ -50,12 +50,23 @@ body {
     font-size: 16px;
     padding: 6px 15px;
     margin-left: 8px;
+            background-color: #0078D4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
 }
+
+        button:hover {
+            background-color: #005a9e;
+        }
 
 #status {
     margin-top: 8px;
     font-size: 14px;
 }
+
 
 
 /* =========================
@@ -106,7 +117,7 @@ body {
 /* 안내문 */
 
 .instruction {
-    font-size: 15px;
+    font-size: 15x;
     white-space: pre-line;
     margin-bottom: 7px;
 }
@@ -115,6 +126,8 @@ textarea {
 width:70%;
 resize: none;
 height:40px;
+font-family:'Pretendard';
+font-size: 16px;
 }
 
 .centeric {
@@ -122,6 +135,8 @@ display:flex;
 justify-content: center;
 align-items: center;
 }
+
+
 
 /* =========================
    표
@@ -393,7 +408,6 @@ td {
         type="number"
         value="5"
         min="1"
-        max="50"
     >
 
 
@@ -415,7 +429,7 @@ td {
         id="strokeTarget"
         type="number"
         value="70"
-        min="1"
+        min="20"
     >
 
 
