@@ -822,5 +822,85 @@
                 "reading": "서"
             }
         ]
+    },
+    
+    {
+        "hanmun": "道吾善者 是吾賊",
+        "reading": "도오선자 시오적",
+        "meaning": "나의 장점을 말해주는 사람은 나의 적이다.",
+        "keyHanja": [
+            {
+                "hanja": "吾",
+                "meaning": "나",
+                "reading": "오"
+            },
+            {
+                "hanja": "善",
+                "meaning": "착하다",
+                "reading": "선"
+            },
+            {
+                "hanja": "者",
+                "meaning": "사람",
+                "reading": "자"
+            }
+        ]
+    },
+    {
+        "hanmun": "道吾惡者 是吾師",
+        "reading": "도오악자 시오사",
+        "meaning": "나의 단점을 말해주는 사람은 나의 스승이다.",
+        "keyHanja": [
+            {
+                "hanja": "吾",
+                "meaning": "나",
+                "reading": "오"
+            },
+            {
+                "hanja": "惡",
+                "meaning": "악하다",
+                "reading": "악"
+            },
+            {
+                "hanja": "者",
+                "meaning": "사람",
+                "reading": "자"
+            }
+        ]
+    },
+    {
+        "hanmun": "施恩勿求報",
+        "reading": "시은물구보",
+        "meaning": "은혜를 베풀고나서 보답을 바라지 마라.",
+        "keyHanja": [
+            {
+                "hanja": "恩",
+                "meaning": "은혜",
+                "reading": "은"
+            },
+            {
+                "hanja": "求",
+                "meaning": "구하다",
+                "reading": "구"
+            }
+        ]
+    },
+    {
+        "hanmun": "與人勿追悔",
+        "reading": "여인물추회",
+        "meaning": "남에게 주었거든 후회하지 마라.",
+        "keyHanja": [
+            {
+                "hanja": "人",
+                "meaning": "사람",
+                "reading": "인"
+            },
+            {
+                "hanja": "悔",
+                "meaning": "뉘우치다",
+                "reading": "회"
+            }
+        ]
     }
+
 ]
