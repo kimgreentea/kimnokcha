@@ -446,14 +446,73 @@ document.addEventListener(
 );
 
 // ==================================================
-// 클릭 / 터치 → 다음 페이지
+// 클릭 / 터치 / 드래그 → 다음 페이지
 // ==================================================
 
-document.querySelector(".slide").addEventListener("click", function() {
-    nextSlide();
+const slide = document.querySelector(".slide");
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+
+// 터치 시작
+slide.addEventListener("touchstart", function(event) {
+
+    touchStartX = event.touches[0].clientX;
+
+}, { passive: true });
+
+
+// 손가락 이동
+slide.addEventListener("touchmove", function(event) {
+
+    event.preventDefault();
+
+}, { passive: false });
+
+
+// 터치 종료
+slide.addEventListener("touchend", function(event) {
+
+    touchEndX = event.changedTouches[0].clientX;
+
+    const distance = touchEndX - touchStartX;
+
+    // 왼쪽으로 충분히 드래그
+    if (distance < -50) {
+
+        nextSlide();
+
+    }
+
+    // 오른쪽으로 충분히 드래그
+    else if (distance > 50) {
+
+        previousSlide();
+
+    }
+
+    // 거의 움직이지 않은 경우 → 클릭처럼 처리
+    else {
+
+        nextSlide();
+
+    }
+
+}, { passive: true });
+
+
+// ==================================================
+// 우클릭 → 이전 페이지
+// ==================================================
+
+slide.addEventListener("contextmenu", function(event) {
+
+    event.preventDefault();
+
+    previousSlide();
+
 });
-
-
 
 </script>
 
