@@ -54,9 +54,9 @@
                 "reading": "지"
             },
             {
-                "hanja": "不",
+                "hanja": "不",
                 "meaning": "아니다",
-                "reading": "불"
+                "reading": "불 / 부"
             },
             {
                 "hanja": "曰",
@@ -85,11 +85,7 @@
                 "meaning": "착하다",
                 "reading": "선"
             },
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불"
-            },
+
             {
                 "hanja": "改",
                 "meaning": "고치다",
@@ -422,11 +418,6 @@
                 "hanja": "周",
                 "meaning": "두루",
                 "reading": "주"
-            },
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불"
             }
         ]
     },
