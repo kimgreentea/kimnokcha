@@ -480,6 +480,36 @@
         "examples": ["소수", "감소", "소량"],
         "strokeCount": 4
     },
+,
+{
+    "hanja": "之",
+    "meaning": "가다 / ~의",
+    "reading": "지",
+    "examples": ["격세지감", "어부지리"],
+    "strokeCount": 3
+},
+{
+    "hanja": "蛇",
+    "meaning": "뱀",
+    "reading": "사",
+    "examples": ["사족", "백사"],
+    "strokeCount": 11
+},
+{
+    "hanja": "頭",
+    "meaning": "머리",
+    "reading": "두",
+    "examples": ["두통", "용두사미", "두뇌"],
+    "strokeCount": 16
+},
+{
+    "hanja": "尾",
+    "meaning": "꼬리",
+    "reading": "미",
+    "examples": ["구미호", "용두사미", "말미"],
+    "strokeCount": 7
+},
+
     {
         "hanja": "白",
         "meaning": "희다",
