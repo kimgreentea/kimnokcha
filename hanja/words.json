@@ -2664,6 +2664,265 @@
     "reading": "기",
     "examples": ["기업", "기획", "대기업"],
     "strokeCount": 6
-}
+},
+{
+    "hanja": "往",
+    "meaning": "가다",
+    "reading": "왕",
+    "examples": ["왕래", "왕복", "왕년"],
+    "strokeCount": 8
+},
+{
+    "hanja": "狂",
+    "meaning": "미치다",
+    "reading": "광",
+    "examples": ["광인", "광기", "광풍"],
+    "strokeCount": 7
+},
+{
+    "hanja": "落",
+    "meaning": "떨어지다",
+    "reading": "락",
+    "examples": ["낙하", "낙엽", "추락"],
+    "strokeCount": 12
+},
+{
+    "hanja": "降",
+    "meaning": "내리다",
+    "reading": "강",
+    "examples": ["강하", "하강", "강우"],
+    "strokeCount": 9
+},
+{
+    "hanja": "昇",
+    "meaning": "오르다",
+    "reading": "승",
+    "examples": ["승강", "승천", "상승"],
+    "strokeCount": 8
+},
+{
+    "hanja": "刀",
+    "meaning": "칼",
+    "reading": "도",
+    "examples": ["도검", "단도", "면도"],
+    "strokeCount": 2
+},
+{
+    "hanja": "伊",
+    "meaning": "저",
+    "reading": "이",
+    "examples": ["이태리", "불가살이"],
+    "strokeCount": 6
+},
+{
+    "hanja": "忘",
+    "meaning": "잊다",
+    "reading": "망",
+    "examples": ["망각", "건망증", "망년"],
+    "strokeCount": 7
+},
+{
+    "hanja": "忙",
+    "meaning": "바쁘다",
+    "reading": "망",
+    "examples": ["망중한", "공사다망"],
+    "strokeCount": 6
+},
+{
+    "hanja": "茶",
+    "meaning": "차",
+    "reading": "차 / 다",
+    "examples": ["다도", "녹차", "홍차"],
+    "strokeCount": 10
+},
+{
+    "hanja": "過",
+    "meaning": "지나다",
+    "reading": "과",
+    "examples": ["과거", "과도기", "통과"],
+    "strokeCount": 13
+},
+{
+    "hanja": "第",
+    "meaning": "차례",
+    "reading": "제",
+    "examples": ["제일", "급제", "낙제"],
+    "strokeCount": 11
+},
+{
+    "hanja": "命",
+    "meaning": "목숨",
+    "reading": "명",
+    "examples": ["생명", "운명", "명령"],
+    "strokeCount": 8
+},
+{
+    "hanja": "令",
+    "meaning": "하여금",
+    "reading": "령",
+    "examples": ["명령", "법령", "단발령"],
+    "strokeCount": 5
+},
+{
+    "hanja": "紙",
+    "meaning": "종이",
+    "reading": "지",
+    "examples": ["지류", "신문지", "휴지"],
+    "strokeCount": 10
+},
+{
+    "hanja": "科",
+    "meaning": "과목",
+    "reading": "과",
+    "examples": ["과학", "교과", "학과"],
+    "strokeCount": 9
+},
+{
+    "hanja": "共",
+    "meaning": "함께",
+    "reading": "공",
+    "examples": ["공통", "공동", "공유"],
+    "strokeCount": 6
+},
+{
+    "hanja": "圖",
+    "meaning": "그림",
+    "reading": "도",
+    "examples": ["지도", "도표", "도형"],
+    "strokeCount": 14
+},
+{
+    "hanja": "讀",
+    "meaning": "읽다",
+    "reading": "독",
+    "examples": ["독서", "독해", "낭독"],
+    "strokeCount": 22
+},
+{
+    "hanja": "等",
+    "meaning": "무리",
+    "reading": "등",
+    "examples": ["등급", "동등", "균등"],
+    "strokeCount": 12
+},
+{
+    "hanja": "班",
+    "meaning": "나누다",
+    "reading": "반",
+    "examples": ["반장", "분반", "강력반"],
+    "strokeCount": 10
+},
+{
+    "hanja": "線",
+    "meaning": "줄",
+    "reading": "선",
+    "examples": ["선분", "직선", "노선"],
+    "strokeCount": 15
+},
+{
+    "hanja": "省",
+    "meaning": "살피다",
+    "reading": "성 / 생",
+    "examples": ["반성", "성찰", "생략"],
+    "strokeCount": 9
+},
+{
+    "hanja": "術",
+    "meaning": "재주",
+    "reading": "술",
+    "examples": ["기술", "수술", "학술"],
+    "strokeCount": 11
+},
+{
+    "hanja": "消",
+    "meaning": "사라지다",
+    "reading": "소",
+    "examples": ["소비", "소멸", "소화"],
+    "strokeCount": 10
+},
+{
+    "hanja": "運",
+    "meaning": "옮기다",
+    "reading": "운",
+    "examples": ["운동", "운반", "운송"],
+    "strokeCount": 12
+},
+{
+    "hanja": "庭",
+    "meaning": "뜰",
+    "reading": "정",
+    "examples": ["정원", "가정", "궁정"],
+    "strokeCount": 10
+},
+{
+    "hanja": "注",
+    "meaning": "붓다",
+    "reading": "주",
+    "examples": ["주의", "주입", "주사"],
+    "strokeCount": 8
+},
+{
+    "hanja": "形",
+    "meaning": "모양",
+    "reading": "형",
+    "examples": ["형태", "형상", "지형"],
+    "strokeCount": 7
+},
+{
+    "hanja": "感",
+    "meaning": "느끼다",
+    "reading": "감",
+    "examples": ["감정", "감각", "감동"],
+    "strokeCount": 13
+},
+{
+    "hanja": "玉",
+    "meaning": "구슬",
+    "reading": "옥",
+    "examples": ["옥석", "금지옥엽", "백옥"],
+    "strokeCount": 5
+},
+{
+    "hanja": "宗",
+    "meaning": "마루",
+    "reading": "종",
+    "examples": ["종교", "종파", "종족"],
+    "strokeCount": 8
+},
+{
+    "hanja": "井",
+    "meaning": "우물",
+    "reading": "정",
+    "examples": ["좌정관천", "정화수"],
+    "strokeCount": 4
+},
+{
+    "hanja": "貝",
+    "meaning": "조개",
+    "reading": "패",
+    "examples": ["패각", "어패류"],
+    "strokeCount": 7
+},
+{
+    "hanja": "耳",
+    "meaning": "귀",
+    "reading": "이",
+    "examples": ["이비인후과", "이목"],
+    "strokeCount": 6
+},
+{
+    "hanja": "已",
+    "meaning": "이미",
+    "reading": "이",
+    "examples": ["이왕", "부득이"],
+    "strokeCount": 3
+},
+{
+    "hanja": "忍",
+    "meaning": "참다",
+    "reading": "인",
+    "examples": ["인내", "잔인", "인고"],
+    "strokeCount": 7
+}    
     
 ]
