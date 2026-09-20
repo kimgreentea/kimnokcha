@@ -55,7 +55,7 @@ body {
     font-size: clamp(40px, 6vw, 100px);
     line-height: 1.5;
     font-family: 'Klee One';
-    margin-bottom: 20px;
+    margin-bottom: 20px; 
     white-space: pre-line;
 }
 
@@ -91,7 +91,7 @@ body {
 
     padding: 15px 25px;
 
-    border: 1px solid #555;
+/    border: 1px solid #555;
     border-radius: 12px;
 
     background: #1c1c1c;
@@ -149,6 +149,21 @@ body {
 
     font-size: 16px;
     text-align: center;
+}
+
+.fontSelect {
+    position: fixed;
+
+    left: 30px;
+    bottom: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    font-family: sans-serif;
+    color: #888;
 }
 
 
@@ -212,6 +227,46 @@ body {
 
 </div>
 
+
+
+<!-- =========================
+     폰트
+========================= -->
+
+<div class="fontSelect">
+
+  <select id="fontSelect">
+  
+      <option value='Klee One'>
+            Klee One
+        </option>
+
+        <option value='"LXGW WenKai TC", serif'>
+            LXGW WenKai TC
+        </option>
+
+        <option value= 'Myeongwon'>
+            명원체
+        </option>
+
+
+        <option value='Noto Serif TC'>
+            Noto Serif TC
+        </option>
+       <option value='Shippori Mincho'>
+            Shippori Mincho
+        </option>
+  
+       <option value='Noto Serif KR'>
+            기본
+        </option>
+
+
+       
+       
+    </select>
+
+</div>
 
 <script>
 // 현재 페이지
@@ -485,6 +540,48 @@ slide.addEventListener("contextmenu", function(event) {
     previousSlide();
 
 });
+
+
+let selectedFont = '';
+    
+document
+    .getElementById("fontSelect")
+    .addEventListener(
+        "change",
+        function() {
+
+            selectedFont =
+                this.value;
+
+            document
+                .querySelectorAll(".hanja")
+                .forEach(
+                    element => {
+
+                        element.style.fontFamily =
+                            selectedFont;
+
+                    }
+
+
+
+                );
+
+            document
+                .querySelectorAll(".hanmun")
+                .forEach(
+                    element => {
+
+                        element.style.fontFamily =
+                            selectedFont;
+
+                    }
+
+
+
+                );
+        }
+    );
 
 </script>
 
