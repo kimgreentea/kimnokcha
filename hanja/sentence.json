@@ -1,0 +1,128 @@
+[
+
+    {
+        "hanmun": "學而時習之，不亦說乎",
+        "reading": "학이시습지, 불역열호",
+        "meaning": "배우고 때때로 그것을 익히면 또한 기쁘지 아니한가?",
+
+        "keyHanja": [
+            {
+                "hanja": "學",
+                "meaning": "배우다",
+                "reading": "학"
+            },
+            {
+                "hanja": "習",
+                "meaning": "익히다",
+                "reading": "습"
+            },
+            {
+                "hanja": "說",
+                "meaning": "기쁘다",
+                "reading": "열"
+            }
+        ]
+    },
+
+
+    {
+        "hanmun": "有朋自遠方來，不亦樂乎",
+        "reading": "유붕자원방래, 불역락호",
+        "meaning": "벗이 먼 곳에서 찾아오면 또한 즐겁지 아니한가?",
+
+        "keyHanja": [
+            {
+                "hanja": "朋",
+                "meaning": "벗",
+                "reading": "붕"
+            },
+            {
+                "hanja": "遠",
+
+                "meaning": "멀다",
+                "reading": "원"
+            },
+            {
+                "hanja": "樂",
+                "meaning": "즐겁다",
+                "reading": "락"
+            }
+        ]
+    },
+
+
+    {
+        "hanmun": "人無遠慮，必有近憂",
+        "reading": "인무원려, 필유근우",
+        "meaning": "사람이 먼 앞날을 생각하지 않으면 반드시 가까운 곳에 근심이 생긴다.",
+
+        "keyHanja": [
+            {
+                "hanja": "慮",
+                "meaning": "생각하다",
+                "reading": "려"
+            },
+            {
+                "hanja": "必",
+                "meaning": "반드시",
+                "reading": "필"
+            },
+            {
+                "hanja": "憂",
+                "meaning": "근심",
+                "reading": "우"
+            }
+        ]
+    },
+
+
+    {
+        "hanmun": "三人行，必有我師焉",
+        "reading": "삼인행, 필유아사언",
+        "meaning": "세 사람이 길을 가면 반드시 그중에 나의 스승이 있다.",
+
+        "keyHanja": [
+            {
+                "hanja": "三",
+                "meaning": "셋",
+                "reading": "삼"
+            },
+            {
+                "hanja": "師",
+                "meaning": "스승",
+                "reading": "사"
+            },
+            {
+                "hanja": "行",
+                "meaning": "가다",
+                "reading": "행"
+            }
+        ]
+    },
+
+
+    {
+        "hanmun": "知之者不如好之者，好之者不如樂之者",
+        "reading": "지지자불여호지자, 호지자불여락지자",
+        "meaning": "아는 사람은 좋아하는 사람만 못하고, 좋아하는 사람은 즐기는 사람만 못하다.",
+
+        "keyHanja": [
+            {
+                "hanja": "知",
+                "meaning": "알다",
+                "reading": "지"
+            },
+            {
+                "hanja": "好",
+                "meaning": "좋아하다",
+                "reading": "호"
+            },
+            {
+                "hanja": "樂",
+                "meaning": "즐기다",
+                "reading": "락"
+            }
+        ]
+    }
+
+]
