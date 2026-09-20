@@ -208,25 +208,26 @@ body {
 
 
 <script>
+// 현재 페이지
+
 
 let sentences = [];
-let current = 0;
-
+let current = Number(localStorage.getItem("hanjaPage")) || 0;
 
 // JSON 불러오기
 fetch("https://kimgreentea.github.io/kimnokcha/hanja/sentence.json")
     .then(response => response.json())
     .then(data => {
-
         sentences = data;
 
-        showSlide();
+        if (current >= sentences.length) {
+            current = sentences.length - 1;
+        }
 
+        showSlide();
     })
     .catch(error => {
-
         console.error("JSON 불러오기 실패:", error);
-
     });
 
 
@@ -259,73 +260,38 @@ const totalPages =
 // ==================================================
 
 function showSlide() {
-
     const sentence = sentences[current];
 
-
-    // 한문
-
-    hanmun.textContent =
-        sentence.hanmun;
-
-
-    // 음
-
-    reading.textContent =
-        sentence.reading;
-
-
-    // 뜻
-
-    meaning.textContent =
-        sentence.meaning;
-
-
-    // 주요 한자 초기화
+    hanmun.textContent = sentence.hanmun;
+    reading.textContent = sentence.reading || "";
+    meaning.textContent = sentence.meaning || "";
 
     keyHanja.innerHTML = "";
 
-
-    // 주요 한자 생성
-
-    sentence.keyHanja.forEach(item => {
-
-        const card =
-            document.createElement("div");
-
+    (sentence.keyHanja || []).forEach(item => {
+        const card = document.createElement("div");
         card.className = "hanjaCard";
-
 
         card.innerHTML = `
             <div class="hanja">
                 ${item.hanja}
             </div>
-          
             <div class="hanjaMeaning">
                 ${item.meaning}
             </div>
-
             <div class="hanjaReading">
                 ${item.reading}
             </div>
-
-          
         `;
 
-
         keyHanja.appendChild(card);
-
     });
 
+    pageInput.value = current + 1;
+    totalPages.textContent = `/ ${sentences.length}`;
 
-    // 페이지 번호
-
-    pageInput.value =
-        current + 1;
-
-    totalPages.textContent =
-        `/ ${sentences.length}`;
-
+    // 마지막으로 본 페이지 저장
+    localStorage.setItem("hanjaPage", current);
 }
 
 
