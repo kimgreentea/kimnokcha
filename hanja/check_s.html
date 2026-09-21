@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한자 검사</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One&family=LXGW+WenKai+TC&family=Noto+Serif+TC:wght@200..900&display=swap" rel="stylesheet">
+
+<style>
+<!-- =========================
+     웹폰트
+========================= -->
+
+
+
+
+@font-face {
+    font-family: 'GyeonggiMillenniumBackground';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Regular.woff') format('woff');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GyeonggiMillenniumBackground';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Bold.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: 'JoseonPalace';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myeongwon';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607131254@4/4/Hangeuljaemin4-RegularI.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'HangulJaemin60';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Hangeuljaemin6TTF-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face { 
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+
+
+.hanja {
+font-size:50pt;
+font-family: 'Klee One';
+}
+
+</style>
+    
+</head>
+<body>
+
+<h1>문장 검사</h1>
+
+<p>전체 개수: <span id="total"></span></p>
+  <select id="fontSelect">
+  
+      <option value='Klee One'>
+            Klee One
+        </option>
+
+        <option value='"LXGW WenKai TC", serif'>
+            LXGW WenKai TC
+        </option>
+
+        <option value= 'Myeongwon'>
+            명원체
+        </option>
+
+        <option value="HangulJaemin60">
+            재민체
+        </option>       
+
+
+        <option value='JoseonPalace'>
+            조선일보궁서체
+        </option>
+
+
+        <option value='GyeonggiMillenniumBackground'>
+            경기천년바탕
+        </option>
+
+
+        <option value='Noto Serif TC'>
+            Noto Serif TC
+        </option>
+
+  
+       <option value='Pretendard'>
+            기본
+        </option>
+
+
+       
+       
+    </select>
+
+<h2>중복된 문장</h2>
+<div id="duplicate"></div>
+
+<h2>전체 문장</h2>
+<div id="list"></div>
+
+<script>
+
+fetch("https://kimgreentea.github.io/kimnokcha/hanja/sentence.json")
+    .then(response => response.json())
+    .then(data => {
+
+
+
+
+
+        // 2. 전체 개수
+        document.querySelector("#total").textContent = data.length;
+
+
+// 3. 중복 여부와 관계없이 모든 한자 출력
+let list = "";
+
+data.forEach((item, index) => {
+    list += `<p><span class="hanja">${index + 1}. ${item.hanmun}</span></p>`;
+});
+
+document.querySelector("#list").innerHTML = list;
+
+    });
+
+    
+/* =========================
+   폰트 변경
+========================= */
+
+/* 현재 선택된 한자 폰트 */
+
+let selectedFont = '';
+    
+document
+    .getElementById("fontSelect")
+    .addEventListener(
+        "change",
+        function() {
+
+            selectedFont =
+                this.value;
+
+            document
+                .querySelectorAll(".hanja")
+                .forEach(
+                    element => {
+
+                        element.style.fontFamily =
+                            selectedFont;
+
+                    }
+                );
+
+        }
+    );
+    
+</script>
+
+</body>
+</html>
