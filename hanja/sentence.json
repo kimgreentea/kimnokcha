@@ -901,6 +901,540 @@
                 "reading": "회"
             }
         ]
+    },
+
+
+    {
+        "hanmun": "見人之善 而尋己之善",
+        "reading": "견인지선 이심기지선",
+        "keyHanja": [
+            {
+                "hanja": "善",
+                "meaning": "착하다",
+                "reading": "선"
+            },
+            {
+                "hanja": "己",
+                "meaning": "몸",
+                "reading": "기"
+            }
+        ],
+        "meaning": "남의 좋은 점을 보면 자신의 좋은 점을 찾아라."
+    },
+    {
+        "hanmun": "見人之惡 而尋己之惡",
+        "reading": "견인지악 이심기지악",
+        "keyHanja": [
+            {
+                "hanja": "惡",
+                "meaning": "악하다",
+                "reading": "악"
+            },
+            {
+                "hanja": "己",
+                "meaning": "몸",
+                "reading": "기"
+            }
+        ],
+        "meaning": "남의 나쁜 점을 보면 자신의 나쁜 점을 찾아라."
+    },
+    {
+        "hanmun": "大丈夫當容人 無爲人所容",
+        "reading": "대장부당용인 무위인수용",
+        "keyHanja": [
+            {
+                "hanja": "當",
+                "meaning": "마땅하다",
+                "reading": "당"
+            },
+            {
+                "hanja": "容",
+                "meaning": "용납하다",
+                "reading": "용"
+            }
+        ],
+        "meaning": "사람은 마땅히 남을 포용해야 하며 남에게 포용받는 사람이 되어서는 안 된다."
+    },
+    {
+        "hanmun": "勿以貴己而賤人",
+        "reading": "물이귀기이천인",
+        "keyHanja": [
+            {
+                "hanja": "貴",
+                "meaning": "귀하다",
+                "reading": "귀"
+            },
+            {
+                "hanja": "賤",
+                "meaning": "천하다",
+                "reading": "천"
+            }
+        ],
+        "meaning": "자신을 귀하게 여기면서 남을 천하게 여기지 마라."
+    },
+    {
+        "hanmun": "勿以自大而蔑小",
+        "reading": "물이자대이멸소",
+        "keyHanja": [
+            {
+                "hanja": "自",
+                "meaning": "스스로",
+                "reading": "자"
+            },
+            {
+                "hanja": "蔑",
+                "meaning": "업신여기다",
+                "reading": "멸"
+            }
+        ],
+        "meaning": "자신을 크다 여기면서 다른 사람을 업신여기지 마라."
+    },
+    {
+        "hanmun": "聞人過失 如聞父母之名\n 耳可得聞 口不可得言也",
+        "reading": "문인지과실 여문부모지명 이가득문 구불가언야",
+        "keyHanja": [
+            {
+                "hanja": "過",
+                "meaning": "허물",
+                "reading": "과"
+            },
+            {
+                "hanja": "失",
+                "meaning": "잃다",
+                "reading": "실"
+            },
+            {
+                "hanja": "父",
+                "meaning": "아버지",
+                "reading": "부"
+            }
+            ,
+            {
+                "hanja": "母",
+                "meaning": "어머니",
+                "reading": "모"
+            }
+        ],
+        "meaning": "남의 허물을 듣는 것을 부모님의 이름을 듣는 것처럼 하여라. 귀로 들을 수는 있어도 입으로 말해서는 안 된다."
+    },
+    {
+        "hanmun": "聞人之惡 如負芒刺",
+        "reading": "문인지악 여부망자",
+        "keyHanja": [
+            {
+                "hanja": "惡",
+                "meaning": "악하다",
+                "reading": "악"
+            },
+            {
+                "hanja": "聞",
+                "meaning": "듣다",
+                "reading": "문"
+            }
+        ],
+        "meaning": "다른 사람의 단점을 듣거든 마치 몸에 가시를 진 것처럼 여겨라."
+    },
+    {
+        "hanmun": "聞人之善 如佩蘭蕙",
+        "reading": "문인지선 여패란혜",
+        "keyHanja": [
+            {
+                "hanja": "善",
+                "meaning": "착하다",
+                "reading": "선"
+            },
+            
+            {
+                "hanja": "蘭",
+                "meaning": "난초",
+                "reading": "란"
+            }
+        ],
+        "meaning": "다른 사람의 장점을 듣거든 마치 난초를 몸에 찬 것처럼 여겨라."
+    },
+    {
+        "hanmun": "聞人之謗 未嘗怒",
+        "reading": "문인지방 미상노",
+        "keyHanja": [
+            {
+                "hanja": "謗",
+                "meaning": "헐뜯다",
+                "reading": "방"
+            },
+            {
+                "hanja": "怒",
+                "meaning": "성내다",
+                "reading": "노"
+            }
+        ],
+        "meaning": "다른 사람의 비방을 들어도 노여워하지 말라."
+    },
+    {
+        "hanmun": "聞人之譽 未嘗喜",
+        "reading": "문인지예 미상희",
+        "keyHanja": [
+            {
+                "hanja": "譽",
+                "meaning": "칭찬하다",
+                "reading": "예"
+            },
+            {
+                "hanja": "喜",
+                "meaning": "기쁘다",
+                "reading": "희"
+            }
+        ],
+        "meaning": "남의 칭찬을 들어도 기뻐하지 말라."
+    },
+    {
+        "hanmun": "聞人言人之惡 未嘗和",
+        "reading": "문인지악 미상화",
+        "keyHanja": [
+            {
+                "hanja": "惡",
+                "meaning": "악하다",
+                "reading": "악"
+            },
+            {
+                "hanja": "和",
+                "meaning": "화하다",
+                "reading": "화"
+            }
+        ],
+        "meaning": "남의 악한 말을 들어도 함께하지 말라."
+    },
+    {
+        "hanmun": "聞人言人之善 則就而和之 又從而喜之",
+        "reading": "문인지선 즉취이화지 우종이희지",
+        "keyHanja": [
+            {
+                "hanja": "善",
+                "meaning": "착하다",
+                "reading": "선"
+            },
+            {
+                "hanja": "喜",
+                "meaning": "기쁘다",
+                "reading": "희"
+            }
+        ],
+        "meaning": "남의 선행을 들으면 함께 기뻐하고 또 따라서 기뻐하라."
+    },
+    {
+        "hanmun": "勤爲無價之寶",
+        "reading": "근위무가지보",
+        "keyHanja": [
+            {
+                "hanja": "勤",
+                "meaning": "부지런하다",
+                "reading": "근"
+            },
+            {
+                "hanja": "價",
+                "meaning": "값",
+                "reading": "가"
+            },
+            {
+                "hanja": "寶",
+                "meaning": "보배",
+                "reading": "보"
+            }
+        ],
+        "meaning": "부지런함은 값으로 매길 수 없는 보배이다."
+    },
+    {
+        "hanmun": "愼是護身之符",
+        "reading": "신시호신지부",
+        "keyHanja": [
+            {
+                "hanja": "護",
+                "meaning": "보호하다",
+                "reading": "호"
+            },
+            {
+                "hanja": "身",
+                "meaning": "몸",
+                "reading": "신"
+            },
+            {
+                "hanja": "符",
+                "meaning": "부적",
+                "reading": "부"
+            }
+        ],
+        "meaning": "삼가 행동함은 몸을 보호하는 부적이다."
+    },
+    {
+        "hanmun": "衆好之 必察焉 衆惡之 必察焉",
+        "reading": "중호지 필찰언 중오지 필찰언",
+        "keyHanja": [
+            {
+                "hanja": "衆",
+                "meaning": "무리",
+                "reading": "중"
+            },
+            {
+                "hanja": "好",
+                "meaning": "좋아하다",
+                "reading": "호"
+            },
+            {
+                "hanja": "惡",
+                "meaning": "미워하다",
+                "reading": "오"
+            }
+        ],
+        "meaning": "여러 사람이 좋아한다고 해도 반드시 살펴보고 여러 사람이 싫어한다고 해도 반드시 살펴보아야 한다."
+    },
+    {
+        "hanmun": "欲量他人 先須自量",
+        "reading": "욕량타인 선수자량",
+        "keyHanja": [
+            {
+                "hanja": "量",
+                "meaning": "헤아리다",
+                "reading": "량"
+            },
+            {
+                "hanja": "他",
+                "meaning": "다르다",
+                "reading": "타"
+            },
+            {
+                "hanja": "自",
+                "meaning": "스스로",
+                "reading": "자"
+            }
+        ],
+        "meaning": "남을 헤아리려거든 먼저 자신을 헤아려야 한다."
+    },
+    {
+        "hanmun": "傷人之語 還是自傷",
+        "reading": "상인지어 환시자상",
+        "keyHanja": [
+            {
+                "hanja": "傷",
+                "meaning": "상처 입히다",
+                "reading": "상"
+            },
+            {
+                "hanja": "語",
+                "meaning": "말씀",
+                "reading": "어"
+            }
+        ],
+        "meaning": "남을 해치는 말은 돌아와 자신을 해친다."
+    },
+    {
+        "hanmun": "含血噴人 先汚其口",
+        "reading": "함혈분인 선오기구",
+        "keyHanja": [
+            {
+                "hanja": "血",
+                "meaning": "피",
+                "reading": "혈"
+            },
+            {
+                "hanja": "口",
+                "meaning": "입",
+                "reading": "구"
+            }
+        ],
+        "meaning": "피를 머금고 남을 헐뜯으면 먼저 자신의 입을 더럽힌다."
+    },
+    {
+        "hanmun": "坐密室 如通衢",
+        "reading": "좌밀실 여통구",
+        "keyHanja": [
+            {
+                "hanja": "密",
+                "meaning": "빽빽하다",
+                "reading": "밀"
+            },
+            {
+                "hanja": "室",
+                "meaning": "방",
+                "reading": "실"
+            },
+            {
+                "hanja": "如",
+                "meaning": "같다",
+                "reading": "여"
+            }
+        ],
+        "meaning": "밀실에 앉아 있어도 큰길에 있는 듯 행동하라."
+    },
+    {
+        "hanmun": "馭寸心 如六馬",
+        "reading": "어촌심 여육마",
+        "keyHanja": [
+            {
+                "hanja": "心",
+                "meaning": "마음",
+                "reading": "심"
+            },
+            {
+                "hanja": "馬",
+                "meaning": "말",
+                "reading": "마"
+            }
+        ],
+        "meaning": "마음을 다스리기를 여섯 마리 말을 모는 듯 하라."
+    },
+    {
+        "hanmun": "忍一時之忿 免百日之憂",
+        "reading": "인일시지분 면백일지우",
+        "keyHanja": [
+            {
+                "hanja": "忍",
+                "meaning": "참다",
+                "reading": "인"
+            },
+            {
+                "hanja": "忿",
+                "meaning": "성내다",
+                "reading": "분"
+            },
+            {
+                "hanja": "憂",
+                "meaning": "근심",
+                "reading": "우"
+            }
+        ],
+        "meaning": "한때의 분노를 참으면 백 날의 근심을 면할 수 있다."
+    },
+    {
+        "hanmun": "玉不琢 不成器 人不學 不知道",
+        "reading": "옥불탁 불성기 인불학 부지도",
+        "keyHanja": [
+            {
+                "hanja": "琢",
+                "meaning": "쪼다",
+                "reading": "탁"
+            },
+            {
+                "hanja": "器",
+                "meaning": "그릇",
+                "reading": "기"
+            },
+            {
+                "hanja": "學",
+                "meaning": "배우다",
+                "reading": "학"
+            }
+        ],
+        "meaning": "옥은 다듬지 않으면 그릇이 될 수 없고 사람은 배우지 않으면 도리를 알지 못한다."
+    },
+    {
+        "hanmun": "人生不學 冥冥如夜行",
+        "reading": "인생불학 명명여야행",
+        "keyHanja": [
+            {
+                "hanja": "生",
+                "meaning": "나다",
+                "reading": "생"
+            },
+            {
+                "hanja": "學",
+                "meaning": "배우다",
+                "reading": "학"
+            },
+            {
+                "hanja": "夜",
+                "meaning": "밤",
+                "reading": "야"
+            }
+        ],
+        "meaning": "사람이 배우지 않으면 밤길을 걷는 듯 어둡고 어둡다."
+    },
+    {
+        "hanmun": "口舌者 禍患之門 滅身之斧也",
+        "reading": "구설자 화환지문 멸신지부야",
+        "keyHanja": [
+            {
+                "hanja": "舌",
+                "meaning": "혀",
+                "reading": "설"
+            },
+            {
+                "hanja": "患",
+                "meaning": "근심",
+                "reading": "환"
+            },
+            {
+                "hanja": "門",
+                "meaning": "문",
+                "reading": "문"
+            }
+        ],
+        "meaning": "말과 혀는 재앙과 근심을 불러들이는 문이며 몸을 망치는 도끼이다."
+    },
+    {
+        "hanmun": "口是傷人斧 言是割舌刀",
+        "reading": "구시상인부 언시할설도",
+        "keyHanja": [
+            {
+                "hanja": "傷",
+                "meaning": "상하다",
+                "reading": "상"
+            },
+            {
+                "hanja": "斧",
+                "meaning": "도끼",
+                "reading": "부"
+            },
+            {
+                "hanja": "割",
+                "meaning": "베다",
+                "reading": "할"
+            }
+        ],
+        "meaning": "입은 사람을 해치는 도끼이며 말은 혀를 베는 칼이다."
+    },
+    {
+        "hanmun": "閉口深藏舌 安身處處牢",
+        "reading": "폐문심장설 안신천천뢰",
+        "keyHanja": [
+            {
+                "hanja": "閉",
+                "meaning": "닫다",
+                "reading": "폐"
+            },
+            {
+                "hanja": "舌",
+                "meaning": "혀",
+                "reading": "설"
+            },
+            {
+                "hanja": "身",
+                "meaning": "몸",
+                "reading": "신"
+            }
+        ],
+        "meaning": "입을 닫고 혀를 깊이 감추면 몸이 편안하고 곳곳에서 안전하다."
+    },
+    {
+        "hanmun": "丹之所藏者赤 漆之所藏者黑",
+        "reading": "단지소장자적 칠지소장자흑",
+        "keyHanja": [
+            {
+                "hanja": "丹",
+                "meaning": "붉다",
+                "reading": "단"
+            },
+            {
+                "hanja": "赤",
+                "meaning": "붉다",
+                "reading": "적"
+            },
+            {
+                "hanja": "黑",
+                "meaning": "검다",
+                "reading": "흑"
+            }
+        ],
+        "meaning": "단사를 지닌 자는 함께 붉어지고 옻을 지닌 자는 함께 검어진다."
     }
+    
 
 ]
