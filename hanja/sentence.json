@@ -1435,6 +1435,95 @@
         ],
         "meaning": "단사를 지닌 자는 함께 붉어지고 옻을 지닌 자는 함께 검어진다."
     }
-    
+    ,
+    {
+        "hanmun": "無惻隱之心 非人也",
+        "reading": "무측은지심 비인야",
+        "meaning": "측은지심이 없으면 사람이 아니다.",
+        "keyHanja": [
+            {
+                "hanja": "惻",
+                "meaning": "슬퍼하다",
+                "reading": "측"
+            },
+            {
+                "hanja": "隱",
+                "meaning": "불쌍히 여기다",
+                "reading": "은"
+            },
+            {
+                "hanja": "非",
+                "meaning": "아니다",
+                "reading": "비"
+            }
+        ]
+    },
+    {
+        "hanmun": "無羞惡之心 非人也",
+        "reading": "무수오지심 비인야",
+        "meaning": "수오지심이 없으면 사람이 아니다.",
+        "keyHanja": [
+            {
+                "hanja": "羞",
+                "meaning": "부끄럽다",
+                "reading": "수"
+            },
+            {
+                "hanja": "惡",
+                "meaning": "미워하다",
+                "reading": "오"
+            },
+            {
+                "hanja": "非",
+                "meaning": "아니다",
+                "reading": "비"
+            }
+        ]
+    },
+    {
+        "hanmun": "無辭讓之心 非人也",
+        "reading": "무사양지심 비인야",
+        "meaning": "사양지심이 없으면 사람이 아니다.",
+        "keyHanja": [
+            {
+                "hanja": "辭",
+                "meaning": "사양하다",
+                "reading": "사"
+            },
+            {
+                "hanja": "讓",
+                "meaning": "사양하다",
+                "reading": "양"
+            },
+            {
+                "hanja": "非",
+                "meaning": "아니다",
+                "reading": "비"
+            }
+        ]
+    },
+    {
+        "hanmun": "無是非之心 非人也",
+        "reading": "무시비지심 비인야",
+        "meaning": "시비지심이 없으면 사람이 아니다.",
+        "keyHanja": [
+            {
+                "hanja": "是",
+                "meaning": "옳다",
+                "reading": "시"
+            },
+            {
+                "hanja": "非",
+                "meaning": "아니다",
+                "reading": "비"
+            },
+            {
+                "hanja": "心",
+                "meaning": "마음",
+                "reading": "심"
+            }
+        ]
+    }
+
 
 ]
