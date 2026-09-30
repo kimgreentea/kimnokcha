@@ -1,5 +1,12 @@
 
-        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px; }
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+        body { background: #1e1e1e; color: #d4d4d4; font-family: monospace; padding: 20px; font-size:15pt; font-family:'Pretendard';} 
         h2 { text-align: center; color: #fff; margin-bottom: 30px; }
        .nav-bar {
             display: flex;
@@ -17,9 +24,10 @@
             border: 1px solid #444;
             border-radius: 4px;
             text-decoration: none;
-            font-weight: bold;
-            font-family: monospace;
+ 
+
             transition: all 0.2s;
+            
         }
         
         .nav-btn:hover {
@@ -63,6 +71,7 @@
             padding: 10px; 
             font-family: monospace; 
             resize: none; 
+
             border-radius: 4px; 
             box-sizing: border-box;
         }
