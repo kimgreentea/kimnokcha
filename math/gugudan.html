@@ -46,7 +46,6 @@ let num2;
 let count = 1;
 
 
-// 문제 만들기
 function makeQuestion() {
 
     num1 = Math.floor(Math.random() * 8) + 2;
@@ -58,7 +57,6 @@ function makeQuestion() {
 }
 
 
-// 입력할 때 정답 확인
 input_answer.addEventListener("input", function() {
 
     if (Number(input_answer.value) == num1 * num2) {
@@ -74,11 +72,9 @@ input_answer.addEventListener("input", function() {
 });
 
 
-// 처음 문제 만들기
 makeQuestion();
 
 
-// 페이지에 들어오면 바로 입력 가능
 input_answer.focus();
 
 </script>
