@@ -22,11 +22,11 @@
 html,
 body {
     margin: 0;
-    width:100%;
+    width: 100%;
     height: 100%;
 }
 
-body { 
+body {
 
     font-family:
         Arial,
@@ -43,6 +43,39 @@ body {
 }
 
 
+/* =========================
+   헤더
+========================= */
+
+header {
+
+    height: 64px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 24px;
+
+    background: #222;
+
+    color: white;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.15);
+
+}
+
+header h1 {
+
+    margin: 0;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+}
 
 
 /* =========================
@@ -56,13 +89,13 @@ main {
     display: grid;
 
     /*
-     * 처음에는 코드 50%
-     * 미리보기 50%
+     * 코드 : 미리보기
+     * 기본 50 : 50
      */
     grid-template-columns:
-        minmax(200px, 1fr)
+        1fr
         10px
-        minmax(200px, 1fr);
+        1fr;
 
     gap: 0;
 
@@ -140,7 +173,7 @@ main {
 
 
 /* =========================
-   코드 입력
+   코드
 ========================= */
 
 #code {
@@ -202,7 +235,7 @@ main {
 
 
 /* =========================
-   드래그 바
+   드래그바
 ========================= */
 
 #divider {
@@ -218,9 +251,7 @@ main {
 }
 
 
-/*
- * 가운데 손잡이
- */
+/* 손잡이 */
 
 #divider::after {
 
@@ -229,14 +260,12 @@ main {
     position: absolute;
 
     top: 50%;
-
     left: 50%;
 
     transform:
         translate(-50%, -50%);
 
     width: 4px;
-
     height: 60px;
 
     border-radius: 4px;
@@ -245,10 +274,6 @@ main {
 
 }
 
-
-/*
- * 마우스를 올렸을 때
- */
 
 #divider:hover {
 
@@ -275,10 +300,6 @@ body.resizing {
 
 }
 
-
-/* iframe이나 textarea가
-   드래그를 방해하지 않도록 */
-
 body.resizing iframe,
 body.resizing textarea {
 
@@ -287,28 +308,15 @@ body.resizing textarea {
 }
 
 
-/* =========================
-   모바일
-========================= */
+/* ==================================================
+   좁은 화면
+================================================== */
 
-@media (max-width: 700px) {
-
-    header {
-
-        height: 56px;
-
-        padding: 0 16px;
-
-    }
-
-    header h1 {
-
-        font-size: 19px;
-
-    }
-
+@media (max-width: 800px) {
 
     main {
+
+        display: grid;
 
         grid-template-columns: 1fr;
 
@@ -323,21 +331,17 @@ body.resizing textarea {
     }
 
 
-    .panel {
+    #divider {
 
-        border-radius: 10px !important;
+        display: none;
 
     }
 
 
-    /*
-     * 모바일에서는
-     * 드래그바 숨김
-     */
+    #codePanel,
+    #previewPanel {
 
-    #divider {
-
-        display: none;
+        border-radius: 10px;
 
     }
 
@@ -365,7 +369,7 @@ body.resizing textarea {
 
 
 /* =========================
-   작은 화면
+   아주 좁은 화면
 ========================= */
 
 @media (max-width: 400px) {
@@ -389,17 +393,14 @@ body.resizing textarea {
 
     }
 
+}
+
 </style>
 
 </head>
 
 
 <body>
-
-
-<!-- =========================
-     헤더
-========================= -->
 
 
 
@@ -411,9 +412,7 @@ body.resizing textarea {
 <main id="main">
 
 
-    <!-- =====================
-         코드
-    ====================== -->
+    <!-- 코드 -->
 
     <section
         class="panel"
@@ -434,9 +433,7 @@ body.resizing textarea {
     </section>
 
 
-    <!-- =====================
-         드래그 바
-    ====================== -->
+    <!-- 드래그바 -->
 
     <div
         id="divider"
@@ -444,9 +441,7 @@ body.resizing textarea {
     </div>
 
 
-    <!-- =====================
-         미리보기
-    ====================== -->
+    <!-- 미리보기 -->
 
     <section
         class="panel"
@@ -504,44 +499,51 @@ codeInput.addEventListener(
 );
 
 
-/* =========================
-   드래그 크기 조절
-========================= */
+/* ==================================================
+   화면 크기
+================================================== */
+
+function isMobileLayout() {
+
+    return window.innerWidth <= 800;
+
+}
+
+
+/* ==================================================
+   패널 비율
+================================================== */
+
+/*
+ * 코드 영역의 비율
+ *
+ * 0.5 = 50%
+ * 0.7 = 70%
+ */
+
+let codeRatio = 0.5;
+
+
+/* ==================================================
+   드래그
+================================================== */
 
 let isResizing = false;
 
 
-/*
- * 드래그 시작 시
- * 현재 코드 영역의 실제 너비를 기억
- */
-
-let startCodeWidth = 0;
-let startMouseX = 0;
-
-
 /* =========================
-   마우스 누름
+   드래그 시작
 ========================= */
 
 divider.addEventListener(
     "mousedown",
     function(event) {
 
+        if (isMobileLayout()) {
+            return;
+        }
+
         isResizing = true;
-
-        startMouseX =
-            event.clientX;
-
-        /*
-         * 현재 코드 패널의 실제 너비
-         */
-        startCodeWidth =
-            document
-                .getElementById("codePanel")
-                .getBoundingClientRect()
-                .width;
-
 
         document.body.classList.add(
             "resizing"
@@ -554,7 +556,7 @@ divider.addEventListener(
 
 
 /* =========================
-   마우스 이동
+   드래그 중
 ========================= */
 
 document.addEventListener(
@@ -566,139 +568,150 @@ document.addEventListener(
         }
 
 
-        /*
-         * 마우스가 이동한 거리
-         */
+        if (isMobileLayout()) {
 
-        const delta =
-            event.clientX -
-            startMouseX;
+            isResizing = false;
 
+            document.body.classList.remove(
+                "resizing"
+            );
 
-        /*
-         * 새로운 코드 창 너비
-         */
+            resetDesktopLayout();
 
-        let codeWidth =
-            startCodeWidth +
-            delta;
+            return;
+
+        }
 
 
         /*
-         * main의 실제 내부 너비
+         * main의 실제 영역
          */
 
-        const mainRect =
+        const rect =
             main.getBoundingClientRect();
 
 
-        const codePanel =
-            document.getElementById(
-                "codePanel"
-            );
-
-        const previewPanel =
-            document.getElementById(
-                "previewPanel"
-            );
-
-
-        const dividerWidth =
-            divider.getBoundingClientRect()
-                .width;
-
-
         /*
-         * 최소 너비
+         * padding 계산
          */
 
-        const minWidth = 200;
-
-
-        /*
-         * main의 실제 콘텐츠 영역
-         *
-         * padding을 제외해야 함
-         */
-
-        const computedStyle =
+        const style =
             getComputedStyle(main);
-
 
         const paddingLeft =
             parseFloat(
-                computedStyle.paddingLeft
+                style.paddingLeft
             );
 
         const paddingRight =
             parseFloat(
-                computedStyle.paddingRight
+                style.paddingRight
             );
 
 
+        /*
+         * 실제 grid 영역의 가로폭
+         */
+
         const contentWidth =
-            mainRect.width -
+            rect.width -
             paddingLeft -
             paddingRight;
 
 
         /*
-         * 미리보기 창 너비
+         * 마우스의 grid 영역 내 위치
          */
 
-        let previewWidth =
+        const mouseX =
+            event.clientX -
+            rect.left -
+            paddingLeft;
+
+
+        /*
+         * 드래그바 너비
+         */
+
+        const dividerWidth = 10;
+
+
+        /*
+         * 코드 영역 너비
+         */
+
+        const codeWidth =
+            mouseX;
+
+
+        /*
+         * divider를 제외한 전체 영역
+         */
+
+        const availableWidth =
             contentWidth -
-            codeWidth -
             dividerWidth;
 
 
         /*
-         * 코드 창 최소 너비
+         * 비율 계산
          */
 
-        if (codeWidth < minWidth) {
+        codeRatio =
+            codeWidth /
+            availableWidth;
 
-            codeWidth =
-                minWidth;
 
-            previewWidth =
-                contentWidth -
-                codeWidth -
-                dividerWidth;
+        /*
+         * 최소 비율
+         */
+
+        const minRatio =
+            200 / availableWidth;
+
+
+        /*
+         * 코드 최소 200px
+         */
+
+        if (codeRatio < minRatio) {
+
+            codeRatio =
+                minRatio;
 
         }
 
 
         /*
-         * 미리보기 최소 너비
+         * 미리보기 최소 200px
          */
 
-        if (previewWidth < minWidth) {
+        if (
+            1 - codeRatio <
+            minRatio
+        ) {
 
-            previewWidth =
-                minWidth;
-
-            codeWidth =
-                contentWidth -
-                previewWidth -
-                dividerWidth;
+            codeRatio =
+                1 - minRatio;
 
         }
 
 
         /*
-         * 최종 적용
+         * 비율로 적용
+         *
+         * 핵심 부분
          */
 
         main.style.gridTemplateColumns =
-            `${codeWidth}px ${dividerWidth}px ${previewWidth}px`;
+            `${codeRatio}fr 10px ${1 - codeRatio}fr`;
 
     }
 );
 
 
 /* =========================
-   마우스 놓음
+   드래그 종료
 ========================= */
 
 document.addEventListener(
@@ -719,14 +732,59 @@ document.addEventListener(
 );
 
 
+/* ==================================================
+   데스크톱 레이아웃 초기화
+================================================== */
+
+function resetDesktopLayout() {
+
+    main.style.gridTemplateColumns = "";
+
+}
+
+
+/* ==================================================
+   화면 크기 변경
+================================================== */
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        if (isMobileLayout()) {
+
+            /*
+             * 모바일에서는
+             * grid 비율 설정 제거
+             */
+
+            main.style.gridTemplateColumns = "";
+
+        }
+
+        else {
+
+            /*
+             * 다시 데스크톱으로 돌아오면
+             * 기존 비율 복원
+             */
+
+            main.style.gridTemplateColumns =
+                `${codeRatio}fr 10px ${1 - codeRatio}fr`;
+
+        }
+
+    }
+);
+
+
 /* =========================
-   초기 렌더링
+   초기 실행
 ========================= */
 
 render();
 
 </script>
-
 
 
 </body>
