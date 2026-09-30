@@ -1,0 +1,799 @@
+  
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>소수의 나눗셈 연습</title>
+
+    <style>
+
+
+
+        * {
+            box-sizing: border-box;
+        } 
+  
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: #f3f6fa;
+
+
+            color: #222;
+        }
+
+        .container {
+            width: min(700px, 92vw);
+
+            padding: 55px 50px 60px;
+
+            background: white;
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 40px;
+
+            font-size: 34px;
+            font-weight: 600;
+
+            color: #333;
+        }
+
+        .question-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-bottom: 35px;
+
+            white-space: nowrap;
+        }
+
+        #number {
+            font-size: 48px;
+
+            color: #0078D6;
+
+            margin-right: 5px;
+
+            min-width: 55px;
+
+            text-align: right;
+        }
+
+        #question {
+            font-size: 48px;
+
+            font-weight: 500;
+
+            letter-spacing: 1px;
+        }
+
+        #answer {
+            width: 230px;
+            height: 85px;
+
+            border: 3px solid #d9e1ea;
+
+            border-radius: 16px;
+
+            background: #f8fafc;
+
+            font-family: inherit;
+
+            font-size: 45px;
+
+            text-align: center;
+
+            outline: none;
+
+            transition:
+                border-color 0.15s,
+                box-shadow 0.15s,
+                background 0.15s;
+        }
+
+        #answer::placeholder {
+            color: #b5bdc8;
+
+            font-size: 45px;
+        }
+
+        #answer:focus {
+            border-color: #0078D6;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 5px rgba(0, 120, 214, 0.1);
+        }
+
+        .hint {
+            margin-top: 25px;
+
+            font-size: 17px;
+
+            color: #9aa3ad;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94vw;
+
+                padding: 40px 20px 45px;
+
+                border-radius: 22px;
+            }
+
+            h1 {
+                margin-bottom: 30px;
+
+                font-size: 28px;
+            }
+
+            .question-box {
+                gap: 5px;
+
+                margin-bottom: 28px;
+            }
+
+            #number {
+                font-size: 48px;
+
+                min-width: 40px;
+            }
+
+            #question {
+                font-size: 35px;
+
+                letter-spacing: 0;
+            }
+
+            #answer {
+                width: 190px;
+
+                height: 72px;
+
+                font-size: 38px;
+            }
+
+            #answer::placeholder {
+                font-size: 45px;
+            }
+
+            .hint {
+                font-size: 15px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>소수의 나눗셈 연습</h1>
+
+        <div class="question-box">
+
+            <span id="number"></span>
+
+            <span id="question"></span>
+
+        </div>
+
+        <input
+            id="answer"
+            type="text"
+            inputmode="decimal"
+            autocomplete="off"
+            placeholder="정답"
+        >
+
+
+
+    </div>
+
+
+<script>
+
+let number = document.getElementById("number");
+let question = document.getElementById("question");
+let input_answer = document.getElementById("answer");
+
+let correctNumerator;
+let correctDenominator;
+
+let count = 1;
+
+
+// ==================================================
+// 랜덤 정수
+// ==================================================
+
+function randomInt(min, max) {
+
+    return Math.floor(
+        Math.random() * (max - min + 1)
+    ) + min;
+
+}
+
+
+// ==================================================
+// 최대공약수
+// ==================================================
+
+function gcd(a, b) {
+
+    while (b !== 0) {
+
+        let temp = a % b;
+
+        a = b;
+        b = temp;
+
+    }
+
+    return Math.abs(a);
+
+}
+
+
+// ==================================================
+// 정답 저장
+// ==================================================
+
+function setAnswer(numerator, denominator) {
+
+    let g = gcd(
+        numerator,
+        denominator
+    );
+
+    correctNumerator =
+        numerator / g;
+
+    correctDenominator =
+        denominator / g;
+
+}
+
+
+// ==================================================
+// 정수 → 소수 표시
+//
+// 48, 1 → 4.8
+// 425, 2 → 4.25
+// 225, 2 → 2.25
+// ==================================================
+
+function decimal(value, digits) {
+
+    let divisor =
+        Math.pow(10, digits);
+
+    let result =
+        value / divisor;
+
+    return result
+        .toFixed(digits)
+        .replace(/\.?0+$/, "");
+
+}
+
+
+// ==================================================
+// 1번
+//
+// 한 자리 소수 ÷ 한 자리 소수
+// 정답 = 자연수
+//
+// 예:
+// 4.8 ÷ 0.8 = 6
+//
+// 조건:
+// - 나누는 수는 자연수 아님
+// - 나누는 수는 1 아님
+// - 정답 2 제외
+// ==================================================
+
+function makeType1() {
+
+    let divisor;
+    let answer;
+    let dividend;
+
+    do {
+
+        // 0.1 ~ 9.9
+        divisor =
+            randomInt(1, 99);
+
+        // 자연수가 아닌 소수만 허용
+        if (divisor % 10 === 0) {
+            continue;
+        }
+
+        // 정답은 3 ~ 9
+        answer =
+            randomInt(3, 9);
+
+        dividend =
+            divisor * answer;
+
+    } while (
+
+        // 9.9를 넘지 않음
+        dividend > 99
+
+        ||
+
+        // 나누는 수가 1이 되는 경우 제외
+        divisor === 10
+
+    );
+
+
+    question.innerText =
+        decimal(dividend, 1)
+        + " ÷ "
+        + decimal(divisor, 1)
+        + " = ";
+
+
+    setAnswer(
+        answer,
+        1
+    );
+
+}
+
+
+// ==================================================
+// 2번
+//
+// 두 자리 소수 ÷ 두 자리 소수
+// 정답 = 자연수
+//
+// 예:
+// 1.25 ÷ 0.25 = 5
+//
+// 조건:
+// - 나누는 수는 자연수 아님
+// - 나누는 수는 1 아님
+// - 정답 2 제외
+// ==================================================
+
+function makeType2() {
+
+    let divisor;
+    let answer;
+    let dividend;
+
+    do {
+
+        // 0.01 ~ 9.99
+        divisor =
+            randomInt(1, 999);
+
+        // 자연수가 되는 경우 제외
+        if (divisor % 100 === 0) {
+            continue;
+        }
+
+        // 정답 3 ~ 9
+        answer =
+            randomInt(3, 9);
+
+        dividend =
+            divisor * answer;
+
+    } while (
+
+        dividend > 999
+
+        ||
+
+        // 1.00 제외
+        divisor === 100
+
+    );
+
+
+    question.innerText =
+        decimal(dividend, 2)
+        + " ÷ "
+        + decimal(divisor, 2)
+        + " = ";
+
+
+    setAnswer(
+        answer,
+        1
+    );
+
+}
+
+
+// ==================================================
+// 3번
+//
+// 두 자리 소수 ÷ 한 자리 소수
+// 정답 = 소수 첫째 자리
+//
+// 예:
+// 4.25 ÷ 2.5 = 1.7
+//
+// 조건:
+// - 나누는 수는 한 자리 소수
+// - 정답은 2보다 큼
+// - 정답 2는 제외
+// ==================================================
+
+function makeType3() {
+
+    let divisor;
+    let answer10;
+    let dividend;
+
+    do {
+
+        // 0.1 ~ 9.9
+        divisor =
+            randomInt(1, 99);
+
+        // 반드시 소수
+        if (divisor % 10 === 0) {
+            continue;
+        }
+
+        // 정답 2.1 ~ 9.9
+        answer10 =
+            randomInt(21, 99);
+
+        /*
+            예:
+
+            2.5 × 1.7
+
+            내부:
+
+            25 × 17
+            = 425
+
+            따라서
+
+            4.25 ÷ 2.5
+            = 1.7
+        */
+
+        dividend =
+            divisor * answer10;
+
+    } while (
+
+        dividend < 100
+
+        ||
+
+        dividend > 999
+
+        ||
+
+        // 나누는 수가 1
+        divisor === 10
+
+    );
+
+
+    question.innerText =
+        decimal(dividend, 2)
+        + " ÷ "
+        + decimal(divisor, 1)
+        + " = ";
+
+
+    setAnswer(
+        answer10,
+        10
+    );
+
+}
+
+
+// ==================================================
+// 4번
+//
+// 자연수 ÷ 한두 자리 소수
+//
+// 예:
+//
+// 27 ÷ 1.8 = 15
+// 9 ÷ 2.25 = 4
+//
+// 정답:
+// 자연수 또는 소수 첫째 자리
+//
+// 조건:
+// - 나누는 수는 0.01 ~ 9.99
+// - 나누는 수는 반드시 소수
+// - 나누는 수 1 제외
+// - 정답 2 제외
+// - 자연수 ÷ 자연수 금지
+// ==================================================
+
+function makeType4() {
+
+    let divisor;
+    let answer10;
+    let dividend;
+
+    do {
+
+        // 0.01 ~ 9.99
+        //
+        // 225 → 2.25
+        // 18  → 0.18
+        divisor =
+            randomInt(1, 999);
+
+
+        /*
+            반드시 소수
+
+            예:
+            225 = 2.25
+            18  = 0.18
+
+            100, 200, ... 같은
+            자연수는 제외
+        */
+
+        if (divisor % 100 === 0) {
+            continue;
+        }
+
+
+        // 정답:
+        //
+        // 2는 제외
+        //
+        // 2.1 ~ 9.9
+        answer10 =
+            randomInt(21, 99);
+
+
+        /*
+            문제:
+
+            dividend ÷ (divisor / 100)
+            =
+            answer10 / 10
+
+
+            따라서:
+
+            dividend
+            =
+            divisor × answer10 / 1000
+        */
+
+        dividend =
+            divisor * answer10 / 1000;
+
+
+    } while (
+
+        // 나누어떨어져야 함
+        !Number.isInteger(dividend)
+
+        ||
+
+        // 자연수 범위
+        dividend < 2
+
+        ||
+
+        dividend > 99
+
+        ||
+
+        // 나누는 수가 1
+        divisor === 100
+
+    );
+
+
+    question.innerText =
+        dividend
+        + " ÷ "
+        + decimal(divisor, 2)
+        + " = ";
+
+
+    setAnswer(
+        answer10,
+        10
+    );
+
+}
+
+
+// ==================================================
+// 문제 만들기
+// ==================================================
+
+function makeQuestion() {
+
+    let type =
+        randomInt(1, 4);
+
+
+    if (type === 1) {
+
+        makeType1();
+
+    }
+
+    else if (type === 2) {
+
+        makeType2();
+
+    }
+
+    else if (type === 3) {
+
+        makeType3();
+
+    }
+
+    else {
+
+        makeType4();
+
+    }
+
+
+    number.innerText =
+        count + ".";
+
+}
+
+
+// ==================================================
+// 입력값 → 정확한 분수
+// ==================================================
+
+function parseAnswer(value) {
+
+    value =
+        value.trim();
+
+
+    if (value === "") {
+        return null;
+    }
+
+
+    // 숫자 형식만 허용
+    if (!/^\d+(\.\d+)?$/.test(value)) {
+        return null;
+    }
+
+
+    let parts =
+        value.split(".");
+
+
+    let integerPart =
+        parts[0];
+
+    let decimalPart =
+        parts[1] || "";
+
+
+    let denominator =
+        Math.pow(
+            10,
+            decimalPart.length
+        );
+
+
+    let numerator =
+        Number(integerPart) * denominator
+        +
+        Number(decimalPart || 0);
+
+
+    return {
+        numerator: numerator,
+        denominator: denominator
+    };
+
+}
+
+
+// ==================================================
+// 정답 확인
+// ==================================================
+
+input_answer.addEventListener(
+    "input",
+    function() {
+
+        let userAnswer =
+            parseAnswer(
+                input_answer.value
+            );
+
+
+        if (userAnswer === null) {
+            return;
+        }
+
+
+        /*
+            분수끼리 교차곱.
+
+            실수 계산을 하지 않음.
+        */
+
+        let left =
+            userAnswer.numerator
+            *
+            correctDenominator;
+
+
+        let right =
+            correctNumerator
+            *
+            userAnswer.denominator;
+
+
+        if (left === right) {
+
+            input_answer.value = "";
+
+            count += 1;
+
+            makeQuestion();
+
+        }
+
+    }
+);
+
+
+// ==================================================
+// 시작
+// ==================================================
+
+makeQuestion();
+
+input_answer.focus();
+
+</script>
+
+</body>
+</html>
+
