@@ -25,7 +25,7 @@
             border-radius: 4px;
             text-decoration: none;
  
-
+            font-size:20pt;
             transition: all 0.2s;
             
         }
@@ -69,8 +69,9 @@
             color: #fff; 
             border: 1px solid #444; 
             padding: 10px; 
-            font-family: monospace; 
+font-family:'Pretendard';
             resize: none; 
+            font-size:15pt;
 
             border-radius: 4px; 
             box-sizing: border-box;
@@ -83,6 +84,7 @@
             color: #fff; 
             border: none; 
             cursor: pointer; 
+            font-size:15pt;font-family:'Pretendard';
             font-weight: bold; 
             border-radius: 4px; 
         }
@@ -110,7 +112,7 @@ button.run-btn.hidden {
             padding: 12px 15px;
             border-radius: 4px;
             color: #ce9178;
-            font-size: 13px;
+            font-size: 20px;
             line-height: 1.6;
         }
         
@@ -118,4 +120,3 @@ button.run-btn.hidden {
             margin: 0;
             padding: 0;
         }
-  
