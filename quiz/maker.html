@@ -4,447 +4,556 @@
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>랜덤 생성</title>
+<meta charset="UTF-8">
 
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <style>
+<title>퀴즈 메이커</title>
 
-        /* =========================================================
-           한글 폰트
-        ========================================================= */
 
-        @font-face {
-            font-family: 'NotoSerifKR';
+<style>
 
-            src: url(
-                'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff'
-            ) format('woff');
+/* =========================================================
+   한글 폰트
+========================================================= */
 
-            font-weight: normal;
-            font-style: normal;
-        }
+@font-face {
 
+    font-family: 'NotoSerifKR';
 
-        @font-face {
-            font-family: 'Pretendard-Regular';
+    src: url(
+        'https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff'
+    ) format('woff');
 
-            src: url(
-                'https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff'
-            ) format('woff');
+    font-weight: normal;
+    font-style: normal;
 
-            font-weight: 400;
-            font-style: normal;
-        }
+}
 
 
-        /* =========================================================
-           전체 페이지
-        ========================================================= */
+@font-face {
 
-        body {
-            width: 1200px;
-            max-width: 100%;
-            margin: 0 auto;
-            margin-top: 60px;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
+    font-family: 'Pretendard-Regular';
 
+    src: url(
+        'https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff'
+    ) format('woff');
 
-        /* =========================================================
-           문제 하나의 전체 영역
-        ========================================================= */
+    font-weight: 400;
+    font-style: normal;
 
-        .question {
+}
 
-            padding: 20px;
 
-            font-size: 15pt;
+/* =========================================================
+   전체 페이지
+========================================================= */
 
-            font-family: 'NotoSerifKR';
+body {
 
-            line-height: 1.6;
+    width: 1200px;
 
-            background-size: auto;
+    max-width: 100%;
 
-            background-position: left top;
+    margin: 0 auto;
 
-            background-repeat: no-repeat;
-        }
+    margin-top: 60px;
 
+    padding: 0 20px;
 
-        /* =========================================================
-           정답 / 오답 표시 이미지
+    box-sizing: border-box;
 
+}
 
-        ========================================================= */
 
-        .question.correct {
+/* =========================================================
+   문제
+========================================================= */
 
-            background-image:
-                url(
-                    'https://kimgreentea.github.io/kimnokcha/quiz/check-O.png'
-                );
-        }
+.question {
 
+    padding: 20px;
 
-        .question.wrong {
+    font-size: 15pt;
 
-            background-image:
-                url(
-                    'https://kimgreentea.github.io/kimnokcha/quiz/check-X.png'
-                );
-        }
+    font-family: 'NotoSerifKR';
 
+    line-height: 1.6;
 
-        /* =========================================================
-           문제 문장
-        ========================================================= */
+    background-size: auto;
 
-        .moonje {
+    background-position: left top;
 
-            font-family: 'Pretendard-Regular';
+    background-repeat: no-repeat;
 
-            font-size: 20pt;
+}
 
-            margin-bottom: 15px;
-        }
 
+.question.correct {
 
-        /* =========================================================
-           문제 번호
-        ========================================================= */
+    background-image:
+        url(
+            'https://kimgreentea.github.io/kimnokcha/quiz/check-O.png'
+        );
 
-        .number {
+}
 
-            font-family: 'Pretendard-Regular';
 
-            font-size: 20pt;
+.question.wrong {
 
-            margin-bottom: 15px;
+    background-image:
+        url(
+            'https://kimgreentea.github.io/kimnokcha/quiz/check-X.png'
+        );
 
-            margin-right: 10px;
+}
 
-            color: #0078D6;
 
-            font-weight: bold;
+/* =========================================================
+   문제 문장
+========================================================= */
 
-            vertical-align: top;
+.moonje {
 
-            width: 40px;
-        }
+    font-family: 'Pretendard-Regular';
 
+    font-size: 20pt;
 
-        /* =========================================================
-           문제 설명
+    margin-bottom: 15px;
 
-        ========================================================= */
+}
 
-        .explanation {
 
-            margin: 10px 0 5px 5px;
+/* =========================================================
+   문제 번호
+========================================================= */
 
-            padding: 12px 15px;
+.number {
 
-            font-family: 'Pretendard-Regular';
+    font-family: 'Pretendard-Regular';
 
-            font-size: 17pt;
+    font-size: 20pt;
 
-            color: #666;
+    margin-bottom: 15px;
 
-            background-color:
-                rgba(240, 240, 240, 0.7);
+    margin-right: 10px;
 
-            border-radius: 10px;
-        }
+    color: #0078D6;
 
+    font-weight: bold;
 
-        /* =========================================================
-           보기 전체 영역
-        ========================================================= */
+    vertical-align: top;
 
-        .bogi {
+    width: 40px;
 
-            display: block;
+}
 
-            margin-bottom: 10px;
 
-            padding: 20px;
+/* =========================================================
+   설명
+========================================================= */
 
-            border-radius: 10px;
+.explanation {
 
+    margin: 10px 0 5px 5px;
 
-        }
+    padding: 12px 15px;
 
+    font-family: 'Pretendard-Regular';
 
-        /* =========================================================
-           객관식 보기 하나
-        ========================================================= */
+    font-size: 17pt;
 
-        .question label {
+    color: #666;
 
-            display: block;
+    background-color:
+        rgba(240, 240, 240, 0.7);
 
-            margin-bottom: 10px;
+    border-radius: 10px;
 
-            padding: 5px;
+}
 
-            border-radius: 10px;
-        }
 
+/* =========================================================
+   보기
+========================================================= */
 
-        /* =========================================================
-           라디오 버튼
-        ========================================================= */
+.bogi {
 
-        .question input[type="radio"] {
+    display: block;
 
-            margin-right: 10px;
+    margin-bottom: 10px;
 
-            width: 15px;
+    padding: 20px;
 
-            height: 15px;
+    border-radius: 10px;
 
-            accent-color: #0078D6;
-        }
+}
 
 
-        /* =========================================================
-           사용자가 선택한 보기
-        ========================================================= */
+.question label {
 
-        .question label.selected {
+    display: block;
 
-            background-color:
-                rgba(210, 210, 210, 0.8);
-        }
+    margin-bottom: 10px;
 
+    padding: 5px;
 
-        /* =========================================================
-           주관식 입력창
-        ========================================================= */
+    border-radius: 10px;
 
-        input[type="text"] {
+}
 
-            padding: 20px;
 
-            font-size: 20px;
+.question input[type="radio"] {
 
-            font-family: 'NotoSerifKR';
+    margin-right: 10px;
 
-            width: 100%;
+    width: 15px;
 
-            max-width:
-                calc(100% - 40px);
+    height: 15px;
 
-            border-radius: 15pt;
+    accent-color: #0078D6;
 
-            background-color:
-                rgba(230, 230, 230, 0.7);
+}
 
-            border: none;
 
-            margin-bottom: 15pt;
-        }
+.question label.selected {
 
+    background-color:
+        rgba(210, 210, 210, 0.8);
 
-        /* =========================================================
-           파일 업로드 버튼
-        ========================================================= */
+}
 
-        input[type="file"] {
 
-            font-size: 20px;
+/* =========================================================
+   주관식 입력창
+========================================================= */
 
-            font-family: 'NotoSerifKR';
+input[type="text"] {
 
-            border: none;
-        }
+    padding: 20px;
 
+    font-size: 20px;
 
-        input[type="file"]::file-selector-button {
+    font-family: 'NotoSerifKR';
 
-            background-color: #0078D4;
+    width: 100%;
 
-            color: white;
+    max-width:
+        calc(100% - 40px);
 
-            font-size: 16px;
+    border-radius: 15pt;
 
-            padding: 10px 20px;
+    background-color:
+        rgba(230, 230, 230, 0.7);
 
-            border: none;
+    border: none;
 
-            border-radius: 5px;
+    margin-bottom: 15pt;
 
-            cursor: pointer;
+}
 
-            transition:
-                background-color 0.3s ease;
 
-            margin-right: 10px;
-        }
+/* =========================================================
+   파일 업로드
+========================================================= */
 
+input[type="file"] {
 
-        input[type="file"]::file-selector-button:hover {
+    font-size: 20px;
 
-            background-color: #005a9e;
-        }
+    font-family: 'NotoSerifKR';
 
+    border: none;
 
-        /* =========================================================
-           생성된 HTML 코드 표시창
-        ========================================================= */
+}
 
-        textarea {
 
-            width: 100%;
+input[type="file"]::file-selector-button {
 
-            height: 300px;
+    background-color: #0078D4;
 
-            font-size: 12px;
+    color: white;
 
-            font-family: monospace;
-        }
+    font-size: 16px;
 
+    padding: 10px 20px;
 
-        /* =========================================================
-           일반 버튼
-        ========================================================= */
+    border: none;
 
-        button {
+    border-radius: 5px;
 
-            background-color: #0078D4;
+    cursor: pointer;
 
-            color: white;
+    transition:
+        background-color 0.3s ease;
 
-            font-size: 16px;
+    margin-right: 10px;
 
-            padding: 10px 20px;
+}
 
-            border: none;
 
-            border-radius: 5px;
+input[type="file"]::file-selector-button:hover {
 
-            cursor: pointer;
+    background-color: #005a9e;
 
-            transition:
-                background-color 0.3s ease;
+}
 
-            margin-right: 10px;
-        }
 
+/* =========================================================
+   랜덤화 옵션
+========================================================= */
 
-        button:hover {
+.random-option {
 
-            background-color: #005a9e;
-        }
+    display: block;
 
+    margin: 15px 0;
 
-        /* =========================================================
-           다음 문제 버튼
+    font-family: 'Pretendard-Regular';
 
-        ========================================================= */
+    font-size: 18px;
 
-        .next-btn {
+    cursor: pointer;
 
-        }
+}
 
 
+.random-option input {
 
-    /* =========================================================
-       모바일
-    ========================================================= */
+    width: 18px;
+
+    height: 18px;
+
+    margin-right: 8px;
+
+    vertical-align: middle;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   생성된 코드
+========================================================= */
+
+textarea {
+
+    width: 100%;
+
+    height: 300px;
+
+    font-size: 12px;
+
+    font-family: monospace;
+
+}
+
+
+/* =========================================================
+   버튼
+========================================================= */
+
+button {
+
+    background-color: #0078D4;
+
+    color: white;
+
+    font-size: 16px;
+
+    padding: 10px 20px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.3s ease;
+
+    margin-right: 10px;
+
+}
+
+
+button:hover {
+
+    background-color: #005a9e;
+
+}
+
+
+/* =========================================================
+   모바일
+========================================================= */
 
 @media (max-width: 768px) {
 
     body {
+
         width: 100%;
+
         max-width: 100%;
+
         margin-top: 30px;
+
         padding: 0 12px;
+
     }
+
 
     .question {
+
         padding: 10px;
+
         font-size: 15pt;
+
         line-height: 1.6;
+
     }
+
 
     .moonje {
+
         font-size: clamp(20px, 5vw, 30px);
+
         margin-bottom: 12px;
+
     }
+
 
     .number {
+
         font-size: clamp(20px, 5vw, 30px);
+
         width: auto;
+
         margin-right: 8px;
+
         margin-bottom: 10px;
+
     }
+
 
     .explanation {
+
         margin: 8px 0 5px 0;
+
         padding: 10px 12px;
+
         font-size: clamp(16px, 4vw, 24px);
+
         line-height: 1.5;
+
     }
+
 
     .bogi {
+
         padding: 10px;
+
         margin-bottom: 8px;
+
     }
+
 
     .question label {
+
         padding: 10px 5px;
+
         margin-bottom: 8px;
+
         font-size: clamp(17px, 4.5vw, 25px);
+
         line-height: 1.5;
+
     }
+
 
     .question input[type="radio"] {
+
         width: 20px;
+
         height: 20px;
+
         margin-right: 8px;
+
         vertical-align: middle;
+
     }
+
 
     input[type="text"] {
+
         width: 100%;
+
         max-width: 100%;
+
         padding: 15px;
+
         font-size: clamp(18px, 5vw, 28px);
+
         box-sizing: border-box;
+
     }
+
 
     input[type="file"] {
+
         width: 100%;
+
         font-size: clamp(16px, 4vw, 22px);
+
     }
+
 
     input[type="file"]::file-selector-button {
+
         font-size: clamp(16px, 4vw, 22px);
+
         padding: 10px 15px;
+
     }
+
 
     textarea {
+
         width: 100%;
+
         height: 250px;
+
         font-size: 11px;
+
         box-sizing: border-box;
+
     }
+
 
     button {
+
         font-size: clamp(16px, 4vw, 22px);
+
         padding: 10px 16px;
+
         margin-bottom: 8px;
+
     }
+
+
+    .random-option {
+
+        font-size: clamp(16px, 4vw, 22px);
+
+    }
+
 }
 
-
-
-    </style>
+</style>
 
 </head>
 
@@ -452,527 +561,636 @@
 <body>
 
 
-    <!-- =========================================================
-         1. 엑셀 양식 다운로드
-    ========================================================== -->
+<!-- =========================================================
+     양식 다운로드
+========================================================= -->
 
-    <h2>💾 양식 파일 다운로드</h2>
-
-
-    <button
-        onclick="
-            window.location.href=
-            'https://kimgreentea.github.io/kimnokcha/quiz/template2026.xlsx';
-        "
-    >
-        다운로드
-    </button>
+<h2>💾 양식 파일 다운로드</h2>
 
 
+<button
+    onclick="
+        window.location.href =
+        'https://kimgreentea.github.io/kimnokcha/quiz/template2026.xlsx';
+    "
+>
+    다운로드
+</button>
 
-    <!-- =========================================================
-         2. 엑셀 파일 업로드
-    ========================================================== -->
 
-    <h2>📂 엑셀 파일 업로드</h2>
 
+
+<!-- =========================================================
+     엑셀 업로드
+========================================================= -->
+
+<h2>📂 엑셀 파일 업로드</h2>
+
+<!-- =========================================================
+     랜덤화 옵션
+
+     기본값:
+     체크 = 랜덤화
+
+     체크 해제 = 원래 순서
+========================================================= -->
+
+<label class="random-option">
 
     <input
-        type="file"
-        id="fileInput"
-        accept=".xlsx,.xls"
+        type="checkbox"
+        id="randomCheckbox"
+        checked
     >
 
+    문제 순서 랜덤화
 
-
-    <!-- =========================================================
-         3. 생성된 HTML 코드
-    ========================================================== -->
-
-    <h2>📝 생성된 HTML 코드</h2>
-
-
-    <textarea
-        id="codeContainer"
-        readonly
-    ></textarea>
-
-
-    <br><br>
-
-
-    <button id="copyButton">
-        📋 복사하기
-    </button>
-
-
-    <button
-        id="saveButton"
-        onclick="saveAsHtml()"
-    >
-        💾 HTML로 저장
-    </button>
+</label>
 
 
 
-    <!-- =========================================================
-         4. 미리보기
-    ========================================================== -->
-
-    <h2>👀 미리보기</h2>
-
-
-    <div id="questionsContainer"></div>
+<input
+    type="file"
+    id="fileInput"
+    accept=".xlsx,.xls"
+>
 
 
 
-    <!-- =========================================================
-         SheetJS
-
-         엑셀 파일 라이브러리
-    ========================================================== -->
-
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
-    </script>
 
 
 
-    <script>
+<!-- =========================================================
+     생성된 HTML
+========================================================= -->
+
+<h2>📝 생성된 HTML 코드</h2>
 
 
-        /* =========================================================
-           엑셀 파일 업로드 처리
-        ========================================================== */
-
-        document
-        .getElementById('fileInput')
-        .addEventListener(
-            'change',
-            function(event) {
+<textarea
+    id="codeContainer"
+    readonly
+></textarea>
 
 
-                /* 사용자가 선택한 파일 */
-
-                const file =
-                    event.target.files[0];
+<br><br>
 
 
-                /* 파일이 없으면 종료 */
-
-                if (!file) {
-                    return;
-                }
-                event.target.value = '';
-
-                /* 파일을 읽기 위한 FileReader */
-
-                const reader =
-                    new FileReader();
+<button id="copyButton">
+    📋 복사하기
+</button>
 
 
-                /* 파일 읽기가 끝났을 때 실행 */
-
-                reader.onload =
-                    function(e) {
-
-
-                        /* 엑셀 파일의 바이너리 데이터 */
-
-                        const data =
-                            new Uint8Array(
-                                e.target.result
-                            );
+<button
+    id="saveButton"
+    onclick="saveAsHtml()"
+>
+    💾 HTML로 저장
+</button>
 
 
-                        /* 엑셀 파일 열기 */
 
-                        const workbook =
-                            XLSX.read(
-                                data,
-                                {
-                                    type: 'array'
-                                }
-                            );
+<!-- =========================================================
+     미리보기
+========================================================= -->
+
+<h2>👀 미리보기</h2>
 
 
-                        /* 첫 번째 시트 가져오기 */
-
-                        const sheet =
-                            workbook.Sheets[
-                                workbook.SheetNames[0]
-                            ];
+<div id="questionsContainer"></div>
 
 
-                        /*
 
-                           엑셀을 배열 형태로 변환
+<!-- =========================================================
+     SheetJS
+========================================================= -->
 
-                           예:
-
-                           [
-                               ["문제", "설명", "보기1", ...],
-                               ["1+1=?", "덧셈", "1", ...],
-                               ...
-                           ]
-
-                        */
-
-                        const jsonData =
-                            XLSX.utils.sheet_to_json(
-                                sheet,
-                                {
-                                    header: 1
-                                }
-                            );
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
+</script>
 
 
-                        /* 문제 생성 */
 
-                        generateQuestions(
-                            jsonData
+<script>
+
+
+/* =========================================================
+   엑셀 파일 업로드
+========================================================= */
+
+document
+.getElementById('fileInput')
+.addEventListener(
+    'change',
+    function(event) {
+
+
+        /*
+           선택한 파일
+        */
+
+        const file =
+            event.target.files[0];
+
+
+        /*
+           파일을 선택하지 않았다면 종료
+        */
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        /*
+           여기서 input.value를 초기화하지 않는다.
+
+           기존 코드의
+
+           event.target.value = '';
+
+           를 제거했음.
+
+           따라서 업로드 후에도
+           선택된 파일명이 그대로 표시된다.
+        */
+
+
+
+        /*
+           FileReader 생성
+        */
+
+        const reader =
+            new FileReader();
+
+
+
+        /*
+           파일 읽기 완료
+        */
+
+        reader.onload =
+            function(e) {
+
+
+                /*
+                   ArrayBuffer → Uint8Array
+                */
+
+                const data =
+                    new Uint8Array(
+                        e.target.result
+                    );
+
+
+
+                /*
+                   엑셀 파일 읽기
+                */
+
+                let workbook;
+
+                try {
+
+                    workbook =
+                        XLSX.read(
+                            data,
+                            {
+                                type: 'array'
+                            }
                         );
 
-                    };
+                }
 
+                catch (error) {
 
-                /* 파일을 ArrayBuffer 형태로 읽기 */
+                    console.error(
+                        error
+                    );
 
-                reader.readAsArrayBuffer(
-                    file
-                );
+                    alert(
+                        '엑셀 파일을 읽을 수 없습니다.'
+                    );
 
-            }
-        );
+                    return;
 
-
-
-        /* =========================================================
-           문제 생성 함수
-
-        ========================================================== */
-
-        function generateQuestions(data) {
-
-
-            /* =====================================================
-               미리보기 영역
-            ===================================================== */
-
-            const container =
-                document.getElementById(
-                    'questionsContainer'
-                );
-
-
-            /* =====================================================
-               생성된 HTML 코드 표시 영역
-            ===================================================== */
-
-            const codeContainer =
-                document.getElementById(
-                    'codeContainer'
-                );
-
-
-            /* 이전 문제 제거 */
-
-            container.innerHTML = '';
-
-
-            /* =====================================================
-               정답 저장 객체
-
-            ===================================================== */
-
-            const answers = {};
-
-
-
-            /* =====================================================
-               실제 다운로드될 HTML 코드
-
-               문제 부분부터 문자열로 만들어 나감
-            ===================================================== */
-
-            let htmlCode =
-                `<div id="questionsContainer">`;
-
-
-
-            /* =====================================================
-               엑셀의 각 행을 처리
-
-            ===================================================== */
-
-            for (
-                let i = 1;
-                i < data.length;
-                i++
-            ) {
-
-
-                const row =
-                    data[i];
-
-
-                /* 빈 행은 건너뜀 */
-
-                if (
-                    !row ||
-                    row.length < 2
-                ) {
-                    continue;
                 }
 
 
 
-                /* =================================================
-                   A열
-                   문제
-                ================================================= */
+                /*
+                   첫 번째 시트
+                */
 
-                const questionText =
-                    row[0] ?? '';
-
-
-
-                /* =================================================
-                   B열
-                   문제 설명
-                ================================================= */
-
-
-                const explanation =
-                    (row[1] ?? '')
-                        .toString()
-                        .replace(/\r?\n/g, '<br>');
-
-
-                /* =================================================
-                   C~G열
-                   객관식 보기
-
-                   row[2] → C열
-                   row[3] → D열
-                   row[4] → E열
-                   row[5] → F열
-                   row[6] → G열
-                ================================================= */
-
-                const options =
-                    row
-                    .slice(2, 7)
-                    .filter(
-                        opt =>
-                            opt !== undefined &&
-                            opt !== null &&
-                            opt !== ''
-                    );
+                const sheet =
+                    workbook.Sheets[
+                        workbook.SheetNames[0]
+                    ];
 
 
 
-                /* =================================================
-                   H열
-                   정답
-                ================================================= */
+                /*
+                   엑셀 → 배열
+                */
 
-                const answer =
-                    row[7]
-                    ?.toString()
-                    .trim() ?? '';
-
-
-
-                /* =================================================
-                   정답 저장
-
-                ================================================= */
-
-                const questionName =
-                    `q${i}`;
-
-
-                answers[questionName] =
-                    answer;
-
-
-
-                /* =================================================
-                   미리보기용 문제 DIV 생성
-                ================================================= */
-
-                const questionDiv =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                questionDiv.className =
-                    'question';
-
-
-
-                /* =================================================
-                   문제 번호 + 문제 + 설명
-
-                   설명이 비어 있으면
-                   explanation DIV를 만들지 않음
-                ================================================= */
-
-                questionDiv.innerHTML = `
-
-                    <span class="number">
-                        ${i}
-                    </span>
-
-                    <span class="moonje">
-                        ${questionText}
-                    </span>
-
-                    ${
-                        explanation
-                        ?
-                        `
-                        <div class="explanation">
-                            ${explanation}
-                        </div>
-                        `
-                        :
-                        ''
-                    }
-
-                `;
-
-
-
-                /* =================================================
-                   보기 영역 생성
-                ================================================= */
-
-                const bogiDiv =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                bogiDiv.className =
-                    'bogi';
-
-
-
-                /* =================================================
-                   객관식인지 주관식인지 판단
-
-                   보기의 개수가 1개 이상이면 객관식
-
-                   보기가 하나도 없으면 주관식
-                ================================================= */
-
-                if (
-                    options.length > 0
-                ) {
-
-
-                    /* ---------------------------------------------
-                       객관식 보기 생성
-                    --------------------------------------------- */
-
-                    options.forEach(
-                        (option, index) => {
-
-
-                            const label =
-                                document.createElement(
-                                    'label'
-                                );
-
-
-                            label.innerHTML = `
-
-                                <input
-                                    type="radio"
-                                    name="${questionName}"
-                                    value="${index + 1}"
-                                >
-
-                                ${option}
-
-                            `;
-
-
-                            bogiDiv.appendChild(
-                                label
-                            );
-
+                const jsonData =
+                    XLSX.utils.sheet_to_json(
+                        sheet,
+                        {
+                            header: 1
                         }
                     );
 
 
-                }
 
-                else {
+                /*
+                   문제 생성
+                */
+
+                generateQuestions(
+                    jsonData
+                );
+
+            };
 
 
-                    /* ---------------------------------------------
-                       주관식 입력창 생성
-                    --------------------------------------------- */
 
-                    const input =
+        /*
+           파일 읽기 오류
+        */
+
+        reader.onerror =
+            function() {
+
+                alert(
+                    '파일을 읽는 중 오류가 발생했습니다.'
+                );
+
+            };
+
+
+
+        /*
+           파일 읽기 시작
+        */
+
+        reader.readAsArrayBuffer(
+            file
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   문제 생성
+========================================================= */
+
+function generateQuestions(data) {
+
+
+    /*
+       랜덤화 체크박스 상태
+
+       체크
+       → true
+       → 랜덤화
+
+       체크 해제
+       → false
+       → 원래 순서
+    */
+
+    const randomize =
+        document
+        .getElementById(
+            'randomCheckbox'
+        )
+        .checked;
+
+
+
+    /*
+       미리보기 영역
+    */
+
+    const container =
+        document.getElementById(
+            'questionsContainer'
+        );
+
+
+
+    /*
+       생성된 코드 영역
+    */
+
+    const codeContainer =
+        document.getElementById(
+            'codeContainer'
+        );
+
+
+
+    /*
+       기존 미리보기 제거
+    */
+
+    container.innerHTML = '';
+
+
+
+    /*
+       정답 저장
+    */
+
+    const answers = {};
+
+
+
+    /*
+       다운로드 HTML 시작
+    */
+
+    let htmlCode =
+        `<div id="questionsContainer">`;
+
+
+
+    /* =====================================================
+       엑셀 각 행 처리
+    ===================================================== */
+
+    for (
+        let i = 1;
+        i < data.length;
+        i++
+    ) {
+
+
+        const row =
+            data[i];
+
+
+        /*
+           빈 행 무시
+        */
+
+        if (
+            !row ||
+            row.length < 2
+        ) {
+
+            continue;
+
+        }
+
+
+
+        /*
+           A열
+           문제
+        */
+
+        const questionText =
+            row[0] ?? '';
+
+
+
+        /*
+           B열
+           설명
+        */
+
+        const explanation =
+            (row[1] ?? '')
+            .toString()
+            .replace(
+                /\r?\n/g,
+                '<br>'
+            );
+
+
+
+        /*
+           C~G열
+           보기
+        */
+
+        const options =
+            row
+            .slice(2, 7)
+            .filter(
+                opt =>
+                    opt !== undefined &&
+                    opt !== null &&
+                    opt !== ''
+            );
+
+
+
+        /*
+           H열
+           정답
+        */
+
+        const answer =
+            row[7]
+            ?.toString()
+            .trim() ?? '';
+
+
+
+        /*
+           문제 이름
+        */
+
+        const questionName =
+            `q${i}`;
+
+
+
+        /*
+           정답 저장
+        */
+
+        answers[
+            questionName
+        ] =
+            answer;
+
+
+
+        /* =================================================
+           미리보기 문제 생성
+        ================================================= */
+
+        const questionDiv =
+            document.createElement(
+                'div'
+            );
+
+
+        questionDiv.className =
+            'question';
+
+
+
+        /*
+           문제 내용
+        */
+
+        questionDiv.innerHTML = `
+
+            <span class="number">
+                ${i}
+            </span>
+
+            <span class="moonje">
+                ${questionText}
+            </span>
+
+            ${
+                explanation
+                ?
+                `
+                <div class="explanation">
+                    ${explanation}
+                </div>
+                `
+                :
+                ''
+            }
+
+        `;
+
+
+
+        /*
+           보기 영역
+        */
+
+        const bogiDiv =
+            document.createElement(
+                'div'
+            );
+
+
+        bogiDiv.className =
+            'bogi';
+
+
+
+        /* =================================================
+           객관식
+        ================================================= */
+
+        if (
+            options.length > 0
+        ) {
+
+
+            options.forEach(
+                (option, index) => {
+
+
+                    const label =
                         document.createElement(
-                            'input'
+                            'label'
                         );
 
 
-                    input.type =
-                        'text';
+                    label.innerHTML = `
 
+                        <input
+                            type="radio"
+                            name="${questionName}"
+                            value="${index + 1}"
+                        >
 
-                    input.name =
-                        questionName;
+                        ${option}
 
-
-                    input.classList.add(
-                        'subjective-input'
-                    );
-
-
-                    input.placeholder =
-                        '정답을 입력하세요';
+                    `;
 
 
                     bogiDiv.appendChild(
-                        input
+                        label
                     );
 
                 }
+            );
 
 
+        }
 
-                /* 보기 영역을 문제에 추가 */
 
-                questionDiv.appendChild(
-                    bogiDiv
+        /* =================================================
+           주관식
+        ================================================= */
+
+        else {
+
+
+            const input =
+                document.createElement(
+                    'input'
                 );
 
 
-
-                /* =================================================
-                   완성된 문제를 미리보기 화면에 추가
-                ================================================= */
-
-                container.appendChild(
-                    questionDiv
-                );
+            input.type =
+                'text';
 
 
-
-                /* =================================================
-                   여기부터는 다운로드할 HTML 코드 생성
-                ================================================= */
+            input.name =
+                questionName;
 
 
-                let questionHTML = `
+            input.classList.add(
+                'subjective-input'
+            );
+
+
+            input.placeholder =
+                '정답을 입력하세요';
+
+
+            bogiDiv.appendChild(
+                input
+            );
+
+        }
+
+
+
+        /*
+           보기 추가
+        */
+
+        questionDiv.appendChild(
+            bogiDiv
+        );
+
+
+
+        /*
+           미리보기 추가
+        */
+
+        container.appendChild(
+            questionDiv
+        );
+
+
+
+        /* =================================================
+           다운로드용 HTML
+        ================================================= */
+
+        let questionHTML = `
 
 <div class="question">
 
@@ -1001,20 +1219,19 @@
 
 
 
-                /* =================================================
-                   다운로드 HTML의 객관식 보기 생성
-                ================================================= */
+        /*
+           객관식
+        */
 
-                if (
-                    options.length > 0
-                ) {
-
-
-                    options.forEach(
-                        (option, index) => {
+        if (
+            options.length > 0
+        ) {
 
 
-                            questionHTML += `
+            options.forEach(
+                (option, index) => {
+
+                    questionHTML += `
 
         <label>
 
@@ -1030,20 +1247,21 @@
 
 `;
 
-                        }
-                    );
-
-
                 }
+            );
 
-                else {
+
+        }
 
 
-                    /* =================================================
-                       다운로드 HTML의 주관식 입력창
-                    ================================================= */
+        /*
+           주관식
+        */
 
-                    questionHTML += `
+        else {
+
+
+            questionHTML += `
 
         <input
             type="text"
@@ -1054,13 +1272,11 @@
 
 `;
 
-                }
+        }
 
 
 
-                /* 문제 HTML 닫기 */
-
-                questionHTML += `
+        questionHTML += `
 
     </div>
 
@@ -1069,56 +1285,69 @@
 `;
 
 
+        /*
+           전체 HTML에 추가
+        */
 
-                /* 완성된 문제를 htmlCode에 추가 */
+        htmlCode +=
+            questionHTML;
 
-                htmlCode +=
-                    questionHTML;
-
-            }
+    }
 
 
 
-            /* =========================================================
-               문제 HTML 종료
-            ========================================================= */
+    /*
+       문제 영역 종료
+    */
 
-            htmlCode += `
+    htmlCode += `
 
 </div>
+
 `;
 
 
 
-            /* =========================================================
-               정답 객체를 JSON 문자열로 변환
+    /* =========================================================
+       정답 JSON
+    ========================================================= */
 
-            ========================================================= */
-
-            const answersJSON =
-                JSON.stringify(
-                    answers
-                );
-
+    const answersJSON =
+        JSON.stringify(
+            answers
+        );
 
 
-            /* =========================================================
-               중요!
 
-               여기 있는 스크립트가
+    /* =========================================================
+       생성되는 퀴즈에 전달할
+       랜덤화 설정
 
-               1. 미리보기
-               2. 다운로드되는 HTML
+       체크
+       → true
 
-               양쪽에서 동일하게 사용됨.
-            ========================================================= */
+       해제
+       → false
+    ========================================================= */
+
+    const randomizeSetting =
+        randomize
+        ? 'true'
+        : 'false';
 
 
-            const quizScript = `
+
+    /* =========================================================
+       생성된 HTML에서 실행할 JavaScript
+    ========================================================= */
+
+    const quizScript = `
+
 (() => {
 
+
 /* =========================================================
-   정답 데이터
+   정답
 ========================================================= */
 
 const answers =
@@ -1127,8 +1356,7 @@ const answers =
 
 
 /* =========================================================
-   현재 풀고 있는 문제 번호
-
+   현재 문제
 ========================================================= */
 
 let currentQuestion = 0;
@@ -1136,7 +1364,7 @@ let currentQuestion = 0;
 
 
 /* =========================================================
-   문제 전체를 담는 컨테이너
+   문제 컨테이너
 ========================================================= */
 
 const quiz =
@@ -1147,7 +1375,7 @@ const quiz =
 
 
 /* =========================================================
-   현재 존재하는 모든 문제 가져오기
+   문제 가져오기
 ========================================================= */
 
 let questions =
@@ -1158,10 +1386,109 @@ let questions =
     );
 
 
-/* =========================================================
-   처음에는 첫 번째 문제만 표시
 
-   나머지는 display:none
+/* =========================================================
+   랜덤화 여부
+
+   true
+   → 랜덤
+
+   false
+   → 원래 순서
+========================================================= */
+
+const randomize =
+    ${randomizeSetting};
+
+
+
+/* =========================================================
+   랜덤화
+
+   체크되어 있을 때만 실행
+========================================================= */
+
+if (randomize) {
+
+
+    /*
+       Fisher-Yates
+    */
+
+    for (
+        let i = questions.length - 1;
+        i > 0;
+        i--
+    ) {
+
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+
+        [
+            questions[i],
+            questions[j]
+        ] =
+        [
+            questions[j],
+            questions[i]
+        ];
+
+    }
+
+
+
+    /*
+       랜덤으로 섞은 순서를
+       DOM에 반영
+    */
+
+    questions.forEach(
+        question => {
+
+            quiz.appendChild(
+                question
+            );
+
+        }
+    );
+
+
+
+    /*
+       랜덤화된 순서에 맞춰
+       문제 번호를 다시 1부터 표시
+    */
+
+    questions.forEach(
+        (question, index) => {
+
+
+            const number =
+                question.querySelector(
+                    '.number'
+                );
+
+
+            if (number) {
+
+                number.textContent =
+                    index + 1;
+
+            }
+
+        }
+    );
+
+}
+
+
+
+/* =========================================================
+   처음에는 첫 문제만 표시
 ========================================================= */
 
 questions.forEach(
@@ -1180,15 +1507,17 @@ questions.forEach(
 
 
 /* =========================================================
-   다음 문제 버튼 생성 함수
-
-   문제를 맞혔을 때만 실행됨.
+   다음 문제 버튼
 ========================================================= */
 
-function showNextButton(questionDiv) {
+function showNextButton(
+    questionDiv
+) {
 
 
-    /* 이미 버튼이 있다면 또 만들지 않음 */
+    /*
+       이미 있으면 생성하지 않음
+    */
 
     if (
         questionDiv.querySelector(
@@ -1201,8 +1530,6 @@ function showNextButton(questionDiv) {
     }
 
 
-
-    /* 버튼 생성 */
 
     const btn =
         document.createElement(
@@ -1219,15 +1546,13 @@ function showNextButton(questionDiv) {
 
 
 
-    /* =====================================================
-       버튼을 눌렀을 때
-    ===================================================== */
-
     btn.onclick =
         function() {
 
 
-            /* 현재 문제 숨기기 */
+            /*
+               현재 문제 숨기기
+            */
 
             questions[
                 currentQuestion
@@ -1236,15 +1561,17 @@ function showNextButton(questionDiv) {
 
 
 
-            /* 다음 문제로 이동 */
+            /*
+               다음 문제
+            */
 
             currentQuestion++;
 
 
 
-            /* =================================================
+            /*
                다음 문제가 있으면 표시
-            ================================================= */
+            */
 
             if (
                 questions[
@@ -1261,12 +1588,13 @@ function showNextButton(questionDiv) {
 
             }
 
+
             else {
 
 
-                /* =================================================
-                   모든 문제를 다 풀었을 때
-                ================================================= */
+                /*
+                   모든 문제 완료
+                */
 
                 quiz.innerHTML +=
                     "<h2>모든 문제를 풀었습니다!</h2>";
@@ -1275,14 +1603,15 @@ function showNextButton(questionDiv) {
 
 
 
-            /* 사용한 버튼 제거 */
+            /*
+               버튼 삭제
+            */
 
             btn.remove();
 
         };
 
 
-    /* 버튼을 현재 문제에 추가 */
 
     questionDiv.appendChild(
         btn
@@ -1294,14 +1623,12 @@ function showNextButton(questionDiv) {
 
 /* =========================================================
    다음 문제 버튼 제거
-
-   오답을 선택하거나
-   주관식 답을 다시 틀렸을 때 사용
 ========================================================= */
 
 function removeNextButton(
     questionDiv
 ) {
+
 
     const btn =
         questionDiv.querySelector(
@@ -1336,7 +1663,9 @@ document
             function() {
 
 
-                /* 현재 문제 */
+                /*
+                   현재 문제
+                */
 
                 const questionDiv =
                     this.closest(
@@ -1345,12 +1674,8 @@ document
 
 
 
-                /* 현재 문제의 이름
-
-                   예:
-                   q1
-                   q2
-                   q3
+                /*
+                   문제 이름
                 */
 
                 const questionName =
@@ -1358,14 +1683,18 @@ document
 
 
 
-                /* 사용자가 선택한 보기 번호 */
+                /*
+                   선택한 값
+                */
 
                 const selectedValue =
                     this.value;
 
 
 
-                /* 정답 가져오기 */
+                /*
+                   정답
+                */
 
                 const correctAnswer =
                     answers[
@@ -1374,7 +1703,9 @@ document
 
 
 
-                /* 이전 정답/오답 상태 제거 */
+                /*
+                   기존 상태 제거
+                */
 
                 questionDiv.classList.remove(
                     'correct',
@@ -1383,8 +1714,9 @@ document
 
 
 
-                /* 이전에 선택되어 있던 보기의
-                   selected 클래스 제거 */
+                /*
+                   기존 선택 표시 제거
+                */
 
                 questionDiv
                 .querySelectorAll(
@@ -1402,7 +1734,9 @@ document
 
 
 
-                /* 현재 선택한 보기 표시 */
+                /*
+                   현재 선택 표시
+                */
 
                 this.parentElement
                     .classList.add(
@@ -1411,9 +1745,9 @@ document
 
 
 
-                /* =================================================
-                   정답 확인
-                ================================================= */
+                /*
+                   정답
+                */
 
                 if (
                     selectedValue ===
@@ -1421,14 +1755,10 @@ document
                 ) {
 
 
-                    /* 정답 */
-
                     questionDiv.classList.add(
                         'correct'
                     );
 
-
-                    /* 다음 문제 버튼 표시 */
 
                     showNextButton(
                         questionDiv
@@ -1437,17 +1767,18 @@ document
 
                 }
 
+
+                /*
+                   오답
+                */
+
                 else {
 
-
-                    /* 오답 */
 
                     questionDiv.classList.add(
                         'wrong'
                     );
 
-
-                    /* 다음 문제 버튼 제거 */
 
                     removeNextButton(
                         questionDiv
@@ -1480,7 +1811,9 @@ document
             function() {
 
 
-                /* 현재 문제 */
+                /*
+                   현재 문제
+                */
 
                 const questionDiv =
                     this.closest(
@@ -1489,16 +1822,17 @@ document
 
 
 
-                /* 현재 문제 이름 */
+                /*
+                   문제 이름
+                */
 
                 const questionName =
                     this.name;
 
 
 
-                /* 사용자가 입력한 답
-
-                   앞뒤 공백 제거
+                /*
+                   입력값
                 */
 
                 const userAnswer =
@@ -1506,7 +1840,9 @@ document
 
 
 
-                /* 정답 */
+                /*
+                   정답
+                */
 
                 const correctAnswer =
                     answers[
@@ -1515,7 +1851,9 @@ document
 
 
 
-                /* 이전 상태 제거 */
+                /*
+                   기존 상태 제거
+                */
 
                 questionDiv.classList.remove(
                     'correct',
@@ -1524,9 +1862,9 @@ document
 
 
 
-                /* =================================================
+                /*
                    정답이면
-                ================================================= */
+                */
 
                 if (
                     userAnswer ===
@@ -1539,18 +1877,17 @@ document
                     );
 
 
-                    /* 다음 문제 버튼 생성 */
-
                     showNextButton(
                         questionDiv
                     );
 
+
                 }
 
 
-                /* =================================================
-                   아직 틀렸으면
-                ================================================= */
+                /*
+                   아직 오답이면
+                */
 
                 else {
 
@@ -1566,12 +1903,40 @@ document
     }
 );
 
+
 })();
+
 `;
 
-/* 주석을 제거한 JavaScript */
-const cleanJS =
-    quizScript
+
+
+    /* =========================================================
+       미리보기 실행
+    ========================================================= */
+
+    const previewScript =
+        document.createElement(
+            'script'
+        );
+
+
+    previewScript.textContent =
+        quizScript;
+
+
+    document.body.appendChild(
+        previewScript
+    );
+
+
+
+    /* =========================================================
+       저장용 JavaScript
+       주석 제거
+    ========================================================= */
+
+    const cleanJS =
+        quizScript
         .replace(
             /\/\*[\s\S]*?\*\//g,
             ''
@@ -1579,51 +1944,11 @@ const cleanJS =
 
 
 
-            /* =========================================================
-               ① 미리보기에서 위 스크립트 실행
+    /*
+       저장용 HTML에 JavaScript 추가
+    */
 
-               현재 페이지의 DOM에는 이미 문제가 생성되어 있으므로
-               script 요소를 만들어 실행함.
-
-               따라서 미리보기에서도
-
-               - 문제 랜덤
-               - 번호 재배치
-               - 객관식 채점
-               - 주관식 채점
-               - O/X 표시
-               - 다음 문제
-
-               가 모두 작동함.
-            ========================================================= */
-
-
-            const previewScript =
-                document.createElement(
-                    'script'
-                );
-
-
-            previewScript.textContent =
-                quizScript;
-
-
-            document.body.appendChild(
-                previewScript
-            );
-
-
-
-            /* =========================================================
-               ② 다운로드될 HTML에 같은 스크립트 삽입
-
-               여기에는 미리보기와 똑같은 quizScript가 들어감.
-
-
-            ========================================================= */
-
-
-            htmlCode += `<script>
+    htmlCode += `<script>
 
 ${cleanJS}
 
@@ -1631,15 +1956,12 @@ ${cleanJS}
 
 
 
-            /* =========================================================
-               최종 HTML 전체 만들기
+    /* =========================================================
+       CSS
+    ========================================================= */
 
-               현재 페이지의 CSS도 같이 복사함.
-
-            ========================================================= */
-
-const cleanCSS =
-    document
+    const cleanCSS =
+        document
         .querySelector('style')
         .innerHTML
         .replace(
@@ -1647,14 +1969,25 @@ const cleanCSS =
             ''
         );
 
-const cleanHTML =
-    htmlCode.replace(
-        /<!--[\s\S]*?-->/g,
-        ''
-    );
 
 
-codeContainer.value =
+    /* =========================================================
+       HTML 주석 제거
+    ========================================================= */
+
+    const cleanHTML =
+        htmlCode.replace(
+            /<!--[\s\S]*?-->/g,
+            ''
+        );
+
+
+
+    /* =========================================================
+       최종 HTML
+    ========================================================= */
+
+    codeContainer.value =
 
 `<!DOCTYPE html>
 <html lang="ko">
@@ -1681,121 +2014,102 @@ ${cleanHTML}
 
 </html>`;
 
-        }
+}
 
 
 
-        /* =========================================================
-           생성된 HTML 코드 복사하기
-        ========================================================= */
+/* =========================================================
+   복사
+========================================================= */
 
+document
+.getElementById(
+    'copyButton'
+)
+.addEventListener(
+    'click',
+    function() {
+
+
+        const textarea =
+            document.getElementById(
+                'codeContainer'
+            );
+
+
+        textarea.select();
+
+
+        document.execCommand(
+            'copy'
+        );
+
+
+        alert(
+            '코드가 복사되었습니다!'
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   HTML 저장
+========================================================= */
+
+function saveAsHtml() {
+
+
+    const html =
         document
         .getElementById(
-            'copyButton'
+            'codeContainer'
         )
-        .addEventListener(
-            'click',
-            function() {
+        .value;
 
 
-                const textarea =
-                    document.getElementById(
-                        'codeContainer'
-                    );
 
-
-                /* 전체 코드 선택 */
-
-                textarea.select();
-
-
-                /* 클립보드에 복사 */
-
-                document.execCommand(
-                    'copy'
-                );
-
-
-                /* 복사 완료 알림 */
-
-                alert(
-                    '코드가 복사되었습니다!'
-                );
-
+    const blob =
+        new Blob(
+            [html],
+            {
+                type: 'text/html'
             }
         );
 
 
 
-        /* =========================================================
-           HTML 파일로 저장
-        ========================================================= */
-
-        function saveAsHtml() {
-
-
-            /* textarea에 들어 있는
-               완성된 HTML 코드 가져오기 */
-
-            const html =
-                document
-                    .getElementById(
-                        'codeContainer'
-                    )
-                    .value;
+    const a =
+        document.createElement(
+            'a'
+        );
 
 
-
-            /* HTML 문자열을 파일 데이터로 변환 */
-
-            const blob =
-                new Blob(
-                    [html],
-                    {
-                        type: 'text/html'
-                    }
-                );
+    a.href =
+        URL.createObjectURL(
+            blob
+        );
 
 
-
-            /* 임시 다운로드 링크 생성 */
-
-            const a =
-                document.createElement(
-                    'a'
-                );
+    a.download =
+        'quiz.html';
 
 
-            a.href =
-                URL.createObjectURL(
-                    blob
-                );
+    a.click();
 
 
-            /* 파일 이름 */
+    URL.revokeObjectURL(
+        a.href
+    );
 
-            a.download =
-                'quiz.html';
-
-
-
-            /* 자동으로 다운로드 실행 */
-
-            a.click();
+}
 
 
-
-            /* 임시 URL 제거 */
-
-            URL.revokeObjectURL(
-                a.href
-            );
-
-        }
-
-    </script>
+</script>
 
 
 </body>
 
 </html>
+
