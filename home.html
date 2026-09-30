@@ -271,7 +271,7 @@ memo.addEventListener("input", () => {
 ================================================== */
 
 const ROWS = 15;
-const COLS = 6;
+const COLS = 4;
 
 const table =
     document.getElementById("sheet");
@@ -361,103 +361,217 @@ function createSheet() {
    셀 이동
 ================================================== */
 
+
 function moveCell(event) {
 
-    const cell =
-        event.target;
+    const cell = event.target;
 
+    const row = Number(cell.dataset.row);
+    const col = Number(cell.dataset.col);
 
-    const row =
-        Number(cell.dataset.row);
+    /* =========================================
+       위 / 아래
+    ========================================= */
 
-    const col =
-        Number(cell.dataset.col);
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
 
+        let newRow = row;
 
-    let newRow = row;
-    let newCol = col;
+        if (event.key === "ArrowUp") {
+            newRow--;
+        } else {
+            newRow++;
+        }
 
+        if (newRow < 0 || newRow >= ROWS) {
+            return;
+        }
 
-    if (event.key === "ArrowUp") {
+        event.preventDefault();
 
-        newRow--;
+        const nextCell =
+            table.querySelector(
+                `td[data-row="${newRow}"][data-col="${col}"]`
+            );
 
-    }
-
-    else if (event.key === "ArrowDown") {
-
-        newRow++;
-
-    }
-
-    else if (event.key === "ArrowLeft") {
-
-        newCol--;
-
-    }
-
-    else if (event.key === "ArrowRight") {
-
-        newCol++;
-
-    }
-
-    else {
+        if (nextCell) {
+            nextCell.focus();
+            moveCursorToEnd(nextCell);
+        }
 
         return;
-
     }
 
 
-    /* 범위 밖 */
+    /* =========================================
+       왼쪽 / 오른쪽
+    ========================================= */
 
     if (
-        newRow < 0 ||
-        newRow >= ROWS ||
-        newCol < 0 ||
-        newCol >= COLS
+        event.key !== "ArrowLeft" &&
+        event.key !== "ArrowRight"
     ) {
-
         return;
-
     }
 
 
-    event.preventDefault();
+    /*
+     * 현재 셀의 글자와 커서 위치
+     */
+
+    const text =
+        cell.textContent;
+
+    const selection =
+        window.getSelection();
+
+    let cursorPosition = 0;
 
 
-    const nextCell =
-        table.querySelector(
-            `td[data-row="${newRow}"][data-col="${newCol}"]`
+    /*
+     * contentEditable 셀의
+     * 현재 커서 위치 계산
+     */
+
+    if (selection.rangeCount > 0) {
+
+        const range =
+            selection.getRangeAt(0);
+
+        const cursorRange =
+            document.createRange();
+
+        cursorRange.selectNodeContents(cell);
+
+        cursorRange.setEnd(
+            range.startContainer,
+            range.startOffset
         );
 
+        cursorPosition =
+            cursorRange.toString().length;
+    }
 
-    if (nextCell) {
 
-        nextCell.focus();
+    /* =========================================
+       오른쪽
+    ========================================= */
+
+    if (event.key === "ArrowRight") {
+
+        /*
+         * 글자가 있고
+         * 커서가 글자 중간이면
+         * 셀 이동하지 않음
+         */
+
+        if (
+            text.length > 0 &&
+            cursorPosition < text.length
+        ) {
+            return;
+        }
 
 
         /*
-         * 텍스트 커서를 끝으로 이동
+         * 글자가 없거나
+         * 커서가 맨 오른쪽이면
+         * 다음 셀로 이동
          */
 
-        const range =
-            document.createRange();
+        const newCol = col + 1;
 
-        const selection =
-            window.getSelection();
+        if (newCol >= COLS) {
+            return;
+        }
 
-        range.selectNodeContents(nextCell);
+        event.preventDefault();
 
-        range.collapse(false);
+        const nextCell =
+            table.querySelector(
+                `td[data-row="${row}"][data-col="${newCol}"]`
+            );
 
-        selection.removeAllRanges();
+        if (nextCell) {
+            nextCell.focus();
+            moveCursorToEnd(nextCell);
+        }
 
-        selection.addRange(range);
-
+        return;
     }
 
+
+    /* =========================================
+       왼쪽
+    ========================================= */
+
+    if (event.key === "ArrowLeft") {
+
+        /*
+         * 글자가 있고
+         * 커서가 글자 중간이면
+         * 셀 이동하지 않음
+         */
+
+        if (
+            text.length > 0 &&
+            cursorPosition > 0
+        ) {
+            return;
+        }
+
+
+        /*
+         * 글자가 없거나
+         * 커서가 맨 왼쪽이면
+         * 이전 셀로 이동
+         */
+
+        const newCol = col - 1;
+
+        if (newCol < 0) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const nextCell =
+            table.querySelector(
+                `td[data-row="${row}"][data-col="${newCol}"]`
+            );
+
+        if (nextCell) {
+            nextCell.focus();
+            moveCursorToEnd(nextCell);
+        }
+
+        return;
+    }
 }
+
+
+/* =========================================
+   커서를 셀 맨 끝으로
+========================================= */
+
+function moveCursorToEnd(cell) {
+
+    const range =
+        document.createRange();
+
+    const selection =
+        window.getSelection();
+
+    range.selectNodeContents(cell);
+
+    range.collapse(false);
+
+    selection.removeAllRanges();
+
+    selection.addRange(range);
+}
+
+
 
 
 /* ==================================================
