@@ -1,15 +1,31 @@
+
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Klee+One&family=LXGW+WenKai+TC&family=Noto+Serif+TC:wght@200..900&display=swap" rel="stylesheet">
-   
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Klee+One&family=LXGW+WenKai+TC&family=Noto+Serif+TC:wght@200..900&display=swap"
+      rel="stylesheet">
+
+
 <title>오늘의 한자</title>
 
+
 <style>
+
 
 /* =========================
    기본
@@ -19,9 +35,12 @@
     box-sizing: border-box;
 }
 
+
 body {
     margin: 0;
+
     background: #eee;
+
     font-family: 'Pretendard';
 }
 
@@ -31,46 +50,101 @@ body {
 ========================= */
 
 .controls {
+
     width: 800px;
-    max-width:100%;
+
+    max-width: 100%;
+
     margin: 15px auto;
+
     padding: 12px;
+
     background: white;
+
     text-align: center;
 }
 
+
 .controls input {
+
     width: 60px;
+
     font-size: 16px;
+
     padding: 4px;
 }
 
+
 .controls select {
+
     font-size: 16px;
+
     padding: 4px 8px;
 }
 
+
 .controls button {
+
     font-size: 16px;
+
     padding: 6px 15px;
+
     margin-left: 8px;
-            background-color: #0078D4;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+
+    background-color: #0078D4;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
 }
 
-        button:hover {
-            background-color: #005a9e;
-        }
+
+button:hover {
+
+    background-color: #005a9e;
+}
+
 
 #status {
+
     margin-top: 8px;
+
     font-size: 14px;
 }
 
+
+/* =========================
+   체크박스
+========================= */
+
+.options {
+
+    margin: 12px 0;
+
+    font-size: 16px;
+}
+
+
+.options label {
+
+    margin: 0 10px;
+
+    cursor: pointer;
+}
+
+
+.options input[type="checkbox"] {
+
+    width: auto;
+
+    margin-right: 5px;
+}
 
 
 /* =========================
@@ -78,14 +152,20 @@ body {
 ========================= */
 
 .pages {
+
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
 }
 
+
 .page {
-    width:800px;
-    max-width:100%;
+
+    width: 800px;
+
+    max-width: 100%;
 
     padding: 7mm 6mm 6mm;
 
@@ -98,49 +178,81 @@ body {
     box-sizing: border-box;
 }
 
-/* 제목 */
+
+/* =========================
+   제목
+========================= */
 
 .title {
+
     text-align: center;
+
     font-size: 30px;
+    line-height: 1;
     font-weight: 500;
+    margin-bottom:25pt;
 }
 
 
-/* 날짜 / 이름 */
+/* =========================
+   날짜 / 이름
+========================= */
 
 .info {
+
     display: flex;
+
     justify-content: right;
+
     white-space: pre-line;
-    gap: 22px;
+
+    gap: 12px;
 
     font-size: 17px;
+
+    line-height: 0.5;
 }
 
 
-/* 안내문 */
+/* =========================
+   안내문
+========================= */
 
 .instruction {
-    font-size: 15x;
+ 
+    font-size: 15px;
+
     white-space: pre-line;
-    margin-bottom: 7px;
+
+    margin-bottom: 0px;
+
+    padding: 0;
+    line-height: 0.5;
 }
+
 
 textarea {
-width:70%;
-resize: none;
-height:40px;
-font-family:'Pretendard';
-font-size: 16px;
+
+    width: 70%;
+
+    resize: none;
+
+    height: 40px;
+
+    font-family: 'Pretendard';
+
+    font-size: 16px;
 }
+
 
 .centeric {
-display:flex;
-justify-content: center;
-align-items: center;
-}
 
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
 
 
 /* =========================
@@ -148,6 +260,7 @@ align-items: center;
 ========================= */
 
 table {
+
     width: 100%;
 
     border-collapse: collapse;
@@ -157,19 +270,25 @@ table {
 
 
 col.hanja-col {
+
     width: 12.5%;
 }
 
+
 col.info-col {
+
     width: 25%;
 }
 
+
 col.write-col {
+
     width: 12.5%;
 }
 
 
 td {
+
     border: 1px solid #ccc;
 
     height: 24.3mm;
@@ -187,8 +306,11 @@ td {
 ========================= */
 
 .hanja {
-    font-family:'Klee One';
-    font-weight:100;
+
+    font-family: 'Klee One';
+
+    font-weight: 100;
+
     font-size: 50px;
 }
 
@@ -198,16 +320,21 @@ td {
 ========================= */
 
 .word-info {
+
     line-height: 1.5;
 }
 
+
 .meaning-reading {
+
     font-size: 25px;
 
     margin-bottom: 3px;
 }
 
+
 .examples {
+
     font-size: 17px;
 }
 
@@ -217,29 +344,29 @@ td {
 ========================= */
 
 .write-cell {
+
     padding: 0;
 
     position: relative;
 }
 
 
-/*
-    SVG가 셀 전체를 차지하도록 함
-*/
+/* =========================
+   SVG
+========================= */
 
 .grid-svg {
+
     display: block;
 
     width: 100%;
+
     height: 100%;
 }
 
 
-/*
-    SVG 선
-*/
-
 .grid-svg line {
+
     stroke: #eeeeee;
 
     stroke-width: 0.7;
@@ -249,141 +376,282 @@ td {
 
 
 /* =========================
+   뜻 쓰기 경계선
+========================= */
+
+.meaning-line {
+
+    stroke: #d0d0d0 !important;
+
+    stroke-width: 0.9 !important;
+}
+
+
+/* =========================
+   예시 한자
+========================= */
+
+.example-hanja {
+
+    position: absolute;
+
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 50px;
+
+    color: #d0d0d0;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+}
+
+.example-meaning {
+    position: absolute;
+
+    left: 50%;
+
+    top: 87.5%;
+
+    transform: translate(-50%, -50%);
+
+    font-family: 'Pretendard';
+
+    font-size: 18px;
+
+    color: #d0d0d0;
+
+    pointer-events: none;
+
+    white-space: nowrap;
+}
+
+/* =========================
    인쇄
 ========================= */
 
 @media print {
 
     @page {
+
         size: A4 portrait;
+
         margin: 0;
     }
 
+
     body {
+
         background: white;
     }
 
+
     .controls {
+
         display: none;
     }
 
+
     .page {
+
         margin: 0;
 
         page-break-after: always;
     }
 
+
     .page:last-child {
+
         page-break-after: auto;
     }
 
 }
 
 
-
-<!-- =========================
-     웹폰트
-========================= -->
-
-
-
+/* =========================
+   웹폰트
+========================= */
 
 @font-face {
+
     font-family: 'GyeonggiMillenniumBackground';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Regular.woff') format('woff');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Regular.woff')
+         format('woff');
+
     font-weight: 400;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'GyeonggiMillenniumBackground';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Bold.woff') format('woff');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2410-3@1.0/Batang_Bold.woff')
+         format('woff');
+
     font-weight: 700;
+
     font-display: swap;
 }
 
 
 @font-face {
+
     font-family: 'JoseonPalace';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff') format('woff');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ChosunGs.woff')
+         format('woff');
+
     font-weight: normal;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Myeongwon';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607131254@4/4/Hangeuljaemin4-RegularI.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/2607131254@4/4/Hangeuljaemin4-RegularI.woff2')
+         format('woff2');
+
     font-weight: 400;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'HangulJaemin60';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Hangeuljaemin6TTF-Regular.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2507-1@1.0/Hangeuljaemin6TTF-Regular.woff2')
+         format('woff2');
+
     font-weight: normal;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2')
+         format('woff2');
+
     font-weight: 100;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2')
+         format('woff2');
+
     font-weight: 200;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2')
+         format('woff2');
+
     font-weight: 300;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2')
+         format('woff2');
+
     font-weight: 400;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2')
+         format('woff2');
+
     font-weight: 500;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2')
+         format('woff2');
+
     font-weight: 600;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2')
+         format('woff2');
+
     font-weight: 700;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2')
+         format('woff2');
+
     font-weight: 800;
+
     font-display: swap;
 }
 
+
 @font-face {
+
     font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2')
+         format('woff2');
+
     font-weight: 900;
+
     font-display: swap;
 }
 
@@ -402,7 +670,9 @@ td {
 
 <div class="controls">
 
+
     학습지 개수:
+
 
     <input
         id="pageCount"
@@ -414,17 +684,38 @@ td {
 
     장당 한자:
 
-<select id="wordCount">
-    <option value="5">5자</option>
-    <option value="6">6자</option>
-    <option value="7">7자</option>
-    <option value="8">8자</option>
-    <option value="9">9자</option>
-    <option value="10" selected>10자</option>
-</select>
+
+    <select id="wordCount">
+
+        <option value="5">
+            5자
+        </option>
+
+        <option value="6">
+            6자
+        </option>
+
+        <option value="7">
+            7자
+        </option>
+
+        <option value="8">
+            8자
+        </option>
+
+        <option value="9">
+            9자
+        </option>
+
+        <option value="10" selected>
+            10자
+        </option>
+
+    </select>
 
 
     총획수(20~):
+
 
     <input
         id="strokeTarget"
@@ -436,9 +727,10 @@ td {
 
     한자 폰트:
 
+
     <select id="fontSelect">
-  
-      <option value='Klee One'>
+
+        <option value="Klee One">
             Klee One
         </option>
 
@@ -446,71 +738,127 @@ td {
             LXGW WenKai TC
         </option>
 
-        <option value= 'Myeongwon'>
+        <option value="Myeongwon">
             명원체
         </option>
 
         <option value="HangulJaemin60">
             재민체
-        </option>       
+        </option>
 
-
-        <option value='JoseonPalace'>
+        <option value="JoseonPalace">
             조선일보궁서체
         </option>
 
-
-        <option value='GyeonggiMillenniumBackground'>
+        <option value="GyeonggiMillenniumBackground">
             경기천년바탕
         </option>
 
-
-        <option value='Noto Serif TC'>
+        <option value="Noto Serif TC">
             Noto Serif TC
         </option>
 
-  
-       <option value='Pretendard'>
+        <option value="Pretendard">
             기본
         </option>
 
-
-       
-       
     </select>
 
-<p class="centeric">
-    제목 　
-    <textarea id="titleText">오늘의 한자</textarea>
-</p>
 
-<p class="centeric">
-    이름　
-    <textarea id="infoText">날짜 ( 2026년 /　　월 /　　일 )　사유 (　　　　　　　　)　이름 (　　　　　)</textarea>
-</p>
+    <!-- =========================
+         옵션
+    ========================= -->
 
-<p class="centeric">
-    설명　
-    <textarea id="instructionText">글자의 모양을 생각하며 바르게 글씨를 써봅시다.</textarea>
-</p>
-<p>
-
-    <button onclick="makeWorksheets()">
-        만들기
-    </button>
+    <div class="options">
 
 
-    <button onclick="window.print()">
-        인쇄
-    </button>
+        <label>
 
-</p>
+            <input
+                type="checkbox"
+                id="showMeaningLine"
+                checked
+            >
+
+            훈음 쓰기 칸
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="showExample"
+                checked
+            >
+
+            예시 칸
+
+        </label>
+
+<label>
+    <input
+        type="checkbox"
+        id="showGridLines"
+        checked
+    >
+    보조선
+</label>
+    </div>
+
+
+    <p class="centeric">
+
+        제목 　
+
+        <textarea id="titleText">오늘의 한자</textarea>
+
+    </p>
+
+
+    <p class="centeric">
+
+        이름　
+
+        <textarea id="infoText">날짜 ( 2026년 /　　월 /　　일 )　사유 (　　　　　　　　)　이름 (　　　　　)</textarea>
+
+    </p>
+
+
+    <p class="centeric">
+
+        설명　
+
+        <textarea id="instructionText">글자의 모양을 생각하며 바르게 글씨를 써봅시다.</textarea>
+
+    </p>
+
+
+    <p>
+
+        <button onclick="makeWorksheets()">
+            만들기
+        </button>
+
+
+        <button onclick="window.print()">
+            인쇄
+        </button>
+
+    </p>
+
+
     <div id="status"></div>
+
 
 </div>
 
 
-<div id="pages" class="pages"></div>
+<div
+    id="pages"
+    class="pages"
+></div>
 
 
 <script>
@@ -523,9 +871,8 @@ td {
 let words = [];
 
 
-/* 현재 선택된 한자 폰트 */
-
-let selectedFont = ''
+let selectedFont =
+    'Klee One';
 
 
 /* =========================
@@ -541,8 +888,21 @@ document
             selectedFont =
                 this.value;
 
+
             document
                 .querySelectorAll(".hanja")
+                .forEach(
+                    element => {
+
+                        element.style.fontFamily =
+                            selectedFont;
+
+                    }
+                );
+
+
+            document
+                .querySelectorAll(".example-hanja")
                 .forEach(
                     element => {
 
@@ -556,6 +916,7 @@ document
     );
 
 
+
 /* =========================
    JSON 불러오기
 ========================= */
@@ -565,7 +926,9 @@ async function loadWords() {
     try {
 
         const response =
-            await fetch("https://kimgreentea.github.io/kimnokcha/hanja/words.json");
+            await fetch(
+                "https://kimgreentea.github.io/kimnokcha/hanja/words.json"
+            );
 
 
         if (!response.ok) {
@@ -609,7 +972,7 @@ async function loadWords() {
 
 
 /* =========================
-   총획수에 맞는 한자 조합 찾기
+   총획수에 맞는 한자 조합
 ========================= */
 
 function getRandomWordsByStrokeTarget(
@@ -618,24 +981,12 @@ function getRandomWordsByStrokeTarget(
 ) {
 
 
-    /* 한자 순서를 섞음 */
-
     let shuffled =
         [...words].sort(
             () =>
                 Math.random() - 0.5
         );
 
-
-    /*
-        dp[count][sum]
-
-        count:
-        선택한 한자 개수
-
-        sum:
-        현재 총획수
-    */
 
     let dp =
         Array.from(
@@ -658,18 +1009,12 @@ function getRandomWordsByStrokeTarget(
         let word of shuffled
     ) {
 
+
         let stroke =
             Number(
                 word.strokeCount
             );
 
-
-        /*
-            뒤에서부터 처리
-
-            같은 한자를
-            두 번 선택하지 않도록 함
-        */
 
         for (
             let count =
@@ -680,6 +1025,7 @@ function getRandomWordsByStrokeTarget(
             count--
         ) {
 
+
             for (
                 let [
                     sum,
@@ -687,6 +1033,7 @@ function getRandomWordsByStrokeTarget(
                 ]
                 of dp[count]
             ) {
+
 
                 let newSum =
                     sum + stroke;
@@ -706,12 +1053,16 @@ function getRandomWordsByStrokeTarget(
                         .has(newSum)
                 ) {
 
+
                     dp[count + 1].set(
+
                         newSum,
+
                         [
                             ...selected,
                             word
                         ]
+
                     );
 
                 }
@@ -724,9 +1075,12 @@ function getRandomWordsByStrokeTarget(
 
 
     return (
+
         dp[wordCount]
             .get(target)
+
         || null
+
     );
 
 }
@@ -735,38 +1089,76 @@ function getRandomWordsByStrokeTarget(
 /* =========================
    SVG 쓰기 칸 생성
 ========================= */
-
 function createGridSVG(
-    showGuideLines
+    showMeaningLine,
+    showGridLines
 ) {
 
-    /*
-        기본선
+    const hanjaBottom =
+        showMeaningLine
+            ? 75
+            : 100;
 
-        세로 1/2
-        가로 1/2
+    const centerY =
+        showMeaningLine
+            ? 37.5
+            : 50;
+
+
+    let lines = "";
+
+
+    /*
+        가로세로 보조선
     */
 
-    let lines = `
+    if (showGridLines) {
 
-        <line
-            x1="50"
-            y1="0"
-            x2="50"
-            y2="100"
-        />
+        lines += `
 
-        <line
-            x1="0"
-            y1="50"
-            x2="100"
-            y2="50"
-        />
+            <!-- 세로 중앙선 -->
 
-    `;
+            <line
+                x1="50"
+                y1="0"
+                x2="50"
+                y2="${hanjaBottom}"
+            />
 
 
+            <!-- 가로 중앙선 -->
 
+            <line
+                x1="0"
+                y1="${centerY}"
+                x2="100"
+                y2="${centerY}"
+            />
+
+        `;
+
+    }
+
+
+    /*
+        뜻 쓰기 줄
+    */
+
+    if (showMeaningLine) {
+
+        lines += `
+
+            <line
+                class="meaning-line"
+                x1="0"
+                y1="75"
+                x2="100"
+                y2="75"
+            />
+
+        `;
+
+    }
 
 
     return `
@@ -783,7 +1175,6 @@ function createGridSVG(
         </svg>
 
     `;
-
 }
 
 
@@ -800,10 +1191,15 @@ function makeWorksheets() {
         words.length < 10
     ) {
 
+
         alert(
+
             "한자가 충분하지 않습니다.\n\n" +
+
             `현재 불러온 한자: ${words.length}개`
+
         );
+
 
         return;
 
@@ -812,46 +1208,71 @@ function makeWorksheets() {
 
     const pageCount =
         Number(
+
             document
                 .getElementById(
                     "pageCount"
                 )
                 .value
+
         );
 
 
     const wordCount =
         Number(
+
             document
                 .getElementById(
                     "wordCount"
                 )
                 .value
+
         );
 
 
     const target =
         Number(
+
             document
                 .getElementById(
                     "strokeTarget"
                 )
                 .value
+
         );
 
 
+    const showMeaningLine =
+        document
+            .getElementById(
+                "showMeaningLine"
+            )
+            .checked;
+
+
+    const showExample =
+        document
+            .getElementById(
+                "showExample"
+            )
+            .checked;
+
+const showGridLines =
+    document
+        .getElementById("showGridLines")
+        .checked;
+
     /* 입력값 확인 */
-
-
-
 
     if (
         target < 20
     ) {
 
+
         alert(
             "20 이상으로 입력"
         );
+
 
         return;
 
@@ -859,18 +1280,21 @@ function makeWorksheets() {
 
 
     let pages =
-        document.getElementById(
-            "pages"
-        );
+        document
+            .getElementById(
+                "pages"
+            );
 
 
     let status =
-        document.getElementById(
-            "status"
-        );
+        document
+            .getElementById(
+                "status"
+            );
 
 
     pages.innerHTML = "";
+
 
     status.innerText =
         "학습지를 만드는 중...";
@@ -884,26 +1308,35 @@ function makeWorksheets() {
     ========================= */
 
     for (
+
         let p = 0;
+
         p < pageCount;
+
         p++
+
     ) {
+
 
         let selected =
             getRandomWordsByStrokeTarget(
+
                 wordCount,
+
                 target
+
             );
 
 
         if (!selected) {
+
 
             status.innerText =
                 "";
 
 
             alert(
-                 `총획수 변경`
+                "총획수 변경"
             );
 
 
@@ -926,6 +1359,7 @@ function makeWorksheets() {
     worksheetData.forEach(
         selected => {
 
+
             const page =
                 document.createElement(
                     "div"
@@ -937,46 +1371,81 @@ function makeWorksheets() {
 
 
             const title =
-    document.getElementById("titleText").value;
+                document
+                    .getElementById(
+                        "titleText"
+                    )
+                    .value;
 
-const info =
-    document.getElementById("infoText").value;
 
-const instruction =
-    document.getElementById("instructionText").value;
+            const info =
+                document
+                    .getElementById(
+                        "infoText"
+                    )
+                    .value;
 
-page.innerHTML = `
 
-    <div class="title">
-        ${title}
-    </div>
+            const instruction =
+                document
+                    .getElementById(
+                        "instructionText"
+                    )
+                    .value;
 
-    <div class="info">
-        ${info}
-    </div>
 
-    <div class="instruction">
-        ${instruction}
-    </div>
+            page.innerHTML = `
+
+
+                <div class="title">
+
+                    ${title}
+
+                </div>
+
+
+                <div class="info">
+
+                    ${info}
+
+                </div>
+
+
+                <div class="instruction">
+
+                    ${instruction}
+
+                </div>
+
 
                 <table>
 
+
                     <colgroup>
+
 
                         <col class="hanja-col">
 
+
                         <col class="info-col">
 
+
                         <col class="write-col">
+
                         <col class="write-col">
+
                         <col class="write-col">
+
                         <col class="write-col">
+
                         <col class="write-col">
+
 
                     </colgroup>
 
 
                     <tbody></tbody>
+
 
                 </table>
 
@@ -992,6 +1461,7 @@ page.innerHTML = `
             selected.forEach(
                 (word, index) => {
 
+
                     const row =
                         document.createElement(
                             "tr"
@@ -1002,85 +1472,190 @@ page.innerHTML = `
                         Array.isArray(
                             word.examples
                         )
-                            ? word.examples.join(
-                                ", "
-                            )
-                            : word.examples;
+
+                        ?
+
+                        word.examples.join(
+                            ", "
+                        )
+
+                        :
+
+                        word.examples;
+
+
+                    /*
+                        예시 한자의 초기 위치
+                    */
+
+                    const exampleTop =
+                        showMeaningLine
+                            ? 37.5
+                            : 50;
 
 
                     row.innerHTML = `
 
+
+                        <!-- =====================
+                             한자
+                        ====================== -->
+
                         <td
+
                             class="hanja"
+
                             style="
                                 font-family:
                                 ${selectedFont};
                             "
+
                         >
+
                             ${word.hanja}
+
                         </td>
 
 
+                        <!-- =====================
+                             뜻 / 음 / 예시
+                        ====================== -->
+
                         <td class="word-info">
+
 
                             <div
                                 class="meaning-reading"
                             >
+
                                 ${word.meaning}
+
                                 ${word.reading}
+
                             </div>
 
 
                             <div class="examples">
+
                                 ${examples}
+
                             </div>
 
-                        </td>
-
-
-                        <!-- 첫 번째 칸: 보조선 있음 -->
-
-                        <td class="write-cell">
-
-                            ${createGridSVG(true)}
 
                         </td>
 
 
-                        <!-- 두 번째 칸: 보조선 있음 -->
-
-                        <td class="write-cell">
-
-                            ${createGridSVG(true)}
-
-                        </td>
-
-
-                        <!-- 세 번째 칸 -->
-
-                        <td class="write-cell">
-
-                          
-
-                        </td>
-
-
-                        <!-- 네 번째 칸-->
-
-                        <td class="write-cell">
-
-                          
-
-                        </td>
-
-
-                        <!-- 다섯 번째 칸-->
+                        <!-- =====================
+                             첫 번째 쓰기 칸
+                        ====================== -->
 
                         <td class="write-cell">
 
 
+${createGridSVG(
+    showMeaningLine,
+    showGridLines
+)}
+
+
+    ${
+    showExample
+    ?
+    `
+        <!-- 예시 한자 -->
+
+        <div
+            class="example-hanja"
+            style="
+                font-family: ${selectedFont};
+                top: ${exampleTop}%;
+            "
+        >
+            ${word.hanja}
+        </div>
+
+
+        <!-- 뜻 쓰기 영역의 예시 -->
+
+        ${
+            showMeaningLine
+            ?
+            `
+                <div
+                    class="example-meaning"
+                >
+                    ${word.meaning} ${word.reading}
+                </div>
+            `
+            :
+            ""
+        }
+    `
+    :
+    ""
+}
+                        </td>
+
+
+                        <!-- =====================
+                             두 번째 쓰기 칸
+                        ====================== -->
+
+                        <td class="write-cell">
+${createGridSVG(
+    showMeaningLine,
+    showGridLines
+)}
+
 
                         </td>
+
+
+                        <!-- =====================
+                             세 번째 쓰기 칸
+                        ====================== -->
+
+                        <td class="write-cell">
+
+
+${createGridSVG(
+    showMeaningLine,
+    showGridLines
+)}
+
+
+                        </td>
+
+
+                        <!-- =====================
+                             네 번째 쓰기 칸
+                        ====================== -->
+
+                        <td class="write-cell">
+
+
+${createGridSVG(
+    showMeaningLine,
+    showGridLines
+)}
+
+                        </td>
+
+
+                        <!-- =====================
+                             다섯 번째 쓰기 칸
+                        ====================== -->
+
+                        <td class="write-cell">
+
+
+${createGridSVG(
+    showMeaningLine,
+    showGridLines
+)}
+
+                        </td>
+
 
                     `;
 
@@ -1089,6 +1664,7 @@ page.innerHTML = `
                         row
                     );
 
+
                 }
             );
 
@@ -1096,6 +1672,7 @@ page.innerHTML = `
             pages.appendChild(
                 page
             );
+
 
         }
     );
@@ -1113,7 +1690,11 @@ page.innerHTML = `
 
 loadWords();
 
+
 </script>
 
+
 </body>
+
 </html>
+
