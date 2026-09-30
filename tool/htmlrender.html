@@ -1,0 +1,734 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>실시간 HTML 렌더링</title>
+
+<style>
+
+/* =========================
+   기본
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width:100%;
+    height: 100%;
+}
+
+body { 
+
+    font-family:
+        Arial,
+        "Noto Sans KR",
+        sans-serif;
+
+    background: #f2f3f5;
+
+    color: #222;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+
+
+/* =========================
+   메인
+========================= */
+
+main {
+
+    flex: 1;
+
+    display: grid;
+
+    /*
+     * 처음에는 코드 50%
+     * 미리보기 50%
+     */
+    grid-template-columns:
+        minmax(200px, 1fr)
+        10px
+        minmax(200px, 1fr);
+
+    gap: 0;
+
+    padding: 20px;
+
+    min-height: 0;
+
+}
+
+
+/* =========================
+   패널
+========================= */
+
+.panel {
+
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background: white;
+
+    border: 1px solid #ddd;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+
+}
+
+#codePanel {
+
+    border-radius:
+        12px 0 0 12px;
+
+}
+
+#previewPanel {
+
+    border-radius:
+        0 12px 12px 0;
+
+}
+
+
+/* =========================
+   패널 제목
+========================= */
+
+.panelHeader {
+
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 16px;
+
+    background: #fafafa;
+
+    border-bottom: 1px solid #ddd;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+}
+
+
+/* =========================
+   코드 입력
+========================= */
+
+#code {
+
+    flex: 1;
+
+    width: 100%;
+
+    min-height: 0;
+
+    resize: none;
+
+    border: 0;
+
+    outline: none;
+
+    padding: 18px;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+
+    color: #222;
+
+    background: white;
+
+    tab-size: 4;
+
+}
+
+#code:focus {
+
+    background: #fcfcff;
+
+}
+
+
+/* =========================
+   미리보기
+========================= */
+
+#preview {
+
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
+
+    background: white;
+
+}
+
+
+/* =========================
+   드래그 바
+========================= */
+
+#divider {
+
+    position: relative;
+
+    width: 10px;
+
+    cursor: col-resize;
+
+    background: #e5e5e5;
+
+}
+
+
+/*
+ * 가운데 손잡이
+ */
+
+#divider::after {
+
+    content: "";
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width: 4px;
+
+    height: 60px;
+
+    border-radius: 4px;
+
+    background: #aaa;
+
+}
+
+
+/*
+ * 마우스를 올렸을 때
+ */
+
+#divider:hover {
+
+    background: #d8d8d8;
+
+}
+
+#divider:hover::after {
+
+    background: #666;
+
+}
+
+
+/* =========================
+   드래그 중
+========================= */
+
+body.resizing {
+
+    cursor: col-resize;
+
+    user-select: none;
+
+}
+
+
+/* iframe이나 textarea가
+   드래그를 방해하지 않도록 */
+
+body.resizing iframe,
+body.resizing textarea {
+
+    pointer-events: none;
+
+}
+
+
+/* =========================
+   모바일
+========================= */
+
+@media (max-width: 700px) {
+
+    header {
+
+        height: 56px;
+
+        padding: 0 16px;
+
+    }
+
+    header h1 {
+
+        font-size: 19px;
+
+    }
+
+
+    main {
+
+        grid-template-columns: 1fr;
+
+        grid-template-rows:
+            minmax(300px, 1fr)
+            minmax(300px, 1fr);
+
+        gap: 14px;
+
+        padding: 14px;
+
+    }
+
+
+    .panel {
+
+        border-radius: 10px !important;
+
+    }
+
+
+    /*
+     * 모바일에서는
+     * 드래그바 숨김
+     */
+
+    #divider {
+
+        display: none;
+
+    }
+
+
+    .panelHeader {
+
+        height: 44px;
+
+        padding: 0 14px;
+
+        font-size: 14px;
+
+    }
+
+
+    #code {
+
+        padding: 14px;
+
+        font-size: 15px;
+
+    }
+
+}
+
+
+/* =========================
+   작은 화면
+========================= */
+
+@media (max-width: 400px) {
+
+    main {
+
+        padding: 8px;
+
+        gap: 8px;
+
+        grid-template-rows:
+            minmax(250px, 1fr)
+            minmax(250px, 1fr);
+
+    }
+
+
+    #code {
+
+        font-size: 14px;
+
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     헤더
+========================= -->
+
+
+
+
+<!-- =========================
+     메인
+========================= -->
+
+<main id="main">
+
+
+    <!-- =====================
+         코드
+    ====================== -->
+
+    <section
+        class="panel"
+        id="codePanel">
+
+        <div class="panelHeader">
+            HTML 코드
+        </div>
+
+        <textarea
+            id="code"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="여기에 HTML 코드를 입력하세요."></textarea>
+
+    </section>
+
+
+    <!-- =====================
+         드래그 바
+    ====================== -->
+
+    <div
+        id="divider"
+        title="드래그하여 크기 조절">
+    </div>
+
+
+    <!-- =====================
+         미리보기
+    ====================== -->
+
+    <section
+        class="panel"
+        id="previewPanel">
+
+        <div class="panelHeader">
+            미리보기
+        </div>
+
+        <iframe
+            id="preview"
+            title="HTML 미리보기">
+        </iframe>
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+/* =========================
+   요소
+========================= */
+
+const codeInput =
+    document.getElementById("code");
+
+const preview =
+    document.getElementById("preview");
+
+const main =
+    document.getElementById("main");
+
+const divider =
+    document.getElementById("divider");
+
+
+/* =========================
+   HTML 렌더링
+========================= */
+
+function render() {
+
+    preview.srcdoc =
+        codeInput.value;
+
+}
+
+
+codeInput.addEventListener(
+    "input",
+    render
+);
+
+
+/* =========================
+   드래그 크기 조절
+========================= */
+
+let isResizing = false;
+
+
+/*
+ * 드래그 시작 시
+ * 현재 코드 영역의 실제 너비를 기억
+ */
+
+let startCodeWidth = 0;
+let startMouseX = 0;
+
+
+/* =========================
+   마우스 누름
+========================= */
+
+divider.addEventListener(
+    "mousedown",
+    function(event) {
+
+        isResizing = true;
+
+        startMouseX =
+            event.clientX;
+
+        /*
+         * 현재 코드 패널의 실제 너비
+         */
+        startCodeWidth =
+            document
+                .getElementById("codePanel")
+                .getBoundingClientRect()
+                .width;
+
+
+        document.body.classList.add(
+            "resizing"
+        );
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =========================
+   마우스 이동
+========================= */
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+        if (!isResizing) {
+            return;
+        }
+
+
+        /*
+         * 마우스가 이동한 거리
+         */
+
+        const delta =
+            event.clientX -
+            startMouseX;
+
+
+        /*
+         * 새로운 코드 창 너비
+         */
+
+        let codeWidth =
+            startCodeWidth +
+            delta;
+
+
+        /*
+         * main의 실제 내부 너비
+         */
+
+        const mainRect =
+            main.getBoundingClientRect();
+
+
+        const codePanel =
+            document.getElementById(
+                "codePanel"
+            );
+
+        const previewPanel =
+            document.getElementById(
+                "previewPanel"
+            );
+
+
+        const dividerWidth =
+            divider.getBoundingClientRect()
+                .width;
+
+
+        /*
+         * 최소 너비
+         */
+
+        const minWidth = 200;
+
+
+        /*
+         * main의 실제 콘텐츠 영역
+         *
+         * padding을 제외해야 함
+         */
+
+        const computedStyle =
+            getComputedStyle(main);
+
+
+        const paddingLeft =
+            parseFloat(
+                computedStyle.paddingLeft
+            );
+
+        const paddingRight =
+            parseFloat(
+                computedStyle.paddingRight
+            );
+
+
+        const contentWidth =
+            mainRect.width -
+            paddingLeft -
+            paddingRight;
+
+
+        /*
+         * 미리보기 창 너비
+         */
+
+        let previewWidth =
+            contentWidth -
+            codeWidth -
+            dividerWidth;
+
+
+        /*
+         * 코드 창 최소 너비
+         */
+
+        if (codeWidth < minWidth) {
+
+            codeWidth =
+                minWidth;
+
+            previewWidth =
+                contentWidth -
+                codeWidth -
+                dividerWidth;
+
+        }
+
+
+        /*
+         * 미리보기 최소 너비
+         */
+
+        if (previewWidth < minWidth) {
+
+            previewWidth =
+                minWidth;
+
+            codeWidth =
+                contentWidth -
+                previewWidth -
+                dividerWidth;
+
+        }
+
+
+        /*
+         * 최종 적용
+         */
+
+        main.style.gridTemplateColumns =
+            `${codeWidth}px ${dividerWidth}px ${previewWidth}px`;
+
+    }
+);
+
+
+/* =========================
+   마우스 놓음
+========================= */
+
+document.addEventListener(
+    "mouseup",
+    function() {
+
+        if (!isResizing) {
+            return;
+        }
+
+        isResizing = false;
+
+        document.body.classList.remove(
+            "resizing"
+        );
+
+    }
+);
+
+
+/* =========================
+   초기 렌더링
+========================= */
+
+render();
+
+</script>
+
+
+
+</body>
+</html>
+
