@@ -1,44 +1,208 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>구구단 연습</title>
 
-<style>
+    <style>
 
-        @font-face {
-            font-family: 'Pretendard-Regular';
-            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
+
+
+        * {
+            box-sizing: border-box;
         }
-body {
-    font-size: 50px;           
-font-family:'Pretendard-Regular';
-}
 
-#answer {
-    width: 200px;
-    height: 80px;
-    border-radius: 8px;
-    font-size: 45px;
-}
+        body {
+            margin: 0;
+            min-height: 100vh;
 
-#number {
-    color: #0078D6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-    margin-right: 10pt;
-}
+            background: #f3f6fa;
 
-</style>
+
+            color: #222;
+        }
+
+        /* 전체 */
+        .container {
+            width: min(700px, 92vw);
+
+            padding: 55px 50px 60px;
+
+            background: white;
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.08);
+
+            text-align: center;
+        }
+
+        /* 제목 */
+        h1 {
+            margin: 0 0 40px;
+
+            font-size: 34px;
+            font-weight: 600;
+
+            color: #333;
+        }
+
+        /* 문제 영역 */
+        .question-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 10px;
+
+            margin-bottom: 35px;
+
+            white-space: nowrap;
+        }
+
+        #number {
+            font-size: 52px;
+            color: #0078D6;
+
+            margin-right: 5px;
+
+            min-width: 55px;
+            text-align: right;
+        }
+
+        #question {
+            font-size: 52px;
+            font-weight: 500;
+
+            letter-spacing: 2px;
+        }
+
+        /* 정답 입력 */
+        #answer {
+            width: 230px;
+            height: 85px;
+
+            border: 3px solid #d9e1ea;
+            border-radius: 16px;
+
+            background: #f8fafc;
+
+            font-family: inherit;
+            font-size: 45px;
+
+            text-align: center;
+
+            outline: none;
+
+            transition:
+                border-color 0.15s,
+                box-shadow 0.15s,
+                background 0.15s;
+        }
+
+        #answer::placeholder {
+            color: #b5bdc8;
+            font-size: 28px;
+        }
+
+        #answer:focus {
+            border-color: #0078D6;
+            background: white;
+
+            box-shadow:
+                0 0 0 5px rgba(0, 120, 214, 0.1);
+        }
+
+        /* 안내 */
+        .hint {
+            margin-top: 25px;
+
+            font-size: 17px;
+            color: #9aa3ad;
+        }
+
+
+        /* 모바일 */
+        @media (max-width: 600px) {
+
+            .container {
+                width: 94vw;
+
+                padding: 40px 20px 45px;
+
+                border-radius: 22px;
+            }
+
+            h1 {
+                margin-bottom: 30px;
+                font-size: 28px;
+            }
+
+            .question-box {
+                gap: 5px;
+                margin-bottom: 28px;
+            }
+
+            #number {
+                font-size: 22px;
+                min-width: 40px;
+            }
+
+            #question {
+                font-size: 38px;
+                letter-spacing: 1px;
+            }
+
+            #answer {
+                width: 190px;
+                height: 72px;
+
+                font-size: 38px;
+            }
+
+            #answer::placeholder {
+                font-size: 23px;
+            }
+
+            .hint {
+                font-size: 15px;
+            }
+        }
+
+    </style>
 </head>
+
 
 <body>
 
-<span id="number"></span>
-<span id="question"></span>    
-<input id="answer" placeholder=" 정답">
+    <div class="container">
 
+        <h1>구구단 연습</h1>
+
+        <div class="question-box">
+            <span id="number"></span>
+            <span id="question"></span>
+        </div>
+
+        <input
+            id="answer"
+            type="text"
+            inputmode="numeric"
+            autocomplete="off"
+            placeholder="정답"
+        >
+
+
+
+    </div>
 
 
 <script>
@@ -49,7 +213,8 @@ let input_answer = document.getElementById("answer");
 
 let num1;
 let num2;
-let count = 1
+let count = 1;
+
 
 // 문제 만들기
 function makeQuestion() {
@@ -57,7 +222,7 @@ function makeQuestion() {
     num1 = Math.floor(Math.random() * 8) + 2;
     num2 = Math.floor(Math.random() * 9) + 1;
 
-    number.innerText = count + "."
+    number.innerText = count + ".";
     question.innerText = num1 + " × " + num2 + " = ";
 
 }
@@ -69,7 +234,9 @@ input_answer.addEventListener("input", function() {
     if (Number(input_answer.value) == num1 * num2) {
 
         input_answer.value = "";
-        count += 1
+
+        count += 1;
+
         makeQuestion();
 
     }
@@ -80,7 +247,12 @@ input_answer.addEventListener("input", function() {
 // 처음 문제 만들기
 makeQuestion();
 
+
+// 페이지에 들어오면 바로 입력 가능
+input_answer.focus();
+
 </script>
 
 </body>
 </html>
+
