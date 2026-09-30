@@ -144,7 +144,7 @@
             }
 
             #number {
-                font-size: 48px;
+                font-size: 35px;
 
                 min-width: 40px;
             }
@@ -164,7 +164,7 @@
             }
 
             #answer::placeholder {
-                font-size: 45px;
+
             }
 
             .hint {
