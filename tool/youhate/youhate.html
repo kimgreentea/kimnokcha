@@ -104,10 +104,9 @@
     .download {
         display: inline-block;
 
-        margin-top: 8px;
-        padding: 12px 20px;
+        padding: 12px 15px;
 
-        border-radius: 8px;
+        border-radius: 12px;
 
         background: #222;
         color: white;
@@ -170,7 +169,20 @@
         font-family: Consolas, monospace;
         font-size: 0.9em;
     }
+    button   {
+        padding: 2px 6px;
 
+        border-radius: 4px;
+        border:none;
+        background: #eee;
+
+    cursor: pointer;
+        font-family: Consolas, monospace;
+        font-size: 0.9em;
+    }
+button:hover {
+    background: #ddd;
+}
 
     .notice {
         padding: 16px 18px;
@@ -219,7 +231,9 @@
 
     .compare-title {
         padding: 10px 14px;
+
         background: white;
+
         font-size: 14px;
         font-weight: 700;
 
@@ -227,7 +241,9 @@
     }
 
 
-    /* 유튜브 화면 모형 */
+    /* =========================
+       유튜브 화면 모형
+    ========================= */
 
     .youtube-mock {
         padding: 10px;
@@ -241,7 +257,13 @@
     .mock-header {
         height: 18px;
 
+        display: flex;
+        align-items: center;
+
         margin-bottom: 8px;
+
+        color: white;
+        font-size: 11pt;
 
         border-radius: 3px;
 
@@ -249,18 +271,53 @@
     }
 
 
-    /* 영상 + 추천영상 */
+    .mock-logo {
+        width: 20px;
+        height: 15px;
 
-    .mock-content {
-        display: grid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        grid-template-columns: 2.2fr 0.9fr;
+        margin-right: 5px;
 
-        gap: 7px;
+        border-radius: 3px;
+
+        background: red;
     }
 
 
-    /* 영상 */
+    .mock-logo-play {
+        width: 0;
+        height: 0;
+
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-left: 6px solid white;
+
+        margin-left: 1px;
+    }
+
+
+    /* =========================
+       영상 + 추천영상
+    ========================= */
+
+    .mock-content {
+        position: relative;
+    }
+
+
+    /* 영상 + 정보 + 댓글을 하나로 묶음 */
+
+    .mock-main {
+        width: 70%;
+    }
+
+
+    /* =========================
+       영상
+    ========================= */
 
     .mock-player {
         position: relative;
@@ -282,7 +339,8 @@
     }
 
 
-    /* 영상 안의 가짜 장면 */
+    /* 영상 안의 장면 */
+
     .mock-video1 {
         position: absolute;
 
@@ -290,21 +348,22 @@
         bottom: 18%;
 
         width: 35%;
-        height: 25%;
+        height: 30%;
 
         border-radius: 3px;
 
         background: rgba(255, 255, 255, 0.85);
     }
 
+
     .mock-video2 {
         position: absolute;
 
         left: 60%;
-        top: 18%;
+        top: 10%;
 
         width: 35%;
-        height: 25%;
+        height: 30%;
 
         border-radius: 3px;
 
@@ -329,9 +388,18 @@
     }
 
 
-    /* 추천 영상 */
+    /* =========================
+       추천 영상
+    ========================= */
 
     .mock-recommendations {
+        position: absolute;
+
+        top: 0;
+        right: 0;
+
+        width: calc(30% - 7px);
+
         display: flex;
 
         flex-direction: column;
@@ -341,9 +409,10 @@
 
 
     .mock-recommendations div {
-        flex: 1;
+        width: 100%;
+        height: 45px;
 
-        min-height: 30px;
+        flex-shrink: 0;
 
         border-radius: 3px;
 
@@ -351,10 +420,12 @@
     }
 
 
-    /* 영상 정보 */
+    /* =========================
+       영상 정보
+    ========================= */
 
     .mock-info {
-        width: 70%;
+        width: 100%;
         height: 10px;
 
         margin-top: 9px;
@@ -365,11 +436,12 @@
     }
 
 
-
-    /* 댓글 */
+    /* =========================
+       댓글
+    ========================= */
 
     .mock-comments {
-        width: 90%;
+        width: 100%;
         height: 45px;
 
         margin-top: 9px;
@@ -380,11 +452,8 @@
     }
 
 
-
-
     /* =========================
        적용 후
-       영상만 표시
     ========================= */
 
     .compare-box.after .youtube-mock {
@@ -394,7 +463,6 @@
 
     .compare-box.after .mock-player {
         width: 100%;
-
     }
 
 
@@ -443,36 +511,68 @@
 
 <section>
 
-    <h2>일단 다운로드 받고 싶어지는 비포애프터</h2>
+    <h2>유튜브용 확장 프로그램</h2>
 
 
     <div class="comparison">
 
 
-        <!-- 적용 전 -->
+        <!-- =========================
+             적용 전
+        ========================= -->
 
         <div class="compare-box">
 
             <div class="compare-title">
-                비포
+                적용 전
             </div>
 
 
             <div class="youtube-mock">
 
-                <div class="mock-header"></div>
+                <div class="mock-header">
+                    <div class="mock-logo">
+                        <div class="mock-logo-play"></div>
+                    </div>
+                    YouTube
+                </div>
 
 
                 <div class="mock-content">
 
-                    <div class="mock-player">
-<div class="mock-video1"></div>
-<div class="mock-video2"></div>
 
-                        <div class="mock-controls"></div>
+                    <!-- 왼쪽 영역 -->
+
+                    <div class="mock-main">
+
+
+                        <!-- 영상 -->
+
+                        <div class="mock-player">
+
+                            <div class="mock-video1"></div>
+
+                            <div class="mock-video2"></div>
+
+                            <div class="mock-controls"></div>
+
+                        </div>
+
+
+                        <!-- 영상 정보 -->
+
+                        <div class="mock-info"></div>
+
+
+                        <!-- 댓글 -->
+
+                        <div class="mock-comments"></div>
+
 
                     </div>
 
+
+                    <!-- 오른쪽 추천 영상 -->
 
                     <div class="mock-recommendations">
 
@@ -481,15 +581,12 @@
                         <div></div>
                         <div></div>
                         <div></div>
+                        <div></div>
 
                     </div>
 
+
                 </div>
-
-
-                <div class="mock-info"></div>
-
-                <div class="mock-comments"></div>
 
             </div>
 
@@ -497,20 +594,20 @@
 
 
 
-        <!-- 적용 후 -->
+        <!-- =========================
+             적용 후
+        ========================= -->
 
         <div class="compare-box after">
 
             <div class="compare-title">
-                애프터
+                적용 후
             </div>
 
 
             <div class="youtube-mock">
 
                 <div class="mock-player">
-
-
 
                     <div class="mock-controls"></div>
 
@@ -522,43 +619,9 @@
 
 
     </div>
-      <p
-            class="notice"
-            style="margin-top: 18px;"
-        >
 
-            선생님 저 영상도 봐여! 우와 다음 영상도 봐여 선생님 옆에 저것도 봐여 선생님 저건 뭐예여? 우와 조회수 대박이다 우와 구독자수 대박이다 악ㅋㅋ 댓글 좀 보세여ㅋㅋ 선생님은 왜 저 채널 구독하셨어여? 오 선생님도 저 채널 구독하세여? 에서 해방
-
-        </p>
 </section>
 
-
-
-<!-- =========================
-     다운로드
-========================= -->
-
-<section>
-
-    <h2>일단 다운로드하고 생각</h2>
-
-
-    <a
-        class="download"
-        href="https://kimgreentea.github.io/kimnokcha//tool/youhate/youhate.zip"
-        target="_blank"
-        rel="noopener"
-    >
-        다운로드
-    </a>
-      <p
-            class="notice"
-            style="margin-top: 18px;"
-        >
-
-            악성코드면 어쩌지.. 바이러스면 어쩌지.. 는 내일 생각하기
-        </p>
-</section>
 
 
 
@@ -568,7 +631,7 @@
 
 <section>
 
-    <h2>하나도 안 어려운 설치 방법</h2>
+    <h2>설치 방법</h2>
 
 
     <div class="step">
@@ -576,13 +639,24 @@
         <span class="step-number">1</span>
 
         <span class="step-title">
-            ZIP 파일 다운로드
+            파일 다운로드
         </span>
 
 
         <p>
-            위 버튼을 눌러
+
+            <a
+                class="download"
+                href="https://kimgreentea.github.io/kimnokcha//tool/youhate/youhate.zip"
+                target="_blank"
+                rel="noopener"
+            >
+                다운로드
+            </a>
+
+            버튼을 눌러
             <code>youhate.zip</code>을 다운로드
+
         </p>
 
     </div>
@@ -609,11 +683,7 @@
         >
 
             <span class="step-number">5</span>
-
-            번 이후에는 압축 해제된 파일의
-            경로나 이름을 바꾸지 마세요.
-
-            변경하고 싶다면 지금 변경해요.
+            번 이후에는 압축 해제된 파일의 경로나 이름을 수정 시 제대로 작동하지 않습니다. 변경하고 싶다면 현재 단계에서 변경합니다.
 
         </p>
 
@@ -630,22 +700,23 @@
         </span>
 
 
-        <p>
-            사용하는 브라우저에 따라 아래 주소로 접속
-        </p>
 
 
-        <p>
-            Chrome:
-            <code>chrome://extensions</code>
-        </p>
+<p>
+    Chrome:
+<button onclick="navigator.clipboard.writeText('chrome://extensions')">
+        클릭으로 주소 복사
+    </button>
+    → 주소창에 붙여넣기
+</p>
 
-
-        <p>
-            Edge:
-            <code>edge://extensions</code>
-        </p>
-
+<p>
+    Edge:
+<button onclick="navigator.clipboard.writeText('edge://extensions')">
+        클릭으로 주소 복사
+    </button>
+    → 주소창에 붙여넣기
+</p>
     </div>
 
 
@@ -659,24 +730,29 @@
         </span>
 
 
-
-
         <p>
-            Chrome: 오른쪽 상단 <code>개발자 모드</code>
+            Chrome: 오른쪽 상단
+            <code>개발자 모드</code>
         </p>
 
 
         <p>
-            Edge: 왼쪽 하단 <code>개발자 모드</code>
+            Edge: 왼쪽 하단
+            <code>개발자 모드</code>
         </p>
-      <p
+
+
+        <p
             class="notice"
             style="margin-top: 18px;"
         >
 
-            이후 브라우저를 켤 때 개발자 모드가 켜있다며 끄라고 메세지가 나올 수 있어요. '내가 개발자라니.. 넘 멋지잖아..'라고 생각하며 <strong>나중에</strong> 버튼 누르기 
+            브라우저 재실행 시 개발자 모드를 끄라는
+            메세지가 나온다면
+            <strong>나중에</strong> 버튼 누르기
 
         </p>
+
     </div>
 
 
@@ -690,18 +766,17 @@
         </span>
 
 
-
-
-
         <p>
             Chrome:
-            왼쪽 상단 <code>압축해제된 확장 프로그램 로드</code>
+            왼쪽 상단
+            <code>압축해제된 확장 프로그램 로드</code>
         </p>
 
 
         <p>
             Edge:
-            오른쪽 상단 <code>압축 풀린 파일 로드</code>
+            오른쪽 상단
+            <code>압축 풀린 파일 로드</code>
         </p>
 
 
@@ -711,6 +786,7 @@
             압축을 풀어 놓은
             <code>youhate</code>
             폴더를 선택
+
         </p>
 
     </div>
@@ -727,12 +803,14 @@
 
 
         <p>
-            유튜브를 새로고침하면 쨔잔
+            새로고침 후 적용 확인
         </p>
 
     </div>
 
 </section>
+
+
 
 
 <!-- =========================
@@ -746,7 +824,7 @@
 
     <p>
 
-        Chrome: 
+        Chrome:
 
         <code>chrome://extensions</code>
 
@@ -765,7 +843,7 @@
 
     <p>
 
-        Edge: 
+        Edge:
 
         <code>edge://extensions</code>
 
@@ -780,32 +858,10 @@
         <code>확장 옵션</code>
 
     </p>
-      <p
-            class="notice"
-            style="margin-top: 18px;"
-        >
-
-          각 옵션은 끄고 켜면서 확인해보세여.. 저는 모두 다 없애버리고 싶어여..
-
-        </p>
-</section>
-
-
-
-<!-- =========================
-     삭제
-========================= -->
-
-<section>
-
-    <h2>삭제하기</h2>
-
-
-    <p>
-        삭제하지 마세여.. 아깝잖아여..
-    </p>
 
 </section>
+
+
 
 
 </div>
