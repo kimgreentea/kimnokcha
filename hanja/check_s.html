@@ -123,6 +123,10 @@ font-size:50pt;
 font-family: 'Klee One';
 }
 
+.meaning {
+font-size:30pt;
+}
+
 </style>
     
 </head>
@@ -203,7 +207,9 @@ fetch("https://kimgreentea.github.io/kimnokcha/hanja/sentence.json")
 let list = "";
 
 data.forEach((item, index) => {
-    list += `<p><span class="hanja">${index + 1}. ${item.hanmun}</span></p>`;
+    list += `<p><span class="hanja">${index + 1}. ${item.hanmun}</span></p>
+<p><span class="meaning">${item.reading}</span></p>
+<p><span class="meaning">${item.meaning}</span></p>`;
 });
 
 document.querySelector("#list").innerHTML = list;
