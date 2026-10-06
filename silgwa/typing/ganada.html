@@ -9,8 +9,16 @@
 
 <style>
 
-* {  
+* {
     box-sizing: border-box;
+}
+
+
+html,
+body {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 
@@ -45,6 +53,10 @@ h1 {
 
     letter-spacing: 2px;
     word-break: keep-all;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 
@@ -73,6 +85,10 @@ h1 {
     font-family: inherit;
 
     outline: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
 
@@ -113,7 +129,6 @@ h1 {
 
 let words = [
 
-    // 가나다라 계열
     '가나다라마바사아자차카타파하',
     '거너더러머버서어저처커터퍼허',
     '고노도로모보소오조초코토포호',
@@ -125,7 +140,6 @@ let words = [
     '갸냐댜랴먀뱌샤야쟈챠캬탸퍄햐',
     '겨녀뎌려며벼셔여져쳐켜텨펴혀',
 
-    // 가갸개거 계열
     '가갸개거겨게고교구규그기긔',
     '나냐내너녀네노뇨누뉴느니늬',
     '다댜대더뎌데도됴두듀드디듸',
@@ -148,12 +162,18 @@ let count = Number(
     localStorage.getItem("typingCount")
 ) || 0;
 
+
+let currentWord =
+    localStorage.getItem("typingCurrentWord");
+
+
 let current;
 
-let currentWord;
+
+let input;
 
 
-// 화면에 횟수 표시
+
 function updateCount() {
 
     document.getElementById("count").innerText = count;
@@ -161,41 +181,64 @@ function updateCount() {
 }
 
 
-// 랜덤으로 문제 선택
-// + 1~4글자 단위 랜덤 띄어쓰기
-function randomWord() {
 
-    let next;
- 
-    do {
-        next = Math.floor(
-            Math.random() * words.length
+function shuffleWord(word) {
+
+    let characters = [...word];
+
+
+    // Fisher-Yates 셔플
+    for (
+        let i = characters.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        let j = Math.floor(
+            Math.random() * (i + 1)
         );
-    } while (next === current);
-
-    current = next;
 
 
-    let word = words[current];
+        [
+            characters[i],
+            characters[j]
+        ] = [
+            characters[j],
+            characters[i]
+        ];
+
+    }
+
+
+    return characters.join("");
+
+}
+
+
+
+function createRandomWord(word) {
+
+    let shuffled = shuffleWord(word);
+
 
     let result = "";
 
     let position = 0;
 
 
-    while (position < word.length) {
+    while (position < shuffled.length) {
 
-        let remaining = word.length - position;
+        let remaining =
+            shuffled.length - position;
 
 
-        // 1~4글자 랜덤
         let length = Math.min(
             Math.floor(Math.random() * 4) + 1,
             remaining
         );
 
 
-        result += word.slice(
+        result += shuffled.slice(
             position,
             position + length
         );
@@ -203,17 +246,48 @@ function randomWord() {
 
         position += length;
 
+        if (position < shuffled.length) {
 
-        // 마지막 글자가 아니면 띄어쓰기
-        if (position < word.length) {
             result += " ";
+
         }
 
     }
 
 
-    currentWord = result;
+    return result;
 
+}
+
+
+
+function randomWord() {
+
+    let next;
+
+
+    do {
+
+        next = Math.floor(
+            Math.random() * words.length
+        );
+
+    } while (
+        words.length > 1 &&
+        next === current
+    );
+
+
+    current = next;
+
+
+    currentWord =
+        createRandomWord(words[current]);
+
+    localStorage.setItem(
+        "typingCurrentWord",
+        currentWord
+    );
 
     document.getElementById(
         "target"
@@ -222,8 +296,15 @@ function randomWord() {
 }
 
 
+function showCurrentWord() {
 
-// 입력창 설정
+    document.getElementById(
+        "target"
+    ).innerText = currentWord;
+
+}
+
+
 function setupInput() {
 
     input.type = "text";
@@ -256,13 +337,12 @@ function setupInput() {
 
 
 
-// 입력창 이벤트
 function addInputEvents() {
 
     setupInput();
 
 
-    // 붙여넣기 방지
+
     input.addEventListener(
         "paste",
         function(event) {
@@ -273,7 +353,37 @@ function addInputEvents() {
     );
 
 
-    // 드래그 방지
+    input.addEventListener(
+        "cut",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+
+    input.addEventListener(
+        "copy",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    input.addEventListener(
+        "dragstart",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
+
+
     input.addEventListener(
         "drop",
         function(event) {
@@ -284,7 +394,7 @@ function addInputEvents() {
     );
 
 
-    // 우클릭 방지
+
     input.addEventListener(
         "contextmenu",
         function(event) {
@@ -295,63 +405,102 @@ function addInputEvents() {
     );
 
 
-    // 입력 감지
+    input.addEventListener(
+        "selectstart",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+
+    input.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                (event.ctrlKey || event.metaKey) &&
+                (
+                    event.key.toLowerCase() === "c" ||
+                    event.key.toLowerCase() === "v" ||
+                    event.key.toLowerCase() === "x"
+                )
+            ) {
+
+                event.preventDefault();
+
+            }
+
+        }
+    );
+
+
     input.addEventListener(
         "input",
         function() {
 
 
-            // "김녹차" 입력 시 초기화
-if (input.value === "김녹차") {
-
-    count = 0;
-
-    localStorage.setItem(
-        "typingCount",
-        count
-    );
-
-    updateCount();
 
 
-    // 현재 입력창 제거
-    let oldInput = input;
+            if (input.value === "김녹차") {
+
+                count = 0;
 
 
-    // 새로운 입력창 생성
-    input = document.createElement("input");
-
-    input.id = "word";
-
-
-    // 입력창 설정
-    setupInput();
+                localStorage.setItem(
+                    "typingCount",
+                    count
+                );
 
 
-    // 기존 입력창과 교체
-    oldInput.replaceWith(input);
+                updateCount();
+
+                let oldInput = input;
 
 
-    // 이벤트 등록
-    addInputEvents();
+                input = document.createElement(
+                    "input"
+                );
 
 
-    // 한글 IME의 마지막 글자 조합이 끝난 뒤 포커스
-    setTimeout(function() {
-        input.focus();
-    }, 50);
+                input.id = "word";
 
 
-    return;
-}
+                setupInput();
 
-            // 정답
-            if (input.value === currentWord) {
+
+                // 기존 입력창 교체
+                oldInput.replaceWith(input);
+
+
+                // 이벤트 등록
+                addInputEvents();
+
+
+
+                setTimeout(
+                    function() {
+
+                        input.focus();
+
+                    },
+                    50
+                );
+
+
+                return;
+
+            }
+
+            if (
+                input.value === currentWord
+            ) {
 
                 count++;
 
 
-                // 횟수 저장
                 localStorage.setItem(
                     "typingCount",
                     count
@@ -361,35 +510,32 @@ if (input.value === "김녹차") {
                 updateCount();
 
 
-                // 새로운 문제
+
                 randomWord();
 
 
-                // 기존 입력창 저장
+
                 let oldInput = input;
 
 
-                // 새로운 입력창 생성
                 input = document.createElement(
                     "input"
                 );
 
+
                 input.id = "word";
 
 
-                // 설정
+     
                 setupInput();
 
 
-                // 교체
                 oldInput.replaceWith(input);
 
 
-                // 이벤트 등록
                 addInputEvents();
 
 
-                // 포커스
                 input.focus();
 
             }
@@ -400,25 +546,127 @@ if (input.value === "김녹차") {
 }
 
 
+document.addEventListener(
+    "contextmenu",
+    function(event) {
 
-// 처음 문제
-randomWord();
+        event.preventDefault();
 
-
-// 처음 횟수 표시
-updateCount();
-
-
-// 처음 입력창
-let input = document.getElementById(
-    "word"
+    }
 );
 
 
-// 이벤트 등록
+
+document.addEventListener(
+    "selectstart",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+
+document.addEventListener(
+    "dragstart",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+
+document.addEventListener(
+    "copy",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+document.addEventListener(
+    "cut",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+
+
+document.addEventListener(
+    "paste",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            (
+                event.key.toLowerCase() === "c" ||
+                event.key.toLowerCase() === "v" ||
+                event.key.toLowerCase() === "x"
+            )
+        ) {
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+
+
+if (currentWord) {
+
+    showCurrentWord();
+
+}
+
+
+
+else {
+
+    randomWord();
+
+}
+
+
+
+updateCount();
+
+
+
+input = document.getElementById("word");
+
+
+
 addInputEvents();
+
+
+
+input.focus();
+
 
 </script>
 
 </body>
 </html>
+
