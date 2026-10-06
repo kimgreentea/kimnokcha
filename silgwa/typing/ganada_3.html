@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>타자연습 조아</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    padding: 50px 5vw 80px;
+    max-width: 1000px;
+    font-family: Arial, "Noto Sans KR", sans-serif;
+}
+
+h1 {
+    margin: 0;
+    font-size: 30pt;
+}
+
+#instruction {
+    margin-bottom: 50px;
+    font-size: 22pt;
+    font-weight: 600;
+}
+
+#target {
+    margin-bottom: 25px;
+    font-size: 32pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    word-break: keep-all;
+}
+
+#count {
+    margin-bottom: 25px;
+    font-size: 30pt;
+    font-weight: 500;
+}
+
+#word {
+    display: block;
+    width: 100%;
+    height: 90px;
+    padding: 10px 20px;
+
+    border: 3px solid #333;
+    border-radius: 12px;
+
+    background-color: #f8f8f8;
+
+    font-size: 30pt;
+    font-family: inherit;
+
+    outline: none;
+}
+
+#word:focus {
+    border-color: #000;
+    background-color: #fff;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 id="instruction">40번 이상 연습 후 검사받기</h1>
+
+<h1 id="target"></h1>
+
+<h1><span id="count">0</span>번</h1>
+
+<input
+    id="word"
+    type="text"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+    autofocus
+>
+
+
+<script>
+
+let words = [
+
+    // 가나다라 계열
+    '가나다라마바사아자차카타파하',
+    '거너더러머버서어저처커터퍼허',
+    '고노도로모보소오조초코토포호',
+    '구누두루무부수우주추쿠투푸후',
+    '그느드르므브스으즈츠크트프흐',
+    '기니디리미비시이지치키티피히',
+    '개내대래매배새애재채캐태패해',
+    '게네데레메베세에제체케테페헤',
+    '갸냐댜랴먀뱌샤야쟈챠캬탸퍄햐',
+    '겨녀뎌려며벼셔여져쳐켜텨펴혀',
+
+    // 가갸개거 계열
+    '가갸개거겨게고교구규그기긔',
+    '나냐내너녀네노뇨누뉴느니늬',
+    '다댜대더뎌데도됴두듀드디듸',
+    '라랴래러려레로료루류르리릐',
+    '마먀매머며메모묘무뮤므미믜',
+    '바뱌배버벼베보뵤부뷰브비븨',
+    '사샤새서셔세소쇼수슈스시싀',
+    '아야애어여에오요우유으이의',
+    '자쟈재저져제조죠주쥬즈지즤',
+    '차챠채처쳐체초쵸추츄츠치츼',
+    '카캬캐커켜케코쿄쿠큐크키킈',
+    '타탸태터텨테토툐투튜트티틔',
+    '파퍄패퍼펴페포표푸퓨프피픠',
+    '하햐해허혀헤호효후휴흐히희'
+
+];
+
+
+let count = 0;
+let current;
+
+
+// 랜덤으로 문제 선택
+function randomWord() {
+
+    let next;
+
+    do {
+        next = Math.floor(Math.random() * words.length);
+    } while (next === current);
+
+    current = next;
+
+    document.getElementById("target").innerText = words[current];
+}
+
+
+// 입력창에 이벤트 등록
+function addInputEvents() {
+
+    // 붙여넣기 방지
+    input.addEventListener("paste", function(event) {
+        event.preventDefault();
+    });
+
+
+    // 드래그 방지
+    input.addEventListener("drop", function(event) {
+        event.preventDefault();
+    });
+
+
+    // 우클릭 방지
+    input.addEventListener("contextmenu", function(event) {
+        event.preventDefault();
+    });
+
+
+    // 입력 감지
+    input.addEventListener("input", function() {
+
+        if (input.value == words[current]) {
+
+            count++;
+
+            document.getElementById("count").innerText = count;
+
+            randomWord();
+
+
+            // 기존 입력창 제거
+            let oldInput = input;
+
+
+            // 새로운 입력창 생성
+            input = document.createElement("input");
+
+            input.id = "word";
+            input.type = "text";
+
+            input.autocomplete = "off";
+            input.autocorrect = "off";
+            input.autocapitalize = "off";
+            input.spellcheck = false;
+
+
+            // 기존 입력창을 새로운 입력창으로 교체
+            oldInput.replaceWith(input);
+
+
+            // 새로운 입력창에 이벤트 등록
+            addInputEvents();
+
+
+            // 바로 입력할 수 있도록 포커스
+            input.focus();
+
+        }
+
+    });
+
+}
+
+
+// 처음 문제
+randomWord();
+
+
+// 처음 입력창
+let input = document.getElementById("word");
+
+
+// 이벤트 등록
+addInputEvents();
+
+</script>
+
+</body>
+</html>
