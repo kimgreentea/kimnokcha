@@ -208,8 +208,18 @@ let list = "";
 
 data.forEach((item, index) => {
     list += `<p><span class="hanja">${index + 1}. ${item.hanmun}</span></p>
-<p><span class="meaning">${item.reading}</span></p>
+<p style="height:4em;"><span class="meaning">${item.reading}</span></p>
 <p><span class="meaning">${item.meaning}</span></p>`;
+
+    item.keyHanja.forEach(key => {
+        list += `
+    <span class="hanja">${key.hanja}</span>
+    <span class="meaning">${key.meaning}</span>
+    <span class="meaning">${key.reading}</span>
+ `;
+
+    });
+list += `<p style="height:3em;"></p>`
 });
 
 document.querySelector("#list").innerHTML = list;
