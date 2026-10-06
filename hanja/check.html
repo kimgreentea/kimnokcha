@@ -227,7 +227,11 @@ fetch("https://kimgreentea.github.io/kimnokcha/hanja/words.json")
 let list = "";
 
 for (let item of data) {
-    list += `<span class="hanja">${item.hanja}</span> `;
+    list += `<p><span class="hanja">${item.hanja} ${item.meaning} ${item.reading}</span></p> `;
+}
+
+for (let item of data) {
+    list += `<span class="hanja">${item.hanja}</span>`;
 }
 
 document.querySelector("#list").innerHTML = list;
