@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>유튜브 시러</title>
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+
+        font-family:
+            Arial,
+            "Malgun Gothic",
+            sans-serif;
+
+        background: #f7f7f7;
+        color: #222;
+
+        line-height: 1.7;
+    }
+
+
+    .container {
+        width: min(760px, calc(100% - 32px));
+
+        margin: 0 auto;
+
+        padding: 60px 0 80px;
+    }
+
+
+    header {
+        margin-bottom: 50px;
+    }
+
+
+    h1 {
+        margin: 0 0 12px;
+
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+
+    .subtitle {
+        margin: 0;
+
+        color: #666;
+        font-size: 16px;
+    }
+
+
+    section {
+        margin-bottom: 48px;
+    }
+
+
+    h2 {
+        margin: 0 0 18px;
+
+        font-size: 22px;
+    }
+
+
+    p {
+        margin: 8px 0;
+    }
+
+
+    .card {
+        padding: 22px 24px;
+        margin-bottom: 12px;
+
+        background: white;
+
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+    }
+
+
+    .card strong {
+        display: block;
+
+        margin-bottom: 4px;
+
+        font-size: 16px;
+    }
+
+
+    .card small {
+        color: #777;
+    }
+
+
+    .download {
+        display: inline-block;
+
+        margin-top: 8px;
+        padding: 12px 20px;
+
+        border-radius: 8px;
+
+        background: #222;
+        color: white;
+
+        text-decoration: none;
+
+        font-weight: 600;
+    }
+
+
+    .download:hover {
+        background: #444;
+    }
+
+
+    .step {
+        padding: 20px 22px;
+        margin-bottom: 12px;
+
+        background: white;
+
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+    }
+
+
+    .step-number {
+        display: inline-flex;
+
+        width: 28px;
+        height: 28px;
+
+        margin-right: 8px;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #222;
+        color: white;
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    .step-title {
+        font-weight: 700;
+    }
+
+
+    code {
+        padding: 2px 6px;
+
+        border-radius: 4px;
+
+        background: #eee;
+
+        font-family: Consolas, monospace;
+        font-size: 0.9em;
+    }
+
+
+    .notice {
+        padding: 16px 18px;
+
+        border-left: 4px solid #888;
+
+        background: #eee;
+        color: #555;
+    }
+
+
+    footer {
+        padding-top: 30px;
+
+        border-top: 1px solid #ddd;
+
+        color: #888;
+        font-size: 13px;
+    }
+
+
+    /* =========================
+       전후 비교
+    ========================= */
+
+    .comparison {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 16px;
+
+        margin-top: 20px;
+    }
+
+
+    .compare-box {
+        overflow: hidden;
+
+        background: white;
+
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+    }
+
+
+    .compare-title {
+        padding: 10px 14px;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+
+    /* 유튜브 화면 모형 */
+
+    .youtube-mock {
+        padding: 10px;
+
+        background: #111;
+    }
+
+
+    /* 위쪽 유튜브 메뉴 */
+
+    .mock-header {
+        height: 18px;
+
+        margin-bottom: 8px;
+
+        border-radius: 3px;
+
+        background: #222;
+    }
+
+
+    /* 영상 + 추천영상 */
+
+    .mock-content {
+        display: grid;
+
+        grid-template-columns: 2.2fr 0.9fr;
+
+        gap: 7px;
+    }
+
+
+    /* 영상 */
+
+    .mock-player {
+        position: relative;
+
+        width: 100%;
+
+        aspect-ratio: 16 / 9;
+
+        overflow: hidden;
+
+        border-radius: 5px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #58b9c8,
+                #1768a5
+            );
+    }
+
+
+    /* 영상 안의 가짜 장면 */
+    .mock-video1 {
+        position: absolute;
+
+        left: 60%;
+        bottom: 18%;
+
+        width: 35%;
+        height: 25%;
+
+        border-radius: 3px;
+
+        background: rgba(255, 255, 255, 0.85);
+    }
+
+    .mock-video2 {
+        position: absolute;
+
+        left: 60%;
+        top: 18%;
+
+        width: 35%;
+        height: 25%;
+
+        border-radius: 3px;
+
+        background: rgba(255, 255, 255, 0.85);
+    }
+
+
+    /* 영상 재생바 */
+
+    .mock-controls {
+        position: absolute;
+
+        left: 4%;
+        right: 4%;
+        bottom: 5%;
+
+        height: 4px;
+
+        border-radius: 4px;
+
+        background: #eee;
+    }
+
+
+    /* 추천 영상 */
+
+    .mock-recommendations {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+
+    .mock-recommendations div {
+        flex: 1;
+
+        min-height: 30px;
+
+        border-radius: 3px;
+
+        background: #333;
+    }
+
+
+    /* 영상 정보 */
+
+    .mock-info {
+        width: 70%;
+        height: 10px;
+
+        margin-top: 9px;
+
+        border-radius: 4px;
+
+        background: #333;
+    }
+    .mock-info2 {
+        width: 70%;
+        height: 10px;
+
+        margin-top: 9px;
+
+        border-radius: 4px;
+
+        background: #111;
+    }
+
+
+    /* 댓글 */
+
+    .mock-comments {
+        width: 90%;
+        height: 45px;
+
+        margin-top: 9px;
+
+        border-radius: 5px;
+
+        background: #222;
+    }
+
+    .mock-comments2 {
+        width: 90%;
+        height: 45px;
+
+        margin-top: 9px;
+
+        border-radius: 5px;
+
+        background: #111;
+    }
+
+
+    /* =========================
+       적용 후
+       영상만 표시
+    ========================= */
+
+    .compare-box.after .youtube-mock {
+        padding: 10px;
+    }
+
+
+    .compare-box.after .mock-player {
+        width: 100%;
+
+    }
+
+
+    /* =========================
+       모바일
+    ========================= */
+
+    @media (max-width: 600px) {
+
+        .container {
+            padding-top: 40px;
+        }
+
+
+        h1 {
+            font-size: 30px;
+        }
+
+
+        .comparison {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<header>
+
+    <h1>유튜브 시러</h1>
+
+</header>
+
+
+<!-- =========================
+     전후 비교
+========================= -->
+
+<section>
+
+    <h2>이렇게 바뀌어요</h2>
+
+
+    <div class="comparison">
+
+
+        <!-- 적용 전 -->
+
+        <div class="compare-box">
+
+            <div class="compare-title">
+                적용 전
+            </div>
+
+
+            <div class="youtube-mock">
+
+                <div class="mock-header"></div>
+
+
+                <div class="mock-content">
+
+                    <div class="mock-player">
+
+                        <div class="mock-video1"></div>
+                        <div class="mock-video2"></div>
+
+                        <div class="mock-controls"></div>
+
+                    </div>
+
+
+                    <div class="mock-recommendations">
+
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mock-info"></div>
+
+                <div class="mock-comments"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- 적용 후 -->
+
+        <div class="compare-box after">
+
+            <div class="compare-title">
+                적용 후
+            </div>
+
+
+            <div class="youtube-mock">
+
+                <div class="mock-player">
+
+             
+
+                    <div class="mock-controls"></div>
+
+                </div>
+<div class="mock-info2"></div>
+<div class="mock-comments2"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     다운로드
+========================= -->
+
+<section>
+
+    <h2>일단 다운로드</h2>
+
+
+    <a
+        class="download"
+        href="https://github.com/kimgreentea/kimnokcha/blob/main/tool/youhate/youhate.zip"
+        target="_blank"
+        rel="noopener"
+    >
+        다운로드
+    </a>
+
+</section>
+
+
+
+<!-- =========================
+     Chrome
+========================= -->
+
+<section>
+
+    <h2>저는 Chrome이에요!</h2>
+
+
+    <div class="step">
+
+        <span class="step-number">1</span>
+
+        <span class="step-title">
+            ZIP 파일 다운로드
+        </span>
+
+
+        <p>
+            위의 다운로드 버튼을 눌러
+            <code>youhate.zip</code>을 다운로드
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">2</span>
+
+        <span class="step-title">
+            압축 풀기
+        </span>
+
+
+        <p>
+            다운로드한 ZIP 파일을 압축 해제
+        </p>
+
+
+        <p
+            class="notice"
+            style="margin-top: 18px;"
+        >
+
+            <span class="step-number">3</span>
+
+            번을 실행한 이후에는 압축 해제된 파일의
+            경로, 이름 등을 바꿀 수 없어요.
+
+            변경하고 싶다면 현재 단계에서 변경해요.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">3</span>
+
+        <span class="step-title">
+            확장 프로그램 페이지 열기
+        </span>
+
+
+        <p>
+
+            Chrome 주소창에
+
+            <code>chrome://extensions</code>
+
+            입력하여 접속
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">4</span>
+
+        <span class="step-title">
+            개발자 모드 켜기
+        </span>
+
+
+        <p>
+
+            오른쪽 위의
+            <code>개발자 모드</code>
+            를 켜기
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">5</span>
+
+        <span class="step-title">
+            압축해제된 확장 프로그램 불러오기
+        </span>
+
+
+        <p>
+
+            왼쪽 위
+            <code>압축해제된 확장 프로그램을 로드</code>
+            누르기
+
+        </p>
+
+
+        <p>
+
+            압축을 풀어 놓은
+            <code>youhate</code>
+            폴더를 선택 후 확인
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">6</span>
+
+        <span class="step-title">
+            유튜브 새로고침
+        </span>
+
+
+        <p>
+            유튜브를 새로고침하면 쨔잔
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     Edge
+========================= -->
+
+<section>
+
+    <h2>저는 Edge예요!</h2>
+
+
+    <div class="step">
+
+        <span class="step-number">1</span>
+
+        <span class="step-title">
+            ZIP 파일 다운로드
+        </span>
+
+
+        <p>
+
+            위의 다운로드 버튼을 눌러
+            <code>youhate.zip</code>을 다운로드
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">2</span>
+
+        <span class="step-title">
+            압축 풀기
+        </span>
+
+
+        <p>
+            다운로드한 ZIP 파일을 압축 해제
+        </p>
+
+
+        <p
+            class="notice"
+            style="margin-top: 18px;"
+        >
+
+            <span class="step-number">3</span>
+
+            번을 실행한 이후에는 압축 해제된 파일의
+            경로, 이름 등을 바꿀 수 없어요.
+
+            변경하고 싶다면 현재 단계에서 변경해요.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">3</span>
+
+        <span class="step-title">
+            확장 프로그램 페이지 열기
+        </span>
+
+
+        <p>
+
+            Edge 주소창에
+
+            <code>edge://extensions</code>
+
+            를 입력하여 접속
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">4</span>
+
+        <span class="step-title">
+            개발자 모드 켜기
+        </span>
+
+
+        <p>
+
+            왼쪽 하단의
+            <code>개발자 모드</code>
+            켜기
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">5</span>
+
+        <span class="step-title">
+            압축해제된 확장 프로그램 불러오기
+        </span>
+
+
+        <p>
+
+            오른쪽 상단
+            <code>압축 풀린 파일 코드</code>
+            누르기
+
+        </p>
+
+
+        <p>
+
+            압축을 풀어 놓은
+            <code>youhate</code>
+            폴더를 선택 후 확인
+
+        </p>
+
+    </div>
+
+
+
+    <div class="step">
+
+        <span class="step-number">6</span>
+
+        <span class="step-title">
+            유튜브 새로고침
+        </span>
+
+
+        <p>
+            유튜브 새로고침하면 쨔잔
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     설정
+========================= -->
+
+<section>
+
+    <h2>설정 변경</h2>
+
+
+    <p>
+
+        Chrome에서는
+
+        <code>chrome://extensions</code>
+
+        →
+
+        <code>유튜브 시러</code>의
+        <code>세부 정보</code>
+
+        →
+
+        하단
+        <code>확장 프로그램 옵션</code>
+
+    </p>
+
+
+    <p>
+
+        Edge에서는
+
+        <code>edge://extensions</code>
+
+        →
+
+        <code>유튜브 시러</code>의
+        <code>세부 정보</code>
+
+        →
+
+        하단
+        <code>확장 옵션</code>
+
+    </p>
+
+</section>
+
+
+
+<!-- =========================
+     삭제
+========================= -->
+
+<section>
+
+    <h2>삭제하기</h2>
+
+
+    <p>
+        삭제하지 마세여.. 아깝잖아여..
+    </p>
+
+</section>
+
+
+</div>
+
+</body>
+
+</html>
