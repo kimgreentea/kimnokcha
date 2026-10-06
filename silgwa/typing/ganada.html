@@ -1,50 +1,67 @@
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>타자연습 조아</title>
 
 <style>
-* {
+
+* {  
     box-sizing: border-box;
 }
+
 
 body {
     margin: 0 auto;
     padding: 50px 5vw 80px;
     max-width: 1000px;
+
     font-family: Arial, "Noto Sans KR", sans-serif;
 }
+
 
 h1 {
     margin: 0;
     font-size: 30pt;
 }
 
+
 #instruction {
     margin-bottom: 50px;
+
     font-size: 22pt;
     font-weight: 600;
 }
 
+
 #target {
     margin-bottom: 25px;
+
     font-size: 32pt;
     font-weight: 700;
+
     letter-spacing: 2px;
     word-break: keep-all;
 }
 
+
 #count {
     margin-bottom: 25px;
+
     font-size: 30pt;
     font-weight: 500;
 }
 
+
 #word {
     display: block;
+
     width: 100%;
     height: 90px;
+
     padding: 10px 20px;
 
     border: 3px solid #333;
@@ -58,6 +75,7 @@ h1 {
     outline: none;
 }
 
+
 #word:focus {
     border-color: #000;
     background-color: #fff;
@@ -65,6 +83,7 @@ h1 {
 
 </style>
 </head>
+
 
 <body>
 
@@ -77,15 +96,20 @@ h1 {
 <input
     id="word"
     type="text"
+    inputmode="text"
     autocomplete="off"
     autocorrect="off"
     autocapitalize="off"
     spellcheck="false"
+    data-form-type="other"
+    data-lpignore="true"
+    data-1p-ignore="true"
     autofocus
 >
 
 
 <script>
+
 
 let words = [
 
@@ -120,98 +144,275 @@ let words = [
 ];
 
 
-let count = 0;
+let count = Number(
+    localStorage.getItem("typingCount")
+) || 0;
+
 let current;
+
+let currentWord;
+
+
+// 화면에 횟수 표시
+function updateCount() {
+
+    document.getElementById("count").innerText = count;
+
+}
 
 
 // 랜덤으로 문제 선택
+// + 1~4글자 단위 랜덤 띄어쓰기
 function randomWord() {
 
     let next;
-
+ 
     do {
-        next = Math.floor(Math.random() * words.length);
+        next = Math.floor(
+            Math.random() * words.length
+        );
     } while (next === current);
 
     current = next;
 
-    document.getElementById("target").innerText = words[current];
+
+    let word = words[current];
+
+    let result = "";
+
+    let position = 0;
+
+
+    while (position < word.length) {
+
+        let remaining = word.length - position;
+
+
+        // 1~4글자 랜덤
+        let length = Math.min(
+            Math.floor(Math.random() * 4) + 1,
+            remaining
+        );
+
+
+        result += word.slice(
+            position,
+            position + length
+        );
+
+
+        position += length;
+
+
+        // 마지막 글자가 아니면 띄어쓰기
+        if (position < word.length) {
+            result += " ";
+        }
+
+    }
+
+
+    currentWord = result;
+
+
+    document.getElementById(
+        "target"
+    ).innerText = currentWord;
+
 }
 
 
-// 입력창에 이벤트 등록
+
+// 입력창 설정
+function setupInput() {
+
+    input.type = "text";
+
+    input.inputMode = "text";
+
+    input.autocomplete = "off";
+    input.autocorrect = "off";
+    input.autocapitalize = "off";
+
+    input.spellcheck = false;
+
+
+    input.setAttribute(
+        "data-form-type",
+        "other"
+    );
+
+    input.setAttribute(
+        "data-lpignore",
+        "true"
+    );
+
+    input.setAttribute(
+        "data-1p-ignore",
+        "true"
+    );
+
+}
+
+
+
+// 입력창 이벤트
 function addInputEvents() {
 
+    setupInput();
+
+
     // 붙여넣기 방지
-    input.addEventListener("paste", function(event) {
-        event.preventDefault();
-    });
+    input.addEventListener(
+        "paste",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
 
 
     // 드래그 방지
-    input.addEventListener("drop", function(event) {
-        event.preventDefault();
-    });
+    input.addEventListener(
+        "drop",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
 
 
     // 우클릭 방지
-    input.addEventListener("contextmenu", function(event) {
-        event.preventDefault();
-    });
+    input.addEventListener(
+        "contextmenu",
+        function(event) {
+
+            event.preventDefault();
+
+        }
+    );
 
 
     // 입력 감지
-    input.addEventListener("input", function() {
-
-        if (input.value == words[current]) {
-
-            count++;
-
-            document.getElementById("count").innerText = count;
-
-            randomWord();
+    input.addEventListener(
+        "input",
+        function() {
 
 
-            // 기존 입력창 제거
-            let oldInput = input;
+            // "김녹차" 입력 시 초기화
+if (input.value === "김녹차") {
+
+    count = 0;
+
+    localStorage.setItem(
+        "typingCount",
+        count
+    );
+
+    updateCount();
 
 
-            // 새로운 입력창 생성
-            input = document.createElement("input");
-
-            input.id = "word";
-            input.type = "text";
-
-            input.autocomplete = "off";
-            input.autocorrect = "off";
-            input.autocapitalize = "off";
-            input.spellcheck = false;
+    // 현재 입력창 제거
+    let oldInput = input;
 
 
-            // 기존 입력창을 새로운 입력창으로 교체
-            oldInput.replaceWith(input);
+    // 새로운 입력창 생성
+    input = document.createElement("input");
+
+    input.id = "word";
 
 
-            // 새로운 입력창에 이벤트 등록
-            addInputEvents();
+    // 입력창 설정
+    setupInput();
 
 
-            // 바로 입력할 수 있도록 포커스
-            input.focus();
+    // 기존 입력창과 교체
+    oldInput.replaceWith(input);
+
+
+    // 이벤트 등록
+    addInputEvents();
+
+
+    // 한글 IME의 마지막 글자 조합이 끝난 뒤 포커스
+    setTimeout(function() {
+        input.focus();
+    }, 50);
+
+
+    return;
+}
+
+            // 정답
+            if (input.value === currentWord) {
+
+                count++;
+
+
+                // 횟수 저장
+                localStorage.setItem(
+                    "typingCount",
+                    count
+                );
+
+
+                updateCount();
+
+
+                // 새로운 문제
+                randomWord();
+
+
+                // 기존 입력창 저장
+                let oldInput = input;
+
+
+                // 새로운 입력창 생성
+                input = document.createElement(
+                    "input"
+                );
+
+                input.id = "word";
+
+
+                // 설정
+                setupInput();
+
+
+                // 교체
+                oldInput.replaceWith(input);
+
+
+                // 이벤트 등록
+                addInputEvents();
+
+
+                // 포커스
+                input.focus();
+
+            }
 
         }
-
-    });
+    );
 
 }
+
 
 
 // 처음 문제
 randomWord();
 
 
+// 처음 횟수 표시
+updateCount();
+
+
 // 처음 입력창
-let input = document.getElementById("word");
+let input = document.getElementById(
+    "word"
+);
 
 
 // 이벤트 등록
