@@ -1523,6 +1523,156 @@
                 "reading": "심"
             }
         ]
+    },
+    
+    {
+        "hanmun": "仰不愧於天 俯不怍於人",
+        "reading": "앙불괴어천 부부작어인",
+        "meaning": "우러러 하늘에 부끄럽지 않고, 굽어보아 사람에게 부끄럽지 않다.",
+        "keyHanja": [
+            {
+                "hanja": "仰",
+                "meaning": "우러르다",
+                "reading": "앙"
+            },
+            {
+                "hanja": "天",
+                "meaning": "하늘",
+                "reading": "천"
+            },
+            {
+                "hanja": "怍",
+                "meaning": "부끄러워하다",
+                "reading": "작"
+            }
+        ]
+    },
+    {
+        "hanmun": "出乎爾者 反乎爾者也",
+        "reading": "출호이자 반호이자야",
+        "meaning": "너에게서 나온 것은 너에게로 돌아간다.",
+        "keyHanja": [
+            {
+                "hanja": "出",
+                "meaning": "나오다",
+                "reading": "출"
+            },
+            {
+                "hanja": "爾",
+                "meaning": "너",
+                "reading": "이"
+            },
+            {
+                "hanja": "反",
+                "meaning": "돌아오다",
+                "reading": "반"
+            }
+        ]
+    },
+    {
+        "hanmun": "以五十步笑百步 則何如",
+        "reading": "이오십보소백보 즉하여",
+        "meaning": "오십 보 물러난 사람이 백 보 물러난 사람을 비웃는다면 어떠한가",
+        "keyHanja": [
+            {
+                "hanja": "十",
+                "meaning": "열",
+                "reading": "십"
+            },
+            {
+                "hanja": "笑",
+                "meaning": "웃다",
+                "reading": "소"
+            },
+            {
+                "hanja": "百",
+                "meaning": "일백",
+                "reading": "백"
+            }
+        ]
+    },
+    {
+        "hanmun": "國之語音 異乎中國 與文字不相流通",
+        "reading": "국지어음 이호중국 여문자 불상유통",
+        "meaning": "우리나라의 말소리가 중국과 달라 문자와 서로 통하지 않는다.",
+        "keyHanja": [
+            {
+                "hanja": "語",
+                "meaning": "말씀",
+                "reading": "어"
+            },
+            {
+                "hanja": "異",
+                "meaning": "다르다",
+                "reading": "이"
+            },
+            {
+                "hanja": "相",
+                "meaning": "서로",
+                "reading": "상"
+            }
+        ]
+    },
+    {
+        "hanmun": "故愚民 有所欲言 而終不得伸其情者多矣",
+        "reading": "고우민 유소욕언 이종부득신기정자 다의",
+        "meaning": "그러므로 불쌍한 백성이 말하고자 하는 바가 있어도 끝내 그 뜻을 펴지 못하는 경우가 많다.",
+        "keyHanja": [
+            {
+                "hanja": "愚",
+                "meaning": "어리석다",
+                "reading": "우"
+            },
+            {
+                "hanja": "民",
+                "meaning": "백성",
+                "reading": "민"
+            },
+            {
+                "hanja": "情",
+                "meaning": "뜻",
+                "reading": "정"
+            }
+        ]
+    },
+    {
+        "hanmun": "予爲此憫然 新制二十八字",
+        "reading": "여위차민연 신제이십팔자",
+        "meaning": "내가 이것을 가엾게 여겨 새로 스물여덟 글자를 만들었다",
+        "keyHanja": [
+            {
+                "hanja": "制",
+                "meaning": "만들다",
+                "reading": "제"
+            },
+            {
+                "hanja": "字",
+                "meaning": "글자",
+                "reading": "자"
+            }
+        ]
+    },
+    {
+        "hanmun": "欲使人人易習 便於日用耳",
+        "reading": "욕사인인이습 편어일용이",
+        "meaning": "모든 사람이 쉽게 익혀 날마다 사용하는 데 편리하게 하고자 할 따름이다.",
+        "keyHanja": [
+            {
+                "hanja": "使",
+                "meaning": "하여금",
+                "reading": "사"
+            },
+            {
+                "hanja": "易",
+                "meaning": "쉽다",
+                "reading": "이"
+            },
+            {
+                "hanja": "習",
+                "meaning": "익히다",
+                "reading": "습"
+            }
+        ]
     }
 
 
