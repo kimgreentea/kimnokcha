@@ -479,214 +479,11 @@ const divider =
 
 
 /* ==================================================
-   저장 키
+   HTML 코드 저장
 ================================================== */
 
 const CODE_STORAGE_KEY =
     "htmlRendererCode";
-
-const INPUT_STORAGE_KEY =
-    "htmlRendererPreviewInputs";
-
-
-/* ==================================================
-   미리보기 입력값 저장
-================================================== */
-
-function savePreviewInputs() {
-
-    try {
-
-        const inputs =
-            preview.contentDocument.querySelectorAll(
-                "input, textarea, select"
-            );
-
-        const values = [];
-
-        inputs.forEach(function(element, index) {
-
-            const data = {
-
-                index: index,
-
-                type: element.type || "",
-
-                value: element.value,
-
-                checked:
-                    element.type === "checkbox" ||
-                    element.type === "radio"
-                        ? element.checked
-                        : null
-
-            };
-
-            values.push(data);
-
-        });
-
-
-        localStorage.setItem(
-            INPUT_STORAGE_KEY,
-            JSON.stringify(values)
-        );
-
-    }
-    catch (error) {
-
-        console.error(
-            "미리보기 입력값 저장 실패:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ==================================================
-   미리보기 입력값 복원
-================================================== */
-
-function restorePreviewInputs() {
-
-    try {
-
-        const saved =
-            localStorage.getItem(
-                INPUT_STORAGE_KEY
-            );
-
-        if (!saved) {
-            return;
-        }
-
-
-        const values =
-            JSON.parse(saved);
-
-
-        const inputs =
-            preview.contentDocument.querySelectorAll(
-                "input, textarea, select"
-            );
-
-
-        values.forEach(function(data) {
-
-            const element =
-                inputs[data.index];
-
-            if (!element) {
-                return;
-            }
-
-
-            /*
-             * checkbox / radio
-             */
-
-            if (
-                element.type === "checkbox" ||
-                element.type === "radio"
-            ) {
-
-                element.checked =
-                    data.checked;
-
-            }
-
-
-            /*
-             * select
-             */
-
-            else {
-
-                element.value =
-                    data.value;
-
-            }
-
-        });
-
-    }
-    catch (error) {
-
-        console.error(
-            "미리보기 입력값 복원 실패:",
-            error
-        );
-
-    }
-
-}
-
-
-/* ==================================================
-   미리보기 입력 이벤트 연결
-================================================== */
-
-function setupPreviewInputSaving() {
-
-    try {
-
-        const doc =
-            preview.contentDocument;
-
-        if (!doc) {
-            return;
-        }
-
-
-        /*
-         * input 이벤트
-         *
-         * text
-         * number
-         * range
-         * textarea
-         * checkbox 등
-         */
-
-        doc.addEventListener(
-            "input",
-            savePreviewInputs
-        );
-
-
-        /*
-         * change 이벤트
-         *
-         * select
-         * checkbox
-         * radio 등
-         */
-
-        doc.addEventListener(
-            "change",
-            savePreviewInputs
-        );
-
-
-        /*
-         * 복원
-         */
-
-        restorePreviewInputs();
-
-    }
-    catch (error) {
-
-        console.error(
-            "미리보기 이벤트 설정 실패:",
-            error
-        );
-
-    }
-
-}
 
 
 /* =========================
@@ -697,6 +494,8 @@ function render() {
 
     /*
      * 왼쪽 HTML 코드 저장
+     *
+     * 입력할 때마다 자동 저장
      */
 
     localStorage.setItem(
@@ -707,23 +506,14 @@ function render() {
 
     /*
      * 미리보기 렌더링
+     *
+     * srcdoc을 새로 넣을 때마다
+     * iframe 내부가 새로 만들어지므로
+     * 미리보기의 입력값은 초기화됨
      */
 
     preview.srcdoc =
         codeInput.value;
-
-
-    /*
-     * iframe 로딩 완료 후
-     * 입력값 복원 및 이벤트 연결
-     */
-
-    preview.onload =
-        function() {
-
-            setupPreviewInputSaving();
-
-        };
 
 }
 
