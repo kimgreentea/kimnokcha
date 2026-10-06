@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -368,9 +367,9 @@ body.resizing textarea {
 }
 
 
-/* =========================
+/* ==================================================
    아주 좁은 화면
-========================= */
+================================================== */
 
 @media (max-width: 400px) {
 
@@ -401,8 +400,6 @@ body.resizing textarea {
 
 
 <body>
-
-
 
 
 <!-- =========================
@@ -481,14 +478,252 @@ const divider =
     document.getElementById("divider");
 
 
+/* ==================================================
+   저장 키
+================================================== */
+
+const CODE_STORAGE_KEY =
+    "htmlRendererCode";
+
+const INPUT_STORAGE_KEY =
+    "htmlRendererPreviewInputs";
+
+
+/* ==================================================
+   미리보기 입력값 저장
+================================================== */
+
+function savePreviewInputs() {
+
+    try {
+
+        const inputs =
+            preview.contentDocument.querySelectorAll(
+                "input, textarea, select"
+            );
+
+        const values = [];
+
+        inputs.forEach(function(element, index) {
+
+            const data = {
+
+                index: index,
+
+                type: element.type || "",
+
+                value: element.value,
+
+                checked:
+                    element.type === "checkbox" ||
+                    element.type === "radio"
+                        ? element.checked
+                        : null
+
+            };
+
+            values.push(data);
+
+        });
+
+
+        localStorage.setItem(
+            INPUT_STORAGE_KEY,
+            JSON.stringify(values)
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "미리보기 입력값 저장 실패:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   미리보기 입력값 복원
+================================================== */
+
+function restorePreviewInputs() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                INPUT_STORAGE_KEY
+            );
+
+        if (!saved) {
+            return;
+        }
+
+
+        const values =
+            JSON.parse(saved);
+
+
+        const inputs =
+            preview.contentDocument.querySelectorAll(
+                "input, textarea, select"
+            );
+
+
+        values.forEach(function(data) {
+
+            const element =
+                inputs[data.index];
+
+            if (!element) {
+                return;
+            }
+
+
+            /*
+             * checkbox / radio
+             */
+
+            if (
+                element.type === "checkbox" ||
+                element.type === "radio"
+            ) {
+
+                element.checked =
+                    data.checked;
+
+            }
+
+
+            /*
+             * select
+             */
+
+            else {
+
+                element.value =
+                    data.value;
+
+            }
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "미리보기 입력값 복원 실패:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   미리보기 입력 이벤트 연결
+================================================== */
+
+function setupPreviewInputSaving() {
+
+    try {
+
+        const doc =
+            preview.contentDocument;
+
+        if (!doc) {
+            return;
+        }
+
+
+        /*
+         * input 이벤트
+         *
+         * text
+         * number
+         * range
+         * textarea
+         * checkbox 등
+         */
+
+        doc.addEventListener(
+            "input",
+            savePreviewInputs
+        );
+
+
+        /*
+         * change 이벤트
+         *
+         * select
+         * checkbox
+         * radio 등
+         */
+
+        doc.addEventListener(
+            "change",
+            savePreviewInputs
+        );
+
+
+        /*
+         * 복원
+         */
+
+        restorePreviewInputs();
+
+    }
+    catch (error) {
+
+        console.error(
+            "미리보기 이벤트 설정 실패:",
+            error
+        );
+
+    }
+
+}
+
+
 /* =========================
    HTML 렌더링
 ========================= */
 
 function render() {
 
+    /*
+     * 왼쪽 HTML 코드 저장
+     */
+
+    localStorage.setItem(
+        CODE_STORAGE_KEY,
+        codeInput.value
+    );
+
+
+    /*
+     * 미리보기 렌더링
+     */
+
     preview.srcdoc =
         codeInput.value;
+
+
+    /*
+     * iframe 로딩 완료 후
+     * 입력값 복원 및 이벤트 연결
+     */
+
+    preview.onload =
+        function() {
+
+            setupPreviewInputSaving();
+
+        };
 
 }
 
@@ -778,6 +1013,24 @@ window.addEventListener(
 );
 
 
+/* ==================================================
+   저장된 HTML 코드 불러오기
+================================================== */
+
+const savedCode =
+    localStorage.getItem(
+        CODE_STORAGE_KEY
+    );
+
+
+if (savedCode !== null) {
+
+    codeInput.value =
+        savedCode;
+
+}
+
+
 /* =========================
    초기 실행
 ========================= */
@@ -789,4 +1042,3 @@ render();
 
 </body>
 </html>
-
