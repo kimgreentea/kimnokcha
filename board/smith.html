@@ -1,0 +1,827 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>보드게임</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    background: #f3f3f3;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+h1 {
+    text-align: center;
+    margin: 0 0 30px;
+}
+
+/* 전체 게임 영역 */
+
+.game {
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* 카드 더미 + 배치 영역 */
+
+.board {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+/* 카드 더미 */
+
+.deck-area {
+    flex: 0 0 180px;
+
+}
+
+.deck {
+    width: 250px;
+    height: 250px;
+
+    border: 3px solid #222;
+    border-radius: 14px;
+
+    background: #555;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    box-shadow: 4px 4px 0 #aaa;
+
+    transition: transform 0.1s;
+}
+
+.deck:hover {
+    transform: translateY(-2px);
+}
+
+.deck:active {
+    transform: translateY(2px);
+}
+
+.deck-title {
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.arrow {
+    margin-top: 20px;
+
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.deck-count {
+    margin-top: 12px;
+    color: white;
+    font-size: 16px;
+}
+
+/* 카드 배치 영역 */
+
+.cards-area {
+    flex: 1;
+}
+
+.area-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+/*
+카드 5칸
+*/
+
+.card-slots {
+    display: flex;
+    gap: 12px;
+
+    align-items: flex-start;
+
+    min-height: 250px;
+}
+
+/* 각각의 배치 칸 */
+
+.slot {
+    flex: 1;
+
+    min-width: 0;
+    height: 250px;
+
+    border: 2px dashed #aaa;
+    border-radius: 12px;
+
+    position: relative;
+
+    cursor: pointer;
+
+    background: rgba(255,255,255,0.5);
+
+//    overflow: hidden;
+}
+
+.slot:hover {
+    background: rgba(220,220,220,0.7);
+}
+
+/* 실제 카드 */
+
+.card {
+    position: absolute;
+
+    left: 5%;
+    width: 90%;
+
+    min-height: 220px;
+
+    border: 2px solid #222;
+    border-radius: 10px;
+
+    background: white;
+
+    padding: 20px 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-size: 25px;
+    line-height: 1.5;
+
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+
+    user-select: none;
+} 
+
+/* 가장 위 카드 */
+
+.card.top {
+    z-index: 100;
+}
+
+/* 뽑은 카드 */
+
+.drawn-area {
+
+
+    min-height: 250px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.drawn-title {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.drawn-card {
+    width: 250px;
+    min-height: 250px;
+
+    border: 3px solid #222;
+    border-radius: 12px;
+
+    background: white;
+
+    flex-direction: column; 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    text-align: center;
+
+    font-size: 25px;
+    line-height: 1.5;
+
+    box-shadow: 4px 4px 0 #bbb;
+}
+small { 
+    color: #888;
+    font-size: 15px;
+}
+
+.drawn-empty {
+    color: #999;
+    font-size: 16px;
+}
+
+/* 게임 종료 */
+
+.restart-area {
+    text-align: center;
+}
+
+.restart {
+    
+    margin: 0pt 0pt 20pt 0pt;
+
+    border: 0;
+    border-radius: 8px;
+
+    padding: 12px 25px;
+
+    background: #222;
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+
+/* 모바일 */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 20px 10px;
+    }
+
+    .board {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .deck-area {
+        flex: none;
+    }
+
+    .cards-area {
+        width: 100%;
+    }
+
+    .card-slots {
+        gap: 5px;
+    }
+
+    .slot {
+        height: 220px;
+    }
+
+    .card {
+        min-height: 190px;
+        padding: 12px 7px;
+        font-size: 14px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 게임 종료 화면 -->
+
+<div class="restart-area">
+    <button
+        class="restart"
+        id="restartButton"
+        onclick="restartGame()"
+    >
+        처음으로
+    </button>
+</div>
+
+
+<div class="game">
+
+    <h1></h1>
+
+    <div class="board">
+
+        <!-- 카드 더미 -->
+
+        <div class="deck-area">
+            <div class="area-title">
+카드 더미<small> 클릭하여 뽑기</small>
+            </div>
+            <div
+                class="deck"
+                id="deck"
+                onclick="drawCard()"
+            >
+
+
+                <div class="deck-title">
+                    방향
+                </div>
+
+                <div
+                    class="arrow"
+                    id="arrow"
+                >
+                    ←
+                </div>
+
+                <div class="deck-count">
+                   남은 장수: <span id="deckCount">30</span>
+                </div>
+
+            </div>
+
+        </div>
+
+   <!-- 뽑은 카드 -->
+
+    <div class="drawn-area">
+
+        <div class="area-title">
+            뽑은 카드
+        </div>
+
+        <div
+            class="drawn-card"
+            id="drawnCard"
+        >
+            <span class="drawn-empty">
+                카드를 뽑아 주세요.
+            </span>
+        </div>
+
+    </div>
+
+</div>
+
+<p style="height:50pt;"></p>
+
+        <!-- 카드 배치 영역 -->
+
+        <div class="cards-area">
+
+            <div class="area-title">
+                카드 배치 
+<small>각 구역 클릭하여 배치된 카드 제거</small>
+            </div>
+
+            <div class="card-slots">
+
+                <div
+                    class="slot"
+                    onclick="clickSlot(0)"
+                ></div>
+
+                <div
+                    class="slot"
+                    onclick="clickSlot(1)"
+                ></div>
+
+                <div
+                    class="slot"
+                    onclick="clickSlot(2)"
+                ></div>
+
+                <div
+                    class="slot"
+                    onclick="clickSlot(3)"
+                ></div>
+
+                <div
+                    class="slot"
+                    onclick="clickSlot(4)"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+ 
+
+</div>
+ 
+
+
+
+<script>
+
+/*
+    카드 문장
+
+    나중에 이 부분만 수정하면 됨.
+*/
+
+const sentences = [
+
+    "새솥장수",
+    "법학박사",
+    "새벽세시삼십삼분",
+    "로얄뉴로얄",
+    "샘속송사리",
+    "맨발바닥",
+    "우왕좌왕",
+    "열대우림",
+    "성혼선언문",
+    "철쭉꽃",
+
+    "붕당정치",
+    "망막황반변성",
+    "중임무황태",
+    "뽕잎쌈생채",
+    "급성심근경색",
+    "살모넬라균",
+    "황색포도상구균",
+    "공간감각",
+    "난방방법변경",
+    "참치꽁치찜",
+
+    "철책상",
+    "친정칠순잔칫날",
+    "깐콩깍지",
+    "체다치즈최고",
+    "설명절성묘객",
+    "국세청연말정산",
+    "훼예포폄",
+    "희희낙락",
+    "양념꼼장어",
+    "무수목기후",
+
+    "강변북로",
+    "반품상품",
+    "경품당첨자",
+    "최첨판댁",
+    "역전석점슛",
+    "영동용봉탕",
+    "합성착향료",
+    "돌하르방",
+    "접근금지",
+    "다라니경",
+
+    "살균항균작용",
+    "연평균강수량",
+    "불쾌지수",
+    "소수의나눗셈",
+    "삶은달걀",
+    "스산한새벽",
+    "살사소스",
+    "민주화선언",
+    "과실치사상죄",
+    "홍삼산삼차",
+
+    "미트소스소세지",
+    "간장공장공장장",
+    "강력접착제",
+    "햇강낭콩",
+    "한라산산삼",
+    "금강산정산",
+    "상담선생님",
+    "괌관광여행",
+    "유료샤워장",
+    "백합백화점",
+
+    "신진샹송가수",
+    "촉촉한초코칩",
+    "땅콩깡통",
+    "단단한당근",
+    "한양양장점",
+    "왕밤빵",
+    "청송콩찰떡",
+    "단팥찐빵",
+    "경찰청철창살",
+    "니제르",
+
+    "수사슴수색대",
+    "숲속을샅샅이",
+    "긴기린그림",
+    "풋단팥죽",
+    "고려고고급교복",
+    "큰토끼통",
+    "원숭이꽃신",
+    "큰토끼똥",
+    "여름두릅",
+    "당나귀귀",
+
+    "당랑권법",
+    "적금통장",
+    "딩동댕동",
+    "식품의약품안전처",
+    "샴쌍둥이",
+    "운송수송",
+    "과속단속",
+    "응급수술실",
+    "시내스시식당",
+    "게살샥스핀",
+
+];
+
+
+/*
+    게임 상태
+*/
+
+let deck = [];
+let drawnCard = null;
+
+let slots = [
+    [],
+    [],
+    [],
+    [],
+    []
+];
+
+
+/*
+    게임 시작
+*/
+
+function initGame() {
+
+    deck = [...sentences];
+
+    shuffle(deck);
+
+    drawnCard = null;
+
+    slots = [
+        [],
+        [],
+        [],
+        [],
+        []
+    ];
+
+    updateDeck();
+
+    renderSlots();
+
+    renderDrawnCard();
+
+    randomArrow();
+
+}
+
+
+/*
+    배열 랜덤 섞기
+*/
+
+function shuffle(array) {
+
+    for (
+        let i = array.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(Math.random() * (i + 1));
+
+        [
+            array[i],
+            array[j]
+        ] = [
+            array[j],
+            array[i]
+        ];
+
+    }
+
+}
+
+
+/*
+    카드 더미 클릭
+*/
+
+function drawCard() {
+
+    // 게임 종료 상태에서는 무시
+    if (deck.length === 0) {
+        return;
+    }
+
+    if (drawnCard !== null) {
+
+        return;
+
+    }
+
+
+    drawnCard = deck.pop();
+
+
+    randomArrow();
+
+    updateDeck();
+
+    renderDrawnCard();
+
+
+
+}
+
+
+/*
+    화살표 랜덤 변경
+*/
+
+function randomArrow() {
+
+    const arrow =
+        document.getElementById("arrow");
+
+    if (Math.random() < 0.5) {
+
+        arrow.textContent = "←";
+
+    } else {
+
+        arrow.textContent = "→";
+
+    }
+
+}
+
+
+/*
+    카드 더미 숫자 갱신
+*/
+
+function updateDeck() {
+
+    document
+        .getElementById("deckCount")
+        .textContent = deck.length;
+
+}
+
+
+/*
+    뽑은 카드 표시
+*/
+
+function renderDrawnCard() {
+
+    const area =
+        document.getElementById("drawnCard");
+
+
+    if (drawnCard === null) {
+
+        area.innerHTML = `
+            <span class="drawn-empty">
+                카드를 뽑아 주세요.
+            </span>
+        `;
+
+        return;
+    }
+
+
+area.innerHTML = `
+    <div>${drawnCard}</div>
+    <br><small>배치 구역을 클릭하여 배치</small>
+`;
+}
+
+
+/*
+    카드 배치 구역 클릭
+*/
+
+function clickSlot(index) {
+
+
+    if (drawnCard !== null) {
+
+        slots[index].push(drawnCard);
+
+        drawnCard = null;
+
+        renderSlots();
+
+        renderDrawnCard();
+
+
+        return;
+    }
+
+
+    slots[index] = [];
+
+    renderSlots();
+
+}
+
+
+/*
+    카드 배치 영역 렌더링
+*/
+
+function renderSlots() {
+
+    const slotElements =
+        document.querySelectorAll(".slot");
+
+
+    slotElements.forEach(
+        (slotElement, index) => {
+
+            slotElement.innerHTML = "";
+
+
+            const cards =
+                slots[index];
+
+
+            cards.forEach(
+                (sentence, cardIndex) => {
+
+                    const card =
+                        document.createElement("div");
+
+                    card.className = "card";
+
+
+                    card.style.top =
+                        `${cardIndex * 8}px`;
+
+
+
+                    card.style.zIndex =
+                        cardIndex + 1;
+
+
+                    card.textContent =
+                        sentence;
+
+
+                    slotElement.appendChild(card);
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/*
+    다시 시작
+*/
+
+function restartGame() {
+
+    initGame();
+
+}
+
+
+/*
+    게임 시작
+*/
+
+initGame();
+
+</script>
+
+</body>
+</html> 
