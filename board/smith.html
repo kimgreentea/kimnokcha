@@ -161,6 +161,24 @@ h1 {
     background: rgba(220,220,220,0.7);
 }
 
+.card-stack {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    width: 100%;
+    height: 240px;
+}
+
+.slot-count {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+}
+
 /* 실제 카드 */
 
 .card {
@@ -764,22 +782,14 @@ function renderSlots() {
 
     container.innerHTML = "";
 
-
-    // 기본적으로 1칸은 항상 표시
     let visibleSlots = 1;
 
-
-    // 카드가 들어 있는 마지막 칸 다음까지 표시
     for (let i = 0; i < slots.length; i++) {
-
         if (slots[i].length > 0) {
             visibleSlots = Math.min(i + 2, slots.length);
         }
-
     }
 
-
-    // 보이는 배치 구역 생성
     for (let i = 0; i < visibleSlots; i++) {
 
         const slot =
@@ -787,15 +797,18 @@ function renderSlots() {
 
         slot.className = "slot";
 
-
-        // 배치 구역 클릭
         slot.onclick = () => clickSlot(i);
 
 
-        // 해당 칸의 카드
+        // 카드가 쌓이는 영역
+        const cardStack =
+            document.createElement("div");
+
+        cardStack.className = "card-stack";
+
+
         const cards =
             slots[i];
-
 
         cards.forEach(
             (sentence, cardIndex) => {
@@ -805,32 +818,38 @@ function renderSlots() {
 
                 card.className = "card";
 
-
-                // 카드가 겹칠 때 조금씩 아래로
                 card.style.top =
                     `${cardIndex * 8}px`;
-
 
                 card.style.zIndex =
                     cardIndex + 1;
 
-
                 card.textContent =
                     sentence;
 
-
-                slot.appendChild(card);
-
+                cardStack.appendChild(card);
             }
         );
 
 
+        slot.appendChild(cardStack);
+
+
+        // 카드 개수
+        const count =
+            document.createElement("small");
+
+        count.className = "slot-count";
+
+        count.textContent =
+            `${cards.length}장`;
+
+        slot.appendChild(count);
+
+
         container.appendChild(slot);
-
     }
-
 }
-
 
 /*
     다시 시작
