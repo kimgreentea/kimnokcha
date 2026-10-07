@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>잰말놀이</title>
+<title>보드게임</title>
 
 <style>
 
@@ -128,19 +128,20 @@ h1 {
 */
 
 .card-slots {
+    
     display: flex;
     gap: 12px;
 
     align-items: flex-start;
-
+    justify-content: center;
     min-height: 250px;
 }
 
 /* 각각의 배치 칸 */
 
 .slot {
-    flex: 1;
-
+    flex: 1 1 0;
+    max-width: 250px;
     min-width: 0;
     height: 250px;
 
@@ -758,49 +759,75 @@ function clickSlot(index) {
 
 function renderSlots() {
 
-    const slotElements =
-        document.querySelectorAll(".slot");
+    const container =
+        document.querySelector(".card-slots");
+
+    container.innerHTML = "";
 
 
-    slotElements.forEach(
-        (slotElement, index) => {
-
-            slotElement.innerHTML = "";
+    // 기본적으로 1칸은 항상 표시
+    let visibleSlots = 1;
 
 
-            const cards =
-                slots[index];
+    // 카드가 들어 있는 마지막 칸 다음까지 표시
+    for (let i = 0; i < slots.length; i++) {
 
-
-            cards.forEach(
-                (sentence, cardIndex) => {
-
-                    const card =
-                        document.createElement("div");
-
-                    card.className = "card";
-
-
-                    card.style.top =
-                        `${cardIndex * 8}px`;
-
-
-
-                    card.style.zIndex =
-                        cardIndex + 1;
-
-
-                    card.textContent =
-                        sentence;
-
-
-                    slotElement.appendChild(card);
-
-                }
-            );
-
+        if (slots[i].length > 0) {
+            visibleSlots = Math.min(i + 2, slots.length);
         }
-    );
+
+    }
+
+
+    // 보이는 배치 구역 생성
+    for (let i = 0; i < visibleSlots; i++) {
+
+        const slot =
+            document.createElement("div");
+
+        slot.className = "slot";
+
+
+        // 배치 구역 클릭
+        slot.onclick = () => clickSlot(i);
+
+
+        // 해당 칸의 카드
+        const cards =
+            slots[i];
+
+
+        cards.forEach(
+            (sentence, cardIndex) => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className = "card";
+
+
+                // 카드가 겹칠 때 조금씩 아래로
+                card.style.top =
+                    `${cardIndex * 8}px`;
+
+
+                card.style.zIndex =
+                    cardIndex + 1;
+
+
+                card.textContent =
+                    sentence;
+
+
+                slot.appendChild(card);
+
+            }
+        );
+
+
+        container.appendChild(slot);
+
+    }
 
 }
 
