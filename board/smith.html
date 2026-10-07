@@ -727,27 +727,28 @@ area.innerHTML = `
 */
 
 function clickSlot(index) {
-
-
-    if (drawnCard !== null) {
-
+    if (drawnCard) {
         slots[index].push(drawnCard);
-
         drawnCard = null;
 
         renderSlots();
-
         renderDrawnCard();
-
-
         return;
     }
 
-
+    // 해당 칸의 카드 삭제
     slots[index] = [];
 
-    renderSlots();
+    // 오른쪽 칸의 카드들을 한 칸씩 왼쪽으로 이동
+    for (let i = index; i < slots.length - 1; i++) {
+        slots[i] = slots[i + 1];
+    }
 
+    // 마지막 칸 비우기
+    slots[slots.length - 1] = [];
+
+    renderSlots();
+    renderDrawnCard();
 }
 
 
@@ -824,4 +825,4 @@ initGame();
 </script>
 
 </body>
-</html> 
+</html>
