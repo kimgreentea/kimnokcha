@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스트림스 메트로 A노선</title>
+<title>오름차순 빙고</title>
 <style>
 * { box-sizing: border-box; }
 body {
@@ -85,26 +85,63 @@ button {
     border: 0;
     border-radius: 10px;
     padding: 12px;
+
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
 }
-#clear { background: #ddd; }
+#clear {
+     background: #333;
+      
+     color: white;}
+.score-table {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    padding: 8px 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #eee;
+}
+
+.tile-count-table table {
+    border-collapse: collapse;
+}
+
+.tile-count-table th,
+.tile-count-table td {
+    padding: 4px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
 @media (max-width: 600px) {
     .board { width: 560px; }
+
 }
 </style>
 </head>
 <body>
 <div class="wrap">
-    <h1>스트림스 메트로 A노선</h1>
+    <h1>오름차순 빙고</h1>
     <p class="sub">숫자를 왼쪽에서 오른쪽 순서로 입력하세요.</p>
 
     <div class="sheet">
         <div class="board">
             <svg viewBox="0 0 560 330" preserveAspectRatio="none" aria-hidden="true">
                 <polyline
-                    points="35,38 83,38 132,64 132,110 100,170 70,214 115,214 155,252 205,252 230,210 260,150 260,110 260,64 314,64 346,105 385,135 425,105 468,64 468,110 468,170"
+                    points="35,38 83,38 132,64 132,110 100,170 70,214 115,214 155,252 205,252 230,210 260,160 260,110 260,64 314,64 346,105 385,135 425,105 468,64 488,115 468,170"
                     fill="none"
                     stroke="#2f9fd4"
                     stroke-width="18"
@@ -123,7 +160,7 @@ button {
             <input class="station" data-id="8"  style="left:155px;top:252px;">
             <input class="station" data-id="9"  style="left:205px;top:252px;">
             <input class="station" data-id="10" style="left:230px;top:210px;">
-            <input class="station" data-id="11" style="left:260px;top:150px;">
+            <input class="station" data-id="11" style="left:260px;top:160px;">
             <input class="station" data-id="12" style="left:260px;top:110px;">
             <input class="station" data-id="13" style="left:260px;top:64px;">
             <input class="station" data-id="14" style="left:314px;top:64px;">
@@ -131,23 +168,69 @@ button {
             <input class="station" data-id="16" style="left:385px;top:135px;">
             <input class="station" data-id="17" style="left:425px;top:105px;">
             <input class="station" data-id="18" style="left:468px;top:64px;">
-            <input class="station" data-id="19" style="left:468px;top:110px;">
+            <input class="station" data-id="19" style="left:488px;top:115px;">
             <input class="station" data-id="20" style="left:468px;top:170px;">
         </div>
-        <div class="info">
-            <b>0 = 조커</b> · 숫자는 0~30까지 입력할 수 있습니다.<br>
-            입력 후 다른 곳을 누르면 해당 칸이 잠깁니다. · 전체 초기화로 다시 입력할 수 있습니다.
+    <div class="info">
+    <p><b>조커는 0으로 입력</b></p>
+
+<div class="tile-count-table">
+    <table>
+        <thead>
+            <tr>
+                <th>숫자</th>
+                <th>1~10</th>
+                <th>11~19</th>
+                <th>20~30</th>
+                <th>조커</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>개수</th>
+                <td>1개</td>
+                <td>2개</td>
+                <td>1개</td>
+                <td>1개</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    <div class="score-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>연속 칸</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+                    <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
+                    <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>점수</th>
+                    <td>0</td><td>1</td><td>3</td><td>5</td><td>7</td>
+                    <td>9</td><td>11</td><td>15</td><td>20</td><td>25</td>
+                    <td>30</td><td>35</td><td>40</td><td>50</td><td>60</td>
+                    <td>70</td><td>85</td><td>100</td><td>150</td><td>300</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
         </div>
     </div>
 
     <div class="score-box">
-        <div class="score-title">현재 점수</div>
+        <div class="score-title">점수</div>
         <div class="score" id="score">-</div>
-        <div class="detail" id="detail">20칸을 모두 입력하면 점수가 계산됩니다.</div>
+        <div class="detail" id="detail">게임 완료 시 점수 계산</div>
     </div>
 
     <div class="buttons">
-        <button id="clear">전체 초기화</button>
+        <button id="clear">다시 하기</button>
     </div>
 </div>
 
@@ -205,13 +288,13 @@ function updateScore() {
     const detailEl = document.getElementById('detail');
 
     if (!result) {
-        scoreEl.textContent = '-';
-        detailEl.textContent = '20칸을 모두 입력하면 점수가 계산됩니다.';
+        scoreEl.textContent = '';
+        detailEl.textContent = '게임 완료 시 점수 계산';
         return;
     }
 
     scoreEl.textContent = result.total;
-    detailEl.textContent = `스트림: ${result.streams.join(' + ')}칸`;
+    detailEl.textContent = `${result.streams.map(n => n + '칸').join(' + ')}`;
 }
 
 stations.forEach(input => {
