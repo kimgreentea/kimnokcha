@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스트림스 메트로 C노선</title>
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    padding:24px 12px 50px;
+    background:#f5f5f5;
+    font-family:Arial,"Noto Sans KR",sans-serif;
+    color:#222;
+}
+h1{text-align:center;margin:0 0 18px;font-size:24px}
+.wrap{max-width:960px;margin:auto}
+.help{
+    background:#fff;
+    border-radius:12px;
+    padding:12px 16px;
+    margin-bottom:16px;
+    text-align:center;
+    line-height:1.6;
+}
+.board-wrap{
+    width:100%;
+    overflow-x:auto;
+    padding:10px 0 20px;
+}
+.board{
+    position:relative;
+    width:900px;
+    height:470px;
+    margin:auto;
+    background:
+        linear-gradient(
+            to bottom,
+            #e9e9e9 0,
+            #e9e9e9 31%,
+            #f7f7f7 31%,
+            #f7f7f7 69%,
+            #e9e9e9 69%,
+            #e9e9e9 100%
+        );
+    border-radius:18px;
+    box-shadow:0 2px 10px #0001;
+}
+.route{
+    position:absolute;
+    left:0;
+    top:0;
+    width:900px;
+    height:470px;
+    z-index:1;
+    pointer-events:none;
+}
+.route path{
+    fill:none;
+    stroke:#2d9bd3;
+    stroke-width:18;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+.station{
+    position:absolute;
+    z-index:5;
+    width:50px;
+    height:50px;
+    transform:translate(-50%,-50%);
+    border:4px solid #2d9bd3;
+    border-radius:50%;
+    background:#fff;
+    color:#111;
+    text-align:center;
+    font-size:20px;
+    font-weight:bold;
+    outline:none;
+    padding:0;
+}
+.station:focus{
+    border-color:#166b99;
+    box-shadow:0 0 0 3px #2d9bd344;
+}
+.station.start{
+    background:#ffe56b;
+    border-color:#d89b00;
+}
+.controls{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:14px;
+}
+button{
+    border:0;
+    border-radius:9px;
+    padding:11px 18px;
+    background:#333;
+    color:#fff;
+    font-size:15px;
+    cursor:pointer;
+}
+button.reset{background:#888}
+.status{
+    min-height:28px;
+    margin-top:12px;
+    text-align:center;
+    font-weight:bold;
+}
+.score{
+    max-width:900px;
+    margin:16px auto 0;
+    background:#fff;
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+}
+.score .title{font-size:18px;font-weight:bold}
+.score .detail{margin-top:8px;color:#555}
+.score .total{margin-top:8px;font-size:25px;font-weight:bold}
+@media(max-width:920px){
+    .board-wrap{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>스트림스 메트로 C노선</h1>
+
+<div class="help">
+    20개 역의 숫자를 모두 입력한 뒤 <b>시작역</b>을 하나 선택하세요.<br>
+    시작역에서부터 <b>반시계방향</b>으로 스트림을 계산합니다.<br>
+    시작역은 한 번 선택하면 전체 초기화 전까지 변경할 수 없습니다.
+</div>
+
+<div class="board-wrap">
+<div class="board" id="board">
+
+<svg class="route" viewBox="0 0 900 470" aria-hidden="true">
+    <path d="M145 105
+L241 105 L336 105 L432 105 L527 105 L623 105 L718 105
+Q790 105 790 125
+Q815 155 815 190
+L815 265
+Q815 305 790 325
+Q760 365 718 365
+L623 365 L527 365 L432 365 L336 365 L241 365
+Q170 365 125 350
+Q90 335 90 300
+L90 220
+Q90 150 145 105"/>
+</svg>
+
+<input class="station" id="s1" style="left:145px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="1번 역">
+<input class="station" id="s2" style="left:241px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="2번 역">
+<input class="station" id="s3" style="left:336px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="3번 역">
+<input class="station" id="s4" style="left:432px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="4번 역">
+<input class="station" id="s5" style="left:527px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="5번 역">
+<input class="station" id="s6" style="left:623px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="6번 역">
+<input class="station" id="s7" style="left:718px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="7번 역">
+<input class="station" id="s8" style="left:790px;top:125px"  type="text" inputmode="numeric" maxlength="2" aria-label="8번 역">
+<input class="station" id="s9" style="left:815px;top:190px"  type="text" inputmode="numeric" maxlength="2" aria-label="9번 역">
+<input class="station" id="s10" style="left:815px;top:265px"  type="text" inputmode="numeric" maxlength="2" aria-label="10번 역">
+<input class="station" id="s11" style="left:790px;top:325px"  type="text" inputmode="numeric" maxlength="2" aria-label="11번 역">
+<input class="station" id="s12" style="left:718px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="12번 역">
+<input class="station" id="s13" style="left:623px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="13번 역">
+<input class="station" id="s14" style="left:527px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="14번 역">
+<input class="station" id="s15" style="left:432px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="15번 역">
+<input class="station" id="s16" style="left:336px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="16번 역">
+<input class="station" id="s17" style="left:241px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="17번 역">
+<input class="station" id="s18" style="left:125px;top:350px"  type="text" inputmode="numeric" maxlength="2" aria-label="18번 역">
+<input class="station" id="s19" style="left:90px;top:300px"  type="text" inputmode="numeric" maxlength="2" aria-label="19번 역">
+<input class="station" id="s20" style="left:90px;top:220px" type="text" inputmode="numeric" maxlength="2" aria-label="20번 역">
+
+
+</div>
+</div>
+
+<div class="status" id="status">20개 역을 모두 입력하세요.</div>
+
+<div class="controls">
+    <button id="startBtn">시작역 선택</button>
+    <button class="reset" id="resetBtn">전체 초기화</button>
+</div>
+
+<div class="score" id="score">
+    <div class="title">C노선 점수</div>
+    <div class="detail">아직 시작역이 선택되지 않았습니다.</div>
+</div>
+</div>
+
+<script>
+const scores=[0,1,3,5,7,9,11,15,20,25,30,35,40,50,60,70,85,100,150,300];
+
+const inputs=[...document.querySelectorAll('.station')];
+const statusEl=document.getElementById('status');
+const scoreEl=document.getElementById('score');
+
+let startIndex=null;
+let startLocked=false;
+
+inputs.forEach((input,index)=>{
+    input.addEventListener('blur',()=>{
+        const v=input.value.trim();
+        if(v!==''){
+            const n=Number(v);
+            if(Number.isInteger(n) && n>=0 && n<=30){
+                input.value=String(n);
+                input.readOnly=true;
+            }else{
+                input.value='';
+            }
+        }
+        updateStatus();
+    });
+
+    input.addEventListener('input',()=>{
+        input.value=input.value.replace(/[^0-9]/g,'').slice(0,2);
+        updateStatus();
+    });
+
+    input.addEventListener('click',()=>{
+        if(startLocked) return;
+        if(allFilled()){
+            selectStart(index);
+        }else{
+            statusEl.textContent='먼저 20개 역의 숫자를 모두 입력하세요.';
+        }
+    });
+});
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+    if(startLocked) return;
+    if(!allFilled()){
+        statusEl.textContent='먼저 20개 역의 숫자를 모두 입력하세요.';
+        return;
+    }
+    statusEl.textContent='시작할 역을 지도에서 클릭하세요.';
+});
+
+document.getElementById('resetBtn').addEventListener('click',()=>{
+    inputs.forEach(input=>{
+        input.value='';
+        input.readOnly=false;
+        input.classList.remove('start');
+    });
+    startIndex=null;
+    startLocked=false;
+    statusEl.textContent='20개 역을 모두 입력하세요.';
+    scoreEl.innerHTML='<div class="title">C노선 점수</div><div class="detail">아직 시작역이 선택되지 않았습니다.</div>';
+});
+
+function allFilled(){
+    return inputs.every(input=>{
+        const n=Number(input.value);
+        return input.value.trim()!=='' && Number.isInteger(n) && n>=0 && n<=30;
+    });
+}
+
+function getValue(i){
+    return Number(inputs[i].value);
+}
+
+function selectStart(index){
+    if(startLocked) return;
+    if(!allFilled()) return;
+
+    startIndex=index;
+    startLocked=true;
+
+    inputs.forEach(input=>input.classList.remove('start'));
+    inputs[index].classList.add('start');
+
+    inputs.forEach(input=>input.readOnly=true);
+
+    calculate();
+    statusEl.textContent=`${index+1}번 역이 시작역으로 선택되었습니다. 전체 초기화 전에는 변경할 수 없습니다.`;
+}
+
+function calculate(){
+    const routeValues=[];
+
+    // 시작역부터 반시계방향:
+    // 1 → 20 → 19 → 18 → ... 순서
+    for(let k=0;k<20;k++){
+        routeValues.push(getValue((startIndex-k+20)%20));
+    }
+
+    const streams=[];
+    let len=0;
+    let previous=null;
+
+    for(const value of routeValues){
+        if(value===0){
+            len++;
+            continue;
+        }
+
+        if(previous!==null && value<previous){
+            streams.push(len);
+            len=1;
+        }else{
+            len++;
+        }
+
+        previous=value;
+    }
+
+    if(len>0) streams.push(len);
+
+    const total=streams.reduce((sum,n)=>{
+        return sum+(scores[Math.min(n,20)-1]||0);
+    },0);
+
+    scoreEl.innerHTML=`
+        <div class="title">C노선 점수</div>
+        <div class="detail">스트림: ${streams.map(n=>`${n}칸`).join(' + ')}</div>
+        <div class="total">점수: ${total}점</div>
+    `;
+}
+
+function updateStatus(){
+    if(startLocked) return;
+    const count=inputs.filter(input=>input.value.trim()!=='').length;
+    statusEl.textContent=count===20
+        ? '입력이 완료되었습니다. 시작할 역을 선택하세요.'
+        : `${count}/20개 역 입력`;
+}
+</script>
+</body>
+</html>

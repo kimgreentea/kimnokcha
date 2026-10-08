@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>스트림스 메트로 D노선</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef4fb;font-family:Arial,"Noto Sans KR",sans-serif;color:#222;padding:18px}
+.wrap{max-width:900px;margin:auto}
+h1{margin:0;text-align:center;font-size:28px}
+.sub{text-align:center;color:#666;margin:6px 0 18px}
+.board{background:#fff;border-radius:18px;padding:18px;box-shadow:0 3px 14px #0001}
+.map{position:relative;width:840px;height:420px;background:linear-gradient(90deg,#ffe7c7,#eef5df 45%,#e4f3f3);overflow:hidden;border:2px solid #ddd;border-radius:14px;margin:auto}
+#routes{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.station{position:absolute;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:#fff;text-align:center;font-size:20px;font-weight:bold;outline:none;z-index:2;padding:0}
+.station.orange{border:3px solid #ef6c00}
+.station.lightgreen{border:3px solid #72c43f}
+.station.green{border:3px solid #2fa96d}
+.station.transfer{border:3px solid #7350a5;background:#fff}
+.station:read-only{background:#fafafa}
+.score-area{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scorebox{border:2px solid #ddd;border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;min-height:58px}
+.scorebox.total{grid-column:1/-1;background:#f7f7f7}
+.label{font-weight:700}
+.detail{font-size:13px;color:#666;margin-top:3px}
+.score{font-size:22px;font-weight:700;white-space:nowrap}
+button{border:0;border-radius:9px;padding:10px 16px;background:#333;color:#fff;font-size:15px}
+.reset{display:block;margin:18px auto 0;background:#666}
+.note{text-align:center;color:#666;font-size:14px;margin-top:12px}
+@media(max-width:600px){
+ body{padding:10px}
+ h1{font-size:23px}
+ .map{width:840px;height:420px}
+ .station{width:42px;height:42px;font-size:18px}
+ .score-area{grid-template-columns:1fr}
+ .scorebox.total{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>스트림스 메트로 D노선</h1>
+<div class="sub">세 노선을 원하는 순서대로 입력하세요 · 보라색은 환승역입니다.</div>
+
+<div class="board">
+  <div class="map" id="map">
+    <svg id="routes" viewBox="0 0 840 420" aria-hidden="true"></svg>
+  </div>
+
+  <div class="score-area">
+    <div class="scorebox">
+      <div><div class="label">주황색 노선</div><div class="detail" id="detail-0">입력 완료 시 계산</div></div>
+      <span class="score" id="score-0">-</span>
+    </div>
+    <div class="scorebox">
+      <div><div class="label">연두색 노선</div><div class="detail" id="detail-1">입력 완료 시 계산</div></div>
+      <span class="score" id="score-1">-</span>
+    </div>
+    <div class="scorebox">
+      <div><div class="label">초록색 노선</div><div class="detail" id="detail-2">입력 완료 시 계산</div></div>
+      <span class="score" id="score-2">-</span>
+    </div>
+    <div class="scorebox total">
+      <div><div class="label">총점</div><div class="detail">완성된 노선 점수 합계</div></div>
+      <span class="score" id="total-score">-</span>
+    </div>
+  </div>
+</div>
+
+<button class="reset" id="reset">전체 초기화</button>
+<div class="note">0 = 조커 · 입력 후 포커스를 벗어나면 해당 칸이 잠깁니다.</div>
+</div>
+
+<script>
+const scores=[0,1,3,5,7,9,11,15,20,25,30,35,40,50,60,70,85,100,150,300];
+
+// 환승역은 하나의 입력칸을 여러 노선이 함께 사용한다.
+// 따라서 환승역에 적은 숫자는 연결된 두 노선의 계산에 모두 들어간다.
+const stations={
+  // 840×420 지도에 맞춰 역 간격을 넓게 배치.
+  // 환승역은 실제 하나의 역을 공유한다.
+  o1:[55,65,'orange'],
+  o2:[125,65,'orange'],
+  o3:[195,85,'orange'],
+  o4:[265,85,'orange'],
+  o5:[335,115,'orange'],
+  p1:[405,150,'transfer'],
+  o6:[495,215,'orange'],
+  o7:[595,215,'orange'],
+  o8:[685,225,'orange'],
+  o9:[780,225,'orange'],
+
+  // 연두색 노선은 왼쪽 아래 → p2 → p1 → 오른쪽 위 방향.
+  // 역 사이 거리를 약 70px로 통일.
+  g1:[55,320,'lightgreen'],
+  g2:[125,320,'lightgreen'],
+  p2:[195,275,'transfer'],
+  g3:[265,245,'lightgreen'],
+  g4:[335,215,'lightgreen'],
+  g5:[495,115,'lightgreen'],
+  g6:[590,95,'lightgreen'],
+  g7:[685,95,'lightgreen'],
+  g8:[780,75,'lightgreen'],
+
+  d1:[125,185,'green'],
+  d2:[235,315,'green'],
+  d3:[305,325,'green'],
+  d4:[375,300,'green'],
+  d5:[445,325,'green'],
+  d6:[515,300,'green'],
+  d7:[585,325,'green'],
+  d8:[655,300,'green'],
+  d9:[725,325,'green']
+};
+
+// 순서는 실제 해당 색 노선을 따라가는 순서.
+// p1 = 주황+연두 환승역, p2 = 연두+초록 환승역.
+const lines=[
+ {name:'주황색 노선',color:'#ef6c00',route:['o1','o2','o3','o4','o5','p1','o6','o7','o8','o9']},
+ {name:'연두색 노선',color:'#72c43f',route:['g1','g2','p2','g3','g4','p1','g5','g6','g7','g8']},
+ {name:'초록색 노선',color:'#2fa96d',route:['d1','p2','d2','d3','d4','d5','d6','d7','d8','d9']}
+];
+
+const map=document.getElementById('map');
+const svg=document.getElementById('routes');
+const ns='http://www.w3.org/2000/svg';
+
+// 노선 선은 먼저 그린다.
+lines.forEach(line=>{
+  const poly=document.createElementNS(ns,'polyline');
+  poly.setAttribute('points',line.route.map(id=>stations[id].slice(0,2).join(',')).join(' '));
+  poly.setAttribute('fill','none');
+  poly.setAttribute('stroke',line.color);
+  poly.setAttribute('stroke-width','18');
+  poly.setAttribute('stroke-linecap','round');
+  poly.setAttribute('stroke-linejoin','round');
+  svg.appendChild(poly);
+});
+
+// 역은 ID별로 한 번만 만든다. 환승역도 입력칸 하나만 존재한다.
+Object.entries(stations).forEach(([id,[x,y,kind]])=>{
+  const inp=document.createElement('input');
+  inp.className=`station ${kind}`;
+  inp.type='text';
+  inp.inputMode='numeric';
+  inp.maxLength=2;
+  inp.dataset.station=id;
+  inp.style.left=`${x}px`;
+  inp.style.top=`${y}px`;
+  inp.addEventListener('input',()=>{
+    inp.value=inp.value.replace(/[^0-9]/g,'');
+    if(inp.value!==''){
+      const n=Number(inp.value);
+      if(n>30) inp.value='30';
+    }
+    updateAll();
+  });
+  inp.addEventListener('blur',()=>{
+    if(inp.value!=='') inp.readOnly=true;
+    updateAll();
+  });
+  map.appendChild(inp);
+});
+
+function getValue(id){
+  const el=document.querySelector(`[data-station="${id}"]`);
+  if(!el || el.value==='') return null;
+  const n=Number(el.value);
+  return n>=0 && n<=30 ? n : null;
+}
+
+function calc(line){
+  const vals=line.route.map(getValue);
+  if(vals.some(v=>v===null)) return null;
+
+  const streams=[];
+  let len=0;
+  let previousNumber=null;
+
+  for(const value of vals){
+    if(value===0){
+      len++;
+      continue;
+    }
+    if(previousNumber!==null && value<previousNumber){
+      streams.push(len);
+      len=1;
+    }else{
+      len++;
+    }
+    previousNumber=value;
+  }
+  if(len>0) streams.push(len);
+
+  const total=streams.reduce((sum,n)=>sum+(scores[Math.min(n,20)-1]||0),0);
+  return {total,streams};
+}
+
+function updateAll(){
+  let total=0;
+  let completed=0;
+
+  lines.forEach((line,li)=>{
+    const result=calc(line);
+    const score=document.getElementById(`score-${li}`);
+    const detail=document.getElementById(`detail-${li}`);
+
+    if(!result){
+      score.textContent='-';
+      detail.textContent='입력 완료 시 계산';
+      return;
+    }
+
+    score.textContent=`${result.total}점`;
+    detail.textContent=`연속 ${result.streams.join(' + ')}칸`;
+    total+=result.total;
+    completed++;
+  });
+
+  document.getElementById('total-score').textContent=completed===0 ? '-' : `${total}점`;
+}
+
+document.getElementById('reset').onclick=()=>{
+  document.querySelectorAll('.station').forEach(input=>{
+    input.value='';
+    input.readOnly=false;
+  });
+  updateAll();
+};
+</script>
+</body>
+</html>
