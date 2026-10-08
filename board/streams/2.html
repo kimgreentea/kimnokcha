@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스트림스 메트로 B노선</title>
+<title>오름차순 빙고</title>
 <style>
 * {
     box-sizing: border-box;
@@ -176,33 +176,11 @@ h1 {
     }
 }
 
-.legend {
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    padding: 13px;
-    background: white;
-    font-size: 14px;
-}
 
-.legend span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.dot.orange { background: #ed8314; }
-.dot.blue { background: #2d9bd3; }
-.dot.purple { background: #7160b8; }
 
 .info {
     margin-top: 12px;
+    margin-bottom: 12px;
     padding: 12px;
     border-radius: 10px;
     background: white;
@@ -210,6 +188,39 @@ h1 {
     color: #555;
     font-size: 14px;
 }
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+.score-table {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+th, td {
+    padding: 8px 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #eee;
+}
+
+.tile-count-table table {
+    border-collapse: collapse;
+}
+
+.tile-count-table th,
+.tile-count-table td {
+    padding: 4px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
 
 .actions {
     display: flex;
@@ -238,12 +249,17 @@ h1 {
 
 <body>
 <div class="wrap">
-    <h1>스트림스 메트로</h1>
-    <p class="sub">B노선도 · 환승열차</p>
-
+    <h1>오름차순 빙고</h1>
+    <p class="sub">두 라운드로 진행하는 오름차순 빙고</p>
+ 
     <div class="controls">
-        <button class="round-btn orange active" data-round="1">1라운드 · 주황 + 환승</button>
-        <button class="round-btn blue" data-round="2">2라운드 · 파랑</button>
+        <button class="round-btn orange active" data-round="1">1라운드</button>
+        <button class="round-btn blue" data-round="2">2라운드</button>
+    </div>
+
+
+    <div class="info" id="info">
+        게임 설명 부분
     </div>
 
     <div class="sheet">
@@ -320,18 +336,59 @@ h1 {
         </div>
     </div>
 
-    <div class="legend">
-        <span><i class="dot orange"></i>1라운드</span>
-        <span><i class="dot blue"></i>2라운드</span>
-        <span><i class="dot purple"></i>환승 구간</span>
-    </div>
+    <div class="info">
+    <p><b>조커는 0으로 입력</b></p>
 
-    <div class="info" id="info">
-        1라운드: 주황색 노선과 보라색 환승 구간에 숫자를 입력하세요.
+<div class="tile-count-table">
+    <table>
+        <thead>
+            <tr>
+                <th>숫자</th>
+                <th>1~10</th>
+                <th>11~19</th>
+                <th>20~30</th>
+                <th>조커</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>개수</th>
+                <td>1개</td>
+                <td>2개</td>
+                <td>1개</td>
+                <td>1개</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    <div class="score-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>연속 칸</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+                    <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
+                    <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>점수</th>
+                    <td>0</td><td>1</td><td>3</td><td>5</td><td>7</td>
+                    <td>9</td><td>11</td><td>15</td><td>20</td><td>25</td>
+                    <td>30</td><td>35</td><td>40</td><td>50</td><td>60</td>
+                    <td>70</td><td>85</td><td>100</td><td>150</td><td>300</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
+
 
     <div class="actions">
-        <button id="clear">전체 초기화</button>
+        <button id="clear">다시 하기</button>
     </div>
 </div>
 
@@ -453,21 +510,21 @@ function updateScores() {
         score1.textContent = `${result1.total}점`;
         detail1.textContent = result1.streams.map(n => `${n}칸`).join(" + ");
     } else {
-        score1.textContent = "-";
-        detail1.textContent = "10칸 입력 완료 시 표시";
+        score1.textContent = "";
+        detail1.textContent = "입력 완료 시 계산";
     }
 
     if (result2) {
         score2.textContent = `${result2.total}점`;
         detail2.textContent = result2.streams.map(n => `${n}칸`).join(" + ");
     } else {
-        score2.textContent = "-";
-        detail2.textContent = "20칸 입력 완료 시 표시";
+        score2.textContent = "";
+        detail2.textContent = "입력 완료 시 계산";
     }
 
     totalScore.textContent = result1 && result2
         ? `${result1.total + result2.total}점`
-        : "-";
+        : "";
 }
 
 function setRound(round) {
@@ -503,8 +560,8 @@ function setRound(round) {
     });
 
     info.textContent = round === 1
-        ? "1라운드: 주황색 노선과 보라색 환승역에 숫자를 입력하세요."
-        : "2라운드: 파란색 노선에 숫자를 입력하세요. 환승역은 1라운드 숫자를 그대로 사용합니다.";
+        ? "주황색 노선과 보라색 환승역에 숫자를 입력하세요."
+        : "파란색 노선에 숫자를 입력하세요. 환승역은 1라운드 숫자를 그대로 사용합니다.";
 
     updateScores();
 }
