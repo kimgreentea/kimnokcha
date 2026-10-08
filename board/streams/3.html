@@ -86,12 +86,19 @@ button{
     cursor:pointer;
 }
 button.reset{background:#888}
+
+
 .status{
-    min-height:28px;
-    margin-top:12px;
+    max-width:900px;
+    height:40pt;
     text-align:center;
-    font-weight:bold;
-display:none;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto; 
+    background:#fff;
+    border-radius:12px;
+    font-weight:bold; 
 }
 .score{
     max-width:900px;
@@ -150,13 +157,16 @@ display:none;
 
 
 </div>
+
+
 </div>
 
-<div class="status" id="status">20개 역을 모두 입력하세요.</div>
 
-
+<div class="statusmother">
+<div class="status" id="status">상태창</div></div>
 
 <div class="score" id="score">
+
     <div class="title">점수</div>
     <div class="detail"></div>
 </div>
@@ -169,7 +179,7 @@ display:none;
 
 <script>
 const scores=[0,1,3,5,7,9,11,15,20,25,30,35,40,50,60,70,85,100,150,300];
-
+ 
 const inputs=[...document.querySelectorAll('.station')];
 const statusEl=document.getElementById('status');
 const scoreEl=document.getElementById('score');
@@ -195,14 +205,15 @@ inputs.forEach((input,index)=>{
     input.addEventListener('input',()=>{
         input.value=input.value.replace(/[^0-9]/g,'').slice(0,2);
         updateStatus();
-    });
+    }); 
 
     input.addEventListener('click',()=>{
         if(startLocked) return;
         if(allFilled()){
             selectStart(index);
         }else{
-            statusEl.textContent='먼저 20개 역의 숫자를 모두 입력하세요.';
+
+        statusEl.style.display = 'none';
         }
     });
 });
@@ -216,9 +227,9 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
         input.classList.remove('start');
     });
     startIndex=null;
-    startLocked=false;
-    statusEl.textContent='20개 역을 모두 입력하세요.';
+    startLocked=false; 
     scoreEl.innerHTML='<div class="title">점수</div><div class="detail"></div>';
+        statusEl.style.display = 'none';
 });
 
 function allFilled(){
@@ -290,15 +301,15 @@ function calculate(){
         <div class="total">${total}점</div>
     `;
 }
-
+ 
 function updateStatus(){
     if(startLocked) return;
-    
+
     const count = inputs.filter(input => input.value.trim() !== '').length;
     
     if(count === 20){
         statusEl.textContent = '입력이 완료되었습니다. 시작할 역을 선택하세요.';
-        statusEl.style.display = 'block';
+        statusEl.style.display = 'flex';
     }
 }
 </script>
