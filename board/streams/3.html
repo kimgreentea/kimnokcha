@@ -84,8 +84,9 @@ button{
     color:#fff;
     font-size:15px;
     cursor:pointer;
+
 }
-button.reset{background:#888}
+button.reset{background:#333; color:white;}
 
 
 .status{
@@ -111,6 +112,38 @@ button.reset{background:#888}
 .score .title{font-size:18px;font-weight:bold}
 .score .detail{margin-top:8px;color:#555}
 .score .total{margin-top:8px;font-size:25px;font-weight:bold}
+
+.score-table {
+    margin-top: 25px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th, td {
+    padding: 8px 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #eee;
+}
+
+.tile-count-table table {
+    border-collapse: collapse;
+}
+
+.tile-count-table th,
+.tile-count-table td {
+    padding: 4px 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
 @media(max-width:920px){
     .board-wrap{overflow-x:auto}
 }
@@ -169,6 +202,59 @@ button.reset{background:#888}
 
     <div class="title">점수</div>
     <div class="detail"></div>
+</div>
+</div>
+
+
+    <div class="score">
+
+    <p><b>조커는 0으로 입력</b></p>
+
+<div class="tile-count-table">
+    <table>
+        <thead>
+            <tr>
+                <th>숫자</th>
+                <th>1~10</th>
+                <th>11~19</th>
+                <th>20~30</th>
+                <th>조커</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>개수</th>
+                <td>1개</td>
+                <td>2개</td>
+                <td>1개</td>
+                <td>1개</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+    <div class="score-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>연속 칸</th>
+                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                    <th>6</th><th>7</th><th>8</th><th>9</th><th>10</th>
+                    <th>11</th><th>12</th><th>13</th><th>14</th><th>15</th>
+                    <th>16</th><th>17</th><th>18</th><th>19</th><th>20</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>점수</th>
+                    <td>0</td><td>1</td><td>3</td><td>5</td><td>7</td>
+                    <td>9</td><td>11</td><td>15</td><td>20</td><td>25</td>
+                    <td>30</td><td>35</td><td>40</td><td>50</td><td>60</td>
+                    <td>70</td><td>85</td><td>100</td><td>150</td><td>300</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
