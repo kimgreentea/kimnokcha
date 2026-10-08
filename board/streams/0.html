@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>숫자 뽑기</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #fff;
+  }
+
+  h1 {
+    margin: 30px 0 20px;
+    font-size: 28px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0;
+  }
+
+  button {
+    font-size: 18pt;
+    padding: 10px 20px;
+    color: white;
+    background-color: #222;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+
+  button:active {
+    transform: scale(0.96);
+  }
+
+  table {
+    margin: 20px auto;
+    border-collapse: separate;
+    border-spacing: 8px;
+  }
+
+  td {
+    width: 80px;
+    height: 80px;
+    border: none;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .filled {
+    background-color: #222;
+    color: white;
+    border-radius: 50%;
+    font-size: 35pt;
+    font-weight: bold;
+  }
+
+  @media (max-width: 700px) {
+    td {
+      width: 60px;
+      height: 60px;
+    }
+
+    .filled {
+      font-size: 25pt;
+    }
+
+    button {
+      font-size: 15pt;
+    }
+  }
+
+  @media (max-width: 500px) {
+    td {
+      width: 18vw;
+      height: 18vw;
+    }
+
+    .filled {
+      font-size: 8vw;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<h1>숫자 뽑기</h1>
+
+<div class="buttons">
+  <button id="drawButton" onclick="draw()">뽑기</button>
+  <button id="resetButton" onclick="resetGame()">다시 하기</button>
+</div>
+
+<table id="board">
+  <tbody>
+    <script>
+      for (let i = 0; i < 8; i++) {
+        document.write("<tr>");
+
+        for (let j = 0; j < 5; j++) {
+          document.write("<td></td>");
+        }
+
+        document.write("</tr>");
+      }
+    </script>
+  </tbody>
+</table>
+
+<script>
+  let pool = [];
+  let drawCount = 0;
+
+  const maxDraw = 40;
+  const cells = document.querySelectorAll("#board td");
+
+  const drawButton = document.getElementById("drawButton");
+
+
+  function createPool() {
+    pool = [];
+
+    // 1~30
+    for (let i = 1; i <= 30; i++) {
+      pool.push(i);
+
+      // 11~19는 2개씩
+      if (i >= 11 && i <= 19) {
+        pool.push(i);
+      }
+    }
+
+    // ★ 1개
+    pool.push("★");
+  }
+
+
+  function draw() {
+    if (drawCount >= maxDraw) {
+      return;
+    }
+
+    const idx = Math.floor(Math.random() * pool.length);
+    const value = pool[idx];
+
+    const cell = cells[drawCount];
+
+    cell.textContent = value;
+    cell.classList.add("filled");
+
+    pool.splice(idx, 1);
+    drawCount++;
+
+    // 40개를 모두 뽑으면 뽑기 버튼만 숨김
+    if (drawCount === maxDraw) {
+      drawButton.style.display = "none";
+    }
+  }
+
+
+  function resetGame() {
+    drawCount = 0;
+
+    createPool();
+
+    cells.forEach(cell => {
+      cell.textContent = "";
+      cell.classList.remove("filled");
+    });
+
+    drawButton.style.display = "block";
+  }
+
+
+  // 처음 게임 시작
+  createPool();
+</script>
+
+</body>
+</html>
