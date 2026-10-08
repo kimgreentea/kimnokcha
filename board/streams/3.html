@@ -15,14 +15,7 @@ body{
 }
 h1{text-align:center;margin:0 0 18px;font-size:24px}
 .wrap{max-width:960px;margin:auto}
-.help{
-    background:#fff;
-    border-radius:12px;
-    padding:12px 16px;
-    margin-bottom:16px;
-    text-align:center;
-    line-height:1.6;
-}
+.sub { margin: 0 0 18px; text-align: center; color: #666; }
 .board-wrap{
     width:100%;
     overflow-x:auto;
@@ -33,16 +26,7 @@ h1{text-align:center;margin:0 0 18px;font-size:24px}
     width:900px;
     height:470px;
     margin:auto;
-    background:
-        linear-gradient(
-            to bottom,
-            #e9e9e9 0,
-            #e9e9e9 31%,
-            #f7f7f7 31%,
-            #f7f7f7 69%,
-            #e9e9e9 69%,
-            #e9e9e9 100%
-        );
+     background: linear-gradient(115deg, #ffe8ca 0 30%, #e9f8f7 30% 72%, #f6edcf 72%);
     border-radius:18px;
     box-shadow:0 2px 10px #0001;
 }
@@ -107,6 +91,7 @@ button.reset{background:#888}
     margin-top:12px;
     text-align:center;
     font-weight:bold;
+display:none;
 }
 .score{
     max-width:900px;
@@ -126,32 +111,22 @@ button.reset{background:#888}
 </head>
 <body>
 <div class="wrap">
-<h1>스트림스 메트로 C노선</h1>
-
-<div class="help">
-    20개 역의 숫자를 모두 입력한 뒤 <b>시작역</b>을 하나 선택하세요.<br>
-    시작역에서부터 <b>반시계방향</b>으로 스트림을 계산합니다.<br>
-    시작역은 한 번 선택하면 전체 초기화 전까지 변경할 수 없습니다.
-</div>
+<h1>오름차순 빙고</h1>
+    <p class="sub">게임 시작 전 원하는 칸 2개를 골라 조커를 넣습니다. <br> 칸이 다 차면 계산을 시작할 지점을 스스로 고릅니다.<br>순서는 반시계방향입니다.</p>
 
 <div class="board-wrap">
 <div class="board" id="board">
 
-<svg class="route" viewBox="0 0 900 470" aria-hidden="true">
-    <path d="M145 105
-L241 105 L336 105 L432 105 L527 105 L623 105 L718 105
-Q790 105 790 125
-Q815 155 815 190
-L815 265
-Q815 305 790 325
-Q760 365 718 365
-L623 365 L527 365 L432 365 L336 365 L241 365
-Q170 365 125 350
-Q90 335 90 300
-L90 220
-Q90 150 145 105"/>
-</svg>
-
+   <svg viewBox="0 0 900 470" preserveAspectRatio="none" aria-hidden="true">
+                <polyline
+                    points="145,105 241,105 336,105, 432, 105, 527,105, 623, 105, 718, 105 790,125, 815,190 815,265 790,325 718,365 623,365 527,365 432,365 336, 365 241, 365 125,350 90,270 90,180 145,105"
+                    fill="none"
+                    stroke="#2f9fd4"
+                    stroke-width="18"
+                    stroke-linecap="round"
+                    stroke-linejoin="round">
+                </polyline>
+            </svg>
 <input class="station" id="s1" style="left:145px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="1번 역">
 <input class="station" id="s2" style="left:241px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="2번 역">
 <input class="station" id="s3" style="left:336px;top:105px"  type="text" inputmode="numeric" maxlength="2" aria-label="3번 역">
@@ -170,8 +145,8 @@ Q90 150 145 105"/>
 <input class="station" id="s16" style="left:336px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="16번 역">
 <input class="station" id="s17" style="left:241px;top:365px"  type="text" inputmode="numeric" maxlength="2" aria-label="17번 역">
 <input class="station" id="s18" style="left:125px;top:350px"  type="text" inputmode="numeric" maxlength="2" aria-label="18번 역">
-<input class="station" id="s19" style="left:90px;top:300px"  type="text" inputmode="numeric" maxlength="2" aria-label="19번 역">
-<input class="station" id="s20" style="left:90px;top:220px" type="text" inputmode="numeric" maxlength="2" aria-label="20번 역">
+<input class="station" id="s19" style="left:90px;top:270px"  type="text" inputmode="numeric" maxlength="2" aria-label="19번 역">
+<input class="station" id="s20" style="left:90px;top:180px" type="text" inputmode="numeric" maxlength="2" aria-label="20번 역">
 
 
 </div>
@@ -179,15 +154,17 @@ Q90 150 145 105"/>
 
 <div class="status" id="status">20개 역을 모두 입력하세요.</div>
 
-<div class="controls">
-    <button id="startBtn">시작역 선택</button>
-    <button class="reset" id="resetBtn">전체 초기화</button>
-</div>
+
 
 <div class="score" id="score">
-    <div class="title">C노선 점수</div>
-    <div class="detail">아직 시작역이 선택되지 않았습니다.</div>
+    <div class="title">점수</div>
+    <div class="detail"></div>
 </div>
+</div>
+
+<div class="controls">
+
+    <button class="reset" id="resetBtn">다시 하기</button>
 </div>
 
 <script>
@@ -230,14 +207,7 @@ inputs.forEach((input,index)=>{
     });
 });
 
-document.getElementById('startBtn').addEventListener('click',()=>{
-    if(startLocked) return;
-    if(!allFilled()){
-        statusEl.textContent='먼저 20개 역의 숫자를 모두 입력하세요.';
-        return;
-    }
-    statusEl.textContent='시작할 역을 지도에서 클릭하세요.';
-});
+
 
 document.getElementById('resetBtn').addEventListener('click',()=>{
     inputs.forEach(input=>{
@@ -248,7 +218,7 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
     startIndex=null;
     startLocked=false;
     statusEl.textContent='20개 역을 모두 입력하세요.';
-    scoreEl.innerHTML='<div class="title">C노선 점수</div><div class="detail">아직 시작역이 선택되지 않았습니다.</div>';
+    scoreEl.innerHTML='<div class="title">점수</div><div class="detail"></div>';
 });
 
 function allFilled(){
@@ -275,7 +245,8 @@ function selectStart(index){
     inputs.forEach(input=>input.readOnly=true);
 
     calculate();
-    statusEl.textContent=`${index+1}번 역이 시작역으로 선택되었습니다. 전체 초기화 전에는 변경할 수 없습니다.`;
+        statusEl.style.display = 'none';
+
 }
 
 function calculate(){
@@ -314,18 +285,21 @@ function calculate(){
     },0);
 
     scoreEl.innerHTML=`
-        <div class="title">C노선 점수</div>
-        <div class="detail">스트림: ${streams.map(n=>`${n}칸`).join(' + ')}</div>
-        <div class="total">점수: ${total}점</div>
+        <div class="title">점수</div>
+        <div class="detail">${streams.map(n=>`${n}칸`).join(' + ')}</div>
+        <div class="total">${total}점</div>
     `;
 }
 
 function updateStatus(){
     if(startLocked) return;
-    const count=inputs.filter(input=>input.value.trim()!=='').length;
-    statusEl.textContent=count===20
-        ? '입력이 완료되었습니다. 시작할 역을 선택하세요.'
-        : `${count}/20개 역 입력`;
+    
+    const count = inputs.filter(input => input.value.trim() !== '').length;
+    
+    if(count === 20){
+        statusEl.textContent = '입력이 완료되었습니다. 시작할 역을 선택하세요.';
+        statusEl.style.display = 'block';
+    }
 }
 </script>
 </body>
