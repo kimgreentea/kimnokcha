@@ -100,6 +100,18 @@ h1{
     background:#fafafa;
 }
 
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right:5pt;
+}
+.dot.orange { background: #ef6c00; }
+.dot.lightgreen { background: #72c43f; }
+.dot.green { background: #2fa96d; }
+
 
 /* 점수 영역 */
 
@@ -202,26 +214,26 @@ button{
 <div class="scores">
 
     <div class="score-card">
-        <div>1라운드 점수</div>
+        <div><i class="dot orange"></i>주황색 라인</div>
         <strong id="score-0"></strong>
         <small id="detail-0">
-            입력 완료 시 표시
+            입력 완료 시 계산
         </small>
     </div>
 
     <div class="score-card">
-        <div>2라운드 점수</div>
+        <div><i class="dot lightgreen"></i>연두색 라인</div>
         <strong id="score-1"></strong>
         <small id="detail-1">
-            입력 완료 시 표시
+            입력 완료 시 계산
         </small>
     </div>
 
     <div class="score-card">
-        <div>3라운드 점수</div>
+        <div><i class="dot green"></i>초록색 라인</div>
         <strong id="score-2"></strong>
         <small id="detail-2">
-            입력 완료 시 표시
+            입력 완료 시 계산
         </small>
     </div>
 
