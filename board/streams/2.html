@@ -135,6 +135,20 @@ h1 {
     cursor: default;
 }
 
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right:5pt;
+}
+.dot.orange { background: #ed8314; }
+.dot.blue { background: #2d9bd3; }
+.dot.purple { background: #7160b8; }
+
+
+
 /* 비활성 노선 */
 .station.disabled {
     opacity: .28;
@@ -251,7 +265,7 @@ th {
 <body>
 <div class="wrap">
     <h1>오름차순 빙고</h1>
-    <p class="sub">두 라운드로 진행하는 오름차순 빙고</p>
+    <p class="sub">두 라운드로 진행하는 오름차순 빙고<br>1라운드에는 <i class="dot orange"></i>주황색 라인에만, 2라운드에는 <i class="dot blue"></i>파란색 라인에만 숫자를 넣습니다.<br><i class="dot purple"></i>환승역의 점수는 중복 계산합니다.</p>
  
     <div class="controls">
         <button class="round-btn orange active" data-round="1">1라운드</button>
@@ -266,68 +280,71 @@ th {
     <div class="sheet">
         <div class="board">
 
-            <!-- 노선 -->
-            <svg viewBox="0 0 720 360"
-                 style="position:absolute; inset:0; width:100%; height:100%; z-index:1;">
-                <!-- 파란 노선 20칸 -->
-                <polyline class="route blue"
-                    points="60,45 110,45 160,45 205,90 160,140 160,185
-                            105,245 160,245 215,245 275,245 320,285 380,285
-                            435,285 435,230 435,185 435,130 435,80
-                            490,80 535,130 560,185"/>
+<!-- 노선 -->
+<svg viewBox="0 0 720 360"
+     style="position:absolute; inset:0; width:100%; height:100%; z-index:1;">
 
-                <!-- 주황 노선 -->
-                <polyline class="route orange"
-                    points="65,130 110,185 160,185 215,185 260,130
-                            320,130 375,185 435,185 490,235 545,285"/>
+    <!-- 파란 노선 20칸 -->
+    <polyline class="route blue"
+        points="60,45 120,45 180,45 234,90 180,140 180,185
+                114,245 180,245 246,245 318,245 372,285 444,285
+                510,285 510,230 510,185 510,130 510,80
+                576,80 630,130 660,185"/>
 
-                <!-- 환승 구간 -->
-                <line class="route purple" x1="160" y1="185" x2="160" y2="185"/>
-                <line class="route purple" x1="435" y1="185" x2="435" y2="185"/>
-            </svg>
+    <!-- 주황 노선 -->
+    <polyline class="route orange"
+        points="66,130 120,185 180,185 246,185 300,130
+                372,130 438,185 510,185 576,235 642,285"/>
 
-            <!-- 파란 노선 20칸 -->
-            <input class="station blue round2" data-id="b1"  style="left:60px;top:45px;">
-            <input class="station blue round2" data-id="b2"  style="left:110px;top:45px;">
-            <input class="station blue round2" data-id="b3"  style="left:160px;top:45px;">
-            <input class="station blue round2" data-id="b4"  style="left:205px;top:90px;">
-            <input class="station blue round2" data-id="b5"  style="left:160px;top:140px;">
-            <input class="station purple round1 round2" data-id="p1" style="left:160px;top:185px;">
-            <input class="station blue round2" data-id="b6"  style="left:105px;top:245px;">
-            <input class="station blue round2" data-id="b7"  style="left:160px;top:245px;">
-            <input class="station blue round2" data-id="b8"  style="left:215px;top:245px;">
-            <input class="station blue round2" data-id="b9"  style="left:275px;top:245px;">
-            <input class="station blue round2" data-id="b10" style="left:320px;top:285px;">
-            <input class="station blue round2" data-id="b11" style="left:380px;top:285px;">
-            <input class="station blue round2" data-id="b12" style="left:435px;top:285px;">
-            <input class="station blue round2" data-id="b13" style="left:435px;top:230px;">
-            <input class="station purple round1 round2" data-id="p2" style="left:435px;top:185px;">
-            <input class="station blue round2" data-id="b14" style="left:435px;top:130px;">
-            <input class="station blue round2" data-id="b15" style="left:435px;top:80px;">
-            <input class="station blue round2" data-id="b16" style="left:490px;top:80px;">
-            <input class="station blue round2" data-id="b17" style="left:535px;top:130px;">
-            <input class="station blue round2" data-id="b18" style="left:560px;top:185px;">
+    <!-- 환승 구간 -->
+    <line class="route purple" x1="180" y1="185" x2="180" y2="185"/>
+    <line class="route purple" x1="510" y1="185" x2="510" y2="185"/>
+</svg>
 
-            <!-- 주황 노선 10칸 -->
-            <input class="station orange round1" data-id="o1" style="left:65px;top:130px;">
-            <input class="station orange round1" data-id="o2" style="left:110px;top:185px;">
-            <input class="station orange round1" data-id="o3" style="left:215px;top:185px;">
-            <input class="station orange round1" data-id="o4" style="left:260px;top:130px;">
-            <input class="station orange round1" data-id="o5" style="left:320px;top:130px;">
-            <input class="station orange round1" data-id="o6" style="left:375px;top:185px;">
-            <input class="station orange round1" data-id="o7" style="left:490px;top:235px;">
-            <input class="station orange round1" data-id="o8" style="left:545px;top:285px;">
+<!-- 파란 노선 20칸 -->
+<input class="station blue round2" data-id="b1"  style="left:60px;top:45px;">
+<input class="station blue round2" data-id="b2"  style="left:120px;top:45px;">
+<input class="station blue round2" data-id="b3"  style="left:180px;top:45px;">
+<input class="station blue round2" data-id="b4"  style="left:234px;top:90px;">
+<input class="station blue round2" data-id="b5"  style="left:180px;top:140px;">
+<input class="station purple round1 round2" data-id="p1" style="left:180px;top:185px;">
+
+<input class="station blue round2" data-id="b6"  style="left:114px;top:245px;">
+<input class="station blue round2" data-id="b7"  style="left:180px;top:245px;">
+<input class="station blue round2" data-id="b8"  style="left:246px;top:245px;">
+<input class="station blue round2" data-id="b9"  style="left:318px;top:245px;">
+<input class="station blue round2" data-id="b10" style="left:372px;top:285px;">
+<input class="station blue round2" data-id="b11" style="left:444px;top:285px;">
+<input class="station blue round2" data-id="b12" style="left:510px;top:285px;">
+<input class="station blue round2" data-id="b13" style="left:510px;top:230px;">
+<input class="station purple round1 round2" data-id="p2" style="left:510px;top:185px;">
+
+<input class="station blue round2" data-id="b14" style="left:510px;top:130px;">
+<input class="station blue round2" data-id="b15" style="left:510px;top:80px;">
+<input class="station blue round2" data-id="b16" style="left:576px;top:80px;">
+<input class="station blue round2" data-id="b17" style="left:630px;top:130px;">
+<input class="station blue round2" data-id="b18" style="left:660px;top:185px;">
+
+<!-- 주황 노선 -->
+<input class="station orange round1" data-id="o1" style="left:66px;top:130px;">
+<input class="station orange round1" data-id="o2" style="left:120px;top:185px;">
+<input class="station orange round1" data-id="o3" style="left:246px;top:185px;">
+<input class="station orange round1" data-id="o4" style="left:300px;top:130px;">
+<input class="station orange round1" data-id="o5" style="left:372px;top:130px;">
+<input class="station orange round1" data-id="o6" style="left:438px;top:185px;">
+<input class="station orange round1" data-id="o7" style="left:576px;top:235px;">
+<input class="station orange round1" data-id="o8" style="left:642px;top:285px;">
         </div>
     </div>
 
     <div class="scores">
         <div class="score-card">
-            <div>1라운드 점수</div>
+            <div><i class="dot orange"></i>1라운드 점수</div>
             <strong id="score1">-</strong>
             <small id="detail1">10칸 입력 완료 시 표시</small>
         </div>
         <div class="score-card">
-            <div>2라운드 점수</div>
+            <div><i class="dot blue"></i>2라운드 점수</div>
             <strong id="score2">-</strong>
             <small id="detail2">20칸 입력 완료 시 표시</small>
         </div>
