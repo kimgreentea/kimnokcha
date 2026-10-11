@@ -9,18 +9,18 @@
 </style>
 </head>
 <body>
-<h1>HTML · CSS · JS Minifier</h1>
+<h1>HTML Minifier</h1>
 <p class="sub">HTML 안의 CSS와 JavaScript까지 함께 압축합니다. 파일을 선택하거나 코드를 붙여 넣으세요.</p>
 
 <section class="panel">
 <label for="file">파일 불러오기 (HTML, HTM, CSS, JS, TXT)</label>
 <input id="file" type="file" accept=".html,.htm,.css,.js,.txt,text/html,text/css,application/javascript,text/plain">
-<p class="hint">파일을 선택하면 입력창에 즉시 표시됩니다. HTML 파일은 내부 style/script도 함께 압축합니다.</p>
+
 </section>
 
 <section class="panel">
 <label for="input">입력 코드</label>
-<textarea id="input" spellcheck="false" placeholder="HTML, CSS 또는 JavaScript 코드를 여기에 붙여 넣으세요."></textarea>
+<textarea id="input" spellcheck="false" placeholder="코드를 붙여 넣으세요."></textarea>
 <div class="options">
 <label><input type="checkbox" id="comments" checked> 일반 주석 제거</label>
 <label><input type="checkbox" id="collapse" checked> HTML 공백 압축</label>
@@ -38,7 +38,7 @@
 <textarea id="output" spellcheck="false" placeholder="압축 결과가 여기에 표시됩니다."></textarea>
 <div id="status" class="status">대기 중</div>
 <div id="stats" class="stats"></div>
-<p class="hint">주의: 압축은 코드의 동작을 완벽히 보장하지 않습니다. 특히 JavaScript의 문자열·정규식·템플릿 문자열과 HTML의 공백에 민감한 영역은 실제 페이지에서 테스트하세요.</p>
+<p class="hint">압축은 코드의 동작을 완벽히 보장하지 않습니다. 특히 JavaScript의 문자열·정규식·템플릿 문자열과 HTML의 공백에 민감한 영역은 실제 페이지에서 테스트하세요. CSS·JavaScript 압축은 CDN 라이브러리를 사용합니다. HTML 압축은 라이브러리를 불러오지 못해도 기본 압축 방식으로 처리합니다.</p>
 </section>
 
 <section class="panel">
@@ -50,9 +50,47 @@
 <p class="hint">미리보기에서 JavaScript 실행을 허용합니다. 직접 만든 코드만 테스트하세요. 샌드박스 때문에 localStorage 등 일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있습니다.</p>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/terser@5.43.1/dist/bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/csso@5.0.5/dist/csso.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html-minifier/4.0.0/htmlminifier.min.js"></script>
+<script>
+window.__minifierLibraryErrors = [];
+window.__loadMinifierScript = function (urls) {
+    return new Promise(async resolve => {
+        for (const url of urls) {
+            try {
+                await new Promise((ok, fail) => {
+                    const script = document.createElement("script");
+                    script.src = url;
+                    script.onload = ok;
+                    script.onerror = () => {
+                        script.remove();
+                        fail(new Error("로드 실패: " + url));
+                    };
+                    document.head.appendChild(script);
+                });
+                resolve(true);
+                return;
+            } catch (error) {
+                window.__minifierLibraryErrors.push(error.message);
+            }
+        }
+        resolve(false);
+    });
+};
+window.__minifierLibrariesReady = Promise.all([
+    window.__loadMinifierScript([
+        "https://cdn.jsdelivr.net/npm/terser@5.43.1/dist/bundle.min.js",
+        "https://unpkg.com/terser@5.43.1/dist/bundle.min.js"
+    ]),
+    window.__loadMinifierScript([
+        "https://cdn.jsdelivr.net/npm/csso@5.0.5/dist/csso.min.js",
+        "https://unpkg.com/csso@5.0.5/dist/csso.min.js"
+    ]),
+    window.__loadMinifierScript([
+        "https://cdnjs.cloudflare.com/ajax/libs/html-minifier/4.0.0/htmlminifier.min.js",
+        "https://cdn.jsdelivr.net/npm/html-minifier@4.0.0/dist/htmlminifier.min.js",
+        "https://unpkg.com/html-minifier@4.0.0/dist/htmlminifier.min.js"
+    ])
+]);
+</script>
 <script>
 const $ = id => document.getElementById(id);
 const fileInput = $("file");
@@ -64,6 +102,7 @@ const status = $("status");
 const stats = $("stats");
 const previewFrame = $("preview");
 const refreshPreviewBtn = $("refreshPreview");
+let usedMinifierTools = [];
 
 fileInput.addEventListener("change", async () => {
     const file = fileInput.files && fileInput.files[0];
@@ -99,6 +138,7 @@ minifyBtn.addEventListener("click", async () => {
     stats.textContent = "";
 
     try {
+        await window.__minifierLibrariesReady;
         const result = await minifySource(source);
         output.value = result;
         updatePreview(result);
@@ -111,9 +151,13 @@ minifyBtn.addEventListener("click", async () => {
         stats.textContent =
             `입력: ${before.toLocaleString()} bytes (${formatBytes(before)})\n` +
             `결과: ${after.toLocaleString()} bytes (${formatBytes(after)})\n` +
-            `용량 변화: ${saved >= 0 ? saved.toFixed(1) + "% 감소" : Math.abs(saved).toFixed(1) + "% 증가"}`;
+            `용량 변화: ${saved >= 0 ? saved.toFixed(1) + "% 감소" : Math.abs(saved).toFixed(1) + "% 증가"}\n` +
+            `사용한 압축 도구: ${usedMinifierTools.length ? [...new Set(usedMinifierTools)].join(" + ") : "확인되지 않음"}`;
     } catch (e) {
-        setError("압축에 실패했습니다.\n" + (e && e.message ? e.message : String(e)));
+        const details = (e && e.message ? e.message : String(e));
+        const loadErrors = window.__minifierLibraryErrors || [];
+        setError("압축에 실패했습니다.\\n" + details +
+            (loadErrors.length ? "\\n\\nCDN 로드 기록:\\n" + loadErrors.join("\\n") : ""));
     } finally {
         minifyBtn.disabled = false;
     }
@@ -153,13 +197,18 @@ copyBtn.addEventListener("click", async () => {
 });
 
 async function minifySource(source) {
+    usedMinifierTools = [];
     const trimmed = source.trim();
     const looksHTML = /<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>]|<\/?[a-z][^>]*>/i.test(trimmed);
 
     if (!looksHTML) {
         // Plain CSS: prefer CSSO when it is available.
         if (window.csso && typeof window.csso.minify === "function") {
-            try { return window.csso.minify(source, { comments: $("comments").checked }).css; }
+            try {
+                const result = window.csso.minify(source, { comments: $("comments").checked }).css;
+                usedMinifierTools.push("CSSO 5.0.5 (CSS)");
+                return result;
+            }
             catch (e) {
                 // It may be JavaScript instead; try Terser below.
             }
@@ -171,7 +220,10 @@ async function minifySource(source) {
                 format: { comments: !$("comments").checked ? "all" : false }
             });
             if (js.error) throw js.error;
-            if (js.code != null) return js.code;
+            if (js.code != null) {
+                usedMinifierTools.push("Terser 5.43.1 (JavaScript)");
+                return js.code;
+            }
         }
         throw new Error("CSS 또는 JavaScript로 인식했지만 압축하지 못했습니다. 코드 종류와 문법을 확인하세요.");
     }
@@ -189,6 +241,7 @@ async function minifySource(source) {
                 minified = window.csso.minify(css, {
                     comments: !$("comments").checked
                 }).css;
+                usedMinifierTools.push("CSSO 5.0.5 (style 내부 CSS)");
             } catch (e) {
                 throw new Error("style 태그 안의 CSS 압축 실패: " + e.message);
             }
@@ -214,6 +267,7 @@ async function minifySource(source) {
                 throw new Error("script 태그 안의 JavaScript 압축 실패: " + e.message);
             }
             if (minified.error) throw minified.error;
+            usedMinifierTools.push("Terser 5.43.1 (script 내부 JavaScript)");
             html = html.replace(match[0], match[1] + minified.code + match[3]);
         }
     }
@@ -232,11 +286,15 @@ async function minifySource(source) {
             removeOptionalTags: false,
             keepClosingSlash: true
         };
-        return minifier.minify(html, options);
+        const result = minifier.minify(html, options);
+        usedMinifierTools.push("HTML Minifier 4.0.0");
+        if (!usedMinifierTools.length) usedMinifierTools.push("HTML Minifier 4.0.0");
+        return result;
     }
 
     // Fallback: basic HTML whitespace/comment minification if the HTML library is unavailable.
     // Preserve content-sensitive elements and their contents.
+    usedMinifierTools.push("내장 기본 HTML 압축 (HTML Minifier CDN 사용 불가)");
     return fallbackMinifyHTML(html, {
         collapseWhitespace: $("collapse").checked,
         removeComments: $("comments").checked
