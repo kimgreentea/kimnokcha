@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML · CSS · JS Minifier</title>
+<style>
+*{box-sizing:border-box}body{margin:0 auto;padding:26px 16px 50px;max-width:1100px;font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.5;color:#222;background:#f5f6f8}h1{font-size:1.5rem;margin:0 0 6px}.sub{color:#555;margin:0 0 18px}.panel{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;margin:14px 0}label{display:block;font-weight:700;margin-bottom:8px}textarea{display:block;width:100%;min-height:300px;padding:12px;border:1px solid #bbb;border-radius:7px;font:13px/1.5 Consolas,monospace;resize:vertical;tab-size:2}#output{min-height:300px}.preview-frame{display:block;width:100%;height:420px;border:1px solid #bbb;border-radius:7px;background:#fff}.preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.preview-head label{margin:0}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}button{border:0;border-radius:7px;padding:10px 15px;background:#2459a9;color:#fff;font-size:14px;cursor:pointer}button.secondary{background:#555}button:disabled{opacity:.5;cursor:not-allowed}.options{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:14px}.options label{font-weight:400;display:flex;align-items:center;gap:6px;margin:0}.status{font-weight:700}.ok{color:#147a35}.err{color:#b42318}.hint{font-size:13px;color:#666}.stats{font-size:13px;color:#444;margin-top:8px;white-space:pre-wrap}@media(max-width:600px){textarea{min-height:240px}.panel{padding:12px}}
+</style>
+</head>
+<body>
+<h1>HTML · CSS · JS Minifier</h1>
+<p class="sub">HTML 안의 CSS와 JavaScript까지 함께 압축합니다. 파일을 선택하거나 코드를 붙여 넣으세요.</p>
+
+<section class="panel">
+<label for="file">파일 불러오기 (HTML, HTM, CSS, JS, TXT)</label>
+<input id="file" type="file" accept=".html,.htm,.css,.js,.txt,text/html,text/css,application/javascript,text/plain">
+<p class="hint">파일을 선택하면 입력창에 즉시 표시됩니다. HTML 파일은 내부 style/script도 함께 압축합니다.</p>
+</section>
+
+<section class="panel">
+<label for="input">입력 코드</label>
+<textarea id="input" spellcheck="false" placeholder="HTML, CSS 또는 JavaScript 코드를 여기에 붙여 넣으세요."></textarea>
+<div class="options">
+<label><input type="checkbox" id="comments" checked> 일반 주석 제거</label>
+<label><input type="checkbox" id="collapse" checked> HTML 공백 압축</label>
+<label><input type="checkbox" id="optional" > 빈 속성 등 추가 최적화</label>
+</div>
+<div class="buttons">
+<button id="minify">전체 압축</button>
+<button id="copy" class="secondary" disabled>결과 복사</button>
+<button id="select" class="secondary">입력 전체 선택</button>
+</div>
+</section>
+
+<section class="panel">
+<label for="output">압축 결과</label>
+<textarea id="output" spellcheck="false" placeholder="압축 결과가 여기에 표시됩니다."></textarea>
+<div id="status" class="status">대기 중</div>
+<div id="stats" class="stats"></div>
+<p class="hint">주의: 압축은 코드의 동작을 완벽히 보장하지 않습니다. 특히 JavaScript의 문자열·정규식·템플릿 문자열과 HTML의 공백에 민감한 영역은 실제 페이지에서 테스트하세요.</p>
+</section>
+
+<section class="panel">
+<div class="preview-head">
+<label for="preview">압축 결과 미리보기</label>
+<button id="refreshPreview" class="secondary" type="button">미리보기 새로고침</button>
+</div>
+<iframe id="preview" class="preview-frame" title="압축된 HTML 미리보기" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+<p class="hint">미리보기에서 JavaScript 실행을 허용합니다. 직접 만든 코드만 테스트하세요. 샌드박스 때문에 localStorage 등 일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있습니다.</p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/terser@5.43.1/dist/bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/csso@5.0.5/dist/csso.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html-minifier/4.0.0/htmlminifier.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const fileInput = $("file");
+const input = $("input");
+const output = $("output");
+const minifyBtn = $("minify");
+const copyBtn = $("copy");
+const status = $("status");
+const stats = $("stats");
+const previewFrame = $("preview");
+const refreshPreviewBtn = $("refreshPreview");
+
+fileInput.addEventListener("change", async () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    try {
+        input.value = await file.text();
+        output.value = "";
+        copyBtn.disabled = true;
+        status.className = "status";
+        status.textContent = "파일을 입력창에 불러왔습니다.";
+        stats.textContent = `${file.name} · ${formatBytes(file.size)}`;
+    } catch (e) {
+        setError("파일을 읽지 못했습니다: " + e.message);
+    }
+});
+
+$("select").addEventListener("click", () => {
+    input.focus();
+    input.select();
+});
+
+minifyBtn.addEventListener("click", async () => {
+    const source = input.value;
+    if (!source.trim()) {
+        setError("입력 코드가 비어 있습니다.");
+        return;
+    }
+
+    minifyBtn.disabled = true;
+    copyBtn.disabled = true;
+    status.className = "status";
+    status.textContent = "압축 중...";
+    stats.textContent = "";
+
+    try {
+        const result = await minifySource(source);
+        output.value = result;
+        updatePreview(result);
+        copyBtn.disabled = !result;
+        status.className = "status ok";
+        status.textContent = "압축 완료";
+        const before = new Blob([source]).size;
+        const after = new Blob([result]).size;
+        const saved = before ? ((before - after) / before * 100) : 0;
+        stats.textContent =
+            `입력: ${before.toLocaleString()} bytes (${formatBytes(before)})\n` +
+            `결과: ${after.toLocaleString()} bytes (${formatBytes(after)})\n` +
+            `용량 변화: ${saved >= 0 ? saved.toFixed(1) + "% 감소" : Math.abs(saved).toFixed(1) + "% 증가"}`;
+    } catch (e) {
+        setError("압축에 실패했습니다.\n" + (e && e.message ? e.message : String(e)));
+    } finally {
+        minifyBtn.disabled = false;
+    }
+});
+
+output.addEventListener("input", () => {
+    // Keep the preview synchronized when the result is edited manually.
+    updatePreview(output.value);
+});
+
+refreshPreviewBtn.addEventListener("click", () => updatePreview(output.value));
+
+function updatePreview(html) {
+    // Allow scripts in the sandboxed preview. Permit common HTTPS resources,
+    // while keeping the iframe sandboxed without allow-same-origin.
+    const csp = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https: blob:; style-src 'unsafe-inline' https: data:; img-src https: data: blob:; font-src https: data:; media-src https: data: blob:; connect-src https:;">`;
+    const previewHtml = /<head\b[^>]*>/i.test(html)
+        ? html.replace(/<head\b[^>]*>/i, match => match + csp)
+        : `<!doctype html><html><head>${csp}</head><body>${html}</body></html>`;
+    previewFrame.srcdoc = previewHtml;
+}
+
+copyBtn.addEventListener("click", async () => {
+    try {
+        await navigator.clipboard.writeText(output.value);
+        status.className = "status ok";
+        status.textContent = "압축 결과를 복사했습니다.";
+    } catch (e) {
+        output.focus();
+        output.select();
+        const ok = document.execCommand("copy");
+        status.className = ok ? "status ok" : "status err";
+        status.textContent = ok
+            ? "압축 결과를 복사했습니다."
+            : "자동 복사에 실패했습니다. 결과창에서 Ctrl+C를 누르세요.";
+    }
+});
+
+async function minifySource(source) {
+    const trimmed = source.trim();
+    const looksHTML = /<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>]|<\/?[a-z][^>]*>/i.test(trimmed);
+
+    if (!looksHTML) {
+        // Plain CSS: prefer CSSO when it is available.
+        if (window.csso && typeof window.csso.minify === "function") {
+            try { return window.csso.minify(source, { comments: $("comments").checked }).css; }
+            catch (e) {
+                // It may be JavaScript instead; try Terser below.
+            }
+        }
+        if (window.Terser && typeof window.Terser.minify === "function") {
+            const js = await window.Terser.minify(source, {
+                compress: true,
+                mangle: true,
+                format: { comments: !$("comments").checked ? "all" : false }
+            });
+            if (js.error) throw js.error;
+            if (js.code != null) return js.code;
+        }
+        throw new Error("CSS 또는 JavaScript로 인식했지만 압축하지 못했습니다. 코드 종류와 문법을 확인하세요.");
+    }
+
+    let html = source;
+
+    // Minify inline style blocks with CSSO.
+    if (window.csso && typeof window.csso.minify === "function") {
+        const styleRegex = /(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi;
+        const styleMatches = [...html.matchAll(styleRegex)];
+        for (const match of styleMatches) {
+            const css = match[2];
+            let minified = css;
+            try {
+                minified = window.csso.minify(css, {
+                    comments: !$("comments").checked
+                }).css;
+            } catch (e) {
+                throw new Error("style 태그 안의 CSS 압축 실패: " + e.message);
+            }
+            html = html.replace(match[0], match[1] + minified + match[3]);
+        }
+    }
+
+    // Minify inline scripts with Terser. Keep external scripts unchanged.
+    if (window.Terser && typeof window.Terser.minify === "function") {
+        const scriptRegex = /(<script\b(?![^>]*\bsrc\s*=)[^>]*>)([\s\S]*?)(<\/script\s*>)/gi;
+        const scriptMatches = [...html.matchAll(scriptRegex)];
+        for (const match of scriptMatches) {
+            const js = match[2];
+            if (!js.trim()) continue;
+            let minified;
+            try {
+                minified = await window.Terser.minify(js, {
+                    compress: true,
+                    mangle: true,
+                    format: { comments: $("comments").checked ? false : "all" }
+                });
+            } catch (e) {
+                throw new Error("script 태그 안의 JavaScript 압축 실패: " + e.message);
+            }
+            if (minified.error) throw minified.error;
+            html = html.replace(match[0], match[1] + minified.code + match[3]);
+        }
+    }
+
+    const minifier = window.htmlMinifier || window.HTMLMinifier;
+    if (minifier && typeof minifier.minify === "function") {
+        const options = {
+            collapseWhitespace: $("collapse").checked,
+            conservativeCollapse: true,
+            removeComments: $("comments").checked,
+            removeEmptyAttributes: $("optional").checked,
+            removeRedundantAttributes: $("optional").checked,
+            useShortDoctype: true,
+            minifyCSS: false,
+            minifyJS: false,
+            removeOptionalTags: false,
+            keepClosingSlash: true
+        };
+        return minifier.minify(html, options);
+    }
+
+    // Fallback: basic HTML whitespace/comment minification if the HTML library is unavailable.
+    // Preserve content-sensitive elements and their contents.
+    return fallbackMinifyHTML(html, {
+        collapseWhitespace: $("collapse").checked,
+        removeComments: $("comments").checked
+    });
+}
+
+function fallbackMinifyHTML(html, options) {
+    const preserved = [];
+    const token = index => `___MINIFY_PRESERVE_${index}_TOKEN___`;
+
+    // Protect pre/textarea and any remaining script/style blocks from whitespace changes.
+    html = html.replace(/<(pre|textarea|script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, block => {
+        const id = preserved.push(block) - 1;
+        return token(id);
+    });
+
+    if (options.removeComments) {
+        // Keep conditional comments, remove ordinary HTML comments.
+        html = html.replace(/<!--[\s\S]*?-->/g, comment =>
+            /^<!--[\s\S]*?\[if[\s\S]*?<!\[endif\]-->$/i.test(comment) ? comment : ""
+        );
+    }
+
+    if (options.collapseWhitespace) {
+        // Collapse runs of whitespace without deleting the separator between inline text.
+        html = html.replace(/[\t\r\n\f ]+/g, " ");
+        html = html.replace(/>\s+</g, "><");
+    }
+
+    html = html.replace(/___MINIFY_PRESERVE_(\d+)_TOKEN___/g, (match, index) => preserved[Number(index)]);
+    return html.trim();
+}
+
+function setError(message) {
+    status.className = "status err";
+    status.textContent = "오류";
+    stats.textContent = message;
+}
+
+function formatBytes(bytes) {
+    if (bytes < 1024) return bytes + " B";
+    return (bytes / 1024).toFixed(2) + " KB";
+}
+</script>
+</body>
+</html>
