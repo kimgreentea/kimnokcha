@@ -27,7 +27,7 @@ button{border:0;border-radius:7px;padding:10px 14px;background:#2459a9;color:whi
 <section class="panel">
 <div class="editor-label"><label for="input">입력 코드</label><span id="inputInfo" class="muted">0자</span></div>
 <textarea id="input" spellcheck="false" placeholder="정렬할 코드를 붙여 넣으세요."></textarea>
-<div class="buttons"><button id="formatBtn">코드 정렬</button><button id="clearBtn" class="secondary">입력 비우기</button></div>
+<div class="buttons"><button id="formatBtn">코드 정렬</button></div>
 </section>
 <section class="panel">
 <div class="editor-label"><label for="output">정렬 결과</label><span id="outputInfo" class="muted">0자</span></div>
@@ -151,7 +151,7 @@ $("useOutputBtn").addEventListener("click",()=>{
     setDetail(e.message || String(e));
   }
 });
-$("clearBtn").addEventListener("click",()=>{input.value="";output.value="";fileInput.value="";counts();setStatus("입력과 결과를 비웠습니다.");setDetail();});
+
 input.addEventListener("input",counts); output.addEventListener("input",counts); counts();
 loadLibraries();
 })();
