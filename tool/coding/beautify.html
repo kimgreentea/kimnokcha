@@ -134,7 +134,23 @@ $("copyBtn").addEventListener("click",async()=>{
   catch(e){output.focus();output.select();if(!document.execCommand("copy")){setStatus("복사 실패: 결과창에서 직접 복사하세요.","error");return;}}
   setStatus("정렬 결과를 복사했습니다.","ok");
 });
-$("useOutputBtn").addEventListener("click",()=>{input.value=output.value;counts();setStatus("정렬 결과를 입력창으로 옮겼습니다.","ok");});
+$("useOutputBtn").addEventListener("click",()=>{
+  if(!output.value.trim()){
+    setStatus("정렬할 결과가 없습니다.","error");
+    setDetail();
+    return;
+  }
+
+  try{
+    output.value = formatCode(output.value);
+    counts();
+    setStatus("재정렬 완료","ok");
+    setDetail("");
+  }catch(e){
+    setStatus("재정렬 실패","error");
+    setDetail(e.message || String(e));
+  }
+});
 $("clearBtn").addEventListener("click",()=>{input.value="";output.value="";fileInput.value="";counts();setStatus("입력과 결과를 비웠습니다.");setDetail();});
 input.addEventListener("input",counts); output.addEventListener("input",counts); counts();
 loadLibraries();
