@@ -894,7 +894,7 @@
     {
         "hanmun": "施恩勿求報",
         "reading": "시은물구보",
-        "meaning": "은혜를 베풀고나서 보답을 바라지 마라.",
+        "meaning": "은혜를 베풀고나서 보답을 바라지 말라.",
         "keyHanja": [
             {
                 "hanja": "恩",
@@ -911,7 +911,7 @@
     {
         "hanmun": "與人勿追悔",
         "reading": "여인물추회",
-        "meaning": "남에게 주었거든 후회하지 마라.",
+        "meaning": "남에게 주었거든 후회하지 말라.",
         "keyHanja": [
             {
                 "hanja": "人",
@@ -993,7 +993,7 @@
                 "reading": "천"
             }
         ],
-        "meaning": "자신을 귀하게 여기면서 남을 천하게 여기지 마라."
+        "meaning": "자신을 귀하게 여기면서 남을 천하게 여기지 말라."
     },
     {
         "hanmun": "勿以自大而蔑小",
@@ -1010,7 +1010,7 @@
                 "reading": "멸"
             }
         ],
-        "meaning": "자신을 크다 여기면서 다른 사람을 업신여기지 마라."
+        "meaning": "자신을 크다 여기면서 다른 사람을 업신여기지 말라."
     },
 
     {
@@ -1669,7 +1669,83 @@
                 "reading": "습"
             }
         ]
+    },
+
+    
+    {
+        "hanmun": "勝人者有力 自勝者强",
+        "reading": "승인자유력 자승자강",
+        "meaning": "남을 이기는 자는 힘이 있을 뿐, 자신을 이기는 사람은 진정으로 강하다",
+        "keyHanja": [
+            {"hanja": "勝", "meaning": "이기다", "reading": "승"},
+            {"hanja": "力", "meaning": "힘", "reading": "력"},
+            {"hanja": "强", "meaning": "강하다", "reading": "강"}
+        ]
+    },
+    {
+        "hanmun": "圖難於其易 爲大於其細",
+        "reading": "도난어기이 위대어기세",
+        "meaning": "어려운 일은 쉬운 일부터 도모하고, 큰일은 작은 일부터 시작하라.",
+        "keyHanja": [
+            {"hanja": "圖", "meaning": "꾀하다", "reading": "도"},
+            {"hanja": "難", "meaning": "어렵다", "reading": "난"},
+            {"hanja": "易", "meaning": "쉽다", "reading": "이"}
+        ]
+    },
+    {
+        "hanmun": "天下難事 必作於易",
+        "reading": "천하난사 필작어이",
+        "meaning": "세상의 어려운 일은 반드시 쉬운 일에서 시작된다.",
+        "keyHanja": [
+            {"hanja": "天下", "meaning": "세상", "reading": "천하"},
+            {"hanja": "必", "meaning": "반드시", "reading": "필"}
+            {"hanja": "易", "meaning": "쉽다", "reading": "이"}
+        ]
+    },
+    {
+        "hanmun": "天下大事 必作於細",
+        "reading": "천하대사 필작어세",
+        "meaning": "세상의 큰일은 반드시 작은 일에서 시작된다.",
+        "keyHanja": [
+            {"hanja": "大", "meaning": "크다", "reading": "대"},
+            {"hanja": "事", "meaning": "일", "reading": "사"},
+            {"hanja": "必", "meaning": "반드시", "reading": "필"},
+            {"hanja": "細", "meaning": "가늘다", "reading": "세"}
+        ]
+    },
+    {
+        "hanmun": "千丈之堤 以螻蟻之穴潰",
+        "reading": "천장지제 이누의지혈궤",
+        "meaning": "천 길의 둑도 개미구멍 때문에 무너진다.",
+        "keyHanja": [
+            {"hanja": "丈", "meaning": "길이", "reading": "장"},
+            {"hanja": "堤", "meaning": "둑", "reading": "제"},
+            {"hanja": "穴", "meaning": "구멍", "reading": "혈"}
+        ]
+    },
+    {
+        "hanmun": "百尺之室 以突隙之烟焚",
+        "reading": "백척지실 이돌극지연분",
+        "meaning": "백 자 높이의 집도 굴뚝 틈새에서 나온 연기 때문에 불탄다.",
+        "keyHanja": [
+            {"hanja": "尺", "meaning": "자", "reading": "척"},
+            {"hanja": "室", "meaning": "집", "reading": "실"},
+            {"hanja": "焚", "meaning": "불타다", "reading": "분"}
+        ]
+    },
+    {
+        "hanmun": "則非知之難也 處之則難也",
+        "reading": "즉비지지난야 처지즉난야",
+        "meaning": "그러므로 앎은 어렵지 않다. 이를 대처함이 어렵다.",
+        "keyHanja": [
+            {"hanja": "知", "meaning": "알다", "reading": "지"},
+            {"hanja": "難", "meaning": "어렵다", "reading": "난"},
+            {"hanja": "處", "meaning": "처리하다", "reading": "처"}
+        ]
     }
 
 
+
+
+    
 ]
