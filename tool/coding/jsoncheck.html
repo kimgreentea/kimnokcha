@@ -30,9 +30,9 @@ button:disabled{background:#999;cursor:not-allowed}
   <label for="mode">검사 방식</label>
   <select id="mode">
     <option value="generic">JSON 검사 및 정렬</option>
-    <option value="sentence">한문용 검사 및 변환</option>
+    <option value="sentence">한문용</option>
   </select>
-  <p class="hint" id="modeHint">모든 종류의 JSON을 검사하고 들여쓰기 4칸으로 정리합니다. 데이터 구조는 제한하지 않습니다.</p>
+  <p class="hint" id="modeHint">JSON을 검사하고 들여쓰기 4칸으로 정리합니다.</p>
   <label for="fileInput">JSON 파일 선택</label>
   <input id="fileInput" type="file" accept=".json,application/json,.txt,text/plain">
 </section>
@@ -41,7 +41,7 @@ button:disabled{background:#999;cursor:not-allowed}
   <label for="input">입력 JSON</label>
   <textarea id="input" spellcheck="false" placeholder="JSON 내용을 붙여 넣으세요."></textarea>
   <button id="checkBtn" type="button">검사 및 변환</button>
-  <button id="clearBtn" class="secondary" type="button">입력·결과 지우기</button>
+  <button id="clearBtn" class="secondary" type="button">입력 및 결과 지우기</button>
 </section>
 
 <section class="panel">
@@ -91,8 +91,8 @@ fileInput.addEventListener("change", async () => {
 
 modeEl.addEventListener("change", () => {
   modeHint.textContent = modeEl.value === "generic"
-    ? "모든 종류의 JSON을 검사하고 들여쓰기 4칸으로 정리합니다. 데이터 구조는 제한하지 않습니다."
-    : "한문 문장 배열의 hanmun, reading, meaning, keyHanja 구조를 검사하고 keyHanja 객체를 한 줄씩 출력합니다.";
+    ? "JSON을 검사하고 들여쓰기 4칸으로 정리합니다."
+    : "";
 });
 
 checkBtn.addEventListener("click", () => processJson(inputEl.value));
