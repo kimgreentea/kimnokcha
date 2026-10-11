@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HTML · CSS · JS Minifier</title>
+<title>HTML Minifier</title>
 <style>
 *{box-sizing:border-box}body{margin:0 auto;padding:26px 16px 50px;max-width:1100px;font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.5;color:#222;background:#f5f6f8}h1{font-size:1.5rem;margin:0 0 6px}.sub{color:#555;margin:0 0 18px}.panel{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;margin:14px 0}label{display:block;font-weight:700;margin-bottom:8px}textarea{display:block;width:100%;min-height:300px;padding:12px;border:1px solid #bbb;border-radius:7px;font:13px/1.5 Consolas,monospace;resize:vertical;tab-size:2}#output{min-height:300px}.preview-frame{display:block;width:100%;height:420px;border:1px solid #bbb;border-radius:7px;background:#fff}.preview-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.preview-head label{margin:0}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}button{border:0;border-radius:7px;padding:10px 15px;background:#2459a9;color:#fff;font-size:14px;cursor:pointer}button.secondary{background:#555}button:disabled{opacity:.5;cursor:not-allowed}.options{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:14px}.options label{font-weight:400;display:flex;align-items:center;gap:6px;margin:0}.status{font-weight:700}.ok{color:#147a35}.err{color:#b42318}.hint{font-size:13px;color:#666}.stats{font-size:13px;color:#444;margin-top:8px;white-space:pre-wrap}@media(max-width:600px){textarea{min-height:240px}.panel{padding:12px}}
 </style>
 </head>
 <body>
 <h1>HTML Minifier</h1>
-<p class="sub">HTML 안의 CSS와 JavaScript까지 함께 압축합니다. 파일을 선택하거나 코드를 붙여 넣으세요.</p>
+
 
 <section class="panel">
 <label for="file">파일 불러오기 (HTML, HTM, CSS, JS, TXT)</label>
@@ -38,7 +38,7 @@
 <textarea id="output" spellcheck="false" placeholder="압축 결과가 여기에 표시됩니다."></textarea>
 <div id="status" class="status">대기 중</div>
 <div id="stats" class="stats"></div>
-<p class="hint">압축은 코드의 동작을 완벽히 보장하지 않습니다. 특히 JavaScript의 문자열·정규식·템플릿 문자열과 HTML의 공백에 민감한 영역은 실제 페이지에서 테스트하세요. CSS·JavaScript 압축은 CDN 라이브러리를 사용합니다. HTML 압축은 라이브러리를 불러오지 못해도 기본 압축 방식으로 처리합니다.</p>
+<p class="hint">압축은 코드의 동작을 완벽히 보장하지 않습니다. </p>
 </section>
 
 <section class="panel">
@@ -47,7 +47,7 @@
 <button id="refreshPreview" class="secondary" type="button">미리보기 새로고침</button>
 </div>
 <iframe id="preview" class="preview-frame" title="압축된 HTML 미리보기" sandbox="allow-scripts allow-forms allow-modals"></iframe>
-<p class="hint">미리보기에서 JavaScript 실행을 허용합니다. 직접 만든 코드만 테스트하세요. 샌드박스 때문에 localStorage 등 일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있습니다.</p>
+<p class="hint">일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있습니다. 악성코드가 실행될 수 있으니 신뢰할 수 있는 코드만 사용하세요.</p>
 </section>
 
 <script>
