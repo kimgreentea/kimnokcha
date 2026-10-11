@@ -4,16 +4,8 @@
         "reading": "자왈 학이시습지 불역열호",
         "meaning": "공자님께서 말씀하셨다. 배우고 늘 익히니 또한 즐겁지 아니한가",
         "keyHanja": [
-            {
-                "hanja": "學",
-                "meaning": "배우다",
-                "reading": "학"
-            },
-            {
-                "hanja": "習",
-                "meaning": "익히다",
-                "reading": "습"
-            }
+            {"hanja": "學", "meaning": "배우다", "reading": "학"},
+            {"hanja": "習", "meaning": "익히다", "reading": "습"}
         ]
     },
     {
@@ -21,26 +13,10 @@
         "reading": "유붕자원방래 불역낙호",
         "meaning": "먼 곳에서 벗이 찾아오니 또한 기쁘지 아니한가",
         "keyHanja": [
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            },
-            {
-                "hanja": "來",
-                "meaning": "오다",
-                "reading": "래"
-            },
-            {
-                "hanja": "朋",
-                "meaning": "친구",
-                "reading": "붕"
-            },
-            {
-                "hanja": "樂",
-                "meaning": "즐겁다",
-                "reading": "락"
-            }
+            {"hanja": "有", "meaning": "있다", "reading": "유"},
+            {"hanja": "來", "meaning": "오다", "reading": "래"},
+            {"hanja": "朋", "meaning": "친구", "reading": "붕"},
+            {"hanja": "樂", "meaning": "즐겁다", "reading": "락"}
         ]
     },
     {
@@ -48,16 +24,8 @@
         "reading": "지지위지지 부지위부지",
         "meaning": "아는 것을 안다고 하고, 모르는 것을 모른다고 하여라. ",
         "keyHanja": [
-            {
-                "hanja": "知",
-                "meaning": "알다",
-                "reading": "지"
-            },
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불 / 부"
-            }
+            {"hanja": "知", "meaning": "알다", "reading": "지"},
+            {"hanja": "不", "meaning": "아니다", "reading": "불 / 부"}
         ]
     },
     {
@@ -65,21 +33,9 @@
         "reading": "자왈 삼인행 필유아사언",
         "meaning": "공자님께서 말씀하셨다. 세 사람이 길을 가면 그곳에 반드시 나의 스승이 있다.",
         "keyHanja": [
-            {
-                "hanja": "行",
-                "meaning": "다니다",
-                "reading": "행"
-            },
-            {
-                "hanja": "必",
-                "meaning": "반드시",
-                "reading": "필"
-            },
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            }
+            {"hanja": "行", "meaning": "다니다", "reading": "행"},
+            {"hanja": "必", "meaning": "반드시", "reading": "필"},
+            {"hanja": "有", "meaning": "있다", "reading": "유"}
         ]
     },
     {
@@ -87,26 +43,10 @@
         "reading": "자왈 불환인지부기지 환부지인야",
         "meaning": "공자님께서 말씀하셨다. 다른 사람이 나를 몰라줌을 근심하지 말라. 내가 다른 사람을 알아보지 못함을 근심하라.",
         "keyHanja": [
-            {
-                "hanja": "患",
-                "meaning": "근심",
-                "reading": "환"
-            },
-            {
-                "hanja": "知",
-                "meaning": "알다",
-                "reading": "지"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "己",
-                "meaning": "자기",
-                "reading": "기"
-            }
+            {"hanja": "患", "meaning": "근심", "reading": "환"},
+            {"hanja": "知", "meaning": "알다", "reading": "지"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "己", "meaning": "자기", "reading": "기"}
         ]
     },
     {
@@ -114,44 +54,19 @@
         "reading": "자왈 과이불개 시위과의",
         "meaning": "공자님께서 말씀하셨다. 잘못을 저지르고도 고치지 않음이 바로 잘못이다.",
         "keyHanja": [
-            {
-                "hanja": "過",
-                "meaning": "지나다",
-                "reading": "과"
-            },
-            {
-                "hanja": "改",
-                "meaning": "고치다",
-                "reading": "개"
-            },
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불"
-            }
+            {"hanja": "過", "meaning": "지나다", "reading": "과"},
+            {"hanja": "改", "meaning": "고치다", "reading": "개"},
+            {"hanja": "不", "meaning": "아니다", "reading": "불"}
         ]
     },
-
     {
         "hanmun": "子曰 君子坦蕩蕩 小人長戚戚",
         "reading": "자왈 군자탄탕탕 소인장척척",
         "meaning": "공자님께서 말씀하셨다. 군자는 항상 평온하며 소인은 늘 근심한다.",
         "keyHanja": [
-            {
-                "hanja": "君",
-                "meaning": "임금",
-                "reading": "군"
-            },
-            {
-                "hanja": "長",
-                "meaning": "길다",
-                "reading": "장"
-            },
-            {
-                "hanja": "小",
-                "meaning": "작다",
-                "reading": "소"
-            }
+            {"hanja": "君", "meaning": "임금", "reading": "군"},
+            {"hanja": "長", "meaning": "길다", "reading": "장"},
+            {"hanja": "小", "meaning": "작다", "reading": "소"}
         ]
     },
     {
@@ -159,17 +74,8 @@
         "reading": "계이사지 후목불절",
         "meaning": "자르다 중단하면 썩은 나무도 자를 수 없다.",
         "keyHanja": [
-            {
-                "hanja": "木",
-                "meaning": "나무",
-                "reading": "목"
-            },
-
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불"
-            }
+            {"hanja": "木", "meaning": "나무", "reading": "목"},
+            {"hanja": "不", "meaning": "아니다", "reading": "불"}
         ]
     },
     {
@@ -177,82 +83,37 @@
         "reading": "계이불사 금석가루",
         "meaning": "자르기를 멈추지 않으면 쇠나 돌이라도 자를 수 있다.",
         "keyHanja": [
-               {
-                "hanja": "金",
-                "meaning": "쇠",
-                "reading": "금"
-            },
-            {
-                "hanja": "不",
-                "meaning": "아니다",
-                "reading": "불"
-            },
-            {
-                "hanja": "石",
-                "meaning": "돌",
-                "reading": "석"
-            }
+            {"hanja": "金", "meaning": "쇠", "reading": "금"},
+            {"hanja": "不", "meaning": "아니다", "reading": "불"},
+            {"hanja": "石", "meaning": "돌", "reading": "석"}
         ]
     },
-    
     {
         "hanmun": "故不積蹞步 無以至千里",
         "reading": "고부적규보 무이지천리",
         "meaning": "그러므로 한 걸음씩 쌓아가지 않으면 천 리를 갈 수 없다. ",
         "keyHanja": [
-            {
-                "hanja": "千",
-                "meaning": "일천",
-                "reading": "천"
-            },
-            {
-                "hanja": "步",
-                "meaning": "걸음",
-                "reading": "보"
-            }
-            
+            {"hanja": "千", "meaning": "일천", "reading": "천"},
+            {"hanja": "步", "meaning": "걸음", "reading": "보"}
         ]
     },
-
     {
         "hanmun": "不積小流 無以成江海",
         "reading": "부적소류 무이성강해",
         "meaning": "작은 물줄기가 쌓이지 않으면 강과 바다를 이룰 수 없다.",
         "keyHanja": [
-      
-            {
-                "hanja": "江",
-                "meaning": "강",
-                "reading": "강"
-            },
-            {
-                "hanja": "無",
-                "meaning": "없다",
-                "reading": "무"
-            },
-            {
-                "hanja": "海",
-                "meaning": "바다",
-                "reading": "해"
-            }
+            {"hanja": "江", "meaning": "강", "reading": "강"},
+            {"hanja": "無", "meaning": "없다", "reading": "무"},
+            {"hanja": "海", "meaning": "바다", "reading": "해"}
         ]
     },
-    
     {
         "hanmun": "靑取之於藍 而靑於藍",
         "reading": "청취지어람 이청어람",
         "meaning": "푸른 물감은 쪽풀에서 얻지만 쪽풀보다 푸르다.",
         "keyHanja": [
-            {
-                "hanja": "靑",
-                "meaning": "푸르다",
-                "reading": "청"
-            },
-            {
-                "hanja": "取",
-                "meaning": "취하다",
-                "reading": "취"
-            }
+            {"hanja": "靑", "meaning": "푸르다", "reading": "청"},
+            {"hanja": "取", "meaning": "취하다", "reading": "취"}
         ]
     },
     {
@@ -260,21 +121,9 @@
         "reading": "빙수위지 이한어수",
         "meaning": "얼음은 물이 변하여 되지만 물보다 차다.",
         "keyHanja": [
-            {
-                "hanja": "水",
-                "meaning": "물",
-                "reading": "수"
-            },
-            {
-                "hanja": "氷",
-                "meaning": "얼음",
-                "reading": "빙"
-            },
-            {
-                "hanja": "寒",
-                "meaning": "차다",
-                "reading": "한"
-            }
+            {"hanja": "水", "meaning": "물", "reading": "수"},
+            {"hanja": "氷", "meaning": "얼음", "reading": "빙"},
+            {"hanja": "寒", "meaning": "차다", "reading": "한"}
         ]
     },
     {
@@ -282,21 +131,9 @@
         "reading": "자왈 덕불고 필유린",
         "meaning": "공자님께서 말씀하셨다. 덕이 있는 사람은 외롭지 않다. 반드시 그 곁에 사람이 모인다.",
         "keyHanja": [
-            {
-                "hanja": "德",
-                "meaning": "덕",
-                "reading": "덕"
-            },
-            {
-                "hanja": "必",
-                "meaning": "반드시",
-                "reading": "필"
-            },
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            }
+            {"hanja": "德", "meaning": "덕", "reading": "덕"},
+            {"hanja": "必", "meaning": "반드시", "reading": "필"},
+            {"hanja": "有", "meaning": "있다", "reading": "유"}
         ]
     },
     {
@@ -304,21 +141,9 @@
         "reading": "자왈 교언령색 선의인",
         "meaning": "공자님께서 말씀하셨다. 그럴듯한 말과 꾸민 얼굴은 어질지 않다.",
         "keyHanja": [
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            },
-            {
-                "hanja": "色",
-                "meaning": "빛",
-                "reading": "색"
-            },
-            {
-                "hanja": "仁",
-                "meaning": "어질다",
-                "reading": "인"
-            }
+            {"hanja": "言", "meaning": "말씀", "reading": "언"},
+            {"hanja": "色", "meaning": "빛", "reading": "색"},
+            {"hanja": "仁", "meaning": "어질다", "reading": "인"}
         ]
     },
     {
@@ -326,26 +151,10 @@
         "reading": "자왈 구야행 구유과 인필지지",
         "meaning": "공자님께서 말씀하셨다. 참 다행이다. 만약 잘못이 있다면 사람들이 반드시 알려주는구나.",
         "keyHanja": [
-            {
-                "hanja": "幸",
-                "meaning": "다행",
-                "reading": "행"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            },
-            {
-                "hanja": "必",
-                "meaning": "반드시",
-                "reading": "필"
-            }
+            {"hanja": "幸", "meaning": "다행", "reading": "행"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "有", "meaning": "있다", "reading": "유"},
+            {"hanja": "必", "meaning": "반드시", "reading": "필"}
         ]
     },
     {
@@ -353,21 +162,9 @@
         "reading": "자왈 군자 민어사이신어언",
         "meaning": "공자님께서 말씀하셨다. 군자는 행동이 빠르지만 말은 신중하다.",
         "keyHanja": [
-            {
-                "hanja": "事",
-                "meaning": "일",
-                "reading": "사"
-            },
-            {
-                "hanja": "愼",
-                "meaning": "삼가다",
-                "reading": "신"
-            },
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            }
+            {"hanja": "事", "meaning": "일", "reading": "사"},
+            {"hanja": "愼", "meaning": "삼가다", "reading": "신"},
+            {"hanja": "言", "meaning": "말씀", "reading": "언"}
         ]
     },
     {
@@ -375,22 +172,9 @@
         "reading": "군자 선행기언 이후종지",
         "meaning": "군자는 자신의 말을 먼저 실천하고 남이 자신을 따르게 한다.",
         "keyHanja": [
-  
-            {
-                "hanja": "先",
-                "meaning": "먼저",
-                "reading": "선"
-            },
-            {
-                "hanja": "行",
-                "meaning": "다니다",
-                "reading": "행"
-            },
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            }
+            {"hanja": "先", "meaning": "먼저", "reading": "선"},
+            {"hanja": "行", "meaning": "다니다", "reading": "행"},
+            {"hanja": "言", "meaning": "말씀", "reading": "언"}
         ]
     },
     {
@@ -398,16 +182,8 @@
         "reading": "군자주이불비 소인비이부주",
         "meaning": "군자는 두루 친하지만 편을 들지 않으며, 소인은 편을 들지만 친하지 않다.",
         "keyHanja": [
-            {
-                "hanja": "君",
-                "meaning": "임금",
-                "reading": "군"
-            },
-            {
-                "hanja": "周",
-                "meaning": "두루",
-                "reading": "주"
-            }
+            {"hanja": "君", "meaning": "임금", "reading": "군"},
+            {"hanja": "周", "meaning": "두루", "reading": "주"}
         ]
     },
     {
@@ -415,21 +191,9 @@
         "reading": "자왈 군자유어의 소인유어리",
         "meaning": "공자님께서 말씀하셨다. 군자는 정의를 훤히 알고 소인은 이익을 훤히 안다.",
         "keyHanja": [
-            {
-                "hanja": "君",
-                "meaning": "임금",
-                "reading": "군"
-            },
-            {
-                "hanja": "義",
-                "meaning": "옳다",
-                "reading": "의"
-            },
-            {
-                "hanja": "利",
-                "meaning": "이롭다",
-                "reading": "리"
-            }
+            {"hanja": "君", "meaning": "임금", "reading": "군"},
+            {"hanja": "義", "meaning": "옳다", "reading": "의"},
+            {"hanja": "利", "meaning": "이롭다", "reading": "리"}
         ]
     },
     {
@@ -437,21 +201,9 @@
         "reading": "자왈 군자욕 눌어언 이민어행",
         "meaning": "공자님께서 말씀하셨다. 군자는 말만 번지르르 하기보다 행동이 앞서고자 한다.",
         "keyHanja": [
-            {
-                "hanja": "欲",
-                "meaning": "바란다",
-                "reading": "욕"
-            },
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            },
-            {
-                "hanja": "行",
-                "meaning": "다니다",
-                "reading": "행"
-            }
+            {"hanja": "欲", "meaning": "바란다", "reading": "욕"},
+            {"hanja": "言", "meaning": "말씀", "reading": "언"},
+            {"hanja": "行", "meaning": "다니다", "reading": "행"}
         ]
     },
     {
@@ -459,21 +211,9 @@
         "reading": "오상종일이사의 불여수유지소학야",
         "meaning": "내가 일찍이 종일토록 생각해 본 적 있으나 잠깐 배우느니만 못하였다.",
         "keyHanja": [
-            {
-                "hanja": "終",
-                "meaning": "마치다",
-                "reading": "종"
-            },
-            {
-                "hanja": "思",
-                "meaning": "생각하다",
-                "reading": "사"
-            },
-            {
-                "hanja": "學",
-                "meaning": "배우다",
-                "reading": "학"
-            }
+            {"hanja": "終", "meaning": "마치다", "reading": "종"},
+            {"hanja": "思", "meaning": "생각하다", "reading": "사"},
+            {"hanja": "學", "meaning": "배우다", "reading": "학"}
         ]
     },
     {
@@ -481,109 +221,48 @@
         "reading": "물이선소이불위",
         "meaning": "선은 아무리 작아도 하지 않으면 안된다.",
         "keyHanja": [
-            {
-                "hanja": "勿",
-                "meaning": "말다",
-                "reading": "물"
-            },
-            {
-                "hanja": "爲",
-                "meaning": "하다",
-                "reading": "위"
-            },
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            }
+            {"hanja": "勿", "meaning": "말다", "reading": "물"},
+            {"hanja": "爲", "meaning": "하다", "reading": "위"},
+            {"hanja": "善", "meaning": "착하다", "reading": "선"}
         ]
     },
-
     {
         "hanmun": "勿以惡小而爲之",
         "reading": "물이악소이위지",
         "meaning": "악은 아무리 작아도 해서는 안 된다.",
         "keyHanja": [
-            {
-                "hanja": "勿",
-                "meaning": "말다",
-                "reading": "물"
-            },
-            {
-                "hanja": "爲",
-                "meaning": "하다",
-                "reading": "위"
-            },
-
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            }
+            {"hanja": "勿", "meaning": "말다", "reading": "물"},
+            {"hanja": "爲", "meaning": "하다", "reading": "위"},
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"}
         ]
     },
-    
     {
         "hanmun": "終身行善 善猶不足",
         "reading": "종신행선 선유부족 ",
         "meaning": "죽을 때까지 선을 행하여도 선은 오히려 부족하다.",
         "keyHanja": [
-            {
-                "hanja": "身",
-                "meaning": "몸",
-                "reading": "신"
-            },
-            {
-                "hanja": "足",
-                "meaning": "족하다 족 / 발",
-                "reading": "족"
-            },
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            }
+            {"hanja": "身", "meaning": "몸", "reading": "신"},
+            {"hanja": "足", "meaning": "족하다 족 / 발", "reading": "족"},
+            {"hanja": "善", "meaning": "착하다", "reading": "선"}
         ]
     },
-
     {
         "hanmun": "一日行惡 惡自有餘",
         "reading": "일일행악 악자유여",
         "meaning": "하루라도 악을 행하면 악은 저절로 남는다.",
         "keyHanja": [
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "自",
-                "meaning": "스스로",
-                "reading": "자"
-            }
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "自", "meaning": "스스로", "reading": "자"}
         ]
     },
-    
     {
         "hanmun": "一日行善 福雖未至 禍自遠矣",
         "reading": "일일행선 복수미지 화자원의",
         "meaning": "하루 선한 일을 하면 복이 비록 바로 오지 않으나 화는 저절로 멀어진다.",
         "keyHanja": [
-            {
-                "hanja": "福",
-                "meaning": "복",
-                "reading": "복"
-            },
-            {
-                "hanja": "禍",
-                "meaning": "재앙",
-                "reading": "화"
-            },
-            {
-                "hanja": "遠",
-                "meaning": "멀다",
-                "reading": "원"
-            }
+            {"hanja": "福", "meaning": "복", "reading": "복"},
+            {"hanja": "禍", "meaning": "재앙", "reading": "화"},
+            {"hanja": "遠", "meaning": "멀다", "reading": "원"}
         ]
     },
     {
@@ -591,21 +270,9 @@
         "reading": "일일행악 화수미지 복자원의",
         "meaning": "하루 악한 일을 하면 화가 비록 바로 오지 않으나 복은 저절로 멀어진다.",
         "keyHanja": [
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "禍",
-                "meaning": "재앙",
-                "reading": "화"
-            },
-            {
-                "hanja": "福",
-                "meaning": "복",
-                "reading": "복"
-            }
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "禍", "meaning": "재앙", "reading": "화"},
+            {"hanja": "福", "meaning": "복", "reading": "복"}
         ]
     },
     {
@@ -613,26 +280,10 @@
         "reading": "행선지인 여춘원지초 불견기장 일유소증",
         "meaning": "선한 일을 행하는 자는 봄 동산의 풀과 같아, 그 자라는 것이 눈에 보이지는 않지만 매일 더해지는 것이 있다.",
         "keyHanja": [
-            {
-                "hanja": "春",
-                "meaning": "봄",
-                "reading": "춘"
-            },
-            {
-                "hanja": "草",
-                "meaning": "풀",
-                "reading": "초"
-            },
-            {
-                "hanja": "見",
-                "meaning": "보다",
-                "reading": "견"
-            },
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            }
+            {"hanja": "春", "meaning": "봄", "reading": "춘"},
+            {"hanja": "草", "meaning": "풀", "reading": "초"},
+            {"hanja": "見", "meaning": "보다", "reading": "견"},
+            {"hanja": "有", "meaning": "있다", "reading": "유"}
         ]
     },
     {
@@ -640,26 +291,10 @@
         "reading": "행악지인 여마도지석 불견지손 일유소휴",
         "meaning": "악한 일을 행하는 자는 칼을 가는 돌과 같아, 그 줄어드는 것이 눈에 보이지는 않지만 매일 흩어지는 것이 있다.",
         "keyHanja": [
-            {
-                "hanja": "刀",
-                "meaning": "칼",
-                "reading": "도"
-            },
-            {
-                "hanja": "石",
-                "meaning": "돌",
-                "reading": "석"
-            },
-            {
-                "hanja": "見",
-                "meaning": "보다",
-                "reading": "견"
-            },
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            }
+            {"hanja": "刀", "meaning": "칼", "reading": "도"},
+            {"hanja": "石", "meaning": "돌", "reading": "석"},
+            {"hanja": "見", "meaning": "보다", "reading": "견"},
+            {"hanja": "有", "meaning": "있다", "reading": "유"}
         ]
     },
     {
@@ -667,26 +302,10 @@
         "reading": "이인지언 난여면서",
         "meaning": "사람을 이롭게 하는 말은 마치 솜처럼 따뜻하다.",
         "keyHanja": [
-            {
-                "hanja": "利",
-                "meaning": "이롭다",
-                "reading": "리"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            },
-            {
-                "hanja": "如",
-                "meaning": "같다",
-                "reading": "여"
-            }
+            {"hanja": "利", "meaning": "이롭다", "reading": "리"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "言", "meaning": "말씀", "reading": "언"},
+            {"hanja": "如", "meaning": "같다", "reading": "여"}
         ]
     },
     {
@@ -694,26 +313,10 @@
         "reading": "상인지어 이여형극",
         "meaning": "사람을 해치는 말은 가시처럼 날카롭다.",
         "keyHanja": [
-            {
-                "hanja": "傷",
-                "meaning": "상처",
-                "reading": "상"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "語",
-                "meaning": "말씀",
-                "reading": "어"
-            },
-            {
-                "hanja": "如",
-                "meaning": "같다",
-                "reading": "여"
-            }
+            {"hanja": "傷", "meaning": "상처", "reading": "상"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "語", "meaning": "말씀", "reading": "어"},
+            {"hanja": "如", "meaning": "같다", "reading": "여"}
         ]
     },
     {
@@ -721,26 +324,10 @@
         "reading": "일언리인 중치천금",
         "meaning": "한 마디 말이 사람을 이롭게 하니 그 값어치가 천금이다.",
         "keyHanja": [
-            {
-                "hanja": "言",
-                "meaning": "말씀",
-                "reading": "언"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "重",
-                "meaning": "무겁다",
-                "reading": "중"
-            },
-            {
-                "hanja": "千",
-                "meaning": "일천",
-                "reading": "천"
-            }
+            {"hanja": "言", "meaning": "말씀", "reading": "언"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "重", "meaning": "무겁다", "reading": "중"},
+            {"hanja": "千", "meaning": "일천", "reading": "천"}
         ]
     },
     {
@@ -748,26 +335,10 @@
         "reading": "일어상인 통여도할",
         "meaning": "한 마디 말이 사람을 해치니 칼로 베는 것처럼 아프다.",
         "keyHanja": [
-            {
-                "hanja": "語",
-                "meaning": "말씀",
-                "reading": "어"
-            },
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "痛",
-                "meaning": "아프다",
-                "reading": "통"
-            },
-            {
-                "hanja": "刀",
-                "meaning": "칼",
-                "reading": "도"
-            }
+            {"hanja": "語", "meaning": "말씀", "reading": "어"},
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "痛", "meaning": "아프다", "reading": "통"},
+            {"hanja": "刀", "meaning": "칼", "reading": "도"}
         ]
     },
     {
@@ -775,26 +346,10 @@
         "reading": "인수지우 책인즉명",
         "meaning": "사람이 비록 지극히 어리석어도 남을 탓할 때는 밝다.",
         "keyHanja": [
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "愚",
-                "meaning": "어리석다",
-                "reading": "우"
-            },
-            {
-                "hanja": "則",
-                "meaning": "곧",
-                "reading": "즉"
-            },
-            {
-                "hanja": "明",
-                "meaning": "밝다",
-                "reading": "명"
-            }
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "愚", "meaning": "어리석다", "reading": "우"},
+            {"hanja": "則", "meaning": "곧", "reading": "즉"},
+            {"hanja": "明", "meaning": "밝다", "reading": "명"}
         ]
     },
     {
@@ -802,26 +357,10 @@
         "reading": "수유총명 서기즉혼",
         "meaning": "비록 총명하여도 자신을 용서할 때는 어둡다.",
         "keyHanja": [
-            {
-                "hanja": "有",
-                "meaning": "있다",
-                "reading": "유"
-            },
-            {
-                "hanja": "聰",
-                "meaning": "귀밝다",
-                "reading": "총"
-            },
-            {
-                "hanja": "明",
-                "meaning": "밝다",
-                "reading": "명"
-            },
-            {
-                "hanja": "己",
-                "meaning": "몸",
-                "reading": "기"
-            }
+            {"hanja": "有", "meaning": "있다", "reading": "유"},
+            {"hanja": "聰", "meaning": "귀밝다", "reading": "총"},
+            {"hanja": "明", "meaning": "밝다", "reading": "명"},
+            {"hanja": "己", "meaning": "몸", "reading": "기"}
         ]
     },
     {
@@ -829,44 +368,19 @@
         "reading": "책인지심 책기 서기지심 서인",
         "meaning": "남을 탓하는 마음으로 자신을 탓하고 자신을 용서하는 마음으로 남을 용서하라.",
         "keyHanja": [
-            {
-                "hanja": "心",
-                "meaning": "마음",
-                "reading": "심"
-            },
-            {
-                "hanja": "己",
-                "meaning": "몸",
-                "reading": "기"
-            },
-            {
-                "hanja": "恕",
-                "meaning": "용서하다",
-                "reading": "서"
-            }
+            {"hanja": "心", "meaning": "마음", "reading": "심"},
+            {"hanja": "己", "meaning": "몸", "reading": "기"},
+            {"hanja": "恕", "meaning": "용서하다", "reading": "서"}
         ]
     },
-    
     {
         "hanmun": "道吾善者 是吾賊",
         "reading": "도오선자 시오적",
         "meaning": "나의 장점을 말해주는 사람은 나의 적이다.",
         "keyHanja": [
-            {
-                "hanja": "吾",
-                "meaning": "나",
-                "reading": "오"
-            },
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            },
-            {
-                "hanja": "者",
-                "meaning": "사람",
-                "reading": "자"
-            }
+            {"hanja": "吾", "meaning": "나", "reading": "오"},
+            {"hanja": "善", "meaning": "착하다", "reading": "선"},
+            {"hanja": "者", "meaning": "사람", "reading": "자"}
         ]
     },
     {
@@ -874,21 +388,9 @@
         "reading": "도오악자 시오사",
         "meaning": "나의 단점을 말해주는 사람은 나의 스승이다.",
         "keyHanja": [
-            {
-                "hanja": "吾",
-                "meaning": "나",
-                "reading": "오"
-            },
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "者",
-                "meaning": "사람",
-                "reading": "자"
-            }
+            {"hanja": "吾", "meaning": "나", "reading": "오"},
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "者", "meaning": "사람", "reading": "자"}
         ]
     },
     {
@@ -896,16 +398,8 @@
         "reading": "시은물구보",
         "meaning": "은혜를 베풀고나서 보답을 바라지 말라.",
         "keyHanja": [
-            {
-                "hanja": "恩",
-                "meaning": "은혜",
-                "reading": "은"
-            },
-            {
-                "hanja": "求",
-                "meaning": "구하다",
-                "reading": "구"
-            }
+            {"hanja": "恩", "meaning": "은혜", "reading": "은"},
+            {"hanja": "求", "meaning": "구하다", "reading": "구"}
         ]
     },
     {
@@ -913,545 +407,264 @@
         "reading": "여인물추회",
         "meaning": "남에게 주었거든 후회하지 말라.",
         "keyHanja": [
-            {
-                "hanja": "人",
-                "meaning": "사람",
-                "reading": "인"
-            },
-            {
-                "hanja": "悔",
-                "meaning": "뉘우치다",
-                "reading": "회"
-            }
+            {"hanja": "人", "meaning": "사람", "reading": "인"},
+            {"hanja": "悔", "meaning": "뉘우치다", "reading": "회"}
         ]
     },
-
-
     {
         "hanmun": "見人之善 而尋己之善",
         "reading": "견인지선 이심기지선",
+        "meaning": "남의 좋은 점을 보면 자신의 좋은 점을 찾아라.",
         "keyHanja": [
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            },
-            {
-                "hanja": "己",
-                "meaning": "몸",
-                "reading": "기"
-            }
-        ],
-        "meaning": "남의 좋은 점을 보면 자신의 좋은 점을 찾아라."
+            {"hanja": "善", "meaning": "착하다", "reading": "선"},
+            {"hanja": "己", "meaning": "몸", "reading": "기"}
+        ]
     },
     {
         "hanmun": "見人之惡 而尋己之惡",
         "reading": "견인지악 이심기지악",
+        "meaning": "남의 나쁜 점을 보면 자신의 나쁜 점을 찾아라.",
         "keyHanja": [
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "己",
-                "meaning": "몸",
-                "reading": "기"
-            }
-        ],
-        "meaning": "남의 나쁜 점을 보면 자신의 나쁜 점을 찾아라."
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "己", "meaning": "몸", "reading": "기"}
+        ]
     },
     {
         "hanmun": "大丈夫當容人 無爲人所容",
         "reading": "대장부당용인 무위인소용",
+        "meaning": "사람은 마땅히 남을 포용해야 하며 남에게 포용받는 사람이 되어서는 안 된다.",
         "keyHanja": [
-            {
-                "hanja": "當",
-                "meaning": "마땅하다",
-                "reading": "당"
-            },
-            {
-                "hanja": "容",
-                "meaning": "용납하다",
-                "reading": "용"
-            }
-        ],
-        "meaning": "사람은 마땅히 남을 포용해야 하며 남에게 포용받는 사람이 되어서는 안 된다."
+            {"hanja": "當", "meaning": "마땅하다", "reading": "당"},
+            {"hanja": "容", "meaning": "용납하다", "reading": "용"}
+        ]
     },
     {
         "hanmun": "勿以貴己而賤人",
         "reading": "물이귀기이천인",
+        "meaning": "자신을 귀하게 여기면서 남을 천하게 여기지 말라.",
         "keyHanja": [
-            {
-                "hanja": "貴",
-                "meaning": "귀하다",
-                "reading": "귀"
-            },
-            {
-                "hanja": "賤",
-                "meaning": "천하다",
-                "reading": "천"
-            }
-        ],
-        "meaning": "자신을 귀하게 여기면서 남을 천하게 여기지 말라."
+            {"hanja": "貴", "meaning": "귀하다", "reading": "귀"},
+            {"hanja": "賤", "meaning": "천하다", "reading": "천"}
+        ]
     },
     {
         "hanmun": "勿以自大而蔑小",
         "reading": "물이자대이멸소",
+        "meaning": "자신을 크다 여기면서 다른 사람을 업신여기지 말라.",
         "keyHanja": [
-            {
-                "hanja": "自",
-                "meaning": "스스로",
-                "reading": "자"
-            },
-            {
-                "hanja": "蔑",
-                "meaning": "업신여기다",
-                "reading": "멸"
-            }
-        ],
-        "meaning": "자신을 크다 여기면서 다른 사람을 업신여기지 말라."
+            {"hanja": "自", "meaning": "스스로", "reading": "자"},
+            {"hanja": "蔑", "meaning": "업신여기다", "reading": "멸"}
+        ]
     },
-
     {
         "hanmun": "聞人之惡 如負芒刺",
         "reading": "문인지악 여부망자",
+        "meaning": "다른 사람의 단점을 듣거든 마치 몸에 가시를 진 것처럼 여겨라.",
         "keyHanja": [
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "聞",
-                "meaning": "듣다",
-                "reading": "문"
-            }
-        ],
-        "meaning": "다른 사람의 단점을 듣거든 마치 몸에 가시를 진 것처럼 여겨라."
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "聞", "meaning": "듣다", "reading": "문"}
+        ]
     },
     {
         "hanmun": "聞人之善 如佩蘭蕙",
         "reading": "문인지선 여패란혜",
+        "meaning": "다른 사람의 장점을 듣거든 마치 난초를 몸에 찬 것처럼 여겨라.",
         "keyHanja": [
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            },
-            
-            {
-                "hanja": "蘭",
-                "meaning": "난초",
-                "reading": "란"
-            }
-        ],
-        "meaning": "다른 사람의 장점을 듣거든 마치 난초를 몸에 찬 것처럼 여겨라."
+            {"hanja": "善", "meaning": "착하다", "reading": "선"},
+            {"hanja": "蘭", "meaning": "난초", "reading": "란"}
+        ]
     },
     {
         "hanmun": "聞人之謗 未嘗怒",
         "reading": "문인지방 미상노",
+        "meaning": "다른 사람의 비방을 들어도 노여워하지 말라.",
         "keyHanja": [
-            {
-                "hanja": "謗",
-                "meaning": "헐뜯다",
-                "reading": "방"
-            },
-            {
-                "hanja": "怒",
-                "meaning": "성내다",
-                "reading": "노"
-            }
-        ],
-        "meaning": "다른 사람의 비방을 들어도 노여워하지 말라."
+            {"hanja": "謗", "meaning": "헐뜯다", "reading": "방"},
+            {"hanja": "怒", "meaning": "성내다", "reading": "노"}
+        ]
     },
     {
         "hanmun": "聞人之譽 未嘗喜",
         "reading": "문인지예 미상희",
+        "meaning": "남의 칭찬을 들어도 기뻐하지 말라.",
         "keyHanja": [
-            {
-                "hanja": "譽",
-                "meaning": "칭찬하다",
-                "reading": "예"
-            },
-            {
-                "hanja": "喜",
-                "meaning": "기쁘다",
-                "reading": "희"
-            }
-        ],
-        "meaning": "남의 칭찬을 들어도 기뻐하지 말라."
+            {"hanja": "譽", "meaning": "칭찬하다", "reading": "예"},
+            {"hanja": "喜", "meaning": "기쁘다", "reading": "희"}
+        ]
     },
     {
         "hanmun": "聞人言人之惡 未嘗和",
         "reading": "문인지악 미상화",
+        "meaning": "남의 악한 말을 들어도 함께하지 말라.",
         "keyHanja": [
-            {
-                "hanja": "惡",
-                "meaning": "악하다",
-                "reading": "악"
-            },
-            {
-                "hanja": "和",
-                "meaning": "화하다",
-                "reading": "화"
-            }
-        ],
-        "meaning": "남의 악한 말을 들어도 함께하지 말라."
+            {"hanja": "惡", "meaning": "악하다", "reading": "악"},
+            {"hanja": "和", "meaning": "화하다", "reading": "화"}
+        ]
     },
     {
         "hanmun": "聞人言人之善 則就而和之 又從而喜之",
         "reading": "문인지선 즉취이화지 우종이희지",
+        "meaning": "남의 선행을 들으면 함께 기뻐하고 또 따라서 기뻐하라.",
         "keyHanja": [
-            {
-                "hanja": "善",
-                "meaning": "착하다",
-                "reading": "선"
-            },
-            {
-                "hanja": "喜",
-                "meaning": "기쁘다",
-                "reading": "희"
-            }
-        ],
-        "meaning": "남의 선행을 들으면 함께 기뻐하고 또 따라서 기뻐하라."
+            {"hanja": "善", "meaning": "착하다", "reading": "선"},
+            {"hanja": "喜", "meaning": "기쁘다", "reading": "희"}
+        ]
     },
     {
         "hanmun": "勤爲無價之寶",
         "reading": "근위무가지보",
+        "meaning": "부지런함은 값으로 매길 수 없는 보배이다.",
         "keyHanja": [
-            {
-                "hanja": "勤",
-                "meaning": "부지런하다",
-                "reading": "근"
-            },
-            {
-                "hanja": "價",
-                "meaning": "값",
-                "reading": "가"
-            },
-            {
-                "hanja": "寶",
-                "meaning": "보배",
-                "reading": "보"
-            }
-        ],
-        "meaning": "부지런함은 값으로 매길 수 없는 보배이다."
+            {"hanja": "勤", "meaning": "부지런하다", "reading": "근"},
+            {"hanja": "價", "meaning": "값", "reading": "가"},
+            {"hanja": "寶", "meaning": "보배", "reading": "보"}
+        ]
     },
     {
         "hanmun": "愼是護身之符",
         "reading": "신시호신지부",
+        "meaning": "삼가 행동함은 몸을 보호하는 부적이다.",
         "keyHanja": [
-            {
-                "hanja": "護",
-                "meaning": "보호하다",
-                "reading": "호"
-            },
-            {
-                "hanja": "身",
-                "meaning": "몸",
-                "reading": "신"
-            },
-            {
-                "hanja": "符",
-                "meaning": "부적",
-                "reading": "부"
-            }
-        ],
-        "meaning": "삼가 행동함은 몸을 보호하는 부적이다."
+            {"hanja": "護", "meaning": "보호하다", "reading": "호"},
+            {"hanja": "身", "meaning": "몸", "reading": "신"},
+            {"hanja": "符", "meaning": "부적", "reading": "부"}
+        ]
     },
     {
         "hanmun": "衆好之 必察焉 衆惡之 必察焉",
         "reading": "중호지 필찰언 중오지 필찰언",
+        "meaning": "여러 사람이 좋아한다고 해도 반드시 살펴보고 여러 사람이 싫어한다고 해도 반드시 살펴보아야 한다.",
         "keyHanja": [
-            {
-                "hanja": "衆",
-                "meaning": "무리",
-                "reading": "중"
-            },
-            {
-                "hanja": "好",
-                "meaning": "좋아하다",
-                "reading": "호"
-            },
-            {
-                "hanja": "惡",
-                "meaning": "미워하다",
-                "reading": "오"
-            }
-        ],
-        "meaning": "여러 사람이 좋아한다고 해도 반드시 살펴보고 여러 사람이 싫어한다고 해도 반드시 살펴보아야 한다."
+            {"hanja": "衆", "meaning": "무리", "reading": "중"},
+            {"hanja": "好", "meaning": "좋아하다", "reading": "호"},
+            {"hanja": "惡", "meaning": "미워하다", "reading": "오"}
+        ]
     },
     {
         "hanmun": "欲量他人 先須自量",
         "reading": "욕량타인 선수자량",
+        "meaning": "남을 헤아리려거든 먼저 자신을 헤아려야 한다.",
         "keyHanja": [
-            {
-                "hanja": "量",
-                "meaning": "헤아리다",
-                "reading": "량"
-            },
-            {
-                "hanja": "他",
-                "meaning": "다르다",
-                "reading": "타"
-            },
-            {
-                "hanja": "自",
-                "meaning": "스스로",
-                "reading": "자"
-            }
-        ],
-        "meaning": "남을 헤아리려거든 먼저 자신을 헤아려야 한다."
+            {"hanja": "量", "meaning": "헤아리다", "reading": "량"},
+            {"hanja": "他", "meaning": "다르다", "reading": "타"},
+            {"hanja": "自", "meaning": "스스로", "reading": "자"}
+        ]
     },
     {
         "hanmun": "傷人之語 還是自傷",
         "reading": "상인지어 환시자상",
+        "meaning": "남을 해치는 말은 돌아와 자신을 해친다.",
         "keyHanja": [
-            {
-                "hanja": "傷",
-                "meaning": "상처 입히다",
-                "reading": "상"
-            },
-            {
-                "hanja": "語",
-                "meaning": "말씀",
-                "reading": "어"
-            }
-        ],
-        "meaning": "남을 해치는 말은 돌아와 자신을 해친다."
+            {"hanja": "傷", "meaning": "상처 입히다", "reading": "상"},
+            {"hanja": "語", "meaning": "말씀", "reading": "어"}
+        ]
     },
     {
         "hanmun": "含血噴人 先汚其口",
         "reading": "함혈분인 선오기구",
+        "meaning": "피를 머금고 남을 헐뜯으면 먼저 자신의 입을 더럽힌다.",
         "keyHanja": [
-            {
-                "hanja": "血",
-                "meaning": "피",
-                "reading": "혈"
-            },
-            {
-                "hanja": "口",
-                "meaning": "입",
-                "reading": "구"
-            }
-        ],
-        "meaning": "피를 머금고 남을 헐뜯으면 먼저 자신의 입을 더럽힌다."
+            {"hanja": "血", "meaning": "피", "reading": "혈"},
+            {"hanja": "口", "meaning": "입", "reading": "구"}
+        ]
     },
     {
         "hanmun": "坐密室 如通衢",
         "reading": "좌밀실 여통구",
+        "meaning": "밀실에 앉아 있어도 큰길에 있는 듯 행동하라.",
         "keyHanja": [
-            {
-                "hanja": "密",
-                "meaning": "빽빽하다",
-                "reading": "밀"
-            },
-            {
-                "hanja": "室",
-                "meaning": "방",
-                "reading": "실"
-            },
-            {
-                "hanja": "如",
-                "meaning": "같다",
-                "reading": "여"
-            }
-        ],
-        "meaning": "밀실에 앉아 있어도 큰길에 있는 듯 행동하라."
+            {"hanja": "密", "meaning": "빽빽하다", "reading": "밀"},
+            {"hanja": "室", "meaning": "방", "reading": "실"},
+            {"hanja": "如", "meaning": "같다", "reading": "여"}
+        ]
     },
     {
         "hanmun": "馭寸心 如六馬",
         "reading": "어촌심 여육마",
+        "meaning": "마음을 다스리기를 여섯 마리 말을 모는 듯 하라.",
         "keyHanja": [
-            {
-                "hanja": "心",
-                "meaning": "마음",
-                "reading": "심"
-            },
-            {
-                "hanja": "馬",
-                "meaning": "말",
-                "reading": "마"
-            }
-        ],
-        "meaning": "마음을 다스리기를 여섯 마리 말을 모는 듯 하라."
+            {"hanja": "心", "meaning": "마음", "reading": "심"},
+            {"hanja": "馬", "meaning": "말", "reading": "마"}
+        ]
     },
     {
         "hanmun": "忍一時之忿 免百日之憂",
         "reading": "인일시지분 면백일지우",
+        "meaning": "한때의 분노를 참으면 백 날의 근심을 면할 수 있다.",
         "keyHanja": [
-            {
-                "hanja": "忍",
-                "meaning": "참다",
-                "reading": "인"
-            },
-            {
-                "hanja": "忿",
-                "meaning": "성내다",
-                "reading": "분"
-            },
-            {
-                "hanja": "憂",
-                "meaning": "근심",
-                "reading": "우"
-            }
-        ],
-        "meaning": "한때의 분노를 참으면 백 날의 근심을 면할 수 있다."
+            {"hanja": "忍", "meaning": "참다", "reading": "인"},
+            {"hanja": "忿", "meaning": "성내다", "reading": "분"},
+            {"hanja": "憂", "meaning": "근심", "reading": "우"}
+        ]
     },
     {
         "hanmun": "玉不琢 不成器 人不學 不知道",
         "reading": "옥불탁 불성기 인불학 부지도",
+        "meaning": "옥은 다듬지 않으면 그릇이 될 수 없고 사람은 배우지 않으면 도리를 알지 못한다.",
         "keyHanja": [
-            {
-                "hanja": "琢",
-                "meaning": "쪼다",
-                "reading": "탁"
-            },
-            {
-                "hanja": "器",
-                "meaning": "그릇",
-                "reading": "기"
-            },
-            {
-                "hanja": "學",
-                "meaning": "배우다",
-                "reading": "학"
-            }
-        ],
-        "meaning": "옥은 다듬지 않으면 그릇이 될 수 없고 사람은 배우지 않으면 도리를 알지 못한다."
+            {"hanja": "琢", "meaning": "쪼다", "reading": "탁"},
+            {"hanja": "器", "meaning": "그릇", "reading": "기"},
+            {"hanja": "學", "meaning": "배우다", "reading": "학"}
+        ]
     },
     {
         "hanmun": "人生不學 冥冥如夜行",
         "reading": "인생불학 명명여야행",
+        "meaning": "사람이 배우지 않으면 밤길을 걷는 듯 어둡고 어둡다.",
         "keyHanja": [
-            {
-                "hanja": "生",
-                "meaning": "나다",
-                "reading": "생"
-            },
-            {
-                "hanja": "學",
-                "meaning": "배우다",
-                "reading": "학"
-            },
-            {
-                "hanja": "夜",
-                "meaning": "밤",
-                "reading": "야"
-            }
-        ],
-        "meaning": "사람이 배우지 않으면 밤길을 걷는 듯 어둡고 어둡다."
+            {"hanja": "生", "meaning": "나다", "reading": "생"},
+            {"hanja": "學", "meaning": "배우다", "reading": "학"},
+            {"hanja": "夜", "meaning": "밤", "reading": "야"}
+        ]
     },
     {
         "hanmun": "口舌者 禍患之門 滅身之斧也",
         "reading": "구설자 화환지문 멸신지부야",
+        "meaning": "말과 혀는 재앙과 근심을 불러들이는 문이며 몸을 망치는 도끼이다.",
         "keyHanja": [
-            {
-                "hanja": "舌",
-                "meaning": "혀",
-                "reading": "설"
-            },
-            {
-                "hanja": "患",
-                "meaning": "근심",
-                "reading": "환"
-            },
-            {
-                "hanja": "門",
-                "meaning": "문",
-                "reading": "문"
-            }
-        ],
-        "meaning": "말과 혀는 재앙과 근심을 불러들이는 문이며 몸을 망치는 도끼이다."
+            {"hanja": "舌", "meaning": "혀", "reading": "설"},
+            {"hanja": "患", "meaning": "근심", "reading": "환"},
+            {"hanja": "門", "meaning": "문", "reading": "문"}
+        ]
     },
     {
         "hanmun": "口是傷人斧 言是割舌刀",
         "reading": "구시상인부 언시할설도",
+        "meaning": "입은 사람을 해치는 도끼이며 말은 혀를 베는 칼이다.",
         "keyHanja": [
-            {
-                "hanja": "傷",
-                "meaning": "상하다",
-                "reading": "상"
-            },
-            {
-                "hanja": "斧",
-                "meaning": "도끼",
-                "reading": "부"
-            },
-            {
-                "hanja": "割",
-                "meaning": "베다",
-                "reading": "할"
-            }
-        ],
-        "meaning": "입은 사람을 해치는 도끼이며 말은 혀를 베는 칼이다."
+            {"hanja": "傷", "meaning": "상하다", "reading": "상"},
+            {"hanja": "斧", "meaning": "도끼", "reading": "부"},
+            {"hanja": "割", "meaning": "베다", "reading": "할"}
+        ]
     },
     {
         "hanmun": "閉口深藏舌 安身處處牢",
-        "reading": "폐구심장설 안신천천뢰",
+        "reading": "폐문심장설 안신천천뢰",
+        "meaning": "입을 닫고 혀를 깊이 감추면 몸이 편안하고 곳곳에서 안전하다.",
         "keyHanja": [
-            {
-                "hanja": "閉",
-                "meaning": "닫다",
-                "reading": "폐"
-            },
-            {
-                "hanja": "舌",
-                "meaning": "혀",
-                "reading": "설"
-            },
-            {
-                "hanja": "身",
-                "meaning": "몸",
-                "reading": "신"
-            }
-        ],
-        "meaning": "입을 닫고 혀를 깊이 감추면 몸이 편안하고 곳곳에서 안전하다."
+            {"hanja": "閉", "meaning": "닫다", "reading": "폐"},
+            {"hanja": "舌", "meaning": "혀", "reading": "설"},
+            {"hanja": "身", "meaning": "몸", "reading": "신"}
+        ]
     },
     {
         "hanmun": "丹之所藏者赤 漆之所藏者黑",
         "reading": "단지소장자적 칠지소장자흑",
+        "meaning": "단사를 지닌 자는 함께 붉어지고 옻을 지닌 자는 함께 검어진다.",
         "keyHanja": [
-            {
-                "hanja": "丹",
-                "meaning": "붉다",
-                "reading": "단"
-            },
-            {
-                "hanja": "赤",
-                "meaning": "붉다",
-                "reading": "적"
-            },
-            {
-                "hanja": "黑",
-                "meaning": "검다",
-                "reading": "흑"
-            }
-        ],
-        "meaning": "단사를 지닌 자는 함께 붉어지고 옻을 지닌 자는 함께 검어진다."
-    }
-    ,
+            {"hanja": "丹", "meaning": "붉다", "reading": "단"},
+            {"hanja": "赤", "meaning": "붉다", "reading": "적"},
+            {"hanja": "黑", "meaning": "검다", "reading": "흑"}
+        ]
+    },
     {
         "hanmun": "無惻隱之心 非人也",
         "reading": "무측은지심 비인야",
         "meaning": "측은지심이 없으면 사람이 아니다.",
         "keyHanja": [
-            {
-                "hanja": "惻",
-                "meaning": "슬퍼하다",
-                "reading": "측"
-            },
-            {
-                "hanja": "隱",
-                "meaning": "불쌍히 여기다",
-                "reading": "은"
-            },
-            {
-                "hanja": "非",
-                "meaning": "아니다",
-                "reading": "비"
-            }
+            {"hanja": "惻", "meaning": "슬퍼하다", "reading": "측"},
+            {"hanja": "隱", "meaning": "불쌍히 여기다", "reading": "은"},
+            {"hanja": "非", "meaning": "아니다", "reading": "비"}
         ]
     },
     {
@@ -1459,21 +672,9 @@
         "reading": "무수오지심 비인야",
         "meaning": "수오지심이 없으면 사람이 아니다.",
         "keyHanja": [
-            {
-                "hanja": "羞",
-                "meaning": "부끄럽다",
-                "reading": "수"
-            },
-            {
-                "hanja": "惡",
-                "meaning": "미워하다",
-                "reading": "오"
-            },
-            {
-                "hanja": "非",
-                "meaning": "아니다",
-                "reading": "비"
-            }
+            {"hanja": "羞", "meaning": "부끄럽다", "reading": "수"},
+            {"hanja": "惡", "meaning": "미워하다", "reading": "오"},
+            {"hanja": "非", "meaning": "아니다", "reading": "비"}
         ]
     },
     {
@@ -1481,21 +682,9 @@
         "reading": "무사양지심 비인야",
         "meaning": "사양지심이 없으면 사람이 아니다.",
         "keyHanja": [
-            {
-                "hanja": "辭",
-                "meaning": "사양하다",
-                "reading": "사"
-            },
-            {
-                "hanja": "讓",
-                "meaning": "사양하다",
-                "reading": "양"
-            },
-            {
-                "hanja": "非",
-                "meaning": "아니다",
-                "reading": "비"
-            }
+            {"hanja": "辭", "meaning": "사양하다", "reading": "사"},
+            {"hanja": "讓", "meaning": "사양하다", "reading": "양"},
+            {"hanja": "非", "meaning": "아니다", "reading": "비"}
         ]
     },
     {
@@ -1503,44 +692,19 @@
         "reading": "무시비지심 비인야",
         "meaning": "시비지심이 없으면 사람이 아니다.",
         "keyHanja": [
-            {
-                "hanja": "是",
-                "meaning": "옳다",
-                "reading": "시"
-            },
-            {
-                "hanja": "非",
-                "meaning": "아니다",
-                "reading": "비"
-            },
-            {
-                "hanja": "心",
-                "meaning": "마음",
-                "reading": "심"
-            }
+            {"hanja": "是", "meaning": "옳다", "reading": "시"},
+            {"hanja": "非", "meaning": "아니다", "reading": "비"},
+            {"hanja": "心", "meaning": "마음", "reading": "심"}
         ]
     },
-    
     {
         "hanmun": "仰不愧於天 俯不怍於人",
         "reading": "앙불괴어천 부부작어인",
         "meaning": "우러러 하늘에 부끄럽지 않고, 굽어보아 사람에게 부끄럽지 않다.",
         "keyHanja": [
-            {
-                "hanja": "仰",
-                "meaning": "우러르다",
-                "reading": "앙"
-            },
-            {
-                "hanja": "天",
-                "meaning": "하늘",
-                "reading": "천"
-            },
-            {
-                "hanja": "怍",
-                "meaning": "부끄러워하다",
-                "reading": "작"
-            }
+            {"hanja": "仰", "meaning": "우러르다", "reading": "앙"},
+            {"hanja": "天", "meaning": "하늘", "reading": "천"},
+            {"hanja": "怍", "meaning": "부끄러워하다", "reading": "작"}
         ]
     },
     {
@@ -1548,21 +712,9 @@
         "reading": "출호이자 반호이자야",
         "meaning": "너에게서 나온 것은 너에게로 돌아간다.",
         "keyHanja": [
-            {
-                "hanja": "出",
-                "meaning": "나오다",
-                "reading": "출"
-            },
-            {
-                "hanja": "爾",
-                "meaning": "너",
-                "reading": "이"
-            },
-            {
-                "hanja": "反",
-                "meaning": "돌아오다",
-                "reading": "반"
-            }
+            {"hanja": "出", "meaning": "나오다", "reading": "출"},
+            {"hanja": "爾", "meaning": "너", "reading": "이"},
+            {"hanja": "反", "meaning": "돌아오다", "reading": "반"}
         ]
     },
     {
@@ -1570,21 +722,9 @@
         "reading": "이오십보소백보 즉하여",
         "meaning": "오십 보 물러난 사람이 백 보 물러난 사람을 비웃는다면 어떠한가",
         "keyHanja": [
-            {
-                "hanja": "十",
-                "meaning": "열",
-                "reading": "십"
-            },
-            {
-                "hanja": "笑",
-                "meaning": "웃다",
-                "reading": "소"
-            },
-            {
-                "hanja": "百",
-                "meaning": "일백",
-                "reading": "백"
-            }
+            {"hanja": "十", "meaning": "열", "reading": "십"},
+            {"hanja": "笑", "meaning": "웃다", "reading": "소"},
+            {"hanja": "百", "meaning": "일백", "reading": "백"}
         ]
     },
     {
@@ -1592,21 +732,9 @@
         "reading": "국지어음 이호중국 여문자 불상유통",
         "meaning": "우리나라의 말소리가 중국과 달라 문자와 서로 통하지 않는다.",
         "keyHanja": [
-            {
-                "hanja": "語",
-                "meaning": "말씀",
-                "reading": "어"
-            },
-            {
-                "hanja": "異",
-                "meaning": "다르다",
-                "reading": "이"
-            },
-            {
-                "hanja": "相",
-                "meaning": "서로",
-                "reading": "상"
-            }
+            {"hanja": "語", "meaning": "말씀", "reading": "어"},
+            {"hanja": "異", "meaning": "다르다", "reading": "이"},
+            {"hanja": "相", "meaning": "서로", "reading": "상"}
         ]
     },
     {
@@ -1614,21 +742,9 @@
         "reading": "고우민 유소욕언 이종부득신기정자 다의",
         "meaning": "그러므로 불쌍한 백성이 말하고자 하는 바가 있어도 끝내 그 뜻을 펴지 못하는 경우가 많다.",
         "keyHanja": [
-            {
-                "hanja": "愚",
-                "meaning": "어리석다",
-                "reading": "우"
-            },
-            {
-                "hanja": "民",
-                "meaning": "백성",
-                "reading": "민"
-            },
-            {
-                "hanja": "情",
-                "meaning": "뜻",
-                "reading": "정"
-            }
+            {"hanja": "愚", "meaning": "어리석다", "reading": "우"},
+            {"hanja": "民", "meaning": "백성", "reading": "민"},
+            {"hanja": "情", "meaning": "뜻", "reading": "정"}
         ]
     },
     {
@@ -1636,16 +752,8 @@
         "reading": "여위차민연 신제이십팔자",
         "meaning": "내가 이것을 가엾게 여겨 새로 스물여덟 글자를 만들었다",
         "keyHanja": [
-            {
-                "hanja": "制",
-                "meaning": "만들다",
-                "reading": "제"
-            },
-            {
-                "hanja": "字",
-                "meaning": "글자",
-                "reading": "자"
-            }
+            {"hanja": "制", "meaning": "만들다", "reading": "제"},
+            {"hanja": "字", "meaning": "글자", "reading": "자"}
         ]
     },
     {
@@ -1653,25 +761,11 @@
         "reading": "욕사인인이습 편어일용이",
         "meaning": "모든 사람이 쉽게 익혀 날마다 사용하는 데 편리하게 하고자 할 따름이다.",
         "keyHanja": [
-            {
-                "hanja": "使",
-                "meaning": "하여금",
-                "reading": "사"
-            },
-            {
-                "hanja": "易",
-                "meaning": "쉽다",
-                "reading": "이"
-            },
-            {
-                "hanja": "習",
-                "meaning": "익히다",
-                "reading": "습"
-            }
+            {"hanja": "使", "meaning": "하여금", "reading": "사"},
+            {"hanja": "易", "meaning": "쉽다", "reading": "이"},
+            {"hanja": "習", "meaning": "익히다", "reading": "습"}
         ]
     },
-
-    
     {
         "hanmun": "勝人者有力 自勝者强",
         "reading": "승인자유력 자승자강",
@@ -1743,9 +837,4 @@
             {"hanja": "處", "meaning": "처리하다", "reading": "처"}
         ]
     }
-
-
-
-
-    
 ]
