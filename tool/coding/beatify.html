@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML · CSS · JS 정렬 도구</title>
+<style>
+*{box-sizing:border-box}body{margin:0 auto;padding:26px 18px 48px;max-width:1050px;background:#f5f6f8;color:#222;font-family:Arial,"Malgun Gothic",sans-serif;line-height:1.5}
+h1{font-size:1.5rem;margin:0 0 6px}.intro,.muted{color:#666}.panel{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px;margin:14px 0}
+.controls,.buttons{display:flex;gap:10px;flex-wrap:wrap;align-items:center}label{font-weight:700}select,input[type=file]{font:inherit;max-width:100%}select{padding:8px;border:1px solid #bbb;border-radius:6px;background:white}
+button{border:0;border-radius:7px;padding:10px 14px;background:#2459a9;color:white;font-size:15px;cursor:pointer}button.secondary{background:#555}textarea{display:block;width:100%;min-height:280px;resize:vertical;padding:12px;border:1px solid #bbb;border-radius:7px;font:13px/1.5 Consolas,Monaco,monospace;tab-size:4;white-space:pre;overflow:auto}
+#output{min-height:360px}.editor-label{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-weight:700}.buttons{margin-top:10px}.status{font-weight:700;margin:0}.ok{color:#137333}.error{color:#b42318}.muted{font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:600px){body{padding:18px 10px 32px}.panel{padding:12px}textarea{min-height:230px}}
+</style>
+</head>
+<body>
+<h1>HTML 정렬 도구</h1>
+<p class="intro">코드를 읽기 좋게 들여쓰기하고 줄을 정리합니다. 파일을 선택하면 입력창에 바로 불러옵니다.</p>
+<section class="panel">
+<div class="controls">
+<label for="fileInput">파일 열기</label><input id="fileInput" type="file" accept=".html,.htm,.css,.js,.mjs,.cjs,.json,.txt">
+<label for="mode">코드 종류</label><select id="mode"><option value="html">HTML</option><option value="css">CSS</option><option value="js">JavaScript</option><option value="json">JSON</option></select>
+<label for="indent">들여쓰기</label><select id="indent"><option value="4">공백 4칸</option><option value="2">공백 2칸</option><option value="tab">탭</option></select>
+</div>
+
+</section>
+<section class="panel">
+<div class="editor-label"><label for="input">입력 코드</label><span id="inputInfo" class="muted">0자</span></div>
+<textarea id="input" spellcheck="false" placeholder="정렬할 코드를 붙여 넣으세요."></textarea>
+<div class="buttons"><button id="formatBtn">코드 정렬</button><button id="clearBtn" class="secondary">입력 비우기</button></div>
+</section>
+<section class="panel">
+<div class="editor-label"><label for="output">정렬 결과</label><span id="outputInfo" class="muted">0자</span></div>
+<textarea id="output" spellcheck="false" placeholder="정렬 결과가 여기에 표시됩니다."></textarea>
+<div class="buttons"><button id="copyBtn">결과 복사</button><button id="useOutputBtn" class="secondary">결과를 입력창으로 보내기</button></div>
+</section>
+<section class="panel"><p id="status" class="status">준비됨</p><pre id="detail" class="muted" hidden></pre></section>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const input=$("input"), output=$("output"), mode=$("mode"), indent=$("indent"), fileInput=$("fileInput");
+const status=$("status"), detail=$("detail");
+let librariesReady = false;
+let libraryError = "";
+
+function counts(){ $("inputInfo").textContent=input.value.length.toLocaleString()+"자"; $("outputInfo").textContent=output.value.length.toLocaleString()+"자"; }
+function setStatus(msg,type=""){status.textContent=msg;status.className="status "+type;}
+function setDetail(msg=""){detail.textContent=msg;detail.hidden=!msg;}
+function options(){
+  const size = indent.value === "tab" ? 1 : Number(indent.value);
+  return {
+    indent_size: size,
+    indent_char: indent.value === "tab" ? "\t" : " ",
+    indent_with_tabs: indent.value === "tab",
+    preserve_newlines: true,
+    max_preserve_newlines: 2,
+    end_with_newline: true
+  };
+}
+function formatCode(source){
+  if(mode.value==="json") return JSON.stringify(JSON.parse(source),null,indent.value==="tab"?"\t":Number(indent.value))+"\n";
+  if(!librariesReady) throw new Error(libraryError || "정렬 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도하세요.");
+  const opts=options();
+  if(mode.value==="html" && typeof window.html_beautify==="function") return window.html_beautify(source,opts);
+  if(mode.value==="css" && typeof window.css_beautify==="function") return window.css_beautify(source,opts);
+  if(mode.value==="js" && typeof window.js_beautify==="function") return window.js_beautify(source,opts);
+  throw new Error("선택한 코드 종류의 정렬 기능을 찾을 수 없습니다.");
+}
+function loadScript(url){
+  return new Promise((resolve,reject)=>{
+    const script=document.createElement("script");
+    script.src=url;
+    script.async=false;
+    script.onload=()=>resolve(url);
+    script.onerror=()=>reject(new Error("로드 실패: "+url));
+    document.head.appendChild(script);
+  });
+}
+async function loadLibraries(){
+  // js-beautify browser bundles. The files expose html_beautify, css_beautify and js_beautify globals.
+  const base="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/";
+  const urls=[
+    base+"beautify.min.js",
+    base+"beautify-css.min.js",
+    base+"beautify-html.min.js"
+  ];
+  const errors=[];
+  for(const url of urls){
+    let loaded=false;
+    for(const candidate of [url, url.replace("cdnjs.cloudflare.com/ajax/libs","cdn.jsdelivr.net/npm").replace("/1.15.1/","/js-beautify@1.15.1/")]){
+      try{ await loadScript(candidate); loaded=true; break; }
+      catch(e){ errors.push(e.message); }
+    }
+    if(!loaded){
+      librariesReady=false;
+      libraryError="정렬 라이브러리를 불러오지 못했습니다.\n"+errors.join("\n");
+      setStatus("정렬 라이브러리 로드 실패","error");
+      setDetail(libraryError);
+      return;
+    }
+  }
+  librariesReady=typeof window.js_beautify==="function" &&
+    typeof window.css_beautify==="function" &&
+    typeof window.html_beautify==="function";
+  if(librariesReady){
+    setStatus("정렬 라이브러리 준비 완료","ok");
+    setDetail("");
+  }else{
+    libraryError="라이브러리 파일은 로드됐지만 정렬 함수를 찾지 못했습니다.";
+    setStatus("정렬 라이브러리 초기화 실패","error");
+    setDetail(libraryError);
+  }
+}
+fileInput.addEventListener("change",async()=>{
+  const f=fileInput.files&&fileInput.files[0]; if(!f)return;
+  try{
+    input.value=await f.text();
+    const ext=f.name.split(".").pop().toLowerCase();
+    mode.value=ext==="css"?"css":["js","mjs","cjs"].includes(ext)?"js":ext==="json"?"json":"html";
+    output.value=""; counts(); setStatus("파일을 입력창에 불러왔습니다.","ok"); setDetail();
+  }catch(e){setStatus("파일을 읽지 못했습니다.","error");setDetail(e.message);}
+});
+$("formatBtn").addEventListener("click",()=>{
+  const source=input.value;
+  if(!source.trim()){setStatus("입력 코드가 비어 있습니다.","error");setDetail();return;}
+  try{
+    output.value=formatCode(source); counts(); setStatus("정렬 완료","ok");
+    setDetail(mode.value==="json"?"정렬했습니다.":"정렬했습니다.");
+  }catch(e){setStatus("정렬 실패","error");setDetail(e.message||String(e));}
+});
+$("copyBtn").addEventListener("click",async()=>{
+  if(!output.value){setStatus("복사할 결과가 없습니다.","error");return;}
+  try{await navigator.clipboard.writeText(output.value);}
+  catch(e){output.focus();output.select();if(!document.execCommand("copy")){setStatus("복사 실패: 결과창에서 직접 복사하세요.","error");return;}}
+  setStatus("정렬 결과를 복사했습니다.","ok");
+});
+$("useOutputBtn").addEventListener("click",()=>{input.value=output.value;counts();setStatus("정렬 결과를 입력창으로 옮겼습니다.","ok");});
+$("clearBtn").addEventListener("click",()=>{input.value="";output.value="";fileInput.value="";counts();setStatus("입력과 결과를 비웠습니다.");setDetail();});
+input.addEventListener("input",counts); output.addEventListener("input",counts); counts();
+loadLibraries();
+})();
+</script>
+</body>
+</html>
