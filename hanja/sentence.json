@@ -1389,7 +1389,7 @@
     },
     {
         "hanmun": "閉口深藏舌 安身處處牢",
-        "reading": "폐문심장설 안신천천뢰",
+        "reading": "폐구심장설 안신천천뢰",
         "keyHanja": [
             {
                 "hanja": "閉",
@@ -1698,7 +1698,7 @@
         "meaning": "세상의 어려운 일은 반드시 쉬운 일에서 시작된다.",
         "keyHanja": [
             {"hanja": "天下", "meaning": "세상", "reading": "천하"},
-            {"hanja": "必", "meaning": "반드시", "reading": "필"}
+            {"hanja": "必", "meaning": "반드시", "reading": "필"},
             {"hanja": "易", "meaning": "쉽다", "reading": "이"}
         ]
     },
