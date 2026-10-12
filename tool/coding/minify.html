@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>HTML Minifier</title>
     <style>
         * {
@@ -38,19 +38,32 @@
             margin: 14px 0
         }
 
+        .info {
+            display: flex;
+            justify-content: space-between
+        }
+
         label {
             display: block;
             font-weight: 700;
             margin-bottom: 8px
         }
 
+        button,
+        textarea {
+            border-radius: 7px
+        }
+
+        .preview-frame,
         textarea {
             display: block;
             width: 100%;
+            border: 1px solid #bbb
+        }
+
+        textarea {
             min-height: 300px;
             padding: 12px;
-            border: 1px solid #bbb;
-            border-radius: 7px;
             font: 13px/1.5 Consolas, monospace;
             resize: vertical;
             tab-size: 2
@@ -58,24 +71,25 @@
 
         #output {
             min-height: 300px;
-            margin-bottom: 10px;
+            margin-bottom: 10px
         }
 
         .preview-frame {
-            display: block;
-            width: 100%;
             height: 420px;
-            border: 1px solid #bbb;
             border-radius: 7px;
             background: #fff
         }
 
+        .buttons,
         .preview-head {
             display: flex;
+            flex-wrap: wrap
+        }
+
+        .preview-head {
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap
+            gap: 12px
         }
 
         .preview-head label {
@@ -83,15 +97,12 @@
         }
 
         .buttons {
-            display: flex;
             gap: 8px;
-            flex-wrap: wrap;
             margin-top: 10px
         }
 
         button {
             border: 0;
-            border-radius: 7px;
             padding: 10px 15px;
             background: #2459a9;
             color: #fff;
@@ -136,19 +147,19 @@
             color: #b42318
         }
 
-        .hint {
+        .hint,
+        .stats {
             font-size: 13px;
             color: #666
         }
 
         .stats {
-            font-size: 13px;
             color: #444;
             margin-top: 8px;
             white-space: pre-wrap
         }
 
-        @media(max-width:600px) {
+        @media (max-width:600px) {
             textarea {
                 min-height: 240px
             }
@@ -163,330 +174,202 @@
 
 <body>
     <h1>HTML Minifier</h1>
-    <p class="sub">코드의 주석을 제거하고 용량을 줄입니다. 파일을 선택하거나 입력창에 바로 붙여 넣으세요.</p>
-
+    <p class="sub">코드의 주석을 제거하고 용량을 줄입니다. 파일을 선택하면 입력창에 바로 불러옵니다.</p>
+    <section class="panel"> <label for="file">파일 불러오기 <span class="hint">(HTML, HTM, CSS, JS, TXT)</span></label> <input id="file" type="file" accept=".html,.htm,.css,.js,.txt,text/html,text/css,application/javascript,text/plain"> </section>
     <section class="panel">
-        <label for="file">파일 불러오기 <span class="hint">(HTML, HTM, CSS, JS, TXT)</span></label>
-        <input id="file" type="file" accept=".html,.htm,.css,.js,.txt,text/html,text/css,application/javascript,text/plain">
-
-    </section>
-
-    <section class="panel">
-        <label for="input">입력 코드</label>
-        <textarea id="input" spellcheck="false" placeholder="코드를 붙여 넣으세요."></textarea>
-        <div class="options">
-            <label><input type="checkbox" id="comments" checked> 일반 주석 제거</label>
-            <label><input type="checkbox" id="collapse" checked> HTML 공백 압축</label>
-            <label><input type="checkbox" id="optional"> 빈 속성 등 추가 최적화</label>
-        </div>
-        <div class="buttons">
-            <button id="minify">전체 압축</button>
-
-
-        </div>
+        <div class="info"> <label for="input">입력 코드</label><span id="inputInfo" class="muted">0자</span></div> <textarea id="input" spellcheck="false" placeholder="코드를 붙여 넣으세요."></textarea>
+        <div class="options"> <label><input type="checkbox" id="comments" checked="checked"> 일반 주석 제거</label> <label><input type="checkbox" id="collapse" checked="checked"> HTML 공백 압축</label> <label><input type="checkbox" id="optional"> 빈 속성 등 추가 최적화</label> </div>
+        <div class="buttons"> <button id="minify">전체 압축</button> </div>
         <p class="hint">압축은 코드의 동작을 보장하지 않습니다. 미리보기를 확인하세요. </p>
     </section>
-
     <section class="panel">
-        <label for="output">압축 결과</label>
-        <textarea id="output" spellcheck="false" placeholder="압축 결과가 여기에 표시됩니다."></textarea>
+        <div class="info"> <label for="output">압축 결과</label><span id="outputInfo" class="muted">0자</span></div> <textarea id="output" spellcheck="false" placeholder="압축 결과가 여기에 표시됩니다."></textarea>
         <div id="status" class="status"></div>
         <div id="stats" class="stats"></div>
-        <div class="buttons">
-
-            <button id="copy" class="secondary" disabled>결과 복사</button>
-
-        </div>
-
+        <div class="buttons"> <button id="copy" class="secondary" disabled="disabled">결과 복사</button> </div>
     </section>
-
     <section class="panel">
-        <div class="preview-head">
-            <label for="preview">미리보기</label>
-            <button id="refreshPreview" class="secondary" type="button" style="margin-bottom:5pt;">새로고침</button>
-        </div>
-        <iframe id="preview" class="preview-frame" title="압축된 HTML 미리보기" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+        <div class="preview-head"> <label for="preview">미리보기</label> <button id="refreshPreview" class="secondary" type="button" style="margin-bottom:5pt;">새로고침</button> </div> <iframe id="preview" class="preview-frame" title="압축된 HTML 미리보기" sandbox="allow-scripts allow-forms allow-modals"></iframe>
         <p class="hint">일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있습니다. 신뢰할 수 있는 코드만 사용하세요.</p>
-
     </section>
-
     <script>
-        window.__minifierLibraryErrors = [];
-        window.__loadMinifierScript = function(urls) {
-            return new Promise(async resolve => {
-                for (const url of urls) {
-                    try {
-                        await new Promise((ok, fail) => {
-                            const script = document.createElement("script");
-                            script.src = url;
-                            script.onload = ok;
-                            script.onerror = () => {
-                                script.remove();
-                                fail(new Error("로드 실패: " + url));
-                            };
-                            document.head.appendChild(script);
-                        });
-                        resolve(true);
-                        return;
-                    } catch (error) {
-                        window.__minifierLibraryErrors.push(error.message);
-                    }
+        window.__minifierLibraryErrors = [], window.__loadMinifierScript = function(i) {
+            return new Promise(async r => {
+                for (const n of i) try {
+                    return await new Promise((i, r) => {
+                        const e = document.createElement("script");
+                        e.src = n, e.onload = i, e.onerror = () => {
+                            e.remove(), r(new Error("로드 실패: " + n))
+                        }, document.head.appendChild(e)
+                    }), void r(!0)
+                } catch (i) {
+                    window.__minifierLibraryErrors.push(i.message)
                 }
-                resolve(false);
-            });
-        };
-        window.__minifierLibrariesReady = Promise.all([
-            window.__loadMinifierScript([
-                "https://cdn.jsdelivr.net/npm/terser@5.43.1/dist/bundle.min.js",
-                "https://unpkg.com/terser@5.43.1/dist/bundle.min.js"
-            ]),
-            window.__loadMinifierScript([
-                "https://cdn.jsdelivr.net/npm/csso@5.0.5/dist/csso.min.js",
-                "https://unpkg.com/csso@5.0.5/dist/csso.min.js"
-            ]),
-            window.__loadMinifierScript([
-                "https://cdn.jsdelivr.net/npm/html-minifier-terser@7.2.0/dist/htmlminifier.umd.bundle.min.js",
-                "https://unpkg.com/html-minifier-terser@7.2.0/dist/htmlminifier.umd.bundle.min.js"
-            ])
-        ]);
+                r(!1)
+            })
+        }, window.__minifierLibrariesReady = Promise.all([window.__loadMinifierScript(["https://cdn.jsdelivr.net/npm/terser@5.43.1/dist/bundle.min.js", "https://unpkg.com/terser@5.43.1/dist/bundle.min.js"]), window.__loadMinifierScript(["https://cdn.jsdelivr.net/npm/csso@5.0.5/dist/csso.min.js", "https://unpkg.com/csso@5.0.5/dist/csso.min.js"]), window.__loadMinifierScript(["https://cdn.jsdelivr.net/npm/html-minifier-terser@7.2.0/dist/htmlminifier.umd.bundle.min.js", "https://unpkg.com/html-minifier-terser@7.2.0/dist/htmlminifier.umd.bundle.min.js"])]);
 
     </script>
     <script>
-        const $ = id => document.getElementById(id);
-        const fileInput = $("file");
-        const input = $("input");
-        const output = $("output");
-        const minifyBtn = $("minify");
-        const copyBtn = $("copy");
-        const status = $("status");
-        const stats = $("stats");
-        const previewFrame = $("preview");
-        const refreshPreviewBtn = $("refreshPreview");
+        const $ = t => document.getElementById(t),
+            fileInput = $("file"),
+            input = $("input"),
+            output = $("output"),
+            minifyBtn = $("minify"),
+            copyBtn = $("copy"),
+            status = $("status"),
+            stats = $("stats"),
+            previewFrame = $("preview"),
+            refreshPreviewBtn = $("refreshPreview");
         let usedMinifierTools = [];
 
-        fileInput.addEventListener("change", async () => {
-            const file = fileInput.files && fileInput.files[0];
-            if (!file) return;
-            try {
-                input.value = await file.text();
-                output.value = "";
-                copyBtn.disabled = true;
-                status.className = "status";
-                status.textContent = "파일을 입력창에 불러왔습니다.";
-                stats.textContent = `${file.name} · ${formatBytes(file.size)}`;
-            } catch (e) {
-                setError("파일을 읽지 못했습니다: " + e.message);
-            }
-        });
-
-        minifyBtn.addEventListener("click", async () => {
-            const source = input.value;
-            if (!source.trim()) {
-                setError("입력 코드가 비어 있습니다.");
-                return;
-            }
-
-            minifyBtn.disabled = true;
-            copyBtn.disabled = true;
-            status.className = "status";
-            status.textContent = "압축 중...";
-            stats.textContent = "";
-
-            try {
-                await window.__minifierLibrariesReady;
-                const result = await minifySource(source);
-                output.value = result;
-                updatePreview(result);
-                copyBtn.disabled = !result;
-                status.className = "status ok";
-                status.textContent = "압축 완료";
-                const before = new Blob([source]).size;
-                const after = new Blob([result]).size;
-                const saved = before ? ((before - after) / before * 100) : 0;
-                stats.textContent =
-                    `입력: ${before.toLocaleString()} bytes (${formatBytes(before)})\n` +
-                    `결과: ${after.toLocaleString()} bytes (${formatBytes(after)})\n` +
-                    `용량 변화: ${saved >= 0 ? saved.toFixed(1) + "% 감소" : Math.abs(saved).toFixed(1) + "% 증가"}\n` +
-                    `사용한 압축 도구: ${usedMinifierTools.length ? [...new Set(usedMinifierTools)].join(" + ") : "확인되지 않음"}`;
-            } catch (e) {
-                const details = (e && e.message ? e.message : String(e));
-                const loadErrors = window.__minifierLibraryErrors || [];
-                setError("압축에 실패했습니다.\\n" + details +
-                    (loadErrors.length ? "\\n\\nCDN 로드 기록:\\n" + loadErrors.join("\\n") : ""));
-            } finally {
-                minifyBtn.disabled = false;
-            }
-        });
-
-        output.addEventListener("input", () => {
-            updatePreview(output.value);
-        });
-
-        refreshPreviewBtn.addEventListener("click", () => updatePreview(output.value));
-
-        function updatePreview(html) {
-     
-            const csp = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https: blob:; style-src 'unsafe-inline' https: data:; img-src https: data: blob:; font-src https: data:; media-src https: data: blob:; connect-src https:;">`;
-            const previewHtml = /<head\b[^>]*>/i.test(html) ?
-                html.replace(/<head\b[^>]*>/i, match => match + csp) :
-                `<!doctype html><html><head>${csp}</head><body>${html}</body></html>`;
-            previewFrame.srcdoc = previewHtml;
+        function counts() {
+            $("inputInfo").textContent = input.value.length.toLocaleString() + "자", $("outputInfo").textContent = output.value.length.toLocaleString() + "자"
         }
 
-        copyBtn.addEventListener("click", async () => {
-            try {
-                await navigator.clipboard.writeText(output.value);
-                status.className = "status ok";
-                status.textContent = "압축 결과를 복사했습니다.";
-            } catch (e) {
-                output.focus();
-
-                const ok = document.execCommand("copy");
-                status.className = ok ? "status ok" : "status err";
-                status.textContent = ok ?
-                    "압축 결과를 복사했습니다." :
-                    "자동 복사에 실패했습니다. 결과창에서 Ctrl+C를 누르세요.";
-            }
-        });
-
-        async function minifySource(source) {
+        function updatePreview(t) {
+            const e = "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'unsafe-inline' https: blob:; style-src 'unsafe-inline' https: data:; img-src https: data: blob:; font-src https: data:; media-src https: data: blob:; connect-src https:;\">",
+                s = /<head\b[^>]*>/i.test(t) ? t.replace(/<head\b[^>]*>/i, t => t + e) : `<!doctype html><html><head>${e}</head><body>${t}</body></html>`;
+            previewFrame.srcdoc = s
+        }
+        async function minifySource(t) {
             usedMinifierTools = [];
-            const trimmed = source.trim();
-            const looksHTML = /<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>]|<\/?[a-z][^>]*>/i.test(trimmed);
-
-            if (!looksHTML) {
-             
-                if (window.csso && typeof window.csso.minify === "function") {
-                    try {
-                        const result = window.csso.minify(source, {
-                            comments: $("comments").checked
-                        }).css;
-                        usedMinifierTools.push("CSSO 5.0.5 (CSS)");
-                        return result;
-                    } catch (e) {
-     
-                    }
-                }
-                if (window.Terser && typeof window.Terser.minify === "function") {
-                    const js = await window.Terser.minify(source, {
-                        compress: true,
-                        mangle: true,
+            const e = t.trim();
+            if (!/<!doctype\s+html|<html[\s>]|<head[\s>]|<body[\s>]|<\/?[a-z][^>]*>/i.test(e)) {
+                if (window.csso && "function" == typeof window.csso.minify) try {
+                    const e = window.csso.minify(t, {
+                        comments: $("comments").checked
+                    }).css;
+                    return usedMinifierTools.push("CSSO 5.0.5 (CSS)"), e
+                } catch (t) {}
+                if (window.Terser && "function" == typeof window.Terser.minify) {
+                    const e = await window.Terser.minify(t, {
+                        compress: !0,
+                        mangle: !0,
                         format: {
-                            comments: !$("comments").checked ? "all" : false
+                            comments: !$("comments").checked && "all"
                         }
                     });
-                    if (js.error) throw js.error;
-                    if (js.code != null) {
-                        usedMinifierTools.push("Terser 5.43.1 (JavaScript)");
-                        return js.code;
-                    }
+                    if (e.error) throw e.error;
+                    if (null != e.code) return usedMinifierTools.push("Terser 5.43.1 (JavaScript)"), e.code
                 }
-                throw new Error("CSS 또는 JavaScript로 인식했지만 압축하지 못했습니다. 코드 종류와 문법을 확인하세요.");
+                throw new Error("CSS 또는 JavaScript로 인식했지만 압축하지 못했습니다. 코드 종류와 문법을 확인하세요.")
             }
-
-            let html = source;
-
-            if (window.csso && typeof window.csso.minify === "function") {
-                const styleRegex = /(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi;
-                const styleMatches = [...html.matchAll(styleRegex)];
-                for (const match of styleMatches) {
-                    const css = match[2];
-                    let minified = css;
+            let s = t;
+            if (window.csso && "function" == typeof window.csso.minify) {
+                const t = /(<style\b[^>]*>)([\s\S]*?)(<\/style\s*>)/gi,
+                    e = [...s.matchAll(t)];
+                for (const t of e) {
+                    const e = t[2];
+                    let n = e;
                     try {
-                        minified = window.csso.minify(css, {
+                        n = window.csso.minify(e, {
                             comments: !$("comments").checked
-                        }).css;
-                        usedMinifierTools.push("CSSO 5.0.5 (CSS)");
-                    } catch (e) {
-                        throw new Error("style 태그 안의 CSS 압축 실패: " + e.message);
+                        }).css, usedMinifierTools.push("CSSO 5.0.5 (CSS)")
+                    } catch (t) {
+                        throw new Error("style 태그 안의 CSS 압축 실패: " + t.message)
                     }
-                    html = html.replace(match[0], match[1] + minified + match[3]);
+                    s = s.replace(t[0], t[1] + n + t[3])
                 }
             }
-            if (window.Terser && typeof window.Terser.minify === "function") {
-                const scriptRegex = /(<script\b(?![^>]*\bsrc\s*=)[^>]*>)([\s\S]*?)(<\/script\s*>)/gi;
-                const scriptMatches = [...html.matchAll(scriptRegex)];
-                for (const match of scriptMatches) {
-                    const js = match[2];
-                    if (!js.trim()) continue;
-                    let minified;
+            if (window.Terser && "function" == typeof window.Terser.minify) {
+                const t = /(<script\b(?![^>]*\bsrc\s*=)[^>]*>)([\s\S]*?)(<\/script\s*>)/gi,
+                    e = [...s.matchAll(t)];
+                for (const t of e) {
+                    const e = t[2];
+                    if (!e.trim()) continue;
+                    let n;
                     try {
-                        minified = await window.Terser.minify(js, {
-                            compress: true,
-                            mangle: true,
+                        n = await window.Terser.minify(e, {
+                            compress: !0,
+                            mangle: !0,
                             format: {
-                                comments: $("comments").checked ? false : "all"
+                                comments: !$("comments").checked && "all"
                             }
-                        });
-                    } catch (e) {
-                        throw new Error("script 태그 안의 JavaScript 압축 실패: " + e.message);
+                        })
+                    } catch (t) {
+                        throw new Error("script 태그 안의 JavaScript 압축 실패: " + t.message)
                     }
-                    if (minified.error) throw minified.error;
-                    usedMinifierTools.push("Terser 5.43.1 (JavaScript)");
-                    html = html.replace(match[0], match[1] + minified.code + match[3]);
+                    if (n.error) throw n.error;
+                    usedMinifierTools.push("Terser 5.43.1 (JavaScript)"), s = s.replace(t[0], t[1] + n.code + t[3])
                 }
             }
-
-            const minifier = window.htmlMinifier || window.HTMLMinifier;
-            if (minifier && typeof minifier.minify === "function") {
-                const options = {
-                    collapseWhitespace: $("collapse").checked,
-                    conservativeCollapse: true,
-                    removeComments: $("comments").checked,
-                    removeEmptyAttributes: $("optional").checked,
-                    removeRedundantAttributes: $("optional").checked,
-                    useShortDoctype: true,
-                    minifyCSS: false,
-                    minifyJS: false,
-                    removeOptionalTags: false,
-                    keepClosingSlash: true
-                };
-                const result = await minifier.minify(html, options);
-                usedMinifierTools.push("HTML Minifier Terser 7.2.0");
-                return result;
+            const n = window.htmlMinifier || window.HTMLMinifier;
+            if (n && "function" == typeof n.minify) {
+                const t = {
+                        collapseWhitespace: $("collapse").checked,
+                        conservativeCollapse: !0,
+                        removeComments: $("comments").checked,
+                        removeEmptyAttributes: $("optional").checked,
+                        removeRedundantAttributes: $("optional").checked,
+                        useShortDoctype: !0,
+                        minifyCSS: !1,
+                        minifyJS: !1,
+                        removeOptionalTags: !1,
+                        keepClosingSlash: !0
+                    },
+                    e = await n.minify(s, t);
+                return usedMinifierTools.push("HTML Minifier Terser 7.2.0"), e
             }
-            usedMinifierTools.push("내장 기본 HTML 압축 (HTML Minifier Terser CDN 사용 불가)");
-            return fallbackMinifyHTML(html, {
+            return usedMinifierTools.push("내장 기본 HTML 압축 (HTML Minifier Terser CDN 사용 불가)"), fallbackMinifyHTML(s, {
                 collapseWhitespace: $("collapse").checked,
                 removeComments: $("comments").checked
-            });
+            })
         }
 
-        function fallbackMinifyHTML(html, options) {
-            const preserved = [];
-            const token = index => `___MINIFY_PRESERVE_${index}_TOKEN___`;
+        function fallbackMinifyHTML(t, e) {
+            const s = [];
+            return t = t.replace(/<(pre|textarea|script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, t => {
+                const e = s.push(t) - 1;
+                return `___MINIFY_PRESERVE_${e}_TOKEN___`
+            }), e.removeComments && (t = t.replace(/<!--[\s\S]*?-->/g, t => /^<!--[\s\S]*?\[if[\s\S]*?<!\[endif\]-->$/i.test(t) ? t : "")), e.collapseWhitespace && (t = (t = t.replace(/[\t\r\n\f ]+/g, " ")).replace(/>\s+</g, "><")), (t = t.replace(/___MINIFY_PRESERVE_(\d+)_TOKEN___/g, (t, e) => s[Number(e)])).trim()
+        }
 
-            html = html.replace(/<(pre|textarea|script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, block => {
-                const id = preserved.push(block) - 1;
-                return token(id);
-            });
+        function setError(t) {
+            status.className = "status err", status.textContent = "오류", stats.textContent = t
+        }
 
-            if (options.removeComments) {
-
-                html = html.replace(/<!--[\s\S]*?-->/g, comment =>
-                    /^<!--[\s\S]*?\[if[\s\S]*?<!\[endif\]-->$/i.test(comment) ? comment : ""
-                );
+        function formatBytes(t) {
+            return t < 1024 ? t + " B" : (t / 1024).toFixed(2) + " KB"
+        }
+        input.addEventListener("input", counts), output.addEventListener("input", counts), counts(), fileInput.addEventListener("change", async () => {
+            const t = fileInput.files && fileInput.files[0];
+            if (t) try {
+                input.value = await t.text(), output.value = "", counts(), copyBtn.disabled = !0, status.className = "status", status.textContent = "파일을 입력창에 불러왔습니다.", stats.textContent = `${t.name} · ${formatBytes(t.size)}`
+            } catch (t) {
+                setError("파일을 읽지 못했습니다: " + t.message)
             }
-
-            if (options.collapseWhitespace) {
-                html = html.replace(/[\t\r\n\f ]+/g, " ");
-                html = html.replace(/>\s+</g, "><");
+        }), minifyBtn.addEventListener("click", async () => {
+            const t = input.value;
+            if (t.trim()) {
+                minifyBtn.disabled = !0, copyBtn.disabled = !0, status.className = "status", status.textContent = "압축 중...", stats.textContent = "";
+                try {
+                    await window.__minifierLibrariesReady;
+                    const e = await minifySource(t);
+                    output.value = e, counts(), updatePreview(e), copyBtn.disabled = !e, status.className = "status ok", status.textContent = "압축 완료";
+                    const s = new Blob([t]).size,
+                        n = new Blob([e]).size,
+                        i = s ? (s - n) / s * 100 : 0;
+                    stats.textContent = `입력: ${s.toLocaleString()} bytes (${formatBytes(s)})\n결과: ${n.toLocaleString()} bytes (${formatBytes(n)})\n용량 변화: ${i>=0?i.toFixed(1)+"% 감소":Math.abs(i).toFixed(1)+"% 증가"}\n사용한 압축 도구: ${usedMinifierTools.length?[...new Set(usedMinifierTools)].join(" + "):"확인되지 않음"}`
+                } catch (t) {
+                    const e = t && t.message ? t.message : String(t),
+                        s = window.__minifierLibraryErrors || [];
+                    setError("압축에 실패했습니다.\\n" + e + (s.length ? "\\n\\nCDN 로드 기록:\\n" + s.join("\\n") : ""))
+                } finally {
+                    minifyBtn.disabled = !1
+                }
+            } else setError("입력 코드가 비어 있습니다.")
+        }), output.addEventListener("input", () => {
+            updatePreview(output.value)
+        }), refreshPreviewBtn.addEventListener("click", () => updatePreview(output.value)), copyBtn.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(output.value), status.className = "status ok", status.textContent = "압축 결과를 복사했습니다."
+            } catch (t) {
+                output.focus();
+                const e = document.execCommand("copy");
+                status.className = e ? "status ok" : "status err", status.textContent = e ? "압축 결과를 복사했습니다." : "자동 복사에 실패했습니다. 결과창에서 Ctrl+C를 누르세요."
             }
-
-            html = html.replace(/___MINIFY_PRESERVE_(\d+)_TOKEN___/g, (match, index) => preserved[Number(index)]);
-            return html.trim();
-        }
-
-        function setError(message) {
-            status.className = "status err";
-            status.textContent = "오류";
-            stats.textContent = message;
-        }
-
-        function formatBytes(bytes) {
-            if (bytes < 1024) return bytes + " B";
-            return (bytes / 1024).toFixed(2) + " KB";
-        }
+        });
 
     </script>
 </body>
