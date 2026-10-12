@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>HTML Beautifier</title>
     <style>
         * {
@@ -38,20 +38,21 @@
             margin: 14px 0
         }
 
-        .controls,
-        .buttons {
+        .buttons,
+        .controls {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
             align-items: center
         }
 
+        .editor-label,
         label {
             font-weight: 700
         }
 
-        select,
-        input[type=file] {
+        input[type=file],
+        select {
             font: inherit;
             max-width: 100%
         }
@@ -60,15 +61,19 @@
             padding: 8px;
             border: 1px solid #bbb;
             border-radius: 6px;
-            background: white
+            background: #fff
+        }
+
+        button,
+        textarea {
+            border-radius: 7px
         }
 
         button {
             border: 0;
-            border-radius: 7px;
             padding: 10px 14px;
             background: #2459a9;
-            color: white;
+            color: #fff;
             font-size: 15px;
             cursor: pointer
         }
@@ -84,7 +89,6 @@
             resize: vertical;
             padding: 12px;
             border: 1px solid #bbb;
-            border-radius: 7px;
             font: 13px/1.5 Consolas, Monaco, monospace;
             tab-size: 4;
             white-space: pre;
@@ -99,8 +103,7 @@
             display: flex;
             justify-content: space-between;
             gap: 10px;
-            margin-bottom: 8px;
-            font-weight: 700
+            margin-bottom: 8px
         }
 
         .buttons {
@@ -126,7 +129,35 @@
             overflow-wrap: anywhere
         }
 
-        @media(max-width:600px) {
+        .preview-frame {
+            display: block;
+            width: 100%;
+            height: 420px;
+            border: 1px solid #bbb;
+            border-radius: 7px;
+            background: #fff
+        }
+
+        .preview-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px
+        }
+
+        .preview-head label {
+            margin: 0
+        }
+
+        .stats {
+            margin-top: 8px;
+            color: #444;
+            font-size: 13px;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere
+        }
+
+        @media (max-width:600px) {
             body {
                 padding: 18px 10px 32px
             }
@@ -147,210 +178,157 @@
     <h1>HTML Beautifier</h1>
     <p class="intro">코드를 읽기 좋게 들여쓰기하고 줄을 정리합니다. 파일을 선택하거나 입력창에 바로 붙여 넣으세요.</p>
     <section class="panel">
-        <div class="controls">
-            <label for="fileInput">파일 열기</label><input id="fileInput" type="file" accept=".html,.htm,.css,.js,.mjs,.cjs,.json,.txt">
-        </div>
-        <div class="controls" style="margin-top:10pt;">
-            <label for="mode">코드 종류</label><select id="mode">
+        <div class="controls"> <label for="fileInput">파일 열기</label><input id="fileInput" type="file" accept=".html,.htm,.css,.js,.mjs,.cjs,.json,.txt"> </div>
+        <div class="controls" style="margin-top:10pt;"> <label for="mode">코드 종류</label><select id="mode">
                 <option value="html">HTML</option>
                 <option value="css">CSS</option>
                 <option value="js">JavaScript</option>
                 <option value="json">JSON</option>
-            </select>
-            <label for="indent">들여쓰기</label><select id="indent">
+            </select> <label for="indent">들여쓰기</label><select id="indent">
                 <option value="4">공백 4칸</option>
                 <option value="2">공백 2칸</option>
                 <option value="tab">탭</option>
-            </select>
-        </div>
-
+            </select> </div>
     </section>
     <section class="panel">
-        <div class="editor-label"><label for="input">입력 코드</label><span id="inputInfo" class="muted">0자</span></div>
-        <textarea id="input" spellcheck="false" placeholder="정렬할 코드를 붙여 넣으세요."></textarea>
+        <div class="editor-label"><label for="input">입력 코드</label><span id="inputInfo" class="muted">0자</span></div> <textarea id="input" spellcheck="false" placeholder="정렬할 코드를 붙여 넣으세요."></textarea>
         <div class="buttons"><button id="formatBtn">코드 정렬</button></div>
     </section>
     <section class="panel">
-        <div class="editor-label"><label for="output">정렬 결과</label><span id="outputInfo" class="muted">0자</span></div>
-        <textarea id="output" spellcheck="false" placeholder="정렬 결과가 여기에 표시됩니다."></textarea>
+        <div class="editor-label"><label for="output">정렬 결과</label><span id="outputInfo" class="muted">0자</span></div> <textarea id="output" spellcheck="false" placeholder="정렬 결과가 여기에 표시됩니다." style="margin-bottom:10pt;"></textarea>
+        <p id="status" class="status">준비됨</p>
+        <pre id="detail" class="muted" hidden></pre>
+        <div id="stats" class="stats"></div>
         <div class="buttons"><button id="copyBtn">결과 복사</button><button id="useOutputBtn" class="secondary">결과 재정렬</button></div>
     </section>
     <section class="panel">
-        <p id="status" class="status">준비됨</p>
-        <pre id="detail" class="muted" hidden></pre>
+        <div class="preview-head"> <label for="preview">미리보기</label> <button id="refreshPreview" class="secondary" type="button" style="margin-bottom:5pt;">새로고침</button> </div> <iframe id="preview" class="preview-frame" title="정렬된 HTML 미리보기" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+        <p class="muted">일부 브라우저 기능이나 외부 API 요청은 실제 페이지와 다르게 동작할 수 있으므로 신뢰할 수 있는 코드만 사용하세요.</p>
     </section>
     <script>
         (() => {
-            const $ = id => document.getElementById(id);
-            const input = $("input"),
-                output = $("output"),
-                mode = $("mode"),
-                indent = $("indent"),
-                fileInput = $("fileInput");
-            const status = $("status"),
-                detail = $("detail");
-            let librariesReady = false;
-            let libraryError = "";
+            const t = t => document.getElementById(t),
+                e = t("input"),
+                n = t("output"),
+                i = t("mode"),
+                o = t("indent"),
+                a = t("fileInput"),
+                s = t("status"),
+                r = t("detail"),
+                c = t("stats"),
+                u = t("preview");
+            let l = !1,
+                d = "";
 
-            function counts() {
-                $("inputInfo").textContent = input.value.length.toLocaleString() + "자";
-                $("outputInfo").textContent = output.value.length.toLocaleString() + "자";
+            function f() {
+                t("inputInfo").textContent = e.value.length.toLocaleString() + "자", t("outputInfo").textContent = n.value.length.toLocaleString() + "자"
             }
 
-            function setStatus(msg, type = "") {
-                status.textContent = msg;
-                status.className = "status " + type;
+            function v(t) {
+                return t < 1024 ? t + " B" : (t / 1024).toFixed(2) + " KB"
             }
 
-            function setDetail(msg = "") {
-                detail.textContent = msg;
-                detail.hidden = !msg;
+            function m(t, e) {
+                const n = new Blob([t]).size,
+                    o = new Blob([e]).size,
+                    a = n ? (n - o) / n * 100 : 0,
+                    s = "json" === i.value ? "내장 JSON.stringify (별도 라이브러리 없음)" : "js-beautify 1.15.1 (" + ({
+                        html: "HTML",
+                        css: "CSS",
+                        js: "JavaScript"
+                    } [i.value] || i.value) + ")";
+                c.textContent = "입력: " + n.toLocaleString() + " bytes (" + v(n) + ")\n결과: " + o.toLocaleString() + " bytes (" + v(o) + ")\n용량 변화: " + (a >= 0 ? a.toFixed(1) + "% 감소" : Math.abs(a).toFixed(1) + "% 증가") + "\n사용한 정렬 도구: " + s
             }
 
-            function options() {
-                const size = indent.value === "tab" ? 1 : Number(indent.value);
-                return {
-                    indent_size: size,
-                    indent_char: indent.value === "tab" ? "\t" : " ",
-                    indent_with_tabs: indent.value === "tab",
-                    preserve_newlines: true,
+            function p(t) {
+                const e = "<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'unsafe-inline' https: blob:; style-src 'unsafe-inline' https: data:; img-src https: data: blob:; font-src https: data:; media-src https: data: blob:; connect-src https:;\">",
+                    n = /<html[\s>]|<!doctype\s+html/i.test(t) ? /<head\b[^>]*>/i.test(t) ? t.replace(/<head\b[^>]*>/i, t => t + e) : t : "<!doctype html><html><head>" + e + "</head><body>" + t + "</body></html>";
+                u.srcdoc = n
+            }
+
+            function y(t, e = "") {
+                s.textContent = t, s.className = "status " + e
+            }
+
+            function h(t = "") {
+                r.textContent = t, r.hidden = !t
+            }
+
+            function b(t) {
+                if ("json" === i.value) return JSON.stringify(JSON.parse(t), null, "tab" === o.value ? "\t" : Number(o.value)) + "\n";
+                if (!l) throw new Error(d || "정렬 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도하세요.");
+                const e = {
+                    indent_size: "tab" === o.value ? 1 : Number(o.value),
+                    indent_char: "tab" === o.value ? "\t" : " ",
+                    indent_with_tabs: "tab" === o.value,
+                    preserve_newlines: !0,
                     max_preserve_newlines: 2,
-                    end_with_newline: true
+                    end_with_newline: !0
                 };
+                if ("html" === i.value && "function" == typeof window.html_beautify) return window.html_beautify(t, e);
+                if ("css" === i.value && "function" == typeof window.css_beautify) return window.css_beautify(t, e);
+                if ("js" === i.value && "function" == typeof window.js_beautify) return window.js_beautify(t, e);
+                throw new Error("선택한 코드 종류의 정렬 기능을 찾을 수 없습니다.")
             }
 
-            function formatCode(source) {
-                if (mode.value === "json") return JSON.stringify(JSON.parse(source), null, indent.value === "tab" ? "\t" : Number(indent.value)) + "\n";
-                if (!librariesReady) throw new Error(libraryError || "정렬 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도하세요.");
-                const opts = options();
-                if (mode.value === "html" && typeof window.html_beautify === "function") return window.html_beautify(source, opts);
-                if (mode.value === "css" && typeof window.css_beautify === "function") return window.css_beautify(source, opts);
-                if (mode.value === "js" && typeof window.js_beautify === "function") return window.js_beautify(source, opts);
-                throw new Error("선택한 코드 종류의 정렬 기능을 찾을 수 없습니다.");
+            function w(t) {
+                return new Promise((e, n) => {
+                    const i = document.createElement("script");
+                    i.src = t, i.async = !1, i.onload = () => e(t), i.onerror = () => n(new Error("로드 실패: " + t)), document.head.appendChild(i)
+                })
             }
-
-            function loadScript(url) {
-                return new Promise((resolve, reject) => {
-                    const script = document.createElement("script");
-                    script.src = url;
-                    script.async = false;
-                    script.onload = () => resolve(url);
-                    script.onerror = () => reject(new Error("로드 실패: " + url));
-                    document.head.appendChild(script);
-                });
-            }
-            async function loadLibraries() {
-                // js-beautify browser bundles. The files expose html_beautify, css_beautify and js_beautify globals.
-                const base = "https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/";
-                const urls = [
-                    base + "beautify.min.js",
-                    base + "beautify-css.min.js",
-                    base + "beautify-html.min.js"
-                ];
-                const errors = [];
-                for (const url of urls) {
-                    let loaded = false;
-                    for (const candidate of [url, url.replace("cdnjs.cloudflare.com/ajax/libs", "cdn.jsdelivr.net/npm").replace("/1.15.1/", "/js-beautify@1.15.1/")]) {
-                        try {
-                            await loadScript(candidate);
-                            loaded = true;
-                            break;
-                        } catch (e) {
-                            errors.push(e.message);
-                        }
+            a.addEventListener("change", async () => {
+                const t = a.files && a.files[0];
+                if (t) try {
+                    e.value = await t.text();
+                    const o = t.name.split(".").pop().toLowerCase();
+                    i.value = "css" === o ? "css" : ["js", "mjs", "cjs"].includes(o) ? "js" : "json" === o ? "json" : "html", n.value = "", c.textContent = "", p(""), f(), y("파일을 입력창에 불러왔습니다.", "ok"), h()
+                } catch (t) {
+                    y("파일을 읽지 못했습니다.", "error"), h(t.message)
+                }
+            }), t("formatBtn").addEventListener("click", () => {
+                const t = e.value;
+                if (!t.trim()) return y("입력 코드가 비어 있습니다.", "error"), void h();
+                try {
+                    n.value = b(t), f(), m(t, n.value), p(n.value), y("정렬 완료", "ok"), h("")
+                } catch (t) {
+                    y("정렬 실패", "error"), h(t.message || String(t))
+                }
+            }), t("copyBtn").addEventListener("click", async () => {
+                if (n.value) {
+                    try {
+                        await navigator.clipboard.writeText(n.value)
+                    } catch (t) {
+                        if (n.focus(), n.select(), !document.execCommand("copy")) return void y("복사 실패: 결과창에서 직접 복사하세요.", "error")
                     }
-                    if (!loaded) {
-                        librariesReady = false;
-                        libraryError = "정렬 라이브러리를 불러오지 못했습니다.\n" + errors.join("\n");
-                        setStatus("정렬 라이브러리 로드 실패", "error");
-                        setDetail(libraryError);
-                        return;
+                    y("정렬 결과를 복사했습니다.", "ok")
+                } else y("복사할 결과가 없습니다.", "error")
+            }), t("useOutputBtn").addEventListener("click", () => {
+                if (!n.value.trim()) return y("정렬할 결과가 없습니다.", "error"), void h();
+                try {
+                    const t = n.value;
+                    n.value = b(t), f(), m(t, n.value), p(n.value), y("재정렬 완료", "ok"), h("")
+                } catch (t) {
+                    y("재정렬 실패", "error"), h(t.message || String(t))
+                }
+            }), e.addEventListener("input", f), n.addEventListener("input", () => {
+                f(), p(n.value)
+            }), t("refreshPreview").addEventListener("click", () => p(n.value)), f(), async function() {
+                const t = "https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.1/",
+                    e = [t + "beautify.min.js", t + "beautify-css.min.js", t + "beautify-html.min.js"],
+                    n = [];
+                for (const t of e) {
+                    let e = !1;
+                    for (const i of [t, t.replace("cdnjs.cloudflare.com/ajax/libs", "cdn.jsdelivr.net/npm").replace("/1.15.1/", "/js-beautify@1.15.1/")]) try {
+                        await w(i), e = !0;
+                        break
+                    } catch (t) {
+                        n.push(t.message)
                     }
+                    if (!e) return l = !1, d = "정렬 라이브러리를 불러오지 못했습니다.\n" + n.join("\n"), y("정렬 라이브러리 로드 실패", "error"), void h(d)
                 }
-                librariesReady = typeof window.js_beautify === "function" &&
-                    typeof window.css_beautify === "function" &&
-                    typeof window.html_beautify === "function";
-                if (librariesReady) {
-                    setStatus("정렬 라이브러리 준비 완료", "ok");
-                    setDetail("");
-                } else {
-                    libraryError = "라이브러리 파일은 로드됐지만 정렬 함수를 찾지 못했습니다.";
-                    setStatus("정렬 라이브러리 초기화 실패", "error");
-                    setDetail(libraryError);
-                }
-            }
-            fileInput.addEventListener("change", async () => {
-                const f = fileInput.files && fileInput.files[0];
-                if (!f) return;
-                try {
-                    input.value = await f.text();
-                    const ext = f.name.split(".").pop().toLowerCase();
-                    mode.value = ext === "css" ? "css" : ["js", "mjs", "cjs"].includes(ext) ? "js" : ext === "json" ? "json" : "html";
-                    output.value = "";
-                    counts();
-                    setStatus("파일을 입력창에 불러왔습니다.", "ok");
-                    setDetail();
-                } catch (e) {
-                    setStatus("파일을 읽지 못했습니다.", "error");
-                    setDetail(e.message);
-                }
-            });
-            $("formatBtn").addEventListener("click", () => {
-                const source = input.value;
-                if (!source.trim()) {
-                    setStatus("입력 코드가 비어 있습니다.", "error");
-                    setDetail();
-                    return;
-                }
-                try {
-                    output.value = formatCode(source);
-                    counts();
-                    setStatus("정렬 완료", "ok");
-                    setDetail(mode.value === "json" ? "정렬했습니다." : "정렬했습니다.");
-                } catch (e) {
-                    setStatus("정렬 실패", "error");
-                    setDetail(e.message || String(e));
-                }
-            });
-            $("copyBtn").addEventListener("click", async () => {
-                if (!output.value) {
-                    setStatus("복사할 결과가 없습니다.", "error");
-                    return;
-                }
-                try {
-                    await navigator.clipboard.writeText(output.value);
-                } catch (e) {
-                    output.focus();
-                    output.select();
-                    if (!document.execCommand("copy")) {
-                        setStatus("복사 실패: 결과창에서 직접 복사하세요.", "error");
-                        return;
-                    }
-                }
-                setStatus("정렬 결과를 복사했습니다.", "ok");
-            });
-            $("useOutputBtn").addEventListener("click", () => {
-                if (!output.value.trim()) {
-                    setStatus("정렬할 결과가 없습니다.", "error");
-                    setDetail();
-                    return;
-                }
-
-                try {
-                    output.value = formatCode(output.value);
-                    counts();
-                    setStatus("재정렬 완료", "ok");
-                    setDetail("");
-                } catch (e) {
-                    setStatus("재정렬 실패", "error");
-                    setDetail(e.message || String(e));
-                }
-            });
-
-            input.addEventListener("input", counts);
-            output.addEventListener("input", counts);
-            counts();
-            loadLibraries();
+                l = "function" == typeof window.js_beautify && "function" == typeof window.css_beautify && "function" == typeof window.html_beautify, l ? (y("", "ok"), h("")) : (d = "라이브러리 파일은 로드됐지만 정렬 함수를 찾지 못했습니다.", y("정렬 라이브러리 초기화 실패", "error"), h(d))
+            }()
         })();
 
     </script>
