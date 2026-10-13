@@ -1026,11 +1026,11 @@
                 </div>
             </div>
             <div class="card">
-                <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"><label for="kicker-align">정렬</label><select id="kicker-align">
+            <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"><label for="kicker-align">정렬</label><select id="kicker-align">
                         <option value="left">왼쪽</option>
                         <option value="center" selected>가운데</option>
                         <option value="right">오른쪽</option>
-                    </select></div>                
+                    </select></div>
                 <div class="field"><label for="doc-title">학습지 제목</label><input id="doc-title" type="text" value="학습지 제목"><label for="title-align">정렬</label><select id="title-align">
                         <option value="left">왼쪽</option>
                         <option value="center" selected>가운데</option>
@@ -1041,7 +1041,7 @@
                         <option value="center" selected>가운데</option>
                         <option value="right">오른쪽</option>
                     </select></div>
-
+    
             </div>
             <div class="card">
                 <div class="heading">
@@ -1110,8 +1110,8 @@
                 }
             };
             const defaultQuestions = () => [{
-                text: '새 문제를 입력하세요.',
-                options: ['선택지 1', '선택지 2', '선택지 3', '선택지 4'],
+                text: '',
+                options: ['', '', '', ''],
                 answer: '2'
             }];
             const newBlock = type => {
@@ -1124,11 +1124,11 @@
                 };
                 if (type === 'quiz') base.questions = defaultQuestions();
                 if (type === 'vocab') base.words = [{
-                    word: '새 단어',
-                    meaning: '뜻을 입력하세요',
+                    word: '',
+                    meaning: '',
                     image: '',
                     imageFit: 'cover',
-                    example: '단어를 활용한 예문'
+                    example: ''
                 }];
                 if (type === 'map') {
                     base.backgroundImage = '';
@@ -1152,15 +1152,15 @@
                         }
                     ]
                 }
-                if (type === 'body') base.text = '본문 내용은 이곳에 입력하세요.';
+                if (type === 'body') base.text = '';
                 if (type === 'photo') base.photos = [{
                     image: '',
-                    caption: '사진 설명',
+                    caption: '',
                     imageFit: 'cover'
                 }];
                 if (type === 'custom') {
-                    base.heading = '부제 영역';
-                    base.text = '내용을 입력하세요.';
+                    base.heading = '';
+                    base.text = '';
                 }
                 return base;
             };
@@ -1288,7 +1288,7 @@
             function renderBlock(b) {
                 let inner = '';
                 if (b.type === 'quiz') {
-                    inner = (b.questions || []).map((q, qi) => `<div class="quiz-q q" data-preview-q="${b.id}-${qi}" data-q="${b.id}-${qi}"><div class="qtitle">${qi+1}. ${esc(q.text)}</div><div class="quiz-options options">${(q.options||[]).map((o,oi)=>`<label><input type="radio" name="learn-${b.id}-${qi}" value="${oi+1}" data-correct="${String(q.answer)===String(oi+1)?'yes':'no'}"><span>${esc(o)}</span></label>`).join('')}</div></div>`).join('');
+                    inner = (b.questions || []).map((q, qi) => `<div class="quiz-q q" data-preview-q="${b.id}-${qi}" data-q="${b.id}-${qi}"><div class="qtitle">${esc(q.text)}</div><div class="quiz-options options">${(q.options||[]).map((o,oi)=>`<label><input type="radio" name="learn-${b.id}-${qi}" value="${oi+1}" data-correct="${String(q.answer)===String(oi+1)?'yes':'no'}"><span>${esc(o)}</span></label>`).join('')}</div></div>`).join('');
                 } else if (b.type === 'vocab') {
                     inner = `<div class="vocab-grid ${(b.words||[]).length===1?'single':''}">${(b.words||[]).map(w=>`<article class="vocab-card vocab">${w.image?`<img class="fit-${attr(w.imageFit||'cover')}" src="${attr(w.image)}" alt="${attr(w.word)}" onerror="this.style.display='none'">`:''}<div class="vocab-copy"><h3>${esc(w.word)}</h3><p>${esc(w.meaning)}</p>${w.example?`<div class="example">${esc(w.example)}</div>`:''}</div></article>`).join('')}</div>`;
                 } else if (b.type === 'map') inner = renderMapSvg(b);
@@ -1349,8 +1349,8 @@
                     }
                 } else if (action === 'add-question') {
                     b.questions.push({
-                        text: '새 문제를 입력하세요.',
-                        options: ['선택지 1', '선택지 2', '선택지 3', '선택지 4'],
+                        text: '',
+                        options: ['', '', '', ''],
                         answer: '1'
                     });
                     renderAll();
@@ -1368,8 +1368,8 @@
                     }
                 } else if (action === 'add-word') {
                     b.words.push({
-                        word: '새 단어',
-                        meaning: '뜻을 입력하세요.',
+                        word: '',
+                        meaning: '',
                         image: '',
                         example: ''
                     });
@@ -1391,7 +1391,7 @@
                 } else if (action === 'add-photo') {
                     b.photos.push({
                         image: '',
-                        caption: '사진 설명',
+                        caption: '',
                         imageFit: 'cover'
                     });
                     renderAll();
