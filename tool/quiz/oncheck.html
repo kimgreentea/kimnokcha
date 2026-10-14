@@ -17,13 +17,7 @@
             --red: #c43f4b
         }
 
-        * {
-            box-sizing: border-box
-        }
-
         body {
-            margin: 0;
-            font-family: system-ui, -apple-system, "Noto Sans KR", sans-serif;
             color: var(--ink);
             background: var(--bg);
             line-height: 1.55
@@ -279,67 +273,8 @@
             margin-top: 8px
         }
 
-        .map-frame {
-            position: relative;
-            overflow: hidden
-        }
-
-        .map-frame svg {
-            position: relative;
-            z-index: 1
-        }
-
-        .map-frame .map-bg {
-            position: absolute;
-            inset: 8px;
-            width: calc(100% - 16px);
-            height: calc(100% - 16px);
-            object-fit: cover;
-            z-index: 0;
-            opacity: .85
-        }
-
-        .map-frame .map-bg.fit-contain {
-            object-fit: contain
-        }
-
-        .map-frame .map-bg.fit-width {
-            inset: auto;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: auto;
-            max-height: none;
-            object-fit: contain
-        }
-
-        .map-frame .map-bg.fit-height {
-            inset: auto;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: auto;
-            height: 100%;
-            max-width: none;
-            object-fit: contain
-        }
-
-        .map-frame svg circle {
-            cursor: grab;
-            touch-action: none
-        }
-
         .map-frame svg circle:active {
             cursor: grabbing
-        }
-
-        .section-meta {
-            font-size: .82rem;
-            color: #6c7788;
-            text-align: right;
-            white-space: nowrap;
-            margin: 2px 0 0
         }
 
         .chapter-page-row {
@@ -416,10 +351,6 @@
         }
 
         .section-heading {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
             margin: 0 0 12px
         }
 
@@ -462,56 +393,8 @@
             margin-top: 5px
         }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px
-        }
-
-        .photo-item {
-            margin: 0;
-            min-width: 0
-        }
-
-        .photo-item img {
-            display: block;
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            background: #eef1f6
-        }
-
-        .photo-item img.fit-contain {
-            object-fit: contain
-        }
-
-        .photo-item img.fit-width {
-            width: 100%;
-            height: auto;
-     
-            object-fit: contain
-        }
-
-        .photo-item img.fit-height {
-            width: auto;
-            height: 500px;
-            max-width: 100%;
-            object-fit: contain;
-            margin: auto
-        }
-
         .photo-item figcaption {
             margin-top: 10px;
-        }
-
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px
-        }
-
-        .vocab-grid.single {
-            grid-template-columns: 1fr
         }
 
         .vocab-card {
@@ -548,10 +431,6 @@
             object-fit: contain
         }
 
-        .vocab-copy {
-            padding: 10px
-        }
-
         .vocab-copy h3 {
             font-size: 1rem;
             margin: 0 0 5px
@@ -559,22 +438,9 @@
 
         .example {
             background: #f5f7fb;
-            border-radius: 7px;
-            padding: 8px;
-            font-size: .9rem;
-            margin-top: 8px
-        }
-
-        .map-frame {
-            border: 1px solid #e0e5ee;
-            border-radius: 10px;
-            padding: 8px;
-            background: #f8faff
         }
 
         .map-frame svg {
-            display: block;
-            width: 100%;
             height: auto
         }
 
@@ -585,8 +451,6 @@
         }
 
         .reading-body {
-            white-space: pre-wrap;
-            line-height: 2;
             font-size: 1rem
         }
 
@@ -633,9 +497,6 @@
         }
 
         @media(max-width:500px) {
-            .photo-grid {
-                grid-template-columns: 1fr
-            }
 
             .app {
                 padding: 10px
@@ -643,10 +504,6 @@
 
             .add-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr))
-            }
-
-            .vocab-grid {
-                grid-template-columns: 1fr
             }
 
             .preview-shell {
@@ -804,7 +661,7 @@
         .photo-item img.fit-width {
             width: 100%;
             height: auto;
-      
+
             object-fit: contain
         }
 
@@ -816,9 +673,7 @@
             margin: auto
         }
 
-        .photo-item figcaption {
-
-        }
+        .photo-item figcaption {}
 
         .vocab-grid {
             display: grid;
@@ -844,8 +699,6 @@
             background: #eef1f6
         }
 
-
-
         .vocab img.fit-contain {
             object-fit: contain
         }
@@ -853,7 +706,7 @@
         .vocab img.fit-width {
             width: 100%;
             height: auto;
-       
+
             object-fit: contain;
             margin: auto
         }
@@ -1004,7 +857,7 @@
                 </div>
             </div>
             <div class="card">
-            <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"><label for="kicker-align">정렬</label><select id="kicker-align">
+                <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"><label for="kicker-align">정렬</label><select id="kicker-align">
                         <option value="left">왼쪽</option>
                         <option value="center" selected>가운데</option>
                         <option value="right">오른쪽</option>
@@ -1019,7 +872,7 @@
                         <option value="center" selected>가운데</option>
                         <option value="right">오른쪽</option>
                     </select></div>
-    
+
             </div>
             <div class="card">
                 <div class="heading">
