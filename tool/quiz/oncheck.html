@@ -70,9 +70,7 @@
         }
 
         .btn.primary {
-            background: var(--blue);
-            color: #fff;
-            border-color: var(--blue)
+             
         }
 
         .btn.dark {
@@ -899,12 +897,12 @@
                     <h2>영역 추가</h2>
                 </div>
                 <div class="add-grid">
-                    <button class="btn" data-add="quiz">＋ 확인 문제</button>
-                    <button class="btn" data-add="vocab">＋ 단어 풀이</button>
-                    <button class="btn" data-add="map">＋ 지도</button>
                     <button class="btn" data-add="body">＋ 본문</button>
-                    <button class="btn" data-add="photo">＋ 사진 추가</button>
-                    <button class="btn" data-add="custom">＋ HTML 영역</button>
+                    <button class="btn" data-add="quiz">＋ 문제</button>
+                    <button class="btn" data-add="vocab">＋ 단어</button>
+                    <button class="btn" data-add="photo">＋ 사진</button>
+                    <button class="btn" data-add="map">＋ 지도</button>
+                    <button class="btn" data-add="custom">＋ HTML</button>
                 </div>
 
             </div>
@@ -936,8 +934,8 @@
             const uid = () => 'b' + Math.random().toString(36).slice(2, 9);
             const kinds = {
                 quiz: {
-                    label: '확인 문제',
-                    title: '확인 문제'
+                    label: '문제',
+                    title: '문제'
                 },
                 vocab: {
                     label: '단어',
@@ -956,8 +954,8 @@
                     title: '사진'
                 },
                 custom: {
-                    label: '자유 영역',
-                    title: 'HTML 영역'
+                    label: 'HTML',
+                    title: 'HTML'
                 }
             };
             const defaultQuestions = () => [{
