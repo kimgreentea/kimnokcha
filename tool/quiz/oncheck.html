@@ -17,8 +17,6 @@
             --red: #c43f4b
         }
 
-
-
         body {
             color: var(--ink);
             background: var(--bg);
@@ -230,6 +228,32 @@
             font-size: .82rem
         }
 
+        .block-list-controls {
+            display: inline-flex;
+            gap: 6px;
+            margin-left: auto;
+            flex-wrap: wrap
+        }
+
+        .block-list-controls .btn {
+            padding: 5px 8px;
+            font-size: .82rem
+        }
+
+        .block-meta-inline {
+            color: var(--muted);
+            font-size: .82em;
+            font-weight: 500;
+            margin-left: 6px
+        }
+
+        @media (max-width: 600px) {
+            .block-list-controls {
+                width: 100%;
+                margin-left: 0
+            }
+        }
+
         .block-body {
             padding: 12px
         }
@@ -284,18 +308,6 @@
         .map-background-field {
             margin-top: 8px
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -425,58 +437,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
         .photo-item figcaption {
             margin-top: 10px;
         }
-
-
-
-
-
-        .vocab-card {
-            border: 0;
-            border-radius: 0;
-            overflow: visible
-        }
-
-        .vocab-card img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            background: #eef1f6;
-            display: block
-        }
-
-        .vocab-card img.fit-width {
-            width: 100%;
-            height: auto;
-
-            object-fit: contain;
-            margin: auto
-        }
-
-        .vocab-card img.fit-height {
-            width: auto;
-            height: 500px;
-            max-width: 100%;
-            object-fit: contain;
-            margin: auto
-        }
-
-        .vocab-card img.fit-contain {
-            object-fit: contain
-        }
-
 
 
         .vocab-copy h3 {
@@ -936,17 +899,17 @@
                     <h2>영역 추가</h2>
                 </div>
                 <div class="add-grid">
-                    <button class="btn" data-add="body">＋ 본문</button>
-                    <button class="btn" data-add="quiz">＋ 문제</button>
-                    <button class="btn" data-add="vocab">＋ 단어</button>
-                    <button class="btn" data-add="photo">＋ 사진</button>
+                    <button class="btn" data-add="quiz">＋ 확인 문제</button>
+                    <button class="btn" data-add="vocab">＋ 단어 풀이</button>
                     <button class="btn" data-add="map">＋ 지도</button>
-                    <button class="btn" data-add="custom">＋ HTML</button>
+                    <button class="btn" data-add="body">＋ 본문</button>
+                    <button class="btn" data-add="photo">＋ 사진 추가</button>
+                    <button class="btn" data-add="custom">＋ HTML 영역</button>
                 </div>
 
             </div>
             <div class="heading">
-                <h2>학습지 편집</h2><span id="block-count" class="small"></span>
+                <h2>학습지 편집</h2><span id="block-count" class="small"></span><div class="block-list-controls"><button class="btn" id="expand-all-blocks" type="button">전체 펼치기</button><button class="btn" id="collapse-all-blocks" type="button">전체 접기</button></div>
             </div>
             <div id="block-list"></div>
 
@@ -973,8 +936,8 @@
             const uid = () => 'b' + Math.random().toString(36).slice(2, 9);
             const kinds = {
                 quiz: {
-                    label: '문제',
-                    title: '문제'
+                    label: '확인 문제',
+                    title: '확인 문제'
                 },
                 vocab: {
                     label: '단어',
@@ -993,8 +956,8 @@
                     title: '사진'
                 },
                 custom: {
-                    label: 'HTML',
-                    title: 'HTML'
+                    label: '자유 영역',
+                    title: 'HTML 영역'
                 }
             };
             const defaultQuestions = () => [{
@@ -1085,13 +1048,20 @@
                 return `<div class="field"><label>${esc(label)}</label><textarea data-id="${id}" data-key="${key}" placeholder="${attr(placeholder)}">${esc(value)}</textarea></div>`;
             }
 
+            function blockHeaderLabel(b, index) {
+                const title = `${index + 1}. ${b.title || kinds[b.type]?.label || '영역'}`;
+                if (!collapsedBlocks.has(b.id)) return esc(title);
+                const meta = [b.page, b.chapter].filter(value => String(value || '').trim()).map(value => String(value).trim());
+                return `${esc(title)}${meta.length ? ` <span class="block-meta-inline">${meta.map(esc).join(' · ')}</span>` : ''}`;
+            }
+
             function renderBlockEditors() {
                 $('#block-count').textContent = `${blocks.length}개 영역`;
                 $('#block-list').innerHTML = blocks.map((b, index) => `
       <article class="block-editor ${collapsedBlocks.has(b.id) ? 'collapsed' : ''}" data-block-id="${b.id}">
         <div class="block-head">
           <span class="drag-handle" draggable="true" title="드래그하여 순서 변경" aria-label="드래그하여 순서 변경">⠿</span>
-          <span class="block-name">${index+1}. ${esc(b.title || kinds[b.type]?.label || '영역')}</span>
+          <span class="block-name">${blockHeaderLabel(b,index)}</span>
           <button class="btn" data-action="toggle-collapse" data-id="${b.id}" title="${collapsedBlocks.has(b.id) ? '영역 펼치기' : '영역 접기'}" aria-expanded="${!collapsedBlocks.has(b.id)}">${collapsedBlocks.has(b.id) ? '＋' : '−'}</button>
           <button class="btn" data-action="up" data-id="${b.id}" title="위로">↑</button>
           <button class="btn" data-action="down" data-id="${b.id}" title="아래로">↓</button>
@@ -1181,7 +1151,7 @@
                 if (b.type === 'quiz') {
                     inner = (b.questions || []).map((q, qi) => `<div class="quiz-q q" data-preview-q="${b.id}-${qi}" data-q="${b.id}-${qi}"><div class="qtitle">${esc(q.text)}</div><div class="quiz-options options">${(q.options||[]).map((o,oi)=>`<label><input type="radio" name="learn-${b.id}-${qi}" value="${oi+1}" data-correct="${String(q.answer)===String(oi+1)?'yes':'no'}"><span>${esc(o)}</span></label>`).join('')}</div></div>`).join('');
                 } else if (b.type === 'vocab') {
-                    inner = `<div class="vocab-grid ${(b.words||[]).length===1?'single':''}">${(b.words||[]).map(w=>`<article class="vocab-card vocab">${w.image?`<img class="fit-${attr(w.imageFit||'cover')}" src="${attr(w.image)}" alt="${attr(w.word)}" onerror="this.style.display='none'">`:''}<div class="vocab-copy"><h3>${esc(w.word)}</h3><p>${esc(w.meaning)}</p>${w.example?`<div class="example">${esc(w.example)}</div>`:''}</div></article>`).join('')}</div>`;
+                    inner = `<div class="vocab-grid ${(b.words||[]).length===1?'single':''}">${(b.words||[]).map(w=>`<article class="vocab">${w.image?`<img class="fit-${attr(w.imageFit||'cover')}" src="${attr(w.image)}" alt="${attr(w.word)}" onerror="this.style.display='none'">`:''}<div class="vocab-copy"><h3>${esc(w.word)}</h3><p>${esc(w.meaning)}</p>${w.example?`<div class="example">${esc(w.example)}</div>`:''}</div></article>`).join('')}</div>`;
                 } else if (b.type === 'map') inner = renderMapSvg(b);
                 else if (b.type === 'body') inner = `<div class="reading-body">${esc(b.text||'')}</div>`;
                 else if (b.type === 'photo') inner = `<div class="photo-grid">${(b.photos||[]).map(photo=>`${photo.image?`<figure class="photo-item"><img class="fit-${attr(photo.imageFit||'cover')}" src="${attr(photo.image)}" alt="${attr(photo.caption||'사진')}" onerror="this.style.display='none'"><figcaption>${esc(photo.caption||'')}</figcaption></figure>`:''}`).join('')}</div>`;
@@ -1299,6 +1269,14 @@
                 const btn = e.target.closest('[data-action]');
                 if (btn) handleAction(btn.dataset.action, btn);
             });
+            $('#expand-all-blocks').addEventListener('click', () => {
+                collapsedBlocks.clear();
+                renderBlockEditors();
+            });
+            $('#collapse-all-blocks').addEventListener('click', () => {
+                blocks.forEach(block => collapsedBlocks.add(block.id));
+                renderBlockEditors();
+            });
             $('#block-list').addEventListener('change', e => {
                 const el = e.target;
                 if (el.dataset.action === 'answer') {
@@ -1354,11 +1332,11 @@
                     const p = key.split('-');
                     b.photos[Number(p[1])][p[2]] = val;
                 } else b[key] = val;
-                if (key === 'title') {
+                if (['title', 'page', 'chapter'].includes(key)) {
                     const card = el.closest('[data-block-id]');
                     const index = blocks.findIndex(item => item.id === b.id);
                     const name = card?.querySelector('.block-name');
-                    if (name) name.textContent = `${index + 1}. ${b.title || kinds[b.type]?.label || '영역'}`;
+                    if (name) name.innerHTML = blockHeaderLabel(b, index);
                 }
                 renderPreview();
             });
