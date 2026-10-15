@@ -30,7 +30,7 @@ textarea{resize:vertical;min-height:70px}
 .page [contenteditable=true]:focus{outline:2px solid #8eafff;outline-offset:2px}
 .page-section{position:relative;margin:0 0 16px;padding:16px;border:1px solid #dfe4ed;border-radius:10px;min-height:48px}.page-section.divider-section{border:0!important;border-radius:0!important;padding:0!important;min-height:0;margin:12px 0;background:transparent!important}.divider-section hr{border:0;border-top:2px solid #cbd5e1;margin:0}
 .page-section h2{margin:0 0 10px}.page-section p{margin:8px 0}.page-section img{max-width:100%;height:auto}.page-section table{border-collapse:separate;border-spacing:0;width:100%;overflow:hidden;border-radius:8px;border:1px solid #cbd5e1}.page-section td,.page-section th{border:0;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1;padding:9px 11px;text-align:left}.page-section th{background:#eff6ff;font-weight:750}.page-section tr:last-child td{border-bottom:0}.page-section td:last-child,.page-section th:last-child{border-right:0}.page[data-theme="dark"] .page-section table{border-color:#475569}.page[data-theme="dark"] .page-section td,.page[data-theme="dark"] .page-section th{border-color:#475569}.page[data-theme="dark"] .page-section th{background:#334155;color:#f3f4f6}
-.preview-drag-handle{position:absolute;top:4px;right:4px;z-index:5;border:1px solid #cbd5e1;border-radius:6px;background:#ffffffd9;color:#334155;padding:1px 7px;font-size:14px;line-height:1.5;cursor:grab;opacity:.65}.preview-drag-handle:hover{opacity:1}.page-section.preview-dragging{opacity:.45;outline:2px dashed #315fd3}.page-section blockquote{border-left:4px solid #9aa9c1;margin:10px 0;padding:5px 12px;color:#536177}
+.preview-drag-handle{position:absolute;top:4px;right:4px;z-index:5;border:1px solid #cbd5e1;border-radius:6px;background:#ffffffd9;color:#334155;padding:1px 7px;font-size:14px;line-height:1.5;cursor:grab;opacity:.65}.preview-drag-handle:hover{opacity:1}.divider-section .preview-drag-handle{position:relative;display:block;top:auto;right:auto;margin:0 0 4px auto;width:max-content}.page-section.preview-dragging{opacity:.45;outline:2px dashed #315fd3}.page-section blockquote{border-left:4px solid #9aa9c1;margin:10px 0;padding:5px 12px;color:#536177}
 .quiz-question{border:0;padding:10px 0;margin:10px 0}.quiz-question .quiz-title{font-weight:750;margin-bottom:8px}.quiz-options{display:grid;gap:6px}.quiz-options label{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-radius:8px;cursor:pointer}.quiz-options label.selected{background:rgba(148,163,184,.2)}.quiz-question.correct{background:url('https://github.com/kimgreentea/kimnokcha/blob/main/css/images/check-O.png?raw=true') no-repeat calc(0px - 10px) calc(0px - 5px)}.quiz-question.wrong{background:url('https://github.com/kimgreentea/kimnokcha/blob/main/css/images/check-X.png?raw=true') no-repeat calc(0px - 10px) calc(0px - 5px)}.quiz-question.correct,.quiz-question.wrong{background-size:40px 40px}
 .page-section ul,.page-section ol{padding-left:1.6em}
 .page-title{margin:0 0 8px}.page-subtitle{margin:0 0 22px}
@@ -40,6 +40,113 @@ textarea{resize:vertical;min-height:70px}
 @media(max-width:520px){.app{padding:8px}.page{padding:15px}.add-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{flex-wrap:wrap}}
 </style>
 <style id="export-css">
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
+    font-weight: 100;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
+    font-weight: 200;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
+    font-weight: 900;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: 500;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GMarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'NexonMaplestory';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff') format('woff');
+    font-weight: 300;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'NexonMaplestory';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFBold.woff') format('woff');
+    font-weight: 700;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Ridibatang';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'IsYun';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202-2@1.0/LeeSeoyun.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
 .export-page img{max-width:100%;height:auto}
 .export-page .youtube-embed{position:relative;width:100%;aspect-ratio:16/9;max-width:800px;margin:12px auto}
 .export-page .youtube-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -80,7 +187,7 @@ textarea{resize:vertical;min-height:70px}
     <div class="field"><label for="doc-title">문서 제목</label><input id="doc-title" type="text" value="새 문서"></div>
     <div class="field"><label for="doc-subtitle">부제</label><input id="doc-subtitle" type="text" value=""></div>
     <div class="row">
-      <div class="field"><label for="font-family">글꼴</label><select id="font-family"><option value='system-ui,-apple-system,"Noto Sans KR",sans-serif'>기본 고딕</option><option value='"Noto Serif KR",serif'>명조</option><option value='Arial,sans-serif'>Arial</option><option value='monospace'>고정폭</option></select></div>
+      <div class="field"><label for="font-family">글꼴</label><select id="font-family"><option value='system-ui,-apple-system,"Noto Sans KR",sans-serif'>고딕</option><option value='"Noto Serif KR",serif'>명조</option><option value="Pretendard">프리텐다드</option><option value="Ridibatang">리디바탕</option><option value='GMarketSans'>지마켓산스</option><option value='NexonMaplestory'>메이플스토리</option><option value='IsYun'>이서윤체</option><option value='monospace'>고정폭</option></select></div>
       <div class="field"><label for="font-size">전체 글자 크기 (px)</label><input id="font-size" type="number" min="8" max="72" value="16"></div>
     </div>
     <div class="field"><label for="theme-mode">문서 테마</label><select id="theme-mode"><option value="light">라이트 모드</option><option value="dark">다크 모드</option></select></div>
@@ -111,7 +218,7 @@ textarea{resize:vertical;min-height:70px}
       <button class="btn" data-cmd="bold" title="굵게"><b>B</b></button><button class="btn" data-cmd="italic" title="기울임"><i>I</i></button><button class="btn" data-cmd="underline" title="밑줄"><u>U</u></button><button class="btn" data-cmd="strikeThrough" title="취소선"><s>S</s></button>
       <select id="block-format" aria-label="문단 형식"><option value="P">본문</option><option value="H1">제목 1</option><option value="H2">제목 2</option><option value="H3">제목 3</option><option value="BLOCKQUOTE">인용문</option><option value="PRE">코드</option></select>
       <select id="font-size-preset" aria-label="글자 크기"><option value="">크기</option><option value="1">매우 작게</option><option value="2">작게</option><option value="3">보통</option><option value="4">크게</option><option value="5">더 크게</option><option value="6">매우 크게</option><option value="7">최대</option></select>
-      <select id="inline-font-family" aria-label="선택 글꼴" title="선택한 글자의 글꼴"><option value="">글꼴</option><option value='system-ui,-apple-system,"Noto Sans KR",sans-serif'>고딕</option><option value='"Noto Serif KR",serif'>명조</option><option value="Arial,sans-serif">Arial</option><option value="monospace">고정폭</option></select>
+      <select id="inline-font-family" aria-label="선택 글꼴" title="선택한 글자의 글꼴"><option value="">글꼴</option><option value='system-ui,-apple-system,"Noto Sans KR",sans-serif'>고딕</option><option value='"Noto Serif KR",serif'>명조</option><option value="Pretendard">프리텐다드</option><option value="Ridibatang">리디바탕</option><option value='GMarketSans'>지마켓산스</option><option value='NexonMaplestory'>메이플스토리</option><option value='IsYun'>이서윤체</option><option value='monospace'>고정폭</option></select>
       <select id="inline-line-height" aria-label="선택 줄 간격" title="현재 문단의 줄 간격"><option value="">줄 간격</option><option value="1.3">좁게</option><option value="1.5">보통</option><option value="1.8">넓게</option><option value="2.2">매우 넓게</option></select>
       <div class="palette-group"><span class="palette-label">글자색</span><div class="palette" id="text-palette">
         <button class="swatch" data-inline-color="#334155" style="background:#334155" title="차콜" aria-label="차콜 글자색"></button><button class="swatch" data-inline-color="#2563a6" style="background:#2563a6" title="블루" aria-label="블루 글자색"></button><button class="swatch" data-inline-color="#0f766e" style="background:#0f766e" title="틸" aria-label="틸 글자색"></button><button class="swatch" data-inline-color="#6d4acb" style="background:#6d4acb" title="바이올렛" aria-label="바이올렛 글자색"></button><button class="swatch" data-inline-color="#c2415d" style="background:#c2415d" title="로즈" aria-label="로즈 글자색"></button><button class="swatch" data-inline-color="#b45309" style="background:#b45309" title="앰버" aria-label="앰버 글자색"></button>
@@ -139,7 +246,7 @@ textarea{resize:vertical;min-height:70px}
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const uid=()=>Math.random().toString(36).slice(2,10);
 const names={text:'본문',quiz:'퀴즈',table:'표',html:'사용자 HTML',divider:'구분선','two-column':'2단 구성'};
-const initial=()=>({id:uid(),type:'text',title:'본문',html:'',bg:'#ffffff',color:'#202a3a',padding:16});
+const initial=()=>({id:uid(),type:'text',title:'본문',html:'',bg:'#ffffff',color:'#202a3a',padding:16,border:true});
 let sections=[initial()],collapsed=new Set(),dragId=null,lastFocused=null,currentTheme='light',titleHtml=null,subtitleHtml=null;
 const page=$('#page'),content=$('#content');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -149,7 +256,7 @@ function updateThemePalettes(){const mode=$('#theme-mode').value,theme=themes[mo
 function updateInlinePalettes(){const dark=$('#theme-mode').value==='dark';const text=dark?['#f3f4f6','#bfdbfe','#99f6e4','#ddd6fe','#fda4af','#fdba74']:['#334155','#2563a6','#0f766e','#6d4acb','#c2415d','#b45309'];const highlight=dark?['#6b5520','#234b78','#155e55','#4c3b7b','#762f42','#7c421e']:['#fef3c7','#dbeafe','#ccfbf1','#ede9fe','#ffe4e6','#ffedd5'];$$('[data-inline-color]').forEach((b,i)=>{b.dataset.inlineColor=text[i];b.style.background=text[i];b.title=(dark?'다크 모드 글자색 ':'글자색 ')+(i+1)});$$('[data-inline-bg]').forEach((b,i)=>{b.dataset.inlineBg=highlight[i];b.style.background=highlight[i];b.title=(dark?'다크 모드 강조색 ':'강조색 ')+(i+1)})}
 
 function make(type){
-const t=themes[$('#theme-mode')?.value||'light'];let s={id:uid(),type,title:names[type],html:'',bg:t.sectionBg[0],color:t.sectionText[0],padding:16};
+const t=themes[$('#theme-mode')?.value||'light'];let s={id:uid(),type,title:names[type],html:'',bg:t.sectionBg[0],color:t.sectionText[0],padding:16,border:true};
 if(type==='text')s.html='';
 if(type==='quiz')s.questions=[{text:'',options:['','','',''],answer:1}];
 if(type==='table'){s.tableRows=3;s.tableCols=2;s.html=buildTable(3,2,true)}
@@ -164,14 +271,14 @@ $('#section-list').innerHTML=sections.map((s,i)=>`<div class="section-card ${col
 <div class="section-body">
 <div class="field"><label>섹션 이름</label><input type="text" data-id="${s.id}" data-key="title" value="${esc(s.title)}"></div>
 <div class="row"><div class="field"><label>섹션 배경색</label><select data-id="${s.id}" data-key="bg">${themes[$('#theme-mode').value].sectionBg.map((c,j)=>`<option value="${c}" ${s.bg===c?'selected':''}>${($('#theme-mode').value==='dark'?['슬레이트','웜 브라운','네이비','포레스트','플럼','베리']:['화이트','웜 아이보리','아이스 블루','소프트 민트','라벤더','소프트 핑크'])[j]}</option>`).join('')}</select></div><div class="field"><label>섹션 글자색</label><select data-id="${s.id}" data-key="color">${themes[$('#theme-mode').value].sectionText.map((c,j)=>`<option value="${c}" ${s.color===c?'selected':''}>${($('#theme-mode').value==='dark'?['오프화이트','웜 크림','아이스 블루','민트','라벤더','로즈']:['잉크 네이비','차콜','블루','틸','바이올렛','베리'])[j]}</option>`).join('')}</select></div></div>
-<div class="row"><div class="field"><label>안쪽 여백 (px)</label><input type="number" min="0" max="100" data-id="${s.id}" data-key="padding" value="${s.padding}"></div><div class="field"><label>빠른 작업</label><div style="display:flex;gap:5px;flex-wrap:wrap"><button type="button" class="btn" data-act="clear-content" data-id="${s.id}">내용 비우기</button><button type="button" class="btn" data-act="reset-style" data-id="${s.id}">색·여백 초기화</button></div></div></div>
+<div class="row"><div class="field"><label>안쪽 여백 (px)</label><input type="number" min="0" max="100" data-id="${s.id}" data-key="padding" value="${s.padding}"></div><div class="field"><label>테두리</label><label style="display:flex;align-items:center;gap:7px;font-weight:500"><input type="checkbox" data-id="${s.id}" data-key="border" ${s.border!==false?'checked':''}> 테두리 표시</label></div></div><div class="field"><label>빠른 작업</label><div style="display:flex;gap:5px;flex-wrap:wrap"><button type="button" class="btn" data-act="clear-content" data-id="${s.id}">내용 비우기</button><button type="button" class="btn" data-act="reset-style" data-id="${s.id}">색·여백 초기화</button></div></div>
 ${s.type==='table'?`<div class="field"><label>표 크기</label><div class="row"><div><label class="small">행</label><select data-id="${s.id}" data-key="tableRows">${Array.from({length:12},(_,n)=>`<option value="${n+1}" ${Number(s.tableRows||3)===n+1?'selected':''}>${n+1}행</option>`).join('')}</select></div><div><label class="small">열</label><select data-id="${s.id}" data-key="tableCols">${Array.from({length:8},(_,n)=>`<option value="${n+1}" ${Number(s.tableCols||2)===n+1?'selected':''}>${n+1}열</option>`).join('')}</select></div></div><button type="button" class="btn" data-act="resize-table" data-id="${s.id}">표 크기 적용</button></div>`:''}${s.type==='quiz'?renderQuizEditor(s):`<div class="field"><label>HTML 편집</label><textarea data-id="${s.id}" data-key="html" spellcheck="false" placeholder="HTML 코드를 입력하세요.">${esc(s.html)}</textarea></div>`}
 </div></div>`).join('');
 }
 function renderQuizEditor(s){return `${(s.questions||[]).map((q,qi)=>`<div class="question-editor"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><strong>문항 ${qi+1}</strong><button type="button" class="btn danger" data-act="remove-question" data-id="${s.id}" data-qi="${qi}">문항 삭제</button></div><div class="field"><label>문제</label><textarea data-id="${s.id}" data-q-index="${qi}" data-qkey="text" placeholder="문제를 입력하세요.">${esc(q.text)}</textarea></div><div class="field"><label>선택지 </label>${(q.options||[]).map((o,oi)=>`<div class="choice-row"><label><input type="radio" name="answer-${s.id}-${qi}" data-q-answer data-id="${s.id}" data-qi="${qi}" value="${oi+1}" ${Number(q.answer)===oi+1?'checked':''}><input type="text" data-id="${s.id}" data-q-index="${qi}" data-option-index="${oi}" value="${esc(o)}" aria-label="문항 ${qi+1} 선택지 ${oi+1}"></label><button type="button" class="btn danger" data-act="remove-option" data-id="${s.id}" data-qi="${qi}" data-option-index="${oi}" ${q.options.length<=2?'disabled':''}>×</button></div>`).join('')}</div><button type="button" class="btn" data-act="add-option" data-id="${s.id}" data-qi="${qi}">＋ 선택지 추가</button></div>`).join('')}<button type="button" class="btn primary" data-act="add-question" data-id="${s.id}" style="margin-top:5pt;">＋ 문항 추가</button>`}
 function renderQuizMarkup(s){return (s.questions||[]).map((q,qi)=>`<div class="quiz-question" data-quiz-question="${s.id}-${qi}"><div class="quiz-title">${esc(q.text||'')}</div><div class="quiz-options">${(q.options||[]).map((o,oi)=>`<label><input type="radio" name="quiz-${s.id}-${qi}" value="${oi+1}" data-quiz-id="${s.id}" data-quiz-index="${qi}" data-correct="${Number(q.answer)===oi+1?'yes':'no'}"><span>${esc(o)}</span></label>`).join('')}</div></div>`).join('')}
 function renderContent(){
-content.innerHTML=sections.map(s=>s.type==='divider'?`<section class="page-section divider-section" data-section="${s.id}" data-type="divider"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div contenteditable="true" data-edit="${s.id}">${s.html||'<hr>'}</div></section>`:s.type==='quiz'?`<section class="page-section" data-section="${s.id}" data-type="quiz" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div class="quiz-preview">${renderQuizMarkup(s)}</div></section>`:`<section class="page-section" data-section="${s.id}" data-type="${s.type}" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div contenteditable="true" data-edit="${s.id}">${s.html}</div></section>`).join('');
+content.innerHTML=sections.map(s=>s.type==='divider'?`<section class="page-section divider-section" data-section="${s.id}" data-type="divider"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div contenteditable="true" data-edit="${s.id}">${s.html||'<hr>'}</div></section>`:s.type==='quiz'?`<section class="page-section" data-section="${s.id}" data-type="quiz" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;border:${s.border===false?'0':'1px solid #dfe4ed'}"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div class="quiz-preview">${renderQuizMarkup(s)}</div></section>`:`<section class="page-section" data-section="${s.id}" data-type="${s.type}" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;border:${s.border===false?'0':'1px solid #dfe4ed'}"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><div contenteditable="true" data-edit="${s.id}">${s.html}</div></section>`).join('');
 $$('[contenteditable=true]',page).forEach(el=>el.addEventListener('focus',()=>lastFocused=el));
 }
 function applySettings(){
@@ -193,10 +300,10 @@ if(s){s.html=el.innerHTML;const editor=$(`[data-id="${id}"][data-key="html"]`);i
 function handleSectionField(e){
 const el=e.target,id=el.dataset.id,key=el.dataset.key;if(!id||!key)return;
 const s=sections.find(x=>x.id===id);if(!s)return;
-s[key]=key==='padding'?Math.max(0,Math.min(100,Number(el.value)||0)):(key==='tableRows'||key==='tableCols'?Number(el.value)||1:el.value);
+s[key]=key==='padding'?Math.max(0,Math.min(100,Number(el.value)||0)):key==='border'?el.checked:(key==='tableRows'||key==='tableCols'?Number(el.value)||1:el.value);
 if(key==='html'){const target=$(`[data-edit="${id}"]`);if(target)target.innerHTML=s.html}
 if(key==='title'){const h=el.closest('.section-card')?.querySelector('.section-head strong');if(h)h.textContent=(sections.findIndex(x=>x.id===id)+1)+'. '+s.title}
-if(['bg','color','padding'].includes(key)){const target=$(`[data-section="${id}"]`);if(target){target.style.background=s.bg;target.style.color=s.color;target.style.padding=s.padding+'px'}}
+if(['bg','color','padding','border'].includes(key)){const target=$(`[data-section="${id}"]`);if(target){target.style.background=s.bg;target.style.color=s.color;target.style.padding=s.padding+'px';target.style.border=s.border===false?'0':'1px solid #dfe4ed'}}
 }
 $('#section-list').addEventListener('input',e=>{const el=e.target;if(el.dataset.qIndex!==undefined){const s=sections.find(x=>x.id===el.dataset.id);if(!s||s.type!=='quiz')return;const q=s.questions[Number(el.dataset.qIndex)];if(el.dataset.qkey==='text')q.text=el.value;else if(el.dataset.optionIndex!==undefined)q.options[Number(el.dataset.optionIndex)]=el.value;const preview=$(`[data-section="${s.id}"] .quiz-preview`);if(preview)preview.innerHTML=renderQuizMarkup(s);return}handleSectionField(e)});$('#section-list').addEventListener('change',e=>{const el=e.target;if(el.matches('[data-q-answer]')){const s=sections.find(x=>x.id===el.dataset.id);if(s&&s.type==='quiz'){s.questions[Number(el.dataset.qi)].answer=Number(el.value);const preview=$(`[data-section="${s.id}"] .quiz-preview`);if(preview)preview.innerHTML=renderQuizMarkup(s)}return}handleSectionField(e)});
 content.addEventListener('input',e=>{const el=e.target.closest('[data-edit]');if(el)syncContent(el)});content.addEventListener('change',e=>{const radio=e.target.closest('input[data-quiz-id]');if(!radio)return;const question=radio.closest('.quiz-question');if(!question)return;question.classList.remove('correct','wrong');question.classList.add(radio.dataset.correct==='yes'?'correct':'wrong');$$('label',question).forEach(l=>l.classList.toggle('selected',l.contains(radio)));});
@@ -264,12 +371,12 @@ content.addEventListener('drop',e=>{if(!previewDragId)return;e.preventDefault();
 content.addEventListener('dragend',e=>{const section=e.target.closest('[data-section]');section?.classList.remove('preview-dragging');if(previewDragId){const ids=$$('[data-section]',content).map(x=>x.dataset.section);sections.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));renderAll()}previewDragId=null});
 function getData(){return{version:1,title:$('#doc-title').value,subtitle:$('#doc-subtitle').value,titleHtml:$('[data-doc=title]').innerHTML,titleStyle:$('[data-doc=title]').getAttribute('style')||'',subtitleHtml:$('[data-doc=subtitle]').innerHTML,subtitleStyle:$('[data-doc=subtitle]').getAttribute('style')||'',settings:{fontFamily:$('#font-family').value,fontSize:$('#font-size').value,themeMode:$('#theme-mode').value,pageWidth:$('#page-width').value,lineHeight:$('#line-height').value,pagePadding:$('#page-padding').value},sections}}
 function saveBlob(content,type,name){const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-$('#save-json').onclick=()=>saveBlob(JSON.stringify(getData(),null,2),'application/json;charset=utf-8','위지윅-프로젝트.json');
+$('#save-json').onclick=()=>saveBlob(JSON.stringify(getData(),null,2),'application/json;charset=utf-8','프로젝트.json');
 $('#load-json-btn').onclick=()=>$('#load-json').click();
 $('#load-json').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.sections))throw Error('섹션 데이터가 없습니다.');sections=d.sections;const s=d.settings||{};currentTheme=s.themeMode||'light';$('#theme-mode').value=currentTheme;$('#doc-title').value=d.title||'';$('#doc-subtitle').value=d.subtitle||'';for(const [k,v] of Object.entries({'font-family':s.fontFamily,'font-size':s.fontSize,'theme-mode':s.themeMode||'light','page-width':s.pageWidth,'line-height':s.lineHeight,'page-padding':s.pagePadding}))if(v!==undefined)$('#'+k).value=v;renderAll();if(typeof d.titleHtml==='string')$('[data-doc=title]').innerHTML=d.titleHtml;if(typeof d.titleStyle==='string')$('[data-doc=title]').setAttribute('style',d.titleStyle);if(typeof d.subtitleHtml==='string')$('[data-doc=subtitle]').innerHTML=d.subtitleHtml;if(typeof d.subtitleStyle==='string')$('[data-doc=subtitle]').setAttribute('style',d.subtitleStyle)}catch(err){alert('불러오기 실패: '+err.message)}e.target.value=''});
 function exportedHtml(){
 const title=esc($('#doc-title').value),subtitle=esc($('#doc-subtitle').value),theme=themes[$('#theme-mode').value]||themes.light,titleEl=$('[data-doc=title]'),subtitleEl=$('[data-doc=subtitle]'),titleMarkup=titleEl.innerHTML,subtitleMarkup=subtitleEl.innerHTML,titleStyle=esc(titleEl.getAttribute('style')||''),subtitleStyle=esc(subtitleEl.getAttribute('style')||'');
-const sectionsHtml=sections.map(s=>s.type==='divider'?`<section style="margin:12px 0;padding:0;border:0;background:transparent">${s.html||'<hr style="border:0;border-top:2px solid #cbd5e1;margin:0">'}</section>`:s.type==='quiz'?`<section class="export-section" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;margin:0 0 16px;border:1px solid #dfe4ed;border-radius:10px">${renderQuizMarkup(s)}</section>`:`<section style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;margin:0 0 16px;border:1px solid #dfe4ed;border-radius:10px">${s.html}</section>`).join('');
+const sectionsHtml=sections.map(s=>s.type==='divider'?`<section style="margin:12px 0;padding:0;border:0;background:transparent">${s.html||'<hr style="border:0;border-top:2px solid #cbd5e1;margin:0">'}</section>`:s.type==='quiz'?`<section class="export-section" style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;margin:0 0 16px;border:${s.border===false?'0':'1px solid #dfe4ed'};border-radius:${s.border===false?'0':'10px'}">${renderQuizMarkup(s)}</section>`:`<section style="background:${s.bg};color:${s.color};padding:${Math.max(0,Number(s.padding)||0)}px;margin:0 0 16px;border:${s.border===false?'0':'1px solid #dfe4ed'};border-radius:${s.border===false?'0':'10px'}">${s.html}</section>`).join('');
 const exportCss=$('#export-css').textContent;
 return `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title}</title><style>${exportCss}</style><style>*{box-sizing:border-box}body.export-body{margin:0;padding:20px;background:${theme.bg};color:${theme.text};font-family:${$('#font-family').value};font-size:${Math.max(8,Math.min(72,Number($('#font-size').value)||16))}px;line-height:${$('#line-height').value}}.export-main{width:min(${$('#page-width').value},100%);margin:auto;padding:${Math.max(0,Math.min(100,Number($('#page-padding').value)||0))}px}.export-page[data-theme="dark"] th{background:#334155;color:#f3f4f6}@media(max-width:600px){body.export-body{padding:8px}.export-main{padding:12px}}</style></head><body class="export-body"><main class="export-page export-main" data-theme="${$('#theme-mode').value}"><h1 style="${titleStyle}">${titleMarkup}</h1>${subtitle?`<div class="subtitle" style="${subtitleStyle}">${subtitleMarkup}</div>`:''}${sectionsHtml}</main><script>document.addEventListener('change',function(e){var r=e.target.closest('input[data-quiz-id]');if(!r)return;var q=r.closest('.quiz-question');if(!q)return;q.classList.remove('correct','wrong');q.classList.add(r.dataset.correct==='yes'?'correct':'wrong');q.querySelectorAll('label').forEach(function(l){l.classList.toggle('selected',l.contains(r))})});<\/script></body></html>`;
 }
