@@ -149,6 +149,24 @@
             gap: 6px
         }
 
+        .section-add-panel {
+            position: sticky;
+            top: 76px;
+            z-index: 15;
+
+            box-shadow: 0 4px 10px #17233b12
+        }
+
+        #section-list { counter-reset: section-order; }
+
+        #section-list .section-card .section-head > strong {
+            counter-increment: section-order;
+        }
+
+        #section-list .section-card .section-head > strong::before {
+            content: counter(section-order) ". ";
+        }
+
         .section-card {
             border: 1px solid var(--line);
             border-radius: 10px;
@@ -369,6 +387,8 @@
             opacity: .72
         }
         .preview-section-tools:hover { opacity: 1 }
+        .preview-section-name { padding: 2px 6px; font-size: 12px; white-space: nowrap; color: #202a3a }
+        .page-section:not(.divider-section) { padding-top: 42px !important }
         .preview-section-tools button {
             border: 0;
             border-radius: 4px;
@@ -384,6 +404,7 @@
         .preview-section-tools .preview-delete { color: #b91c1c }
         .page-section.preview-collapsed .preview-section-body { display: none }
         .divider-section .preview-section-tools { position: relative; top: auto; right: auto; margin: 0 0 4px auto; width: max-content }
+        .divider-section .preview-section-name { display: inline-block }
 
         .page-section.preview-dragging {
             opacity: .45;
@@ -781,7 +802,7 @@
     </div>
     <div class="field"><label for="page-padding">페이지 안쪽 여백 (px)</label><input id="page-padding" type="number" min="0" max="100" value="28"></div>
   </div>
-  <div class="panel">
+  <div class="panel section-add-panel">
     <h2>섹션 추가</h2>
     <div class="add-grid">
       <button class="btn" data-add="text">＋ 본문</button><button class="btn" data-add="quiz">＋ 퀴즈</button><button class="btn" data-add="table">＋ 표</button>
@@ -791,7 +812,7 @@
     </div>
   </div>
   <div class="panel">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0">섹션 편집</h2><div class="actions"><button class="btn" id="expand-all">전체 펼치기</button><button class="btn" id="collapse-all">전체 접기</button></div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0">섹션 순서 및 설정</h2><div class="actions"><button class="btn" id="expand-all">전체 펼치기</button><button class="btn" id="collapse-all">전체 접기</button></div></div>
     <div id="section-list"></div><div class="status" id="status"></div>
   </div>
 </section>
@@ -814,11 +835,11 @@
       </div></div>
       <button class="btn" data-cmd="justifyLeft" title="왼쪽 정렬">≡←</button><button class="btn" data-cmd="justifyCenter" title="가운데 정렬">≡</button><button class="btn" data-cmd="justifyRight" title="오른쪽 정렬">→≡</button>
       <button class="btn" data-cmd="insertUnorderedList">• 목록</button><button class="btn" data-cmd="insertOrderedList">1. 목록</button>
-      <button class="btn" id="link-btn">링크</button><button class="btn" id="image-btn">이미지 URL</button><button class="btn" id="image-upload-btn">이미지 업로드</button><input type="file" id="image-file" accept="image/*" hidden><button class="btn" id="youtube-btn">YouTube</button><button class="btn" id="table-btn">표 삽입 ▦</button><button class="btn" id="hr-btn">구분선</button>      <button type="button" class="btn" id="preview-expand-all" >전체 펼치기</button>
+      <button class="btn" id="link-btn">링크</button><button class="btn" id="image-btn">이미지 URL</button><button class="btn" id="image-upload-btn">이미지 업로드</button><input type="file" id="image-file" accept="image/*" hidden><button class="btn" id="youtube-btn">YouTube</button><button class="btn" id="table-btn">표 삽입 ▦</button><button class="btn" id="hr-btn">구분선</button>
+      <button type="button" class="btn" id="preview-expand-all">전체 펼치기</button>
       <button type="button" class="btn" id="preview-collapse-all">전체 접기</button>
     </div>
-    <div id="table-picker" class="table-picker" hidden><div class="table-picker-head"><strong>표 크기 선택</strong><span id="table-picker-size">2 × 2</span></div><div id="table-grid" class="table-grid" role="grid" aria-label="표 크기 선택"></div><p class="small">격자에 마우스를 올리거나 눌러 행과 열을 선택하세요.</p>
-</div>
+    <div id="table-picker" class="table-picker" hidden><div class="table-picker-head"><strong>표 크기 선택</strong><span id="table-picker-size">2 × 2</span></div><div id="table-grid" class="table-grid" role="grid" aria-label="표 크기 선택"></div><p class="small">격자에 마우스를 올리거나 눌러 행과 열을 선택하세요.</p></div>
 
   </div>
   <article id="page" class="page export-page">
@@ -855,7 +876,7 @@ return s;
 }
 function renderEditors(){
 $('#section-list').innerHTML=sections.map((s,i)=>`<div class="section-card ${collapsed.has(s.id)?'collapsed':''}" data-id="${s.id}">
-<div class="section-head"><span class="handle" draggable="true" title="드래그하여 순서 변경">⠿</span><strong>${i+1}. ${esc(s.title||names[s.type])}</strong><button class="btn" data-act="toggle" data-id="${s.id}">${collapsed.has(s.id)?'＋':'−'}</button><button class="btn" data-act="up" data-id="${s.id}">↑</button><button class="btn" data-act="down" data-id="${s.id}">↓</button><button class="btn" data-act="clone" data-id="${s.id}">복제</button><button class="btn danger" data-act="delete" data-id="${s.id}">삭제</button></div>
+<div class="section-head"><span class="handle" draggable="true" title="드래그하여 순서 변경">⠿</span><strong>${esc(s.title||names[s.type])}</strong><button class="btn" data-act="toggle" data-id="${s.id}">${collapsed.has(s.id)?'＋':'−'}</button><button class="btn" data-act="up" data-id="${s.id}">↑</button><button class="btn" data-act="down" data-id="${s.id}">↓</button><button class="btn" data-act="clone" data-id="${s.id}">복제</button><button class="btn danger" data-act="delete" data-id="${s.id}">삭제</button></div>
 <div class="section-body">
 <div class="field"><label>섹션 이름</label><input type="text" data-id="${s.id}" data-key="title" value="${esc(s.title)}"></div>
 <div class="row"><div class="field"><label>섹션 배경색</label><select data-id="${s.id}" data-key="bg">${themes[$('#theme-mode').value].sectionBg.map((c,j)=>`<option value="${c}" ${s.bg===c?'selected':''}>${($('#theme-mode').value==='dark'?['슬레이트','웜 브라운','네이비','포레스트','플럼','베리']:['화이트','웜 아이보리','아이스 블루','소프트 민트','라벤더','소프트 핑크'])[j]}</option>`).join('')}</select></div><div class="field"><label>섹션 글자색</label><select data-id="${s.id}" data-key="color">${themes[$('#theme-mode').value].sectionText.map((c,j)=>`<option value="${c}" ${s.color===c?'selected':''}>${($('#theme-mode').value==='dark'?['오프화이트','웜 크림','아이스 블루','민트','라벤더','로즈']:['잉크 네이비','차콜','블루','틸','바이올렛','베리'])[j]}</option>`).join('')}</select></div></div>
@@ -865,7 +886,7 @@ ${s.type==='table'?`<div class="field"><label>표 크기</label><div class="row"
 }
 function renderQuizEditor(s){return `${(s.questions||[]).map((q,qi)=>`<div class="question-editor"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><strong>문항 ${qi+1}</strong><button type="button" class="btn danger" data-act="remove-question" data-id="${s.id}" data-qi="${qi}">문항 삭제</button></div><div class="field"><label>문제</label><textarea data-id="${s.id}" data-q-index="${qi}" data-qkey="text" placeholder="문제를 입력하세요.">${esc(q.text)}</textarea></div><div class="field"><label>선택지 </label>${(q.options||[]).map((o,oi)=>`<div class="choice-row"><label><input type="radio" name="answer-${s.id}-${qi}" data-q-answer data-id="${s.id}" data-qi="${qi}" value="${oi+1}" ${Number(q.answer)===oi+1?'checked':''}><input type="text" data-id="${s.id}" data-q-index="${qi}" data-option-index="${oi}" value="${esc(o)}" aria-label="문항 ${qi+1} 선택지 ${oi+1}"></label><button type="button" class="btn danger" data-act="remove-option" data-id="${s.id}" data-qi="${qi}" data-option-index="${oi}" ${q.options.length<=2?'disabled':''}>×</button></div>`).join('')}</div><button type="button" class="btn" data-act="add-option" data-id="${s.id}" data-qi="${qi}">＋ 선택지 추가</button></div>`).join('')}<button type="button" class="btn primary" data-act="add-question" data-id="${s.id}" style="margin-top:5pt;">＋ 문항 추가</button>`}
 function renderQuizMarkup(s,editable=false){return (s.questions||[]).map((q,qi)=>`<div class="quiz-question" data-quiz-question="${s.id}-${qi}"><div class="quiz-title" ${editable?`contenteditable="true" data-quiz-edit="${s.id}" data-qi="${qi}" data-qpart="text" title="클릭해 문제 내용 편집"`:''}>${q.textHtml??esc(q.text||'')}</div><div class="quiz-options">${(q.options||[]).map((o,oi)=>`${editable?'<div class="quiz-option">':'<label>'}<input type="radio" name="quiz-${s.id}-${qi}" value="${oi+1}" data-quiz-id="${s.id}" data-quiz-index="${qi}" data-correct="${Number(q.answer)===oi+1?'yes':'no'}"><span ${editable?`contenteditable="true" data-quiz-edit="${s.id}" data-qi="${qi}" data-qpart="option" data-oi="${oi}" title="클릭해 선택지 편집"`:''}>${q.optionHtml?.[oi]??esc(o)}</span>${editable?'</div>':'</label>'}`).join('')}</div></div>`).join('')}
-function previewSectionTools(s){return `<div class="preview-section-tools"><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><button type="button" data-preview-act="toggle" data-id="${s.id}" title="섹션 접기 또는 펼치기">${previewCollapsed.has(s.id)?'펼치기':'접기'}</button><button type="button" class="preview-delete" data-preview-act="delete" data-id="${s.id}" title="섹션 삭제">삭제</button></div>`}
+function previewSectionTools(s){return `<div class="preview-section-tools"><strong class="preview-section-name">${esc(s.title||names[s.type]||'섹션')}</strong><button class="preview-drag-handle" draggable="true" type="button" title="드래그하여 섹션 순서 변경" aria-label="섹션 순서 변경">⠿</button><button type="button" data-preview-act="toggle" data-id="${s.id}" title="섹션 접기 또는 펼치기">${previewCollapsed.has(s.id)?'펼치기':'접기'}</button><button type="button" class="preview-delete" data-preview-act="delete" data-id="${s.id}" title="섹션 삭제">삭제</button></div>`}
 function renderContent(){
 content.innerHTML=sections.map(s=>{const cls=`page-section${previewCollapsed.has(s.id)?' preview-collapsed':''}`;const style=s.type==='divider'?'':'style="background:'+s.bg+';color:'+s.color+';padding:'+Math.max(0,Number(s.padding)||0)+'px;border:'+(s.border===false?'0':'1px solid #dfe4ed')+'"';let body=s.type==='divider'?`<div class="preview-section-body" contenteditable="true" data-edit="${s.id}">${s.html||'<hr>'}</div>`:s.type==='quiz'?`<div class="preview-section-body quiz-preview">${renderQuizMarkup(s,true)}</div>`:`<div class="preview-section-body" contenteditable="true" data-edit="${s.id}">${s.html}</div>`;return `<section class="${cls}${s.type==='divider'?' divider-section':''}" data-section="${s.id}" data-type="${s.type}" ${style}>${previewSectionTools(s)}${body}</section>`}).join('');
 $$('[contenteditable=true]',page).forEach(el=>el.addEventListener('focus',()=>lastFocused=el));
@@ -892,7 +913,7 @@ const el=e.target,id=el.dataset.id,key=el.dataset.key;if(!id||!key)return;
 const s=sections.find(x=>x.id===id);if(!s)return;
 s[key]=key==='padding'?Math.max(0,Math.min(100,Number(el.value)||0)):key==='border'?el.checked:(key==='tableRows'||key==='tableCols'?Number(el.value)||1:el.value);
 if(key==='html'){const target=$(`[data-edit="${id}"]`);if(target)target.innerHTML=s.html}
-if(key==='title'){const h=el.closest('.section-card')?.querySelector('.section-head strong');if(h)h.textContent=(sections.findIndex(x=>x.id===id)+1)+'. '+s.title}
+if(key==='title'){const h=el.closest('.section-card')?.querySelector('.section-head strong');if(h)h.textContent=s.title||names[s.type];const ph=$(`[data-section="${id}"] .preview-section-name`);if(ph)ph.textContent=s.title||names[s.type]}
 if(['bg','color','padding','border'].includes(key)){const target=$(`[data-section="${id}"]`);if(target){target.style.background=s.bg;target.style.color=s.color;target.style.padding=s.padding+'px';target.style.border=s.border===false?'0':'1px solid #dfe4ed'}}
 }
 $('#section-list').addEventListener('input',e=>{const el=e.target;if(el.dataset.qIndex!==undefined){const s=sections.find(x=>x.id===el.dataset.id);if(!s||s.type!=='quiz')return;const q=s.questions[Number(el.dataset.qIndex)];if(el.dataset.qkey==='text'){q.text=el.value;q.textHtml=esc(el.value)}else if(el.dataset.optionIndex!==undefined){const oi=Number(el.dataset.optionIndex);q.options[oi]=el.value;q.optionHtml=q.optionHtml||[];q.optionHtml[oi]=esc(el.value)};const preview=$(`[data-section="${s.id}"] .quiz-preview`);if(preview)preview.innerHTML=renderQuizMarkup(s,true);return}handleSectionField(e)});$('#section-list').addEventListener('change',e=>{const el=e.target;if(el.matches('[data-q-answer]')){const s=sections.find(x=>x.id===el.dataset.id);if(s&&s.type==='quiz'){s.questions[Number(el.dataset.qi)].answer=Number(el.value);const preview=$(`[data-section="${s.id}"] .quiz-preview`);if(preview)preview.innerHTML=renderQuizMarkup(s,true)}return}handleSectionField(e)});
@@ -930,7 +951,20 @@ $('#format-toolbar').addEventListener('mousedown',e=>{if(e.target.closest('butto
 function formatCommand(cmd,value=null){restoreSelection();const sel=window.getSelection();const node=sel?.anchorNode;const el=node?(node.nodeType===1?node:node.parentElement)?.closest?.('[contenteditable=true]'):null;if(el&&page.contains(el)){lastFocused=el;const alignMap={justifyLeft:'left',justifyCenter:'center',justifyRight:'right',justifyFull:'justify'};if(el.matches('[data-doc="title"]')&&alignMap[cmd]){el.style.textAlign=alignMap[cmd];saveSelection();return}const range=sel&&sel.rangeCount?sel.getRangeAt(0).cloneRange():null;el.focus();if(range){sel.removeAllRanges();sel.addRange(range)}document.execCommand(cmd,false,value);syncContent(el);saveSelection()}}
 $$('[data-cmd]').forEach(b=>b.addEventListener('click',()=>formatCommand(b.dataset.cmd)));
 $('#block-format').addEventListener('change',e=>{formatCommand('formatBlock',e.target.value);e.target.value='P'});
-$('#font-size-preset').addEventListener('change',e=>{if(!e.target.value)return;formatCommand('fontSize',e.target.value);e.target.value=''});
+$('#font-size-preset').addEventListener('change',e=>{
+if(!e.target.value)return;
+restoreSelection();const sel=window.getSelection();
+if(sel&&sel.rangeCount&&!sel.isCollapsed){
+ const range=sel.getRangeAt(0);const node=range.commonAncestorContainer;const el=(node.nodeType===1?node:node.parentElement)?.closest?.('[contenteditable=true]');
+ if(el&&page.contains(el)){
+  const base=Math.max(8,Math.min(72,Number($('#font-size').value)||16));
+  const pxMap={1:10,2:13,3:16,4:18,5:24,6:32,7:48};const ratio=(pxMap[e.target.value]||16)/base;
+  const span=document.createElement('span');span.style.fontSize=ratio.toFixed(4)+'em';
+  try{span.appendChild(range.extractContents());range.insertNode(span);const next=document.createRange();next.selectNodeContents(span);sel.removeAllRanges();sel.addRange(next);if(el.dataset.edit)syncContent(el);else if(el.dataset.quizEdit)syncQuizContent(el);saveSelection()}catch(err){}
+ }
+}
+e.target.value='';
+});
 $('#inline-font-family').addEventListener('change',e=>{if(!e.target.value)return;formatCommand('fontName',e.target.value);e.target.value=''});
 $('#inline-line-height').addEventListener('change',e=>{if(!e.target.value)return;restoreSelection();const sel=window.getSelection(),node=sel?.anchorNode,el=node?(node.nodeType===1?node:node.parentElement):null,block=el?.closest?.('p,h1,h2,h3,h4,h5,h6,li,blockquote,pre,div');if(block&&page.contains(block))block.style.lineHeight=e.target.value;e.target.value='';saveSelection()});
 const inlineThemeColors={light:['#334155','#2563a6','#0f766e','#6d4acb','#c2415d','#b45309'],dark:['#f3f4f6','#bfdbfe','#99f6e4','#ddd6fe','#fda4af','#fdba74']};
