@@ -17,7 +17,13 @@
             --red: #c43f4b
         }
 
+
+
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
+            font-family: var(--worksheet-font, system-ui, -apple-system, "Noto Sans KR", sans-serif);
+            margin: 0;
             color: var(--ink);
             background: var(--bg);
             line-height: 1.55
@@ -70,7 +76,9 @@
         }
 
         .btn.primary {
-             
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue)
         }
 
         .btn.dark {
@@ -84,18 +92,20 @@
         }
 
         .app {
+            width: 100%;
             max-width: 1500px;
             margin: auto;
             padding: 18px;
             display: grid;
-            grid-template-columns: minmax(330px, .95fr) minmax(400px, 1.05fr);
+            grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
             gap: 18px;
             align-items: start
         }
 
         .editor,
         .preview-shell {
-            min-width: 0
+            min-width: 0;
+            width: 100%;
         }
 
         .sticky-title {
@@ -157,7 +167,11 @@
 
         textarea {
             resize: vertical;
-            min-height: 78px
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            min-height: 78px;
+            overflow: auto;
         }
 
         input:focus,
@@ -222,9 +236,11 @@
         }
 
         .block-head .btn {
-            padding: 4px 8px;
+            box-sizing:border-box; min-width:32px; height:32px; padding:4px 7px; flex:0 0 auto; white-space:nowrap;
             font-size: .82rem
         }
+        .block-head [data-action="toggle-collapse"], .block-head [data-action="delete"] { width:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+        .block-head [data-action="up"], .block-head [data-action="down"] { width:32px; padding:0; }
 
         .block-list-controls {
             display: inline-flex;
@@ -309,17 +325,53 @@
 
 
 
+
+
         .map-frame svg circle:active {
             cursor: grabbing
         }
 
 
 
-        .chapter-page-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px
-        }
+/* 1. 부모 컨테이너: 상단 기준으로 정렬 */
+.chapter-page-row {
+  display: flex !important;
+  gap: 10px !important;
+  align-items: flex-start !important; /* 상단 라인 기준 맞춤 */
+  width: 100%;
+}
+
+/* 2. 각 필드 래퍼: 동일한 높이 구조 유지 */
+.chapter-page-row > * {
+  flex: 1 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  margin: 0 !important; /* 내부 마진으로 인한 어긋남 방지 */
+}
+
+
+.chapter-page-row label,
+.chapter-page-row span {
+  display: block !important;
+  height: 20px !important;       /* 라벨 높이 고정 */
+  line-height: 20px !important;  /* 라벨 수직 정렬 */
+  margin-bottom: 4px !important; /* 입력창과의 간격 통일 */
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+}
+
+/* 4. 입력창(input) 세로 위치 및 높이 완벽 통일 */
+.chapter-page-row input {
+
+ height:35pt;
+  box-sizing: border-box 
+  margin: 0      
+
+}
+
+
 
         .coord-row input[type=number] {
             width: 100%;
@@ -339,6 +391,41 @@
         .choice-row .choice-text {
             min-width: 0
         }
+        .editor-rich-input {
+            min-width: 0;
+            width: 100%;
+            min-height: 38px;
+            padding: 9px 10px;
+            border: 1px solid #cbd3df;
+            border-radius: 8px;
+            background: #fff;
+            color: var(--ink);
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            overflow: auto;
+            resize: vertical;
+            max-width: 100%;
+            user-select: text;
+            -webkit-user-select: text;
+        }
+        .editor-rich-input.multiline { min-height: 78px; min-height: 78px; }
+        .editor-rich-input:empty::before, .editor-rich-input:has(> strong:only-child > br:only-child)::before { content: attr(data-placeholder); color: #929bad; pointer-events: none; }
+        .editor-rich-input[data-edit="word"] strong { font-weight:700; }
+        .editor-rich-input:focus { outline: 2px solid #9db6ff; border-color: var(--blue); }
+        .choice-editor-main { min-width: 0; display: grid; grid-template-columns: auto minmax(0,1fr); align-items: start; gap: 8px; }
+        .choice-editor-main > label { display:flex; align-items:center; gap:4px; padding-top:10px; font-size:.8rem; white-space:nowrap; }
+        .choice-editor-main .choice-text { min-height:38px; }
+        .block-head { min-height:48px; padding:8px 10px; gap:6px; }
+        .block-head .btn { flex:0 0 32px; width:32px; min-width:32px; height:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+        .block-head .block-name { min-width:0; flex:1 1 auto; }
+        .preview-section .section-heading { display:flex; align-items:center; gap:12px; }
+        .preview-section .section-heading-main { flex:1 1 auto; min-width:0; }
+        .preview-section-tools { flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end; gap:4px; min-height:36px; padding:0; margin:0; }
+        .preview-section-tools .btn { flex:0 0 32px; width:32px; min-width:32px; height:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+        .preview-section.collapsed { padding:14px; }
+        .preview-section:not(.collapsed) { padding:14px; }
+        .preview-section .section-heading { min-height:36px; margin:0 0 10px; }
+        .preview-section.collapsed .section-heading { margin:0; }
 
         .small {
             font-size: .82rem;
@@ -373,6 +460,27 @@
             font-weight: 800
         }
 
+        .preview-section-tools { display:flex; gap:5px; align-items:center; flex:0 0 auto; flex-wrap:nowrap; white-space:nowrap; }
+        .preview-section-tools .btn { box-sizing:border-box; width:32px; min-width:32px; height:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; flex:0 0 32px; font-size:.9rem; }
+        .section-heading-main { flex:1 1 auto; min-width:0; overflow-wrap:anywhere; }
+        .section-heading { gap:10px; }
+        .preview-section.collapsed .section-body { display:none; }
+        [contenteditable="true"] { outline: 1px dashed transparent; border-radius: 3px; user-select:text; -webkit-user-select:text; cursor:text; }
+        [contenteditable="true"]:focus { outline-color:#7195f5; background:rgba(113,149,245,.08); }
+        #preview .quiz-options .quiz-option-label { cursor:default; }
+        #preview .quiz-options [data-edit="qoption"] { display:block; flex:1 1 auto; min-width:0; min-height:1.35em; white-space:pre-wrap; overflow-wrap:anywhere; }
+        .upload-row { display:grid; gap:5px; margin:8px 0; }
+        .upload-row input[type=file] { width:100%; font-size:.85rem; }
+        #preview { font-size: 1rem; font-family: var(--worksheet-font, system-ui, -apple-system, "Noto Sans KR", sans-serif); }
+        #preview [data-edit] img.inserted-image { max-width:100%; height:auto; vertical-align:middle; }
+        #preview [data-edit] .inserted-youtube { display:block; width:min(100%, 800px); aspect-ratio:16/9; margin:12px auto; }
+        #preview [data-edit] .inserted-youtube iframe { width:100%; height:100%; border:0; }
+        #preview[data-theme="dark"] { background:#151922; color:#e7ebf2; }
+        #preview[data-theme="dark"] .section, #preview[data-theme="dark"] .learn-section { background:#202633; color:#e7ebf2; border-color:#3a4354; }
+        #preview[data-theme="dark"] .section-meta, #preview[data-theme="dark"] .foot { color:#aeb8c8; }
+        #preview[data-theme="dark"] .example { background:#30394a; }
+        #preview[data-theme="dark"] .map-frame { background:#252d3b; border-color:#414b5e; }
+        #preview[data-theme="dark"] .map-frame text { fill:#edf1f7; }
         .preview {
             max-width: 820px;
             margin: 0 auto;
@@ -396,6 +504,7 @@
 
         .learn-section h2 {
             font-size: 1.1rem;
+            font-weight: 400;
             margin: 0
         }
 
@@ -411,7 +520,7 @@
         }
 
         .quiz-q .qtitle {
-            font-weight: 750;
+            font-weight: 400;
             margin-bottom: 8px
         }
 
@@ -420,7 +529,7 @@
             gap: 6px
         }
 
-        .quiz-options label {
+        .quiz-options .quiz-option-label {
             display: flex;
             gap: 8px;
             align-items: flex-start;
@@ -435,6 +544,7 @@
 
 
 
+
         .photo-item figcaption {
             margin-top: 10px;
         }
@@ -442,6 +552,7 @@
 
         .vocab-copy h3 {
             font-size: 1rem;
+            font-weight: 400;
             margin: 0 0 5px
         }
 
@@ -525,7 +636,99 @@
             }
         }
 
-    </style>
+        .area-add-card {
+            position: sticky;
+            top: 72px;
+            z-index: 18;
+            align-self: start;
+        }
+        .area-add-card .heading, .area-add-card .heading h2 {
+            position: static;
+            top: auto;
+        }
+        .rich-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            align-self: start;
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            border-radius: 14px 14px 0 0;
+        }
+        .preview-shell {
+            min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            padding: 0;
+            overflow-x: clip;
+        }
+        #preview {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+        }
+        #preview {
+            min-width: 0;
+            max-width: 100%;
+            overflow-wrap: anywhere;
+        }
+        .block-list-heading .block-list-controls {
+            width: auto;
+            min-width: 0;
+        }
+        .rich-toolbar .toolbar-color-presets .color-swatch {
+            flex: 0 0 auto;
+            border: 2px solid var(--toolbar-swatch-border, #cbd3df);
+        }
+        .rich-toolbar[data-theme="dark"] .toolbar-color-presets .color-swatch {
+            --toolbar-swatch-border: #68758b;
+        }
+        @media (max-width: 900px) {
+            .app { grid-template-columns: minmax(0, 1fr); }
+            .editor, .preview-shell { min-width: 0; width: 100%; max-width: 100%; }
+            .preview-shell { position: static; max-height: none; overflow: visible; }
+            .rich-toolbar { top: 0; margin: 0; }
+        }
+        @media (max-width: 600px) {
+            .app { width: 100%; min-width: 0; padding: 8px; }
+            .block-list-heading { width: 100%; min-width: 0; }
+            .block-list-heading .block-list-controls {
+                width: auto;
+                margin-left: auto;
+                flex: 0 1 auto;
+                justify-content: flex-end;
+            }
+            .rich-toolbar { gap: 4px; padding: 6px; }
+            .rich-toolbar .toolbar-divider { display: none; }
+            .toolbar-preview-controls { margin-left:auto; }
+            #preview { margin:8px; }
+        }
+
+        #preview .preview-section,
+        #preview .preview-section.collapsed { padding:14px !important; }
+        #preview .preview-section .section-heading { display:flex; align-items:center; gap:12px; min-height:36px; margin:0 0 10px; }
+        #preview .preview-section.collapsed .section-heading { margin:0; }
+        #preview .preview-section .section-heading-main,
+        #preview .preview-section.collapsed .section-heading-main { display:flex; align-items:center; flex-wrap:nowrap; gap:10px; min-width:0; flex:1 1 auto; }
+        #preview .preview-section .section-heading-main h2 { flex:1 1 auto; min-width:0; }
+        #preview .preview-section .section-meta { margin-left:auto; text-align:right !important; flex:0 1 auto; max-width:48%; white-space:normal; overflow-wrap:anywhere; }
+        #preview .preview-section-tools { flex:0 0 auto; display:flex; align-items:center; justify-content:flex-end; gap:4px; min-height:36px; padding:0; margin:0; flex-wrap:nowrap; white-space:nowrap; }
+        #preview .preview-section-tools .btn { box-sizing:border-box; flex:0 0 32px; width:32px; min-width:32px; height:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; }
+    
+
+        #preview .quiz-options .quiz-option-label.selected,
+        body:not([data-theme="dark"]) .quiz-options .quiz-option-label.selected {
+            background-color: rgba(210, 210, 210, 0.72);
+        }
+        #preview[data-theme="dark"] .quiz-options .quiz-option-label.selected,
+        body[data-theme="dark"] .quiz-options .quiz-option-label.selected {
+            background-color: rgba(255, 255, 255, 0.16);
+        }
+</style>
     <style id="export-css">
         * {
             box-sizing: border-box
@@ -561,6 +764,10 @@
             margin: 0;
             opacity: .9
         }
+
+        img.inserted-image { max-width:100%; height:auto; vertical-align:middle; }
+        .inserted-youtube { display:block; width:min(100%, 800px); aspect-ratio:16/9; margin:12px auto; }
+        .inserted-youtube iframe { display:block; width:100%; height:100%; border:0; }
 
         .content {
             width: min(900px, calc(100% - 24px));
@@ -610,7 +817,7 @@
         }
 
         .qtitle {
-            font-weight: 750;
+            font-weight: 400;
             margin-bottom: 8px
         }
 
@@ -619,7 +826,7 @@
             gap: 6px
         }
 
-        .options label {
+        .options .quiz-option-label {
             display: flex;
             gap: 8px;
             padding: 6px 8px;
@@ -631,7 +838,7 @@
             margin-top: 5px
         }
 
-        .options label.selected {
+        .options .quiz-option-label.selected {
             background-color: rgba(230, 230, 230, 0.7);
         }
 
@@ -844,15 +1051,192 @@
         }
 
         @media(max-width:520px) {
-            .vocab-grid {
-                grid-template-columns: 1fr
-            }
+            .vocab-grid { grid-template-columns: 1fr }
+            .hero { padding: 25px 18px }
+        }
+        html { font-size: 16px; }
+        body { font-size: 1rem; }
+        .hero .kicker { font-size:calc(.78rem * var(--font-scale,1)); }
+        .hero h1 { font-size:clamp(calc(1.7rem * var(--font-scale,1)),calc(4vw * var(--font-scale,1)),calc(2.6rem * var(--font-scale,1))); }
+        .hero p { font-size:calc(1rem * var(--font-scale,1)); }
+        .section h2 { font-size:calc(1.2rem * var(--font-scale,1)); }
+        .section-meta { font-size:calc(.82rem * var(--font-scale,1)); }
+        .qtitle, .quiz-options .quiz-option-label, .reading-body, .custom-body, .vocab p, .vocab h3, .photo-item figcaption { font-size:calc(1rem * var(--font-scale,1)); }
+        .example { font-size:calc(.9rem * var(--font-scale,1)); }
+        .map-frame text { font-size:calc(12px * var(--font-scale,1)); }
+        body[data-theme="dark"] { background:#151922; color:#e7ebf2; }
+        body[data-theme="dark"] .section, body[data-theme="dark"] .learn-section { background:#202633; color:#e7ebf2; border-color:#3a4354; }
+        body[data-theme="dark"] .section-meta, body[data-theme="dark"] .foot { color:#aeb8c8; }
+        body[data-theme="dark"] .example { background:#30394a; }
+        body[data-theme="dark"] .map-frame { background:#252d3b; border-color:#414b5e; }
+        body[data-theme="dark"] .map-frame text { fill:#edf1f7; }
+        body[data-theme="dark"] .photo-item img, body[data-theme="dark"] .vocab img { background:#252d3b; }
+        body[data-theme="dark"] .options .quiz-option-label.selected { background:rgba(255,255,255,.14); }
+        .section-heading h2, .qtitle, .vocab h3, .reading-body, .custom-body, .photo-item figcaption { overflow-wrap:anywhere; }
+        .section-heading h2, .qtitle, .vocab h3 { font-weight:400; }
+        .section.collapsed .section-body { display:none; }
+        .section-heading { align-items:center; }
+        .section-heading-main { display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
+        .section-heading-main h2 { flex:1 1 auto; min-width:0; }
+        .section-heading-main .section-meta { margin-left:auto; text-align:right !important; flex:0 0 auto; max-width:48%; white-space:normal; overflow-wrap:anywhere; }
+        .section-heading h2[contenteditable], .section-meta[contenteditable] { cursor:text; }
+        .design-settings { border-top:1px solid var(--line); margin-top:12px; padding-top:4px; }
+        .color-presets { display:grid; grid-template-columns:repeat(5, 25px); width:max-content; max-width:100%; gap:6px; margin-top:2px; }
+        .color-swatch { width:25px; height:25px; border:2px solid #cbd3df; border-radius:6px; padding:0; }
+        .color-swatch.current { outline:2px solid var(--blue); outline-offset:1px; }
 
-            .hero {
-                padding: 25px 18px
-            }
+        .settings-icon-grid { display:flex; flex-wrap:wrap; align-items:flex-start; gap:8px; padding:8px 0 4px; }
+        .setting-popover-wrap { position:relative; }
+        .setting-icon-btn { width:42px; height:42px; display:inline-flex; align-items:center; justify-content:center; padding:0; }
+        .setting-popup { position:absolute; top:calc(100% + 7px); left:0; z-index:60; display:flex; flex-direction:column; gap:7px; width:min(270px, calc(100vw - 48px)); padding:12px; border:1px solid #cbd3df; border-radius:10px; background:#fff; color:#202a3a; box-shadow:0 8px 24px rgba(25,35,55,.18); }
+        .setting-popup[hidden] { display:none !important; }
+        .setting-popup label { font-weight:700; font-size:.85rem; }
+        .setting-popup .color-presets { margin-top:0; grid-template-columns:repeat(5, 25px); width:max-content; max-width:100%; }
+        .setting-popup .color-presets .color-swatch { width:25px; height:25px; box-sizing:border-box; }
+        .setting-popup .small { font-size:.78rem; color:#64748b; }
+        .setting-icon-btn:hover { background:#e7efff; border-color:#b8cdf8; }
+        .setting-popup input, .setting-popup select { width:100%; box-sizing:border-box; }
+        .setting-popup .setting-choice { width:100%; text-align:left; white-space:nowrap; }
+        .setting-popup .setting-choice.is-active { background:#e7efff; border-color:#b8cdf8; color:#174ea6; }
+        .setting-popup[hidden] { display:none !important; }
+        .setting-popup .setting-hidden-control { display:none !important; }
+    
+        .setting-popup { width:max-content; min-width:0; max-width:min(220px, calc(100vw - 24px)); padding:9px; }
+        #setting-bg-popup { width:170px; min-width:170px; }
+        #setting-size-popup { width:180px; min-width:180px; }
+        #setting-theme-popup { width:190px; min-width:0; }
+        .setting-popup .setting-choice { width:100%; max-width:100%; white-space:normal; }
+        .setting-popup .small { max-width:190px; white-space:normal; overflow-wrap:anywhere; }
+        .toolbar-popup { width:max-content; min-width:0; max-width:min(240px, calc(100vw - 24px)); }
+        .toolbar-popup .btn { width:100%; max-width:100%; white-space:normal; }
+        .color-toolbar-popup { width:170px; min-width:170px; max-width:calc(100vw - 24px); box-sizing:border-box; padding:7px; }
+        .color-toolbar-popup .toolbar-color-presets { grid-template-columns:repeat(5, 26px); gap:4px; }
+        .color-toolbar-popup .hex-color-input { display:block; width:100%; min-width:0; max-width:100%; box-sizing:border-box; align-self:stretch; }
+        textarea { resize:vertical !important; max-width:100%; }
+
+        .settings-heading { position:static; background:transparent; padding:0; }
+        .area-add-heading { position:static; top:auto; }
+        .area-add-card { position:sticky; top:72px; z-index:18; align-self:start; }
+        .block-list-heading { display:flex; align-items:center; gap:8px; flex-wrap:nowrap; width:100%; box-sizing:border-box; }
+        .block-list-heading h2 { flex:0 0 auto; white-space:nowrap; }
+        .block-list-heading #block-count { flex:0 1 auto; min-width:0; }
+        .block-list-heading .block-list-controls { margin-left:auto; display:flex; justify-content:flex-end; flex-wrap:nowrap; gap:5px; flex:0 0 auto; }
+        .block-list-heading .btn { white-space:nowrap; }
+        .section-heading-main { display:flex; align-items:center; gap:10px; min-width:0; flex:1 1 auto; }
+        .section-heading-main h2 { flex:1 1 auto; min-width:0; }
+        .section-heading-main .section-meta { margin-left:auto; text-align:right !important; flex:0 0 auto; max-width:48%; white-space:normal; overflow-wrap:anywhere; }
+        .preview-section.collapsed .section-heading-main { display:flex; align-items:center; gap:10px; flex-wrap:nowrap; }
+        .preview-section.collapsed .section-meta { margin-left:auto; white-space:normal; text-align:right !important; }
+        .rich-toolbar { position:sticky; top:0; z-index:15; display:flex; align-items:center; flex-wrap:wrap; gap:5px; padding:8px; margin:-12px -12px 8px; background:#f8faff; border-bottom:1px solid #d5dce6; border-radius:12px 12px 0 0; }
+        .rich-toolbar .btn { padding:5px 8px; font-size:.82rem; }
+        .rich-toolbar select { width:auto; padding:5px 7px; font-size:.82rem; }
+        .toolbar-size-label { font-size:.78rem; color:#526075; font-weight:700; }
+        .rich-toolbar .hex-color-input { width:94px; min-width:94px; height:30px; padding:4px 7px; border:1px solid #cbd3df; border-radius:6px; background:#fff; color:#202a3a; font:inherit; }
+        .rich-toolbar .hex-color-input[hidden] { display:none; }
+        .toolbar-color-presets { display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px; }
+        .toolbar-color-presets[hidden] { display:none; }
+        .toolbar-color-presets .color-swatch { width:19px; height:19px; border-radius:4px; cursor:pointer; }
+        .toolbar-preview-controls { margin-left:auto; display:flex; gap:5px; align-items:center; flex:0 0 auto; }
+        .toolbar-preview-controls .btn { white-space:nowrap; }
+        .rich-toolbar[data-theme="dark"] { background:#202633; color:#e7ebf2; border-color:#3a4354; }
+        .rich-toolbar[data-theme="dark"] .toolbar-size-label { color:#c6cfdd; }
+        .rich-toolbar[data-theme="dark"] .toolbar-divider { background:#465166; }
+        .rich-toolbar[data-theme="dark"] .btn { background:#30394a; color:#e7ebf2; border-color:#465166; }
+        .rich-toolbar[data-theme="dark"] select { background:#252d3b; color:#e7ebf2; border-color:#465166; }
+        .rich-toolbar[data-theme="dark"] .hex-color-input { background:#252d3b; color:#e7ebf2; border-color:#465166; }
+        .toolbar-divider { width:1px; height:24px; background:#cbd3df; margin:0 2px; }
+        .preview-section.collapsed { padding:14px; }
+        .preview-section.collapsed .section-heading { margin:0; }
+        .preview-section.collapsed .section-heading-main { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+        .preview-section.collapsed .section-meta { white-space:normal; text-align:left; margin:0; }
+        .preview-section.dragging { opacity:.45; outline:2px dashed #7195f5; }
+        #preview .hero .kicker { font-size:calc(.78rem * var(--font-scale,1)); }
+        #preview .hero h1 { font-size:clamp(calc(1.7rem * var(--font-scale,1)),calc(4vw * var(--font-scale,1)),calc(2.6rem * var(--font-scale,1))); }
+        #preview .hero p { font-size:calc(1rem * var(--font-scale,1)); }
+        #preview .section h2 { font-size:calc(1.2rem * var(--font-scale,1)); }
+        #preview .section-meta { font-size:calc(.82rem * var(--font-scale,1)); }
+        #preview .qtitle, #preview .quiz-options .quiz-option-label, #preview .reading-body, #preview .custom-body, #preview .vocab p, #preview .vocab h3 { font-size:calc(1rem * var(--font-scale,1)); }
+        #preview .example { font-size:calc(.9rem * var(--font-scale,1)); }
+        #preview .photo-item figcaption { font-size:calc(1rem * var(--font-scale,1)); }
+        #preview .map-frame text { font-size:calc(12px * var(--font-scale,1)); }
+        #preview .section-heading, #preview .preview-section-tools { font-size:1rem; }
+        @media(max-width:500px) {
+            .block-list-heading { gap:5px; }
+            .block-list-heading #block-count { display:none; }
+            .block-list-heading .block-list-controls { gap:3px; }
+            .block-list-heading .btn { padding:4px 5px; font-size:.7rem; }
+            .rich-toolbar { gap:4px; padding:6px; margin:0; }
+            .rich-toolbar .btn { padding:4px 6px; }
+            .toolbar-size-label { display:inline; font-size:.7rem; }
+            .rich-toolbar select { max-width:100%; }
+            .toolbar-color-presets { gap:3px; }
+            .toolbar-color-presets .color-swatch { width:18px; height:18px; }
+            .area-add-card { position:sticky; top:8px; z-index:18; }
+            .block-list-heading { width:100%; gap:4px; flex-wrap:wrap; }
+            .block-list-heading h2 { flex:0 0 auto; font-size:1rem; }
+            .block-list-heading .block-list-controls { margin-left:auto; flex:0 1 auto; justify-content:flex-end; flex-wrap:wrap; max-width:100%; }
+            .block-list-heading .btn { padding:4px 5px; font-size:.68rem; }
+            .editor, .preview-shell, .card, #block-list { min-width:0; max-width:100%; }
+            .app { grid-template-columns:minmax(0,1fr); gap:12px; padding:8px; }
+            .add-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+            .section-heading-main { gap:6px; }
+            .section-heading-main .section-meta { font-size:.72rem; }
         }
 
+        .preview-shell { padding:0 !important; min-width:0; max-width:100%; overflow-x:clip; }
+        .rich-toolbar { position:sticky; top:0; z-index:50; width:100%; max-width:100%; margin:0 !important; border-radius:14px 14px 0 0; box-sizing:border-box; }
+        #preview { width:100%; max-width:100%; margin:0; min-width:0; }
+        .area-add-heading { position:static !important; top:auto !important; }
+        .area-add-card { position:sticky; top:72px; z-index:18; align-self:start; }
+        @media(max-width:900px) { .area-add-card { top:8px; } }
+        @media(max-width:600px) { .preview-shell { padding:0 !important; } .rich-toolbar { margin:0 !important; } #preview { margin:0; } }
+        .rich-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:6px; padding:8px; }
+        .toolbar-group { position:relative; display:inline-flex; align-items:center; gap:5px; min-width:0; }
+        .toolbar-group[hidden], .toolbar-settings-panel[hidden], .toolbar-popup[hidden] { display:none !important; }
+        .ui-icon { display:inline-block; flex:0 0 auto; vertical-align:middle; }
+        .toolbar-icon-btn { width:34px; min-width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; padding:0 !important; font-size:1rem !important; font-weight:700; border-radius:9px; }
+        .toolbar-icon-btn b, .toolbar-icon-btn i, .toolbar-icon-btn u { font-size:1rem; }
+        .toolbar-icon-btn.youtube-icon { color:#c4302b; }
+        .toolbar-icon-btn.is-active { background:#d9e7ff !important; border-color:#7ea5f4 !important; color:#174ea6 !important; box-shadow:inset 0 0 0 1px #a9c4fb; }
+        .rich-toolbar[data-theme="dark"] .toolbar-icon-btn.is-active { background:#334d77 !important; color:#eaf1ff !important; border-color:#7799d2 !important; }
+        .toolbar-popup { position:absolute; top:calc(100% + 7px); left:0; z-index:80; display:flex; flex-direction:column; gap:4px; min-width:176px; padding:7px; border:1px solid #cbd3df; border-radius:10px; background:#fff; color:#202a3a; box-shadow:0 8px 24px rgba(25,35,55,.18); }
+        .toolbar-popup .btn { width:100%; text-align:left; white-space:nowrap; background:#fff; color:#202a3a; border-color:transparent; }
+        .color-toolbar-popup { width:170px; min-width:170px; max-width:calc(100vw - 16px); gap:7px; box-sizing:border-box; }
+        .color-toolbar-popup label { font-size:.82rem; font-weight:650; }
+        .color-toolbar-popup .hex-color-input { display:block; width:100%; min-width:0; max-width:100%; box-sizing:border-box; align-self:stretch; padding:5px 7px; border:1px solid #cbd3df; border-radius:7px; font:inherit; }
+        .color-toolbar-popup .toolbar-color-presets { display:grid; grid-template-columns:repeat(5, 26px); gap:6px; }
+        .color-toolbar-popup .color-swatch { width:26px; height:26px; border:1px solid #aeb8c7; border-radius:6px; cursor:pointer; }
+        .toolbar-popup .btn:hover, .toolbar-popup .btn.is-active { background:#e7efff; border-color:#b8cdf8; }
+        .rich-toolbar[data-theme="dark"] .toolbar-popup { background:#252d3b; border-color:#465166; color:#e7ebf2; }
+        .rich-toolbar[data-theme="dark"] .toolbar-popup .btn { background:#252d3b; color:#e7ebf2; }
+        .rich-toolbar[data-theme="dark"] .toolbar-popup .btn:hover, .rich-toolbar[data-theme="dark"] .toolbar-popup .btn.is-active { background:#334d77; }
+        .toolbar-persistent { display:flex; align-items:center; gap:5px; margin-left:auto; flex:0 0 auto; }
+        .toolbar-settings-panel { flex:1 0 100%; width:100%; box-sizing:border-box; padding:10px; border:1px solid #d5dce6; border-radius:10px; background:#fff; color:#202a3a; }
+        .toolbar-settings-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+        .toolbar-settings-panel .small { margin:6px 0 10px; }
+        .toolbar-config-list { display:grid; grid-template-columns: repeat(2, 1fr);; gap:6px; }
+        .toolbar-config-row { display:flex; align-items:center; flex-wrap:wrap; gap:8px; padding:7px 9px; border:1px solid #d5dce6; border-radius:8px; background:#f8faff; cursor:grab; user-select:none; }
+        .toolbar-config-row:active { cursor:grabbing; }
+        .toolbar-config-shortcut { display:flex; align-items:center; gap:6px; width:100%; font-size:.78rem; cursor:default; }
+        .toolbar-config-shortcut input { flex:1; min-width:0; width:100%; padding:5px 6px; border:1px solid #cbd3df; border-radius:6px; font:inherit; user-select:none; cursor:pointer; background:#fff; }
+        .toolbar-config-shortcut input.is-capturing { border-color:#315fd3; outline:2px solid #315fd344; background:#edf3ff; color:#173d9b; }
+        .toolbar-config-shortcut span { white-space:nowrap; }
+        .toolbar-config-row.dragging { opacity:.45; }
+        .toolbar-config-row.drop-target { outline:2px dashed #7195f5; outline-offset:1px; }
+        .toolbar-config-row input { margin:0; }
+        .toolbar-config-label { display:flex; align-items:center; gap:7px; flex:1; min-width:0; cursor:pointer; }
+        .toolbar-config-move { display:flex; gap:3px; margin-left:auto; }
+        .toolbar-config-move .btn { padding:2px 6px; font-size:.75rem; }
+        .toolbar-config-handle { color:#718096; font-size:1rem; touch-action:none; }
+        .rich-toolbar[data-theme="dark"] .toolbar-settings-panel { background:#252d3b; color:#e7ebf2; border-color:#465166; }
+        .rich-toolbar[data-theme="dark"] .toolbar-config-row { background:#30394a; border-color:#465166; }
+        .rich-toolbar.is-collapsed { flex-wrap:nowrap; }
+        .rich-toolbar.is-collapsed.settings-open { flex-wrap:wrap; }
+        .rich-toolbar.is-collapsed .toolbar-persistent { margin-left:auto; }
+        .rich-toolbar.is-collapsed .toolbar-group { flex:0 0 auto; }
+        .rich-toolbar.is-collapsed .toolbar-group[data-toolbar-item="preview-all"] { margin-left:2px; }
+        .rich-toolbar .toolbar-size-label { white-space:nowrap; }
+        @media(max-width:600px) { .toolbar-icon-btn { width:32px; min-width:32px; height:32px; } .toolbar-settings-panel { max-height:50vh; overflow:auto; } .toolbar-config-list { grid-template-columns:repeat(2,minmax(0,1fr)); } .rich-toolbar.is-collapsed { gap:4px; } }
     </style>
 </head>
 
@@ -869,52 +1253,116 @@
 
     <div class="app">
         <section class="editor">
-            <div class="sticky-title">
+            <div class="settings-heading">
                 <div class="heading">
                     <h2>학습지 설정</h2>
                 </div>
             </div>
             <div class="card">
-            <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"><label for="kicker-align">정렬</label><select id="kicker-align">
-                        <option value="left">왼쪽</option>
-                        <option value="center" selected>가운데</option>
-                        <option value="right">오른쪽</option>
-                    </select></div>
-                <div class="field"><label for="doc-title">학습지 제목</label><input id="doc-title" type="text" value="학습지 제목"><label for="title-align">정렬</label><select id="title-align">
-                        <option value="left">왼쪽</option>
-                        <option value="center" selected>가운데</option>
-                        <option value="right">오른쪽</option>
-                    </select></div>
-                <div class="field"><label for="doc-subtitle">학습지 부제</label><input id="doc-subtitle" type="text" value="학습지 부제"><label for="subtitle-align">정렬</label><select id="subtitle-align">
-                        <option value="left">왼쪽</option>
-                        <option value="center" selected>가운데</option>
-                        <option value="right">오른쪽</option>
-                    </select></div>
-    
-            </div>
-            <div class="card">
-                <div class="heading">
-                    <h2>영역 추가</h2>
+            <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"></div>
+                <div class="field"><label for="doc-title">학습지 제목</label><input id="doc-title" type="text" value="학습지 제목"></div>
+                <div class="field"><label for="doc-subtitle">학습지 부제</label><input id="doc-subtitle" type="text" value="학습지 부제"></div>
+
+                <div class="design-settings">
+                    <div class="settings-icon-grid" aria-label="학습지 디자인 설정">
+                        <div class="setting-popover-wrap"><button class="btn setting-icon-btn" type="button" data-setting-toggle="setting-bg-popup" aria-expanded="false" title="상단 영역 배경색" aria-label="상단 영역 배경색"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 11-7-7-9 9 7 7 9-9Z"/><path d="m12 4 7 7"/><path d="M3 20h18"/><path d="M17 16c0 1.1.9 2 2 2s2-.9 2-2-2-3-2-3-2 1.9-2 3Z"/></svg></button><div class="setting-popup" id="setting-bg-popup" hidden><label for="hero-bg">상단 영역 배경색</label><input id="hero-bg" type="text" value="#23385f" maxlength="7" pattern="^#[0-9a-fA-F]{6}$" aria-label="상단 영역 배경색 HEX 입력"><div class="color-presets" data-for="hero-bg"></div></div></div>
+                        <div class="setting-popover-wrap"><button class="btn setting-icon-btn" type="button" data-setting-toggle="setting-size-popup" aria-expanded="false" title="전체 글자 크기" aria-label="전체 글자 크기"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <!-- 큰 A -->
+  <path d="M3 19L8.5 5L14 19"/>
+  <path d="M5 14h7"/>
+  
+  <!-- 작은 A -->
+  <path d="M15 19l3.5-9 3.5 9"/>
+  <path d="M16.2 16h4.6"/>
+</svg></button><div class="setting-popup" id="setting-size-popup" hidden><label for="font-scale">전체 글자 크기 (px)</label><input id="font-scale" type="number" min="8" max="48" step="1" value="16"><span class="small">8~48px </span></div></div>
+                        <div class="setting-popover-wrap"><button class="btn setting-icon-btn" type="button" data-setting-toggle="setting-font-popup" aria-expanded="false" title="전체 글꼴" aria-label="전체 글꼴"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button><div class="setting-popup" id="setting-font-popup" hidden><label>전체 글꼴</label><button class="btn setting-choice is-active" type="button" data-setting-font-choice="system-ui, -apple-system, &quot;Noto Sans KR&quot;, sans-serif">기본 글꼴</button><button class="btn setting-choice" type="button" data-setting-font-choice="&quot;Noto Sans KR&quot;, sans-serif">고딕체</button><button class="btn setting-choice" type="button" data-setting-font-choice="&quot;Noto Serif KR&quot;, serif">명조체</button><button class="btn setting-choice" type="button" data-setting-font-choice="serif">바탕체 계열</button><button class="btn setting-choice" type="button" data-setting-font-choice="monospace">고정폭 글꼴</button><select id="global-font-family" class="setting-hidden-control" aria-hidden="true" tabindex="-1"><option value="system-ui, -apple-system, &quot;Noto Sans KR&quot;, sans-serif" selected>기본 글꼴</option><option value="&quot;Noto Sans KR&quot;, sans-serif">고딕체</option><option value="&quot;Noto Serif KR&quot;, serif">명조체</option><option value="serif">바탕체 계열</option><option value="monospace">고정폭 글꼴</option></select></div></div>
+                        <div class="setting-popover-wrap"><button class="btn setting-icon-btn" type="button" data-setting-toggle="setting-theme-popup" aria-expanded="false" title="출력 테마" aria-label="출력 테마"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <!-- 태양 중심 원 -->
+  <circle cx="12" cy="12" r="4"/>
+  
+  <!-- 상하좌우 햇살 -->
+  <line x1="12" y1="2" x2="12" y2="4"/>
+  <line x1="12" y1="20" x2="12" y2="22"/>
+  <line x1="2" y1="12" x2="4" y2="12"/>
+  <line x1="20" y1="12" x2="22" y2="12"/>
+  
+  <!-- 대각선 햇살 (45도, 135도, 225도, 315도) -->
+  <line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/>
+  <line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/>
+  <line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/>
+  <line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/>
+</svg></button><div class="setting-popup" id="setting-theme-popup" hidden><label>출력 테마</label><button class="btn setting-choice is-active" type="button" data-setting-theme-choice="light">라이트 모드</button><button class="btn setting-choice" type="button" data-setting-theme-choice="dark">다크 모드</button><select id="output-theme" class="setting-hidden-control" aria-hidden="true" tabindex="-1"><option value="light" selected>라이트 모드</option><option value="dark">다크 모드</option></select></div></div>
+                    </div>
                 </div>
+            </div>
+            <div class="heading area-add-heading">
+                <h2>영역 추가</h2>
+            </div>
+            <div class="card area-add-card">
                 <div class="add-grid">
                     <button class="btn" data-add="body">＋ 본문</button>
+
+                    <button class="btn" data-add="photo">＋ 사진</button>
                     <button class="btn" data-add="quiz">＋ 문제</button>
                     <button class="btn" data-add="vocab">＋ 단어</button>
-                    <button class="btn" data-add="photo">＋ 사진</button>
                     <button class="btn" data-add="map">＋ 지도</button>
+
                     <button class="btn" data-add="custom">＋ HTML</button>
                 </div>
 
             </div>
-            <div class="heading">
-                <h2>학습지 편집</h2><span id="block-count" class="small"></span><div class="block-list-controls"><button class="btn" id="expand-all-blocks" type="button">전체 펼치기</button><button class="btn" id="collapse-all-blocks" type="button">전체 접기</button></div>
+            <div class="heading block-list-heading" aria-label="학습지 편집 영역">
+                <h2>학습지 편집</h2><span id="block-count" class="small"></span><div class="block-list-controls"><button class="btn toolbar-icon-btn" id="editor-toggle-all-blocks" type="button" title="전체 영역 접기/펼치기" aria-label="전체 영역 접기/펼치기"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5-5 5 5M7 14l5 5 5-5"/></svg></button></div>
             </div>
             <div id="block-list"></div>
 
         </section>
 
         <aside class="preview-shell">
-            <div class="preview-label"><span>실시간 미리보기</span></div>
+            <div class="rich-toolbar" id="rich-toolbar" role="toolbar" aria-label="텍스트 서식">
+                <div class="toolbar-group" data-toolbar-item="bold"><button class="btn toolbar-icon-btn" type="button" data-format="bold" title="굵게 (편집 영역에서 Ctrl+B)" aria-label="굵게"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><text x="5" y="19" font-family="Arial,sans-serif" font-size="20" font-weight="900" fill="currentColor">B</text></svg></button></div>
+                <div class="toolbar-group" data-toolbar-item="italic"><button class="btn toolbar-icon-btn" type="button" data-format="italic" title="기울임" aria-label="기울임"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 4h-9M14 20H5M15 4 9 20"/></svg></button></div>
+                <div class="toolbar-group" data-toolbar-item="underline"><button class="btn toolbar-icon-btn" type="button" data-format="underline" title="밑줄" aria-label="밑줄"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4v7a6 6 0 0 0 12 0V4M4 20h16"/></svg></button></div>
+                <div class="toolbar-group align-toolbar-group" data-toolbar-item="align">
+                    <button class="btn toolbar-icon-btn" id="toggle-align-menu" type="button" title="정렬 방식 선택" aria-label="정렬 방식 선택" aria-expanded="false" aria-controls="align-menu"><span id="align-current-icon" aria-hidden="true"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 10h10M4 14h16M7 18h10"/></svg></span></button>
+                    <div class="toolbar-popup" id="align-menu" hidden>
+                        <button class="btn" type="button" data-align="left" title="왼쪽 정렬"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h10"/></svg> 왼쪽 정렬</button>
+                        <button class="btn" type="button" data-align="center" title="가운데 정렬"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 10h10M4 14h16M7 18h10"/></svg> 가운데 정렬</button>
+                        <button class="btn" type="button" data-align="right" title="오른쪽 정렬"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M10 10h10M4 14h16M10 18h10"/></svg> 오른쪽 정렬</button>
+                    </div>
+                </div>
+                <div class="toolbar-group" data-toolbar-item="font-size"><button class="btn toolbar-icon-btn" id="toggle-font-size-menu" type="button" title="선택한 글자 크기" aria-label="선택한 글자 크기" aria-expanded="false" aria-controls="font-size-menu"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <!-- 큰 A -->
+  <path d="M3 19L8.5 5L14 19"/>
+  <path d="M5 14h7"/>
+  
+  <!-- 작은 A -->
+  <path d="M15 19l3.5-9 3.5 9"/>
+  <path d="M16.2 16h4.6"/>
+</svg></button><div class="toolbar-popup" id="font-size-menu" hidden><button class="btn" type="button" data-text-size="0.8">작게</button><button class="btn" type="button" data-text-size="reset">기본 크기</button><button class="btn" type="button" data-text-size="1.2">크게</button><button class="btn" type="button" data-text-size="1.5">매우 크게</button></div><select id="selected-text-size" aria-label="선택한 글자 크기" hidden><option value="" selected>크기</option><option value="0.8">작게</option><option value="reset">기본</option><option value="1.2">크게</option><option value="1.5">매우 크게</option></select></div>
+                <div class="toolbar-group" data-toolbar-item="font-family"><button class="btn toolbar-icon-btn" id="toggle-font-family-menu" type="button" title="선택한 글꼴" aria-label="선택한 글꼴" aria-expanded="false" aria-controls="font-family-menu"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></button><div class="toolbar-popup" id="font-family-menu" hidden><button class="btn" type="button" data-font-family="reset">기본 글꼴</button><button class="btn" type="button" data-font-family="&quot;Noto Sans KR&quot;, sans-serif">고딕체</button><button class="btn" type="button" data-font-family="&quot;Noto Serif KR&quot;, serif">명조체</button><button class="btn" type="button" data-font-family="serif">바탕체 계열</button><button class="btn" type="button" data-font-family="monospace">고정폭 글꼴</button></div><select id="selected-font-family" aria-label="선택한 글꼴" hidden><option value="" selected>글꼴</option><option value="reset">기본</option><option value="&quot;Noto Sans KR&quot;, sans-serif">고딕체</option><option value="&quot;Noto Serif KR&quot;, serif">명조체</option><option value="serif">바탕체 계열</option><option value="monospace">고정폭 글꼴</option></select></div>
+                <div class="toolbar-group image-toolbar-group" data-toolbar-item="image">
+                    <button class="btn toolbar-icon-btn" id="toggle-image-menu" type="button" title="이미지 삽입 방식 선택" aria-label="이미지 삽입" aria-expanded="false" aria-controls="image-menu"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></button>
+                    <div class="toolbar-popup" id="image-menu" hidden>
+                        <button class="btn" type="button" data-image-action="upload"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> 이미지 파일 업로드</button>
+                        <button class="btn" type="button" data-image-action="url"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg> 이미지 URL 입력</button>
+                    </div>
+                </div>
+                <div class="toolbar-group" data-toolbar-item="youtube"><button class="btn toolbar-icon-btn youtube-icon" id="insert-youtube" type="button" title="유튜브 영상 삽입" aria-label="유튜브 영상 삽입"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 7.5A3 3 0 0 1 5.4 5h13.2a3 3 0 0 1 2.9 2.5 31 31 0 0 1 0 9 3 3 0 0 1-2.9 2.5H5.4a3 3 0 0 1-2.9-2.5 31 31 0 0 1 0-9Z"/><path d="m10 9 5 3-5 3z"/></svg></button></div>
+                <input id="insert-image-file" type="file" accept="image/*" hidden>
+                <div class="toolbar-group" data-toolbar-item="text-color"><button class="btn toolbar-icon-btn" id="toggle-text-color" type="button" aria-expanded="false" aria-controls="text-color-menu" title="글자색 선택" aria-label="글자색 선택"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.5a2.5 2.5 0 0 0 1.7-4.3c-.6-.6-.2-1.7.7-1.7H18a3 3 0 0 0 3-3c0-5-4-9-9-9Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="11" cy="6.8" r="1"/><circle cx="15.5" cy="8" r="1"/></svg></button><div class="toolbar-popup color-toolbar-popup" id="text-color-menu" hidden><label for="selected-text-color">글자색</label><input id="selected-text-color" class="hex-color-input" type="text" value="#202a3a" placeholder="#202a3a" aria-label="글자색 HEX 입력" maxlength="7" autocomplete="off"><span id="text-color-presets" class="toolbar-color-presets"></span></div></div>
+                <div class="toolbar-group" data-toolbar-item="highlight-color"><button class="btn toolbar-icon-btn" id="toggle-highlight-color" type="button" aria-expanded="false" aria-controls="highlight-color-menu" title="배경색 선택" aria-label="배경색 선택"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 11-7-7-9 9 7 7 9-9Z"/><path d="m12 4 7 7"/><path d="M3 20h18"/><path d="M17 16c0 1.1.9 2 2 2s2-.9 2-2-2-3-2-3-2 1.9-2 3Z"/></svg></button><div class="toolbar-popup color-toolbar-popup" id="highlight-color-menu" hidden><label for="selected-highlight-color">배경색</label><input id="selected-highlight-color" class="hex-color-input" type="text" value="#ffffff" placeholder="#ffffff" aria-label="배경색 HEX 입력" maxlength="7" autocomplete="off"><span id="highlight-color-presets" class="toolbar-color-presets"></span></div></div>
+                <div class="toolbar-group" data-toolbar-item="preview-all"><button class="btn toolbar-icon-btn" id="preview-toggle-all" type="button" title="전체 영역 접기/펼치기" aria-label="전체 영역 접기/펼치기"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5-5 5 5M7 14l5 5 5-5"/></svg></button></div>
+                <div class="toolbar-persistent">
+                    <button class="btn toolbar-icon-btn" id="toolbar-settings-toggle" type="button" title="툴바 버튼 설정" aria-label="툴바 버튼 설정" aria-expanded="false" aria-controls="toolbar-settings-panel"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></button>
+                    <button class="btn toolbar-icon-btn" id="toolbar-collapse-toggle" type="button" title="툴바 접기" aria-label="툴바 접기" aria-expanded="true"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+                </div>
+                <div id="toolbar-settings-panel" class="toolbar-settings-panel" hidden>
+                    <div class="toolbar-settings-head"><strong>즐겨 찾기</strong><button class="btn" id="toolbar-reset-settings" type="button" title="기본 배치로 초기화"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></button></div>
+                    
+                    <div id="toolbar-config-list" class="toolbar-config-list"></div>
+                </div>
+            </div>
             <div class="preview" id="preview">
                 <header class="hero">
                     <div class="kicker"></div>
@@ -932,6 +1380,31 @@
             const $ = (s, root = document) => root.querySelector(s);
             const $$ = (s, root = document) => [...root.querySelectorAll(s)];
             const uid = () => 'b' + Math.random().toString(36).slice(2, 9);
+            const ICONS = {
+                image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>',
+                youtube: '<path d="M2.5 7.5A3 3 0 0 1 5.4 5h13.2a3 3 0 0 1 2.9 2.5 31 31 0 0 1 0 9 3 3 0 0 1-2.9 2.5H5.4a3 3 0 0 1-2.9-2.5 31 31 0 0 1 0-9Z"/><path d="m10 9 5 3-5 3z"/>',
+                type: '<path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/>',
+                paint: '<path d="m3 20 9-9"/><path d="m14 5 5 5"/><path d="M7 4h10l3 3-9 9-7-7z"/><path d="M2 22h20"/>',
+                bold: '<path d="M6 4h8a4 4 0 0 1 0 8H6z"/><path d="M6 12h9a4 4 0 0 1 0 8H6z"/>',
+                italic: '<path d="M19 4h-9M14 20H5M15 4 9 20"/>', underline: '<path d="M6 4v7a6 6 0 0 0 12 0V4M4 20h16"/>',
+                left: '<path d="M4 6h16M4 10h10M4 14h16M4 18h10"/>',
+                center: '<path d="M4 6h16M7 10h10M4 14h16M7 18h10"/>',
+                caseSensitive: '<path d="M4 19 9 5l5 14M6 14h6"/><path d="M16 8h4m-2-2v12m-3-2 3 2 3-2"/>',
+                paintBucket: '<path d="m19 11-7-7-9 9 7 7 9-9Z"/><path d="m12 4 7 7"/><path d="M3 20h18"/><path d="M17 16c0 1.1.9 2 2 2s2-.9 2-2-2-3-2-3-2 1.9-2 3Z"/>',
+                palette: '<path d="M12 3a9 9 0 1 0 0 18h1.5a2.5 2.5 0 0 0 1.7-4.3c-.6-.6-.2-1.7.7-1.7H18a3 3 0 0 0 3-3c0-5-4-9-9-9Z"/><circle cx="7.5" cy="10" r="1"/><circle cx="11" cy="6.8" r="1"/><circle cx="15.5" cy="8" r="1"/>',
+                type: '<path d="M4 7V4h16v3M9 20h6M12 4v16"/>',
+                sunMoon: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>',
+                arrowUp: '<path d="M12 19V5m-7 7 7-7 7 7"/>',
+                arrowDown: '<path d="M12 5v14m-7-7 7 7 7-7"/>',
+                right: '<path d="M4 6h16M10 10h10M4 14h16M10 18h10"/>',
+                all: '<path d="m7 10 5-5 5 5"/><path d="m7 14 5 5 5-5"/>',
+                settings: '<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-1.7 1l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.7-1l-1.7.7-1.4-2.4 1.4-1.1a7 7 0 0 1 0-2l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 1.7-1l.3-1.8h2.8l.3 1.8a8 8 0 0 1 1.7 1l1.7-.7 1.4 2.4-1.4 1.1a7 7 0 0 1 0 2Z"/>',
+                chevronUp: '<path d="m6 14 6-6 6 6"/>', chevronDown: '<path d="m6 10 6 6 6-6"/>',
+                trash: '<path d="M3 6h18M8 6V4h8v2m-11 0 1 14h10l1-14M10 11v5m4-5v5"/>',
+                plus: '<path d="M12 5v14M5 12h14"/>', grip: '<circle cx="9" cy="5" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="19" r="1"/>',
+                reset: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>'
+            };
+            const iconSvg = (name, size = 18) => `<svg class="ui-icon" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ''}</svg>`;
             const kinds = {
                 quiz: {
                     label: '문제',
@@ -987,17 +1460,6 @@
                             x: 12,
                             y: 14,
                             line: 'blue'
-                        }, {
-                            name: '사건 1',
-                            x: 42,
-                            y: 14,
-                            line: 'blue'
-                        },
-                        {
-                            name: '사건 2',
-                            x: 75,
-                            y: 80,
-                            line: 'orange'
                         }
                     ]
                 }
@@ -1013,7 +1475,7 @@
                 }
                 return base;
             };
-            let blocks = [newBlock('quiz'), newBlock('vocab'), newBlock('map'), newBlock('body'), newBlock('photo')];
+            let blocks = [newBlock('body'), newBlock('quiz')];
             const collapsedBlocks = new Set();
             const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
                 '&': '&amp;',
@@ -1026,9 +1488,36 @@
             const titleInput = $('#doc-title'),
                 subtitleInput = $('#doc-subtitle'),
                 kickerInput = $('#doc-kicker');
-            const titleAlign = $('#title-align'),
-                subtitleAlign = $('#subtitle-align'),
-                kickerAlign = $('#kicker-align');
+            const heroBgInput = $('#hero-bg'), worksheetBgInput = null, fontScaleInput = $('#font-scale'), outputThemeInput = $('#output-theme'), globalFontInput = $('#global-font-family');
+            const getFontScale = () => { const px = Number(fontScaleInput?.value || 16); return String(Math.max(8, Math.min(48, Number.isFinite(px) ? px : 16)) / 16); };
+            const colorDefaults = ['#23385f','#315fd3','#ffffff','#202a3a','#f3f5f9','#e6a23c','#c43f4b','#2f855a'];
+            const backgroundOnlyColors = ['#151922','#202633'];
+            function renderColorPresets() {
+                document.querySelectorAll('.color-presets').forEach(row => {
+                    const input = document.getElementById(row.dataset.for);
+                    if (!input) return;
+                    const palette = input.id === 'hero-bg' ? [...colorDefaults.slice(0,8), ...backgroundOnlyColors] : colorDefaults.slice(0,8);
+                    const values = [...new Set([...palette, input.value.toLowerCase()])];
+                    row.innerHTML = values.map(color => `<button type="button" class="color-swatch ${color===input.value.toLowerCase()?'current':''}" data-color-for="${input.id}" data-color="${color}" title="${color}" aria-label="색상 ${color}" style="background:${color}"></button>`).join('');
+                });
+            }
+            renderColorPresets();
+            document.addEventListener('click', e => {
+                const swatch = e.target.closest('[data-color-for]');
+                if (!swatch) return;
+                const input = document.getElementById(swatch.dataset.colorFor);
+                if (input) { input.value = swatch.dataset.color; input.dispatchEvent(new Event('input', {bubbles:true})); renderColorPresets(); }
+            });
+            const previewCollapsed = new Set();
+            const heroRich = { kicker: null, 'doc-title': null, subtitle: null };
+            const richValue = (object, key, defaultBold = false) => {
+                const hasHtml = object && object[key + 'Html'] != null;
+                let html = hasHtml ? object[key + 'Html'] : esc(object?.[key] ?? '').replace(/\r\n|\r|\n/g, '<br>');
+
+                if (defaultBold && !hasHtml) html = String(html).trim() ? `<strong>${html}</strong>` : '<strong><br></strong>';
+                return html;
+            };
+            const richAlign = () => ''; 
             const getBlock = id => blocks.find(b => b.id === id);
             const updateBlock = (id, key, value) => {
                 const b = getBlock(id);
@@ -1039,11 +1528,22 @@
             };
 
             function field(label, id, key, value, placeholder = '') {
-                return `<div class="field"><label>${esc(label)}</label><input type="text" data-id="${id}" data-key="${key}" value="${attr(value)}" placeholder="${attr(placeholder)}"></div>`;
+                const embedded = typeof value === 'string' && value.startsWith('data:image/');
+                return `<div class="field"><label>${esc(label)}</label><input type="text" data-id="${id}" data-key="${key}" value="${embedded ? '' : attr(value)}" placeholder="${embedded ? 'URL을 입력하면 교체' : attr(placeholder)}"></div>`;
+            }
+            function imageUpload(label, id, key, value) {
+                const embedded = typeof value === 'string' && value.startsWith('data:image/');
+                return `<div class="upload-row"><label class="field-label">${esc(label)} 파일 업로드 ${embedded ? '✓ 이미지 포함됨' : ''}</label><input type="file" accept="image/*" data-upload-id="${id}" data-upload-key="${key}"></div>`;
             }
 
             function textArea(label, id, key, value, placeholder = '') {
                 return `<div class="field"><label>${esc(label)}</label><textarea data-id="${id}" data-key="${key}" placeholder="${attr(placeholder)}">${esc(value)}</textarea></div>`;
+            }
+            function richField(label, object, key, edit, blockId, index = null, subindex = null, placeholder = '', multiline = false) {
+                const html = richValue(object, key, ['qtext', 'word', 'title'].includes(edit));
+                const indexAttr = index == null ? '' : ` data-index="${index}"`;
+                const subindexAttr = subindex == null ? '' : ` data-subindex="${subindex}"`;
+                return `<div class="field"><label>${esc(label)}</label><div class="editor-rich-input ${multiline ? 'multiline' : ''}" contenteditable="true" spellcheck="false" data-edit="${edit}" data-block-id="${blockId}"${indexAttr}${subindexAttr} data-placeholder="${attr(placeholder)}">${html}</div></div>`;
             }
 
             function blockHeaderLabel(b, index) {
@@ -1060,62 +1560,68 @@
         <div class="block-head">
           <span class="drag-handle" draggable="true" title="드래그하여 순서 변경" aria-label="드래그하여 순서 변경">⠿</span>
           <span class="block-name">${blockHeaderLabel(b,index)}</span>
-          <button class="btn" data-action="toggle-collapse" data-id="${b.id}" title="${collapsedBlocks.has(b.id) ? '영역 펼치기' : '영역 접기'}" aria-expanded="${!collapsedBlocks.has(b.id)}">${collapsedBlocks.has(b.id) ? '＋' : '−'}</button>
-          <button class="btn" data-action="up" data-id="${b.id}" title="위로">↑</button>
-          <button class="btn" data-action="down" data-id="${b.id}" title="아래로">↓</button>
-          <button class="btn" data-action="clone" data-id="${b.id}">복제</button>
-          <button class="btn danger" data-action="delete" data-id="${b.id}">삭제</button>
+          <button class="btn" data-action="toggle-collapse" data-id="${b.id}" title="${collapsedBlocks.has(b.id) ? '영역 펼치기' : '영역 접기'}" aria-expanded="${!collapsedBlocks.has(b.id)}">${iconSvg(collapsedBlocks.has(b.id) ? 'chevronDown' : 'chevronUp', 17)}</button>
+          <button class="btn" data-action="up" data-id="${b.id}" title="위로" aria-label="위로 이동">${iconSvg('arrowUp',16)}</button>
+          <button class="btn" data-action="down" data-id="${b.id}" title="아래로" aria-label="아래로 이동">${iconSvg('arrowDown',16)}</button>
+          <button class="btn" data-action="clone" data-id="${b.id}"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <!-- 뒤쪽 카드 -->
+  <rect x="9" y="9" width="13" height="13" rx="2"/>
+  <!-- 앞쪽 카드 (복제되는 대상) -->
+  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+</svg></button>
+          <button class="btn danger" data-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button>
         </div>
         <div class="block-body">
-          ${field('영역 제목',b.id,'title',b.title)}
-          <div class="chapter-page-row">${field('쪽수',b.id,'page',b.page||'','예: 12쪽')}${field('챕터',b.id,'chapter',b.chapter||'','예: 2장')}</div>
+          ${richField('영역 제목',b,'title','title',b.id,null,null,'영역 제목')}
+          <div class="chapter-page-row">${field('쪽수',b.id,'page',b.page||'','2쪽')}${field('챕터',b.id,'chapter',b.chapter||'','2장')}</div>
           ${b.type==='quiz'?renderQuizEditor(b):''}
           ${b.type==='vocab'?renderVocabEditor(b):''}
           ${b.type==='map'?renderMapEditor(b):''}
-          ${b.type==='body'?`${textArea('본문 내용',b.id,'text',b.text)}`:''}
+          ${b.type==='body'?`${richField('본문 내용',b,'text','text',b.id,null,null,'본문 내용',true)}`:''}
           ${b.type==='photo'?renderPhotoEditor(b):''}
-          ${b.type==='custom'?`${field('소제목',b.id,'heading',b.heading)}${textArea('HTML 코드',b.id,'html',b.html||'','<div>내용</div>')}`:''}
+          ${b.type==='custom'?`${textArea('HTML 코드',b.id,'html',b.html||'','<div>내용</div>')}`:''}
         </div>
       </article>`).join('');
+                updateEditorToggleLabel();
             }
 
             function renderQuizEditor(b) {
                 return `<div class="field"><label>문항 구성</label></div>
     ${(b.questions||[]).map((q,qi)=>`<div class="question-editor" data-q-index="${qi}">
       <div class="question-top"><strong>문항 ${qi+1}</strong><button class="btn danger" data-action="remove-question" data-id="${b.id}" data-index="${qi}">문항 삭제</button></div>
-      ${textArea('문제',b.id,`q-${qi}-text`,q.text,'문제를 입력하세요.')}
-      <div class="field"><label>선택지 및 정답 지정</label></div>
+      ${richField('문제',q,'text','qtext',b.id,qi,null,'문제를 입력하세요.',true)}
+      <div class="field"><label>선택지 </label></div>
       ${(q.options||[]).map((opt,oi)=>`<div class="choice-row">
-        <label><input type="radio" name="correct-${b.id}-${qi}" data-action="answer" data-id="${b.id}" data-qi="${qi}" value="${oi+1}" ${String(q.answer)===String(oi+1)?'checked':''}><input class="choice-text" type="text" data-id="${b.id}" data-key="q-${qi}-opt-${oi}" value="${attr(opt)}" aria-label="선택지 ${oi+1}"></label>
+        <div class="choice-editor-main"><label><input type="radio" name="correct-${b.id}-${qi}" data-action="answer" data-id="${b.id}" data-qi="${qi}" value="${oi+1}" ${String(q.answer)===String(oi+1)?'checked':''}></label><div class="editor-rich-input choice-text" contenteditable="true" spellcheck="false" data-edit="qoption" data-block-id="${b.id}" data-index="${qi}" data-subindex="${oi}" aria-label="">${q['opt'+oi+'Html'] != null ? q['opt'+oi+'Html'] : esc(opt ?? '').replace(/\r\n|\r|\n/g,'<br>')}</div></div>
         <button class="btn danger" data-action="remove-option" data-id="${b.id}" data-qi="${qi}" data-index="${oi}" title="선택지 삭제">×</button>
       </div>`).join('')}
       <button class="btn" data-action="add-option" data-id="${b.id}" data-qi="${qi}">＋ 선택지 추가</button>
     </div>`).join('')}
-    <button class="btn primary" data-action="add-question" data-id="${b.id}">＋ 문항 추가</button>`;
+    <button class="btn" data-action="add-question" data-id="${b.id}">＋ 문항 추가</button>`;
             }
 
             function renderVocabEditor(b) {
                 return `${(b.words||[]).map((w,wi)=>`<div class="question-editor">
       <div class="question-top"><strong>단어 ${wi+1}</strong><button class="btn danger" data-action="remove-word" data-id="${b.id}" data-index="${wi}">삭제</button></div>
-      ${field('단어',b.id,`word-${wi}-word`,w.word)}
-      ${textArea('뜻·설명',b.id,`word-${wi}-meaning`,w.meaning)}
-      ${field('사진 URL',b.id,`word-${wi}-image`,w.image,'https://...')}
+      ${richField('단어',w,'word','word',b.id,wi,null,'단어')}
+      ${richField('설명',w,'meaning','meaning',b.id,wi,null,'설명',true)}
+      ${field('사진 URL',b.id,`word-${wi}-image`,w.image,'https://...')}${imageUpload('단어 사진',b.id,`word-${wi}-image`,w.image)}
       <div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="word-${wi}-imageFit"><option value="cover" ${(w.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${w.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${w.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${w.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div>
-      ${field('용례',b.id,`word-${wi}-example`,w.example)}
+      ${richField('용례',w,'example','example',b.id,wi,null,'용례',true)}
     </div>`).join('')}<button class="btn" data-action="add-word" data-id="${b.id}">＋ 단어 추가</button>`;
             }
 
             function renderPhotoEditor(b) {
-                return `${(b.photos||[]).map((photo,i)=>`<div class="question-editor"><div class="question-top"><strong>사진 ${i+1}</strong><button class="btn danger" data-action="remove-photo" data-id="${b.id}" data-index="${i}">삭제</button></div>${field('사진 URL',b.id,`photo-${i}-image`,photo.image||'','https://...')}${field('사진 설명',b.id,`photo-${i}-caption`,photo.caption||'') }<div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="photo-${i}-imageFit"><option value="cover" ${(photo.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${photo.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${photo.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${photo.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div></div>`).join('')}<button class="btn" data-action="add-photo" data-id="${b.id}">＋ 사진 추가</button>`;
+                return `${(b.photos||[]).map((photo,i)=>`<div class="question-editor"><div class="question-top"><strong>사진 ${i+1}</strong><button class="btn danger" data-action="remove-photo" data-id="${b.id}" data-index="${i}">삭제</button></div>${field('사진 URL',b.id,`photo-${i}-image`,photo.image||'','https://...')}${imageUpload('사진',b.id,`photo-${i}-image`,photo.image||'')}${richField('사진 설명',photo,'caption','caption',b.id,i,null,'사진 설명',true)}<div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="photo-${i}-imageFit"><option value="cover" ${(photo.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${photo.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${photo.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${photo.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div></div>`).join('')}<button class="btn" data-action="add-photo" data-id="${b.id}">＋ 사진 추가</button>`;
             }
 
             function renderMapEditor(b) {
-                return `<p class="small">미리보기에서 지점을 직접 드래그해 위치를 바꿀 수 있습니다. </p>${field('배경 이미지 URL',b.id,'backgroundImage',b.backgroundImage||'','https://...')}
+                return `<p class="small">미리보기에서 지점을 직접 드래그해 위치를 바꿀 수 있습니다. </p>${field('배경 이미지 URL',b.id,'backgroundImage',b.backgroundImage||'','https://...')}${imageUpload('지도 배경',b.id,'backgroundImage',b.backgroundImage||'')}
     <div class="field"><label>배경 사진 맞춤 방식</label><select data-id="${b.id}" data-key="backgroundFit"><option value="cover" ${(b.backgroundFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${b.backgroundFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${b.backgroundFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${b.backgroundFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div>
     ${(b.stations||[]).map((s,si)=>`<div class="question-editor">
       <div class="question-top"><strong>지점 ${si+1}</strong><button class="btn danger" data-action="remove-station" data-id="${b.id}" data-index="${si}">삭제</button></div>
       ${field('지점 이름',b.id,`station-${si}-name`,s.name)}
-      <div class="choice-row coord-row"><label><span>X </span><input type="number" min="0" max="100" data-id="${b.id}" data-key="station-${si}-x" value="${s.x}"></label><label><span>Y</span><input type="number" min="0" max="100" data-id="${b.id}" data-key="station-${si}-y" value="${s.y}"></label></div>
+      
       <div class="field"><label>노선 색</label><select data-id="${b.id}" data-key="station-${si}-line"><option value="blue" ${s.line==='blue'?'selected':''}>파랑 노선</option><option value="orange" ${s.line==='orange'?'selected':''}>주황 노선</option><option value="green" ${s.line==='green'?'selected':''}>초록 노선</option></select></div>
     </div>`).join('')}<button class="btn" data-action="add-station" data-id="${b.id}">＋ 지점 추가</button>`;
             }
@@ -1132,7 +1638,7 @@
                     y: 20 + (Number(s.y) || 0) * 2.6
                 }));
                 let paths = '';
-                // Connect consecutive stations; color of each segment follows the next station's selected line.
+               
                 for (let i = 1; i < stations.length; i++) {
                     paths += `<line x1="${pts[i-1].x}" y1="${pts[i-1].y}" x2="${pts[i].x}" y2="${pts[i].y}" stroke="${colors[stations[i].line]||colors.blue}" stroke-width="7" stroke-linecap="round"/>`;
                 }
@@ -1143,31 +1649,44 @@
       return `<circle data-station-index="${i}" cx="${p.x}" cy="${p.y}" r="7" fill="#fff" stroke="${c}" stroke-width="4"/><text data-station-label-index="${i}" x="${tx}" y="${ty}" text-anchor="${anchor}">${esc(s.name)}</text>`;
     }).join('')}</svg></div>`;
             }
-            // 미리보기와 내보내기는 같은 블록 렌더러를 사용합니다.
+            
             function renderBlock(b) {
                 let inner = '';
                 if (b.type === 'quiz') {
-                    inner = (b.questions || []).map((q, qi) => `<div class="quiz-q q" data-preview-q="${b.id}-${qi}" data-q="${b.id}-${qi}"><div class="qtitle">${esc(q.text)}</div><div class="quiz-options options">${(q.options||[]).map((o,oi)=>`<label><input type="radio" name="learn-${b.id}-${qi}" value="${oi+1}" data-correct="${String(q.answer)===String(oi+1)?'yes':'no'}"><span>${esc(o)}</span></label>`).join('')}</div></div>`).join('');
+                    inner = (b.questions || []).map((q, qi) => `<div class="quiz-q q" data-preview-q="${b.id}-${qi}" data-q="${b.id}-${qi}"><div class="qtitle" contenteditable="true" data-edit="qtext" data-block-id="${b.id}" data-index="${qi}"${richAlign(q, 'text')}>${richValue(q, 'text', true)}</div><div class="quiz-options options">${(q.options||[]).map((o,oi)=>`<div class="quiz-option-label"><input type="radio" name="learn-${b.id}-${qi}" value="${oi+1}" data-correct="${String(q.answer)===String(oi+1)?'yes':'no'}"><span contenteditable="true" spellcheck="false" draggable="false" data-edit="qoption" data-block-id="${b.id}" data-index="${qi}" data-subindex="${oi}"${richAlign(q, `opt${oi}`)}>${richValue(q, `opt${oi}`)}</span></div>`).join('')}</div></div>`).join('');
                 } else if (b.type === 'vocab') {
-                    inner = `<div class="vocab-grid ${(b.words||[]).length===1?'single':''}">${(b.words||[]).map(w=>`<article class="vocab">${w.image?`<img class="fit-${attr(w.imageFit||'cover')}" src="${attr(w.image)}" alt="${attr(w.word)}" onerror="this.style.display='none'">`:''}<div class="vocab-copy"><h3>${esc(w.word)}</h3><p>${esc(w.meaning)}</p>${w.example?`<div class="example">${esc(w.example)}</div>`:''}</div></article>`).join('')}</div>`;
+                    inner = `<div class="vocab-grid ${(b.words||[]).length===1?'single':''}">${(b.words||[]).map((w,wi)=>`<article class="vocab">${w.image?`<img class="fit-${attr(w.imageFit||'cover')}" src="${attr(w.image)}" alt="${attr(w.word)}" onerror="this.style.display='none'">`:''}<div class="vocab-copy"><h3 contenteditable="true" data-edit="word" data-block-id="${b.id}" data-index="${wi}"${richAlign(w, 'word')}>${richValue(w, 'word', true)}</h3><p contenteditable="true" data-edit="meaning" data-block-id="${b.id}" data-index="${wi}"${richAlign(w, 'meaning')}>${richValue(w, 'meaning')}</p>${String(w.exampleHtml != null ? w.exampleHtml : (w.example || '')).replace(/<[^>]*>/g,'').replace(/&nbsp;|&#160;/g,' ').trim() ? `<div class="example" contenteditable="true" data-edit="example" data-block-id="${b.id}" data-index="${wi}"${richAlign(w, 'example')}>${richValue(w, 'example')}</div>` : ''}</div></article>`).join('')}</div>`;
                 } else if (b.type === 'map') inner = renderMapSvg(b);
-                else if (b.type === 'body') inner = `<div class="reading-body">${esc(b.text||'')}</div>`;
-                else if (b.type === 'photo') inner = `<div class="photo-grid">${(b.photos||[]).map(photo=>`${photo.image?`<figure class="photo-item"><img class="fit-${attr(photo.imageFit||'cover')}" src="${attr(photo.image)}" alt="${attr(photo.caption||'사진')}" onerror="this.style.display='none'"><figcaption>${esc(photo.caption||'')}</figcaption></figure>`:''}`).join('')}</div>`;
-                else inner = `<h3>${esc(b.heading||'')}</h3><div class="custom-body">${b.html||''}</div>`;
-                const meta = [b.page ? esc(b.page) : '', b.chapter ? esc(b.chapter) : ''].filter(Boolean).join(' · ');
-                return `<section class="learn-section section"><div class="section-heading"><h2>${esc(b.title)}</h2>${meta?`<div class="section-meta">${meta}</div>`:''}</div>${inner}</section>`;
+                else if (b.type === 'body') inner = `<div class="reading-body" contenteditable="true" data-edit="text" data-block-id="${b.id}"${richAlign(b, 'text')}>${richValue(b, 'text')}</div>`;
+                else if (b.type === 'photo') inner = `<div class="photo-grid">${(b.photos||[]).map((photo,pi)=>`${photo.image?`<figure class="photo-item"><img class="fit-${attr(photo.imageFit||'cover')}" src="${attr(photo.image)}" alt="${attr(photo.caption||'사진')}" onerror="this.style.display='none'"><figcaption contenteditable="true" data-edit="caption" data-block-id="${b.id}" data-index="${pi}"${richAlign(photo, 'caption')}>${richValue(photo, 'caption')}</figcaption></figure>`:''}`).join('')}</div>`;
+                else inner = `<div class="custom-body" contenteditable="true" data-edit="html" data-block-id="${b.id}">${b.html||''}</div>`;
+                const meta = b.metaHtml != null ? b.metaHtml : [b.page ? esc(b.page) : '', b.chapter ? esc(b.chapter) : ''].filter(Boolean).join(' · ');
+                const isCollapsed = previewCollapsed.has(b.id);
+                return `<section class="learn-section section preview-section ${isCollapsed?'collapsed':''}" data-block-id="${b.id}" draggable="true"><div class="section-heading"><div class="section-heading-main"><h2 contenteditable="true" data-edit="title" data-block-id="${b.id}"${richAlign(b, 'title')}>${richValue(b, 'title', true)}</h2><div class="section-meta" contenteditable="true" data-edit="meta" data-block-id="${b.id}"${richAlign(b, 'meta')}>${meta}</div></div><div class="preview-section-tools"><button class="btn" type="button" data-preview-action="collapse" data-id="${b.id}" title="${isCollapsed ? '영역 펼치기' : '영역 접기'}" aria-label="${isCollapsed ? '영역 펼치기' : '영역 접기'}">${iconSvg(isCollapsed ? 'chevronDown' : 'chevronUp', 17)}</button><button class="btn" type="button" data-preview-action="up" data-id="${b.id}" title="위로 이동" aria-label="위로 이동">${iconSvg('arrowUp',16)}</button><button class="btn" type="button" data-preview-action="down" data-id="${b.id}" title="아래로 이동" aria-label="아래로 이동">${iconSvg('arrowDown',16)}</button><button class="btn danger" type="button" data-preview-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button></div></div><div class="section-body">${inner}</div></section>`;
             }
-
             function renderDocumentMarkup() {
-                const title = titleInput.value,
-                    subtitle = subtitleInput.value,
-                    kicker = kickerInput.value;
+                const title = titleInput.value, subtitle = subtitleInput.value, kicker = kickerInput.value;
                 const content = blocks.map(renderBlock).join('');
-                return `<header class="hero"><div class="kicker" style="text-align:${kickerAlign.value}">${esc(kicker)}</div><h1 style="text-align:${titleAlign.value}">${esc(title)}</h1><p style="text-align:${subtitleAlign.value}">${esc(subtitle)}</p></header><main class="content">${content}</main><footer class="foot"></footer>`;
+                const bg = heroBgInput?.value || '#23385f', color = '#ffffff';
+                const scale = getFontScale(), theme = outputThemeInput?.value || 'light';
+                return `<header class="hero" style="background:${attr(bg)};color:${attr(color)}"><div class="kicker" style="text-align:center" contenteditable="true" data-edit="kicker">${heroRich.kicker ?? esc(kicker)}</div><h1 style="text-align:center" contenteditable="true" data-edit="doc-title">${heroRich['doc-title'] ?? esc(title)}</h1><p style="text-align:center" contenteditable="true" data-edit="subtitle">${heroRich.subtitle ?? esc(subtitle)}</p></header><main class="content">${content}</main><footer class="foot"></footer>`;
             }
 
             function renderPreview() {
-                $('#preview').innerHTML = renderDocumentMarkup();
+                const preview = $('#preview');
+                if (!lastRichBookmark && lastRichEditable && lastRichRange) lastRichBookmark = makeRichBookmark(lastRichEditable, lastRichRange);
+                preview.innerHTML = renderDocumentMarkup();
+                preview.dataset.theme = outputThemeInput?.value || 'light';
+                $('#rich-toolbar').dataset.theme = preview.dataset.theme;
+                preview.style.setProperty('--font-scale', getFontScale());
+                preview.style.backgroundColor = (outputThemeInput?.value || 'light') === 'dark' ? '#151922' : '#ffffff';
+                preview.style.setProperty('--worksheet-font', globalFontInput?.value || 'system-ui, -apple-system, "Noto Sans KR", sans-serif');
+                preview.style.setProperty('--hero-bg', heroBgInput?.value || '#23385f');
+                preview.style.setProperty('--hero-color', '#ffffff');
+                preview.querySelectorAll('.hero').forEach(el => { el.style.background = heroBgInput?.value || '#23385f'; el.style.color = '#ffffff'; });
+                if (lastRichBookmark && !restoreRichBookmark()) { lastRichEditable = null; lastRichRange = null; lastRichBookmark = null; }
+                updatePreviewToggleLabel();
+                refreshToolbarState();
             }
 
             function renderAll() {
@@ -1221,7 +1740,7 @@
                     b.questions.splice(idx, 1);
                     renderAll();
                 } else if (action === 'add-option') {
-                    b.questions[qi].options.push(`선택지 ${b.questions[qi].options.length+1}`);
+                    b.questions[qi].options.push(``);
                     renderAll();
                 } else if (action === 'remove-option') {
                     if (b.questions[qi].options.length > 2) {
@@ -1267,94 +1786,1179 @@
                 const btn = e.target.closest('[data-action]');
                 if (btn) handleAction(btn.dataset.action, btn);
             });
-            $('#expand-all-blocks').addEventListener('click', () => {
+            // 편집창과 미리보기는 접힘 상태를 독립적으로 관리한다.
+            function expandAllEditorSections() {
                 collapsedBlocks.clear();
                 renderBlockEditors();
-            });
-            $('#collapse-all-blocks').addEventListener('click', () => {
+            }
+            function collapseAllEditorSections() {
                 blocks.forEach(block => collapsedBlocks.add(block.id));
                 renderBlockEditors();
+            }
+            function expandAllPreviewSections() {
+                previewCollapsed.clear();
+                renderPreview();
+            }
+            function collapseAllPreviewSections() {
+                blocks.forEach(block => previewCollapsed.add(block.id));
+                renderPreview();
+            }
+            function setAllEditorBlocksCollapsed(shouldCollapse) {
+                if (shouldCollapse) blocks.forEach(block => collapsedBlocks.add(block.id));
+                else collapsedBlocks.clear();
+                renderBlockEditors();
+            }
+            function areAllEditorBlocksCollapsed() {
+                return blocks.length > 0 && blocks.every(block => collapsedBlocks.has(block.id));
+            }
+            function updateEditorToggleLabel() {
+                const button = $('#editor-toggle-all-blocks');
+                if (!button) return;
+                const willExpand = areAllEditorBlocksCollapsed();
+                button.title = willExpand ? '전체 영역 펼치기' : '전체 영역 접기';
+                button.setAttribute('aria-label', button.title);
+                button.innerHTML = iconSvg('all', 18);
+            }
+            function areAllPreviewSectionsCollapsed() {
+                return blocks.length > 0 && blocks.every(block => previewCollapsed.has(block.id));
+            }
+            function updatePreviewToggleLabel() {
+                const button = $('#preview-toggle-all');
+                if (!button) return;
+                const willExpand = areAllPreviewSectionsCollapsed();
+                button.title = willExpand ? '전체 영역 펼치기' : '전체 영역 접기';
+                button.setAttribute('aria-label', button.title);
+                button.innerHTML = iconSvg('all', 18);
+            }
+            $('#editor-toggle-all-blocks').addEventListener('click', () => setAllEditorBlocksCollapsed(!areAllEditorBlocksCollapsed()));
+            $('#preview-toggle-all').addEventListener('click', () => {
+                const collapse = !areAllPreviewSectionsCollapsed();
+                if (collapse) collapseAllPreviewSections();
+                else expandAllPreviewSections();
             });
-            $('#block-list').addEventListener('change', e => {
-                const el = e.target;
-                if (el.dataset.action === 'answer') {
-                    const b = getBlock(el.dataset.id);
-                    if (b) b.questions[Number(el.dataset.qi)].answer = el.value;
-                    renderPreview();
+            let previewDragId = null;
+            $('#preview').addEventListener('dragstart', e => {
+                const section = e.target.closest('.preview-section');
+                if (!section || e.target.closest('[contenteditable="true"]') || e.target.closest('button')) { e.preventDefault(); return; }
+                previewDragId = section.dataset.blockId;
+                section.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', previewDragId);
+            });
+            $('#preview').addEventListener('dragover', e => {
+                if (!previewDragId) return;
+                const target = e.target.closest('.preview-section');
+                const dragged = $(`#preview .preview-section[data-block-id="${previewDragId}"]`);
+                if (!target || !dragged || target === dragged) return;
+                e.preventDefault();
+                const rect = target.getBoundingClientRect();
+                $('#preview .content').insertBefore(dragged, e.clientY > rect.top + rect.height / 2 ? target.nextSibling : target);
+            });
+            $('#preview').addEventListener('dragend', e => {
+                if (!previewDragId) return;
+                const dragged = e.target.closest('.preview-section');
+                dragged?.classList.remove('dragging');
+                const order = [...$('#preview .content').querySelectorAll('.preview-section')].map(el => el.dataset.blockId);
+                blocks.sort((a,b) => order.indexOf(a.id)-order.indexOf(b.id));
+                previewDragId = null;
+                renderAll();
+            });
+            // 미리보기에서도 라디오 버튼 선택 즉시 정오답 이미지를 표시한다.
+            $('#preview').addEventListener('pointerdown', e => {
+                const optionText = e.target.closest('[contenteditable="true"][data-edit="qoption"]');
+                if (optionText) {
+                    // 선택지 편집 중에는 섹션 드래그 및 다른 클릭 처리와 분리한다.
+                    e.stopPropagation();
+                    lastRichEditable = optionText;
+                }
+            });
+            $('#preview').addEventListener('click', e => {
+                const optionText = e.target.closest('[contenteditable="true"][data-edit="qoption"]');
+                if (!optionText) return;
+                e.stopPropagation();
+                optionText.focus({preventScroll:true});
+                const selection = window.getSelection();
+                if (selection?.rangeCount) {
+                    lastRichEditable = optionText;
+                    lastRichRange = selection.getRangeAt(0).cloneRange();
+                    lastRichBookmark = makeRichBookmark(optionText, lastRichRange);
+                }
+                refreshToolbarState();
+            });
+            $('#preview').addEventListener('change', e => {
+                const radio = e.target;
+                if (!(radio instanceof HTMLInputElement) || radio.type !== 'radio' || !radio.name.startsWith('learn-')) return;
+                const question = radio.closest('.quiz-q');
+                if (!question) return;
+                question.classList.remove('correct', 'wrong');
+                question.querySelectorAll('.quiz-options .quiz-option-label').forEach(label => label.classList.remove('selected'));
+                radio.closest('.quiz-option-label')?.classList.add('selected');
+                question.classList.add(radio.dataset.correct === 'yes' ? 'correct' : 'wrong');
+            });
+            $('#preview').addEventListener('click', e => {
+                const btn = e.target.closest('[data-preview-action]');
+                if (!btn) return;
+                const id = btn.dataset.id, action = btn.dataset.previewAction, index = blocks.findIndex(b => b.id === id);
+                if (action === 'collapse') {
+                    const section = btn.closest('.preview-section');
+                    const nowCollapsed = !section.classList.contains('collapsed');
+                    if (nowCollapsed) previewCollapsed.add(id); else previewCollapsed.delete(id);
+                    section.classList.toggle('collapsed', nowCollapsed);
+                    const toggle = section.querySelector('[data-preview-action="collapse"]');
+                    if (toggle) { toggle.innerHTML = iconSvg(nowCollapsed ? 'chevronDown' : 'chevronUp', 17); toggle.title = nowCollapsed ? '영역 펼치기' : '영역 접기'; toggle.setAttribute('aria-label', toggle.title); }
+                    updatePreviewToggleLabel();
+                }
+                if (action === 'up' && index > 0) { [blocks[index-1], blocks[index]] = [blocks[index], blocks[index-1]]; renderAll(); }
+                if (action === 'down' && index >= 0 && index < blocks.length-1) { [blocks[index+1], blocks[index]] = [blocks[index], blocks[index+1]]; renderAll(); }
+                if (action === 'delete' && confirm('이 영역을 삭제할까요?')) { blocks = blocks.filter(b => b.id !== id); previewCollapsed.delete(id); renderAll(); }
+            });
+            function setEditedValue(el) {
+                if (!el || !el.dataset || !el.dataset.edit) return;
+                const b = getBlock(el.dataset.blockId), kind = el.dataset.edit;
+                // innerText normalizes browser-created line breaks; innerHTML preserves inline formatting.
+                const value = (el.innerText ?? el.textContent ?? '').replace(/\r\n?/g, '\n');
+                const htmlValue = el.innerHTML;
+                if (kind === 'doc-title') { titleInput.value = value; heroRich[kind] = htmlValue; return; }
+                if (kind === 'subtitle') { subtitleInput.value = value; heroRich[kind] = htmlValue; return; }
+                if (kind === 'kicker') { kickerInput.value = value; heroRich[kind] = htmlValue; return; }
+                if (!b) return;
+                const i = Number(el.dataset.index), j = Number(el.dataset.subindex);
+                let editorKey = null;
+                if (kind === 'title') { b.title = value; b.titleHtml = htmlValue; editorKey = 'title'; }
+                else if (kind === 'meta') {
+                    const parts = value.split('·').map(x => x.trim());
+                    b.metaHtml = htmlValue;
+                    b.page = parts[0] || ''; b.chapter = parts.slice(1).join(' · ');
+                    const pageEditor = $(`#block-list [data-id="${b.id}"][data-key="page"]`);
+                    const chapterEditor = $(`#block-list [data-id="${b.id}"][data-key="chapter"]`);
+                    if (pageEditor) pageEditor.value = b.page;
+                    if (chapterEditor) chapterEditor.value = b.chapter;
+                } else if (kind === 'qtext') {
+                    if (!b.questions?.[i]) return;
+                    b.questions[i].text = value; b.questions[i].textHtml = htmlValue;
+                    editorKey = `q-${i}-text`;
+                } else if (kind === 'qoption') {
+                    if (!b.questions?.[i] || !Number.isInteger(j) || j < 0 || j >= b.questions[i].options.length) return;
+                    b.questions[i].options[j] = value; b.questions[i]['opt'+j+'Html'] = htmlValue;
+                    editorKey = `q-${i}-opt-${j}`;
+                } else if (kind === 'word' || kind === 'meaning' || kind === 'example') {
+                    if (!b.words?.[i]) return;
+                    b.words[i][kind] = value; b.words[i][kind+'Html'] = htmlValue;
+                    editorKey = `word-${i}-${kind}`;
+                } else if (kind === 'caption') {
+                    if (!b.photos?.[i]) return;
+                    b.photos[i].caption = value; b.photos[i].captionHtml = htmlValue;
+                    editorKey = `photo-${i}-caption`;
+                } else if (kind === 'text' || kind === 'heading') {
+                    b[kind] = value; b[kind+'Html'] = htmlValue;
+                    editorKey = kind;
+                } else if (kind === 'html') { b.html = htmlValue; editorKey = kind; }
+                // Keep the other editing surface in sync from the same canonical block data.
+                const descriptor = editableDescriptor(el);
+                const previewEditable = findRichEditable($('#preview'), descriptor);
+                const editorEditable = findRichEditable($('#block-list'), descriptor);
+                const counterpart = $('#preview').contains(el) ? editorEditable : previewEditable;
+                if (counterpart && counterpart !== el) {
+                    if (counterpart.innerHTML !== htmlValue) counterpart.innerHTML = htmlValue;
+                }
+                // 용례는 비어 있으면 미리보기 노드 자체가 없으므로, 처음 입력하거나 모두 지울 때 렌더링을 갱신합니다.
+                if (kind === 'example') {
+                    const plainExample = String(value || '').replace(/\u00a0/g, ' ').trim();
+                    if (!counterpart || !plainExample) renderPreview();
+                }
+                if (editorKey) {
+                    const editor = $(`#block-list [data-id="${b.id}"][data-key="${editorKey}"]`);
+                    const editorValue = kind === 'html' ? htmlValue : value;
+                    if (editor && 'value' in editor && editor.value !== editorValue) editor.value = editorValue;
+                }
+                if (kind === 'title' || kind === 'meta') {
+                    const card = $(`#block-list [data-block-id="${b.id}"] .block-name`);
+                    if (card) card.innerHTML = blockHeaderLabel(b, blocks.findIndex(x => x.id === b.id));
+                }
+            }
+            let lastRichRange = null;
+            let lastRichEditable = null;
+            let lastRichBookmark = null;
+            function isRichEditable(editable) {
+                return !!editable && editable.matches?.('[contenteditable="true"][data-edit]') &&
+                    ($('#preview').contains(editable) || $('#block-list').contains(editable));
+            }
+            function richRoot(editable) {
+                if ($('#preview').contains(editable)) return $('#preview');
+                if ($('#block-list').contains(editable)) return $('#block-list');
+                return null;
+            }
+            function findRichEditable(root, descriptor) {
+                if (!root || !descriptor) return null;
+                return Array.from(root.querySelectorAll('[contenteditable="true"][data-edit]')).find(el => {
+                    const d = editableDescriptor(el);
+                    return d.edit === descriptor.edit && d.blockId === descriptor.blockId && d.index === descriptor.index && d.subindex === descriptor.subindex;
+                }) || null;
+            }
+            function editableDescriptor(editable) {
+                return {
+                    edit: editable?.dataset.edit || '',
+                    blockId: editable?.dataset.blockId || '',
+                    index: editable?.dataset.index ?? '',
+                    subindex: editable?.dataset.subindex ?? ''
+                };
+            }
+            function nodePath(root, node) {
+                const path = [];
+                let current = node;
+                while (current && current !== root) {
+                    const parent = current.parentNode;
+                    if (!parent) return null;
+                    path.push(Array.prototype.indexOf.call(parent.childNodes, current));
+                    current = parent;
+                }
+                return current === root ? path.reverse() : null;
+            }
+            function nodeFromPath(root, path) {
+                let current = root;
+                for (const index of path || []) {
+                    if (!current?.childNodes || !current.childNodes[index]) return null;
+                    current = current.childNodes[index];
+                }
+                return current;
+            }
+            function makeRichBookmark(editable, range) {
+                if (!isRichEditable(editable) || !range) return null;
+                const startPath = nodePath(editable, range.startContainer);
+                const endPath = nodePath(editable, range.endContainer);
+                if (!startPath || !endPath) return null;
+                return { surface: $('#block-list').contains(editable) ? 'editor' : 'preview', descriptor: editableDescriptor(editable), startPath, startOffset: range.startOffset, endPath, endOffset: range.endOffset, collapsed: range.collapsed };
+            }
+            function findEditableForBookmark(bookmark) {
+                if (!bookmark) return null;
+                const preferred = bookmark.surface === 'editor' ? $('#block-list') : $('#preview');
+                const fallback = bookmark.surface === 'editor' ? $('#preview') : $('#block-list');
+                return findRichEditable(preferred, bookmark.descriptor) || findRichEditable(fallback, bookmark.descriptor);
+            }
+            function restoreRichBookmark() {
+                if (!lastRichBookmark) return false;
+                const editable = findEditableForBookmark(lastRichBookmark);
+                if (!editable) return false;
+                let startNode = nodeFromPath(editable, lastRichBookmark.startPath);
+                let endNode = nodeFromPath(editable, lastRichBookmark.endPath);
+                if (!startNode || !endNode) {
+                    startNode = endNode = editable;
+                    const end = editable.childNodes.length;
+                    lastRichBookmark.startPath = [];
+                    lastRichBookmark.endPath = [];
+                    lastRichBookmark.startOffset = lastRichBookmark.endOffset = end;
+                }
+                const clampOffset = (node, offset) => Math.max(0, Math.min(Number(offset) || 0, node.nodeType === Node.TEXT_NODE ? node.nodeValue.length : node.childNodes.length));
+                const range = document.createRange();
+                try {
+                    range.setStart(startNode, clampOffset(startNode, lastRichBookmark.startOffset));
+                    range.setEnd(endNode, clampOffset(endNode, lastRichBookmark.endOffset));
+                } catch (err) {
+                    range.selectNodeContents(editable);
+                    range.collapse(false);
+                }
+                lastRichEditable = editable;
+                lastRichRange = range.cloneRange();
+                const selection = window.getSelection();
+                if (selection) { selection.removeAllRanges(); selection.addRange(range); }
+                return true;
+            }
+            function rememberRichSelection() {
+                const selection = window.getSelection();
+                if (!selection || !selection.rangeCount) return;
+                const node = selection.anchorNode?.nodeType === 1 ? selection.anchorNode : selection.anchorNode?.parentElement;
+                const editable = node?.closest?.('[contenteditable="true"][data-edit]');
+                if (isRichEditable(editable)) {
+                    lastRichRange = selection.getRangeAt(0).cloneRange();
+                    lastRichEditable = editable;
+                    lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                    refreshToolbarState();
+                }
+            }
+            ['#preview','#block-list'].forEach(rootSelector => {
+                const root = $(rootSelector);
+                root.addEventListener('mouseup', rememberRichSelection);
+                root.addEventListener('pointerup', rememberRichSelection);
+                root.addEventListener('keyup', rememberRichSelection);
+            });
+            document.addEventListener('selectionchange', () => {
+                const selection = window.getSelection();
+                if (!selection || !selection.rangeCount) return;
+                const node = selection.anchorNode?.nodeType === 1 ? selection.anchorNode : selection.anchorNode?.parentElement;
+                if (node && ( $('#preview').contains(node) || $('#block-list').contains(node) )) rememberRichSelection();
+            });
+            $('#selected-text-size').addEventListener('pointerdown', rememberRichSelection);
+            $('#selected-text-size').addEventListener('mousedown', rememberRichSelection);
+            $('#selected-font-family').addEventListener('pointerdown', rememberRichSelection);
+            $('#selected-font-family').addEventListener('mousedown', rememberRichSelection);
+            $('#selected-text-color').addEventListener('pointerdown', rememberRichSelection);
+            $('#selected-text-color').addEventListener('mousedown', rememberRichSelection);
+            $('#toggle-text-color').addEventListener('pointerdown', rememberRichSelection);
+            $('#toggle-text-color').addEventListener('mousedown', rememberRichSelection);
+            $('#toggle-highlight-color').addEventListener('pointerdown', rememberRichSelection);
+            $('#toggle-highlight-color').addEventListener('mousedown', rememberRichSelection);
+            $('#rich-toolbar').addEventListener('mousedown', e => { if (e.target.closest('button')) e.preventDefault(); });
+            $('#rich-toolbar').addEventListener('click', e => {
+                const button = e.target.closest('button[data-format],button[data-align]');
+                if (!button) return;
+                if (button.dataset.align) {
+                    $('#align-menu').hidden = true;
+                    $('#toggle-align-menu').setAttribute('aria-expanded', 'false');
+                }
+                if (lastRichBookmark) restoreRichBookmark();
+                const selection = window.getSelection();
+                if (lastRichRange && selection) { selection.removeAllRanges(); selection.addRange(lastRichRange); }
+                let node = selection?.anchorNode?.nodeType === 1 ? selection.anchorNode : selection?.anchorNode?.parentElement;
+                let editable = node?.closest?.('[contenteditable="true"][data-edit]');
+                if (!editable && lastRichRange) {
+                    node = lastRichRange.commonAncestorContainer.nodeType === 1 ? lastRichRange.commonAncestorContainer : lastRichRange.commonAncestorContainer.parentElement;
+                    editable = node?.closest?.('[contenteditable="true"][data-edit]');
+                }
+                if (!isRichEditable(editable)) return;
+                editable.focus({ preventScroll: true });
+                if (button.dataset.format) document.execCommand(button.dataset.format, false, null);
+                else if (button.dataset.align) {
+                    const command = ({left:'justifyLeft', center:'justifyCenter', right:'justifyRight'})[button.dataset.align];
+                    if (command) document.execCommand(command, false, null);
+                }
+                const currentSelection = window.getSelection();
+                if (currentSelection?.rangeCount) {
+                    lastRichRange = currentSelection.getRangeAt(0).cloneRange();
+                    lastRichEditable = editable;
+                    lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                }
+                setEditedValue(editable);
+                refreshToolbarState();
+            });
+            // 선택한 텍스트의 크기를 편집 영역의 현재 기준 크기에 맞춰 조정한다.
+            // '기본'은 별도 명령값으로 처리하고, 선택값은 매번 초기화해 같은 명령도 반복 실행할 수 있게 한다.
+            $('#selected-text-size').addEventListener('change', e => {
+                const select = e.target;
+                const action = select.value;
+                const editable = lastRichEditable;
+                const range = lastRichRange?.cloneRange();
+                const resetSelect = () => { select.value = ''; };
+                if (!action) return;
+                if (!isRichEditable(editable) || !range || range.collapsed) {
+                    resetSelect();
                     return;
                 }
-                if (!el.dataset.id || !el.dataset.key) return;
-                const b = getBlock(el.dataset.id),
-                    key = el.dataset.key,
-                    val = el.value;
-                if (!b) return;
-                if (key.startsWith('q-')) {
-                    const parts = key.split('-'),
-                        qi = Number(parts[1]),
-                        kind = parts[2];
-                    if (kind === 'text') b.questions[qi].text = val;
-                    else if (kind === 'opt') b.questions[qi].options[Number(parts[3])] = val;
-                } else if (key.startsWith('word-')) {
-                    const p = key.split('-');
-                    b.words[Number(p[1])][p[2]] = val;
-                } else if (key.startsWith('station-')) {
-                    const p = key.split('-'),
-                        si = Number(p[1]),
-                        prop = p[2];
-                    b.stations[si][prop] = ['x', 'y'].includes(prop) ? Math.max(0, Math.min(100, Number(val) || 0)) : val;
-                } else if (key.startsWith('photo-')) {
-                    const p = key.split('-');
-                    b.photos[Number(p[1])][p[2]] = val;
-                } else b[key] = val;
-                renderPreview();
-            });
-            $('#block-list').addEventListener('input', e => {
-                const el = e.target;
-                if (!el.dataset.id || !el.dataset.key) return;
-                const b = getBlock(el.dataset.id),
-                    key = el.dataset.key,
-                    val = el.value;
-                if (!b) return;
-                if (key.startsWith('q-')) {
-                    const p = key.split('-'),
-                        qi = Number(p[1]);
-                    if (p[2] === 'text') b.questions[qi].text = val;
-                    if (p[2] === 'opt') b.questions[qi].options[Number(p[3])] = val;
-                } else if (key.startsWith('word-')) {
-                    const p = key.split('-');
-                    b.words[Number(p[1])][p[2]] = val;
-                } else if (key.startsWith('station-')) {
-                    const p = key.split('-');
-                    b.stations[Number(p[1])][p[2]] = Math.max(0, Math.min(100, Number(val) || 0));
-                } else if (key.startsWith('photo-')) {
-                    const p = key.split('-');
-                    b.photos[Number(p[1])][p[2]] = val;
-                } else b[key] = val;
-                if (['title', 'page', 'chapter'].includes(key)) {
-                    const card = el.closest('[data-block-id]');
-                    const index = blocks.findIndex(item => item.id === b.id);
-                    const name = card?.querySelector('.block-name');
-                    if (name) name.innerHTML = blockHeaderLabel(b, index);
+                const boundary = range.commonAncestorContainer;
+                if (!(editable === boundary || editable.contains(boundary))) {
+                    resetSelect();
+                    return;
                 }
-                renderPreview();
+                const multiplier = action === 'reset' ? 1 : Number(action);
+                const baseFontSize = parseFloat(getComputedStyle(editable).fontSize) || 16;
+                const walker = document.createTreeWalker(editable, NodeFilter.SHOW_TEXT);
+                const segments = [];
+                let textNode;
+                while ((textNode = walker.nextNode())) {
+                    if (!textNode.nodeValue || !range.intersectsNode(textNode)) continue;
+                    let start = textNode === range.startContainer ? range.startOffset : 0;
+                    let end = textNode === range.endContainer ? range.endOffset : textNode.nodeValue.length;
+                    start = Math.max(0, Math.min(start, textNode.nodeValue.length));
+                    end = Math.max(0, Math.min(end, textNode.nodeValue.length));
+                    if (end <= start) continue;
+                    const parent = textNode.parentElement || editable;
+                    const currentSize = parseFloat(getComputedStyle(parent).fontSize) || baseFontSize;
+                    segments.push({ node: textNode, start, end, ratio: (baseFontSize * multiplier) / currentSize });
+                }
+                if (!segments.length) {
+                    resetSelect();
+                    return;
+                }
+                const wrapped = [];
+                // 뒤에서부터 분리해 앞쪽 Range 오프셋이 변하지 않도록 한다.
+                for (const seg of segments.reverse()) {
+                    let selectedNode = seg.node;
+                    if (seg.end < selectedNode.nodeValue.length) selectedNode.splitText(seg.end);
+                    if (seg.start > 0) selectedNode = selectedNode.splitText(seg.start);
+                    const span = document.createElement('span');
+                    span.style.fontSize = `${Math.max(0.01, seg.ratio)}em`;
+                    selectedNode.parentNode.insertBefore(span, selectedNode);
+                    span.appendChild(selectedNode);
+                    wrapped.push(span);
+                }
+                wrapped.reverse();
+                const selection = window.getSelection();
+                const newRange = document.createRange();
+                newRange.setStartBefore(wrapped[0]);
+                newRange.setEndAfter(wrapped[wrapped.length - 1]);
+                if (selection) {
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                }
+                lastRichRange = newRange.cloneRange();
+                lastRichEditable = editable;
+                lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                setEditedValue(editable);
+                editable.focus({ preventScroll: true });
+                resetSelect();
             });
-            [titleInput, subtitleInput, kickerInput].forEach(el => el.addEventListener('input', renderPreview));
-            [titleAlign, subtitleAlign, kickerAlign].forEach(el => el.addEventListener('change', renderPreview));
+            function applySelectedFontFamily(fontFamily) {
+                const editable = lastRichEditable;
+                const range = lastRichRange?.cloneRange();
+                const select = $('#selected-font-family');
+                if (!isRichEditable(editable) || !range || range.collapsed || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) { select.value = ''; return; }
+                try {
+                    const fragment = range.extractContents();
+                    const span = document.createElement('span');
+                    span.style.fontFamily = fontFamily === 'reset' ? 'var(--worksheet-font)' : fontFamily;
+                    span.appendChild(fragment);
+                    if (fontFamily === 'reset') {
+                        span.querySelectorAll('*').forEach(node => {
+                            node.style.removeProperty('font-family');
+                            if (!node.getAttribute('style')) node.removeAttribute('style');
+                        });
+                    }
+                    range.insertNode(span);
+                    const newRange = document.createRange();
+                    newRange.selectNodeContents(span);
+                    lastRichRange = newRange.cloneRange();
+                } catch (err) { select.value = ''; return; }
+                lastRichEditable = editable;
+                lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                setEditedValue(editable);
+                select.value = '';
+            }
+            $('#selected-font-family').addEventListener('change', e => { const value=e.target.value; if (value) applySelectedFontFamily(value); });
+
+            function getInsertionRange() {
+                let editable = lastRichEditable;
+                let range = lastRichRange?.cloneRange();
+                if ((!isRichEditable(editable) || !range || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) && lastRichBookmark) {
+                    restoreRichBookmark();
+                    editable = lastRichEditable;
+                    range = lastRichRange?.cloneRange();
+                }
+                if (!isRichEditable(editable) || !range || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) {
+                    alert('먼저 미리보기 또는 섹션 편집창의 편집 가능한 글자 영역에 커서를 놓으세요.');
+                    return null;
+                }
+                return { editable, range };
+            }
+            function insertNodeAtSelection(node) {
+                const target = getInsertionRange();
+                if (!target) return false;
+                const { editable, range } = target;
+                try {
+                    range.deleteContents();
+                    range.insertNode(node);
+                    const after = document.createRange();
+                    after.setStartAfter(node); after.collapse(true);
+                    const selection = window.getSelection();
+                    if (selection) { selection.removeAllRanges(); selection.addRange(after); }
+                    lastRichRange = after.cloneRange(); lastRichEditable = editable;
+                    lastRichBookmark = makeRichBookmark(editable, after);
+                    setEditedValue(editable);
+                    editable.focus({ preventScroll: true });
+                    return true;
+                } catch (err) { alert('현재 편집 영역에 삽입하지 못했습니다. 다른 텍스트 영역에서 다시 시도하세요.'); return false; }
+            }
+            function insertImageFromUrl() {
+                if (!getInsertionRange()) return;
+                const raw = prompt('삽입할 이미지 URL을 입력하세요.');
+                if (!raw) return;
+                const url = raw.trim();
+                if (!/^https?:\/\//i.test(url) && !/^data:image\//i.test(url)) { alert('http(s) 이미지 URL 또는 data:image 주소를 입력하세요.'); return; }
+                const img = document.createElement('img'); img.src = url; img.alt = '삽입 이미지'; img.className = 'inserted-image';
+                insertNodeAtSelection(img);
+            }
+            let toolbarImageBookmark = null;
+            function openImageUpload() {
+                const target = getInsertionRange();
+                if (!target) return;
+                lastRichEditable = target.editable;
+                lastRichRange = target.range.cloneRange();
+                lastRichBookmark = makeRichBookmark(target.editable, target.range);
+                toolbarImageBookmark = lastRichBookmark ? JSON.parse(JSON.stringify(lastRichBookmark)) : null;
+                $('#insert-image-file').click();
+            }
+            function inferImageMime(file) {
+                const declared = (file?.type || '').toLowerCase();
+                if (declared.startsWith('image/')) return declared;
+                const ext = String(file?.name || '').split('.').pop().toLowerCase();
+                const types = {
+                    png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', jpe:'image/jpeg',
+                    gif:'image/gif', webp:'image/webp', bmp:'image/bmp', svg:'image/svg+xml',
+                    avif:'image/avif', ico:'image/x-icon', tif:'image/tiff', tiff:'image/tiff'
+                };
+                return types[ext] || 'image/png';
+            }
+            function normalizeImageDataURL(dataUrl, file) {
+                if (typeof dataUrl !== 'string' || !dataUrl.startsWith('data:') || !dataUrl.includes(',')) {
+                    throw new Error('이미지 데이터가 비어 있거나 올바르지 않습니다.');
+                }
+                const comma = dataUrl.indexOf(',');
+                const header = dataUrl.slice(0, comma);
+                const payload = dataUrl.slice(comma + 1);
+                if (!payload) throw new Error('이미지 데이터가 비어 있습니다.');
+                const mime = inferImageMime(file);
+                // Some Android file providers report an empty or generic MIME type.
+                // Normalize the data URL so the embedded image remains displayable.
+                if (!/^data:image\//i.test(header)) return `data:${mime};base64,${payload}`;
+                return dataUrl;
+            }
+            async function readImageFileAsDataURL(file) {
+                if (!file) throw new Error('선택된 파일이 없습니다.');
+                if (file.size === 0) throw new Error('파일 크기가 0바이트입니다. 다른 파일을 선택하세요.');
+                // FileReader is the most consistent path for local files from Android/iOS
+                // document providers. Use ArrayBuffer as a fallback for browser-specific failures.
+                try {
+                    const result = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => typeof reader.result === 'string' ? resolve(reader.result) : reject(new Error('파일 데이터가 비어 있습니다.'));
+                        reader.onerror = () => reject(reader.error || new Error('파일 읽기 실패'));
+                        reader.onabort = () => reject(new Error('파일 읽기가 취소되었습니다.'));
+                        reader.readAsDataURL(file);
+                    });
+                    return normalizeImageDataURL(result, file);
+                } catch (readerError) {
+                    if (typeof file.arrayBuffer !== 'function') throw readerError;
+                    try {
+                        const buffer = await file.arrayBuffer();
+                        const bytes = new Uint8Array(buffer);
+                        let binary = '';
+                        const chunkSize = 0x8000;
+                        for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+                            binary += String.fromCharCode.apply(null, bytes.subarray(offset, Math.min(offset + chunkSize, bytes.length)));
+                        }
+                        return normalizeImageDataURL(`data:${inferImageMime(file)};base64,${btoa(binary)}`, file);
+                    } catch (arrayBufferError) {
+                        console.error('FileReader 실패:', readerError, 'ArrayBuffer 대체 읽기도 실패:', arrayBufferError);
+                        throw new Error('이미지 파일을 읽지 못했습니다. 파일 접근 권한을 확인하거나 이미지 파일을 다시 저장한 뒤 시도하세요.');
+                    }
+                }
+            }
+            function looksLikeImageFile(file) {
+                return !!file && ((file.type || '').toLowerCase().startsWith('image/') || /\.(png|jpe?g|gif|webp|bmp|svg|avif|ico|tiff?)$/i.test(file.name || ''));
+            }
+            $('#insert-image-file').addEventListener('change', async e => {
+                const input = e.target;
+                const file = input.files?.[0]; if (!file) return;
+                if (input.dataset.reading === 'true') return;
+                if (!looksLikeImageFile(file)) { alert('이미지 파일만 업로드할 수 있습니다.'); input.value=''; return; }
+                if (file.size > 12*1024*1024) { alert('이미지 파일은 12MB 이하로 선택하세요.'); input.value=''; return; }
+                input.dataset.reading = 'true'; input.disabled = true;
+                try {
+                    // 섹션 이미지 업로드와 같은 공통 파일 읽기 함수를 사용합니다.
+                    const dataUrl = await readImageFileAsDataURL(file);
+                    if (toolbarImageBookmark) {
+                        lastRichBookmark = toolbarImageBookmark;
+                        restoreRichBookmark();
+                    }
+                    const img=document.createElement('img'); img.src=dataUrl; img.alt=file.name; img.className='inserted-image';
+                    const inserted = insertNodeAtSelection(img);
+                    if (!inserted) throw new Error('이미지를 넣을 편집 위치를 복원하지 못했습니다. 편집할 위치를 다시 선택한 뒤 시도하세요.');
+                } catch (err) { console.error('이미지 파일 읽기/삽입 실패:', err); alert(err.message || '이미지 파일을 읽지 못했습니다. 파일 형식이나 브라우저의 파일 접근 상태를 확인한 뒤 다시 시도하세요.'); }
+                finally { toolbarImageBookmark = null; input.value=''; input.disabled = false; delete input.dataset.reading; }
+            });
+            function youtubeEmbedUrl(raw) {
+                try {
+                    const u = new URL(raw.trim());
+                    let id = '';
+                    const host = u.hostname.toLowerCase();
+                    if (host === 'youtu.be' || host.endsWith('.youtu.be')) id = u.pathname.split('/').filter(Boolean)[0] || '';
+                    else if (host === 'youtube.com' || host.endsWith('.youtube.com')) {
+                        if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+                        else if (/^\/(embed|shorts|live)\//.test(u.pathname)) id = u.pathname.split('/')[2] || '';
+                    }
+                    if (!/^[\w-]{11}$/.test(id)) return null;
+                    return `https://www.youtube.com/embed/${id}`;
+                } catch { return null; }
+            }
+            $('#insert-youtube').addEventListener('click', () => {
+                if (!getInsertionRange()) return;
+                const url = prompt('유튜브 영상 링크를 입력하세요.'); if (!url) return;
+                const embed = youtubeEmbedUrl(url); if (!embed) { alert('올바른 유튜브 영상 링크를 입력하세요.'); return; }
+                const wrapper = document.createElement('span'); wrapper.className = 'inserted-youtube';
+                const iframe = document.createElement('iframe'); iframe.src = embed; iframe.title = 'YouTube video player'; iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'; iframe.allowFullscreen = true; iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+                wrapper.appendChild(iframe); insertNodeAtSelection(wrapper);
+            });
+
+            function applySelectedTextColor(color) {
+                const editable = lastRichEditable;
+                const range = lastRichRange?.cloneRange();
+                if (!isRichEditable(editable) || !range || range.collapsed || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) return;
+                const span = document.createElement('span');
+                span.style.color = color;
+                try {
+                    span.appendChild(range.extractContents());
+                    range.insertNode(span);
+                } catch (err) { return; }
+                const selection = window.getSelection();
+                const newRange = document.createRange();
+                newRange.selectNodeContents(span);
+                if (selection) { selection.removeAllRanges(); selection.addRange(newRange); }
+                lastRichRange = newRange.cloneRange();
+                lastRichEditable = editable;
+                lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                setEditedValue(editable);
+                editable.focus({ preventScroll: true });
+            }
+            function applySelectedHighlightColor(color) {
+                const editable = lastRichEditable;
+                const range = lastRichRange?.cloneRange();
+                if (!isRichEditable(editable) || !range || range.collapsed || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) return;
+                const span = document.createElement('span');
+                span.style.backgroundColor = color;
+                try { span.appendChild(range.extractContents()); range.insertNode(span); } catch (err) { return; }
+                const selection = window.getSelection();
+                const newRange = document.createRange(); newRange.selectNodeContents(span);
+                if (selection) { selection.removeAllRanges(); selection.addRange(newRange); }
+                lastRichRange = newRange.cloneRange(); lastRichEditable = editable;
+                lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                setEditedValue(editable); editable.focus({ preventScroll: true });
+            }
+            const TOOLBAR_DEFAULT_COLLAPSED = ['bold', 'align', 'image', 'youtube', 'preview-all'];
+            const TOOLBAR_ITEMS = [
+                ['bold','굵게'], ['italic','기울임'], ['underline','밑줄'], ['align','정렬'],
+                ['font-size','글자 크기'], ['font-family','글꼴'], ['image','이미지'], ['youtube','유튜브'],
+                ['text-color','글자색'], ['highlight-color','배경색'], ['preview-all','전체 펼치기/접기']
+            ];
+            const TOOLBAR_STORAGE_KEY = 'worksheet-maker-toolbar-settings-v1';
+            // Ctrl is the default modifier, but users may assign Shift/Alt combinations too.
+            const RESERVED_CTRL_KEYS = new Set(['A','C','F','G','H','J','L','N','O','P','R','S','T','V','W','X','Y','Z']);
+            const RESERVED_CTRL_SHIFT_KEYS = new Set(['C','I','J','K','N','O','P','Q','T','W']);
+            const SHORTCUT_DEFAULTS = {
+                bold:'Ctrl+B', italic:'Ctrl+I', underline:'Ctrl+U', align:'', 'font-size':'', 'font-family':'',
+                image:'Ctrl+M', youtube:'', 'text-color':'', 'highlight-color':'', 'preview-all':''
+            };
+            function canonicalShortcut(raw) {
+                const value = String(raw || '').trim();
+                if (!value) return '';
+                const parts = value.split('+').map(part => part.trim().toLowerCase()).filter(Boolean);
+                if (!parts.length) return '';
+                const key = parts[parts.length - 1];
+                const modifiers = new Set(parts.slice(0, -1));
+                if (!/^[a-z]$/.test(key) || [...modifiers].some(m => !['ctrl','shift','alt'].includes(m)) || modifiers.size !== parts.length - 1) return null;
+                if (!modifiers.size) return null; // 문자 단독 등록은 허용하지 않음
+                if (modifiers.has('ctrl') && !modifiers.has('alt') && !modifiers.has('shift') && RESERVED_CTRL_KEYS.has(key.toUpperCase())) return null;
+                if (modifiers.has('ctrl') && modifiers.has('shift') && !modifiers.has('alt') && RESERVED_CTRL_SHIFT_KEYS.has(key.toUpperCase())) return null;
+                const ordered = ['ctrl','alt','shift'].filter(m => modifiers.has(m)).map(m => m === 'ctrl' ? 'Ctrl' : m === 'alt' ? 'Alt' : 'Shift');
+                return [...ordered, key.toUpperCase()].join('+');
+            }
+            let toolbarShortcuts = {...SHORTCUT_DEFAULTS};
+            let toolbarOrder = TOOLBAR_ITEMS.map(item => item[0]);
+            let toolbarCollapsedItems = [...TOOLBAR_DEFAULT_COLLAPSED];
+            let toolbarIsCollapsed = false;
+            let toolbarDraggingItem = null;
+            function loadToolbarSettings() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(TOOLBAR_STORAGE_KEY) || 'null');
+                    if (!saved || typeof saved !== 'object') return;
+                    const validIds = new Set(TOOLBAR_ITEMS.map(item => item[0]));
+                    if (Array.isArray(saved.order)) {
+                        const cleaned = saved.order.filter((id, index) => validIds.has(id) && saved.order.indexOf(id) === index);
+                        toolbarOrder = [...cleaned, ...TOOLBAR_ITEMS.map(item => item[0]).filter(id => !cleaned.includes(id))];
+                    }
+                    if (Array.isArray(saved.collapsedItems)) toolbarCollapsedItems = [...new Set(saved.collapsedItems.filter(id => validIds.has(id)))];
+                    if (saved.shortcuts && typeof saved.shortcuts === 'object') {
+                        toolbarShortcuts = {...SHORTCUT_DEFAULTS};
+                        const used = new Set();
+                        for (const [id, raw] of Object.entries(saved.shortcuts)) {
+                            if (!Object.prototype.hasOwnProperty.call(toolbarShortcuts, id)) continue;
+                            const normalized = canonicalShortcut(raw);
+                            if (normalized && !used.has(normalized)) { toolbarShortcuts[id] = normalized; used.add(normalized); }
+                            else if (normalized === '') toolbarShortcuts[id] = '';
+                        }
+                    }
+                    if (typeof saved.collapsed === 'boolean') toolbarIsCollapsed = saved.collapsed;
+                } catch (err) { /* 저장소가 차단된 환경에서는 기본 설정으로 작동 */ }
+            }
+            function saveToolbarSettings() {
+                try { localStorage.setItem(TOOLBAR_STORAGE_KEY, JSON.stringify({order:toolbarOrder, collapsedItems:toolbarCollapsedItems, collapsed:toolbarIsCollapsed, shortcuts:toolbarShortcuts})); }
+                catch (err) { /* 저장소가 차단되어도 현재 세션에서는 설정 유지 */ }
+            }
+            function renderToolbarConfigList() {
+                const list = $('#toolbar-config-list');
+                list.innerHTML = toolbarOrder.map(id => {
+                    const item = TOOLBAR_ITEMS.find(entry => entry[0] === id);
+                    const shortcut = toolbarShortcuts[id] || '';
+                    return `<div class="toolbar-config-row" draggable="true" data-toolbar-config-item="${id}"><span class="toolbar-config-handle" aria-hidden="true" title="드래그하여 순서 변경">${iconSvg('grip',16)}</span><label class="toolbar-config-label"><input type="checkbox" data-toolbar-choice="${id}" ${toolbarCollapsedItems.includes(id)?'checked':''}><span>${item[1]}</span></label><span class="toolbar-config-move"><button type="button" class="btn" data-toolbar-move="up" data-toolbar-move-id="${id}" aria-label="${item[1]} 위로 이동" title="위로 이동">↑</button><button type="button" class="btn" data-toolbar-move="down" data-toolbar-move-id="${id}" aria-label="${item[1]} 아래로 이동" title="아래로 이동">↓</button></span><label class="toolbar-config-shortcut"><span>단축키</span><input type="text" readonly data-toolbar-shortcut="${id}" value="${attr(shortcut)}" placeholder="클릭 후 키 조합" aria-label="${item[1]} 단축키 설정. 클릭 후 키 조합을 누르세요." spellcheck="false" autocomplete="off" title="클릭한 뒤 Ctrl/Shift/Alt와 문자 조합을 누르세요. Delete는 해제, Esc는 취소"></label></div>`;
+                }).join('');
+            }
+            function applyToolbarLayout() {
+                const toolbar = $('#rich-toolbar');
+                toolbar.classList.toggle('is-collapsed', toolbarIsCollapsed);
+                toolbar.classList.toggle('is-expanded', !toolbarIsCollapsed);
+                const persistentControls = toolbar.querySelector('.toolbar-persistent');
+                toolbarOrder.forEach(id => {
+                    const group = toolbar.querySelector(`[data-toolbar-item="${id}"]`);
+                    if (group) {
+                        if (persistentControls) toolbar.insertBefore(group, persistentControls);
+                        group.hidden = toolbarIsCollapsed && !toolbarCollapsedItems.includes(id);
+                    }
+                });
+                $('#toolbar-collapse-toggle').setAttribute('aria-expanded', String(!toolbarIsCollapsed));
+                $('#toolbar-collapse-toggle').title = toolbarIsCollapsed ? '툴바 펼치기' : '툴바 접기';
+                $('#toolbar-collapse-toggle').setAttribute('aria-label', $('#toolbar-collapse-toggle').title);
+                $('#toolbar-collapse-toggle').innerHTML = iconSvg(toolbarIsCollapsed ? 'chevronDown' : 'chevronUp', 18);
+                TOOLBAR_ITEMS.forEach(([id,label]) => {
+                    const group=toolbar.querySelector(`[data-toolbar-item="${id}"]`);
+                    const button=group?.querySelector('button,select');
+                    if (button) button.title = toolbarShortcuts[id] ? `${label} · ${toolbarShortcuts[id]}` : `${label} · 단축키 없음`;
+                });
+                updatePreviewToggleLabel();
+                updateEditorToggleLabel();
+            }
+            function closeToolbarPopups(exceptId) {
+                [['align-menu','toggle-align-menu'],['image-menu','toggle-image-menu'],['text-color-menu','toggle-text-color'],['highlight-color-menu','toggle-highlight-color'],['font-size-menu','toggle-font-size-menu'],['font-family-menu','toggle-font-family-menu']].forEach(([menuId,buttonId]) => {
+                    if (menuId === exceptId) return;
+                    const menu = $('#'+menuId);
+                    menu.hidden = true;
+                    menu.style.position = ''; menu.style.left = ''; menu.style.top = ''; menu.style.right = ''; menu.style.maxWidth = ''; menu.style.maxHeight = ''; menu.style.overflowY = '';
+                    $('#'+buttonId).setAttribute('aria-expanded','false');
+                });
+            }
+            function positionToolbarPopup(menuId, buttonId) {
+                const menu = $('#'+menuId), button = $('#'+buttonId);
+                if (!menu || !button || menu.hidden) return;
+                const rect = button.getBoundingClientRect(), pad = 8, gap = 6;
+                menu.style.position = 'fixed';
+                menu.style.left = '0px'; menu.style.top = '0px';
+                menu.style.right = 'auto';
+                const availableWidth = Math.max(80, window.innerWidth - pad * 2);
+                const availableHeight = Math.max(80, window.innerHeight - pad * 2);
+                menu.style.minWidth = Math.min(menu.classList.contains('color-toolbar-popup') ? 170 : 176, availableWidth) + 'px';
+                menu.style.maxWidth = availableWidth + 'px';
+                menu.style.maxHeight = availableHeight + 'px';
+                menu.style.overflowY = 'auto';
+                const mr = menu.getBoundingClientRect();
+                const maxLeft = Math.max(pad, window.innerWidth - mr.width - pad);
+                let left = Math.min(Math.max(pad, rect.left), maxLeft);
+                let top = rect.bottom + gap;
+                if (top + mr.height > window.innerHeight - pad) top = rect.top - mr.height - gap;
+                top = Math.min(Math.max(pad, top), Math.max(pad, window.innerHeight - mr.height - pad));
+                menu.style.left = left + 'px'; menu.style.top = top + 'px';
+            }
+            function repositionOpenToolbarPopup() {
+                const pairs = [['align-menu','toggle-align-menu'],['image-menu','toggle-image-menu'],['text-color-menu','toggle-text-color'],['highlight-color-menu','toggle-highlight-color'],['font-size-menu','toggle-font-size-menu'],['font-family-menu','toggle-font-family-menu']];
+                const pair = pairs.find(([menuId]) => !$('#'+menuId).hidden);
+                if (pair) positionToolbarPopup(pair[0], pair[1]);
+            }
+            function toggleToolbarPopup(menuId, buttonId) {
+                const menu = $('#'+menuId), button = $('#'+buttonId), opening = menu.hidden;
+                closeToolbarPopups(menuId);
+                menu.hidden = !opening;
+                button.setAttribute('aria-expanded', String(opening));
+                if (opening) positionToolbarPopup(menuId, buttonId);
+                else { menu.style.position = ''; menu.style.left = ''; menu.style.top = ''; menu.style.right = ''; menu.style.minWidth = ''; menu.style.maxWidth = ''; menu.style.maxHeight = ''; menu.style.overflowY = ''; }
+            }
+            window.addEventListener('resize', repositionOpenToolbarPopup);
+            window.addEventListener('scroll', repositionOpenToolbarPopup, true);
+            document.querySelectorAll('[data-setting-toggle]').forEach(button => button.addEventListener('click', () => {
+                const id = button.dataset.settingToggle;
+                const popup = $('#'+id), opening = popup.hidden;
+                document.querySelectorAll('.setting-popup').forEach(p => { p.hidden = true; });
+                document.querySelectorAll('[data-setting-toggle]').forEach(b => b.setAttribute('aria-expanded','false'));
+                popup.hidden = !opening;
+                button.setAttribute('aria-expanded', String(opening));
+            }));
+            document.querySelector('.design-settings').addEventListener('click', e => {
+                const fontChoice = e.target.closest('[data-setting-font-choice]');
+                if (fontChoice) {
+                    const select = $('#global-font-family');
+                    select.value = fontChoice.dataset.settingFontChoice;
+                    select.dispatchEvent(new Event('input', {bubbles:true}));
+                    select.dispatchEvent(new Event('change', {bubbles:true}));
+                    document.querySelectorAll('[data-setting-font-choice]').forEach(b => b.classList.toggle('is-active', b === fontChoice));
+                    $('#setting-font-popup').hidden = true;
+                    $('[data-setting-toggle="setting-font-popup"]').setAttribute('aria-expanded','false');
+                    return;
+                }
+                const themeChoice = e.target.closest('[data-setting-theme-choice]');
+                if (themeChoice) {
+                    const select = $('#output-theme');
+                    select.value = themeChoice.dataset.settingThemeChoice;
+                    select.dispatchEvent(new Event('input', {bubbles:true}));
+                    select.dispatchEvent(new Event('change', {bubbles:true}));
+                    document.querySelectorAll('[data-setting-theme-choice]').forEach(b => b.classList.toggle('is-active', b === themeChoice));
+                    $('#setting-theme-popup').hidden = true;
+                    $('[data-setting-toggle="setting-theme-popup"]').setAttribute('aria-expanded','false');
+                }
+            });
+            document.addEventListener('click', e => {
+                if (e.target.closest('.design-settings')) return;
+                document.querySelectorAll('.setting-popup').forEach(p => p.hidden = true);
+                document.querySelectorAll('[data-setting-toggle]').forEach(b => b.setAttribute('aria-expanded','false'));
+            });
+            $('#toggle-align-menu').addEventListener('click', () => toggleToolbarPopup('align-menu','toggle-align-menu'));
+            document.addEventListener('click', e => { if (e.target.closest('#rich-toolbar')) return; closeToolbarPopups(); });
+            $('#toggle-font-size-menu').addEventListener('pointerdown', rememberRichSelection);
+            $('#toggle-font-family-menu').addEventListener('pointerdown', rememberRichSelection);
+            $('#toggle-font-size-menu').addEventListener('click', () => toggleToolbarPopup('font-size-menu','toggle-font-size-menu'));
+            $('#toggle-font-family-menu').addEventListener('click', () => toggleToolbarPopup('font-family-menu','toggle-font-family-menu'));
+            $('#rich-toolbar').addEventListener('click', e => {
+                const sizeButton=e.target.closest('[data-text-size]');
+                const familyButton=e.target.closest('[data-font-family]');
+                if (sizeButton) { const select=$('#selected-text-size'); select.value=sizeButton.dataset.textSize; select.dispatchEvent(new Event('change',{bubbles:true})); $('#font-size-menu').hidden=true; $('#toggle-font-size-menu').setAttribute('aria-expanded','false'); return; }
+                if (familyButton) { const select=$('#selected-font-family'); select.value=familyButton.dataset.fontFamily; select.dispatchEvent(new Event('change',{bubbles:true})); $('#font-family-menu').hidden=true; $('#toggle-font-family-menu').setAttribute('aria-expanded','false'); return; }
+            });
+            $('#toggle-image-menu').addEventListener('click', () => toggleToolbarPopup('image-menu','toggle-image-menu'));
+            $('#rich-toolbar').addEventListener('click', e => {
+                const action = e.target.closest('[data-image-action]')?.dataset.imageAction;
+                if (action) {
+                    $('#image-menu').hidden = true;
+                    $('#toggle-image-menu').setAttribute('aria-expanded','false');
+                    if (action === 'upload') openImageUpload();
+                    if (action === 'url') insertImageFromUrl();
+                    return;
+                }
+            });
+            $('#toolbar-collapse-toggle').addEventListener('click', () => {
+                toolbarIsCollapsed = !toolbarIsCollapsed;
+                applyToolbarLayout(); saveToolbarSettings();
+                closeToolbarPopups();
+            });
+            $('#toolbar-settings-toggle').addEventListener('click', () => {
+                const panel = $('#toolbar-settings-panel'), opening = panel.hidden;
+                panel.hidden = !opening;
+                $('#rich-toolbar').classList.toggle('settings-open', opening);
+                $('#toolbar-settings-toggle').setAttribute('aria-expanded', String(opening));
+                if (opening) renderToolbarConfigList();
+            });
+            $('#toolbar-reset-settings').addEventListener('click', () => {
+                shortcutCaptureId = null;
+                toolbarOrder = TOOLBAR_ITEMS.map(item => item[0]);
+                toolbarCollapsedItems = [...TOOLBAR_DEFAULT_COLLAPSED];
+                toolbarShortcuts = {...SHORTCUT_DEFAULTS};
+                toolbarIsCollapsed = false;
+                renderToolbarConfigList(); applyToolbarLayout(); saveToolbarSettings();
+                $('#toolbar-settings-panel').hidden = false;
+                $('#rich-toolbar').classList.add('settings-open');
+                $('#toolbar-settings-toggle').setAttribute('aria-expanded','true');
+            });
+            let shortcutCaptureId = null;
+            let shortcutCapturePrevious = '';
+            function finishShortcutCapture(input, value) {
+                if (!input) return;
+                const id = input.dataset.toolbarShortcut;
+                shortcutCaptureId = null;
+                input.value = value;
+                input.classList.remove('is-capturing');
+                input.blur();
+            }
+            function startShortcutCapture(input) {
+                if (!input) return;
+                const id = input.dataset.toolbarShortcut;
+                shortcutCaptureId = id;
+                shortcutCapturePrevious = toolbarShortcuts[id] || '';
+                input.value = '키 조합 입력 중…';
+                input.classList.add('is-capturing');
+                input.focus();
+            }
+            function assignCapturedShortcut(input, raw) {
+                const id = input.dataset.toolbarShortcut;
+                const normalized = canonicalShortcut(raw);
+                if (normalized === null) {
+                    alert('문자와 Ctrl, Shift, Alt 중 하나 이상을 조합하세요. 브라우저 예약 단축키는 지정할 수 없습니다.');
+                    finishShortcutCapture(input, shortcutCapturePrevious);
+                    return;
+                }
+                const duplicate = normalized && Object.entries(toolbarShortcuts).some(([other,value]) => other !== id && value === normalized);
+                if (duplicate) {
+                    alert('이미 다른 버튼에 지정된 단축키입니다.');
+                    finishShortcutCapture(input, shortcutCapturePrevious);
+                    return;
+                }
+                toolbarShortcuts[id] = normalized;
+                finishShortcutCapture(input, normalized);
+                applyToolbarLayout(); saveToolbarSettings();
+            }
+            $('#toolbar-config-list').addEventListener('keydown', e => {
+                const input = e.target.closest('[data-toolbar-shortcut]');
+                if (!input || shortcutCaptureId !== input.dataset.toolbarShortcut) return;
+                if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finishShortcutCapture(input, shortcutCapturePrevious); return; }
+                if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); e.stopPropagation(); assignCapturedShortcut(input, ''); return; }
+                if (e.key === 'Control' || e.key === 'Shift' || e.key === 'Alt' || e.key === 'Meta') { e.preventDefault(); return; }
+                if (e.metaKey || !/^[a-z]$/i.test(e.key) || (!e.ctrlKey && !e.shiftKey && !e.altKey)) { e.preventDefault(); return; }
+                e.preventDefault(); e.stopPropagation();
+                const parts = [];
+                if (e.ctrlKey) parts.push('Ctrl');
+                if (e.altKey) parts.push('Alt');
+                if (e.shiftKey) parts.push('Shift');
+                parts.push(e.key.toUpperCase());
+                assignCapturedShortcut(input, parts.join('+'));
+            });
+            $('#toolbar-config-list').addEventListener('blur', e => {
+                const input = e.target.closest('[data-toolbar-shortcut]');
+                if (input && shortcutCaptureId === input.dataset.toolbarShortcut) finishShortcutCapture(input, shortcutCapturePrevious);
+            }, true);
+            $('#toolbar-config-list').addEventListener('change', e => {
+                const input = e.target.closest('[data-toolbar-choice]');
+                if (!input) return;
+                const id = input.dataset.toolbarChoice;
+                if (input.checked) {
+                    if (!toolbarCollapsedItems.includes(id)) toolbarCollapsedItems.push(id);
+                } else toolbarCollapsedItems = toolbarCollapsedItems.filter(item => item !== id);
+                toolbarCollapsedItems = toolbarOrder.filter(item => toolbarCollapsedItems.includes(item));
+                renderToolbarConfigList(); applyToolbarLayout(); saveToolbarSettings();
+            });
+            document.addEventListener('keydown', e => {
+                if (e.isComposing || e.repeat || e.metaKey) return;
+                const active=e.target instanceof Element ? e.target.closest('#preview [contenteditable="true"][data-edit], #block-list [contenteditable="true"][data-edit]') : null;
+                if (!active || (!e.ctrlKey && !e.shiftKey && !e.altKey)) return;
+                const key=String(e.key||'').toUpperCase();
+                if (!/^[A-Z]$/.test(key)) return;
+                const parts=[];
+                if (e.ctrlKey) parts.push('Ctrl');
+                if (e.altKey) parts.push('Alt');
+                if (e.shiftKey) parts.push('Shift');
+                parts.push(key);
+                const wanted=parts.join('+');
+                const entry=Object.entries(toolbarShortcuts).find(([,value])=>value===wanted);
+                if (!entry) return;
+                e.preventDefault(); e.stopPropagation();
+                const [id]=entry;
+                const group=$(`#rich-toolbar [data-toolbar-item="${id}"]`);
+                if (!group) return;
+                if (id==='font-size' || id==='font-family') { group.querySelector('button')?.click(); return; }
+                const button=group.querySelector('button');
+                if (button) button.click();
+            }, true);
+            $('#toolbar-config-list').addEventListener('click', e => {
+                const shortcutInput = e.target.closest('[data-toolbar-shortcut]');
+                if (shortcutInput) { startShortcutCapture(shortcutInput); return; }
+                const move = e.target.closest('[data-toolbar-move]');
+                if (!move) return;
+                const id = move.dataset.toolbarMoveId, index = toolbarOrder.indexOf(id);
+                const target = move.dataset.toolbarMove === 'up' ? index - 1 : index + 1;
+                if (index < 0 || target < 0 || target >= toolbarOrder.length) return;
+                [toolbarOrder[index], toolbarOrder[target]] = [toolbarOrder[target], toolbarOrder[index]];
+                toolbarCollapsedItems = toolbarOrder.filter(item => toolbarCollapsedItems.includes(item));
+                renderToolbarConfigList(); applyToolbarLayout(); saveToolbarSettings();
+            });
+            $('#toolbar-config-list').addEventListener('dragstart', e => {
+                const row = e.target.closest('[data-toolbar-config-item]');
+                if (!row || e.target.closest('input,button')) { e.preventDefault(); return; }
+                toolbarDraggingItem = row.dataset.toolbarConfigItem;
+                row.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', toolbarDraggingItem);
+            });
+            $('#toolbar-config-list').addEventListener('dragover', e => {
+                const row = e.target.closest('[data-toolbar-config-item]');
+                if (!toolbarDraggingItem || !row || row.dataset.toolbarConfigItem === toolbarDraggingItem) return;
+                e.preventDefault();
+                $('#toolbar-config-list').querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
+                row.classList.add('drop-target');
+                e.dataTransfer.dropEffect = 'move';
+            });
+            $('#toolbar-config-list').addEventListener('drop', e => {
+                const row = e.target.closest('[data-toolbar-config-item]');
+                if (!toolbarDraggingItem || !row) return;
+                e.preventDefault();
+                const targetId = row.dataset.toolbarConfigItem;
+                if (targetId !== toolbarDraggingItem) {
+                    const from = toolbarOrder.indexOf(toolbarDraggingItem), targetIndex = toolbarOrder.indexOf(targetId);
+                    if (from >= 0 && targetIndex >= 0) {
+                        const insertAt = from < targetIndex ? targetIndex - 1 : targetIndex;
+                        toolbarOrder.splice(from,1); toolbarOrder.splice(insertAt,0,toolbarDraggingItem);
+                        toolbarCollapsedItems = toolbarOrder.filter(id => toolbarCollapsedItems.includes(id));
+                        renderToolbarConfigList(); applyToolbarLayout(); saveToolbarSettings();
+                    }
+                }
+                toolbarDraggingItem = null;
+            });
+            $('#toolbar-config-list').addEventListener('dragend', () => {
+                toolbarDraggingItem = null;
+                $('#toolbar-config-list').querySelectorAll('.dragging,.drop-target').forEach(el => el.classList.remove('dragging','drop-target'));
+            });
+            document.addEventListener('click', e => {
+                if (!e.target.closest('#rich-toolbar .toolbar-group')) closeToolbarPopups();
+            });
+            function refreshToolbarState() {
+                const toolbar = $('#rich-toolbar');
+                const selection = window.getSelection();
+                let editable = isRichEditable(lastRichEditable) ? lastRichEditable : null;
+                if (selection?.rangeCount) {
+                    const node = selection.anchorNode?.nodeType === 1 ? selection.anchorNode : selection.anchorNode?.parentElement;
+                    const current = node?.closest?.('[contenteditable="true"][data-edit]');
+                    if (isRichEditable(current)) editable = current;
+                }
+                const states = {bold:false, italic:false, underline:false};
+                if (editable && selection?.rangeCount && editable.contains(selection.anchorNode)) {
+                    for (const key of Object.keys(states)) {
+                        try { states[key] = !!document.queryCommandState(key); } catch (err) {}
+                    }
+                }
+                toolbar.querySelectorAll('button[data-format]').forEach(button => {
+                    const active = !!states[button.dataset.format];
+                    button.classList.toggle('is-active', active);
+                    button.setAttribute('aria-pressed', String(active));
+                });
+                if (editable) {
+                    const align = getComputedStyle(editable).textAlign;
+                    const value = align === 'center' ? 'center' : (align === 'right' || align === 'end' ? 'right' : 'left');
+                    $('#align-current-icon').innerHTML = iconSvg(value === 'center' ? 'center' : value === 'right' ? 'right' : 'left', 18);
+                    $('#align-menu').querySelectorAll('[data-align]').forEach(button => button.classList.toggle('is-active', button.dataset.align === value));
+                }
+            }
+            loadToolbarSettings();
+            renderToolbarConfigList();
+            applyToolbarLayout();
+            document.addEventListener('selectionchange', refreshToolbarState);
+            ['#preview','#block-list'].forEach(rootSelector => {
+                const root = $(rootSelector);
+                root.addEventListener('keyup', refreshToolbarState);
+                root.addEventListener('mouseup', refreshToolbarState);
+                root.addEventListener('pointerup', refreshToolbarState);
+            });
+
+            const textPalette = ['#23385f','#315fd3','#ffffff','#202a3a','#f3f5f9','#e6a23c','#c43f4b','#2f855a'];
+            const backgroundPalette = [...textPalette, '#151922', '#202633'];
+            function renderToolbarPalette(id, colors, kind) {
+                const row = $(id);
+                row.innerHTML = colors.map(color => `<button type="button" class="color-swatch" data-toolbar-color="${color}" data-toolbar-kind="${kind}" title="${color}" aria-label="${color}" style="background:${color}"></button>`).join('');
+            }
+            renderToolbarPalette('#text-color-presets', textPalette, 'text');
+            renderToolbarPalette('#highlight-color-presets', backgroundPalette, 'highlight');
+            $('#text-color-presets').addEventListener('click', e => { const swatch = e.target.closest('[data-toolbar-color]'); if (swatch) applySelectedTextColor(swatch.dataset.toolbarColor); });
+            $('#highlight-color-presets').addEventListener('click', e => { const swatch = e.target.closest('[data-toolbar-color]'); if (swatch) applySelectedHighlightColor(swatch.dataset.toolbarColor); });
+            $('#toggle-text-color').addEventListener('click', () => toggleToolbarPopup('text-color-menu','toggle-text-color'));
+            $('#toggle-highlight-color').addEventListener('click', () => toggleToolbarPopup('highlight-color-menu','toggle-highlight-color'));
+            $('#selected-highlight-color').addEventListener('pointerdown', rememberRichSelection);
+            $('#selected-highlight-color').addEventListener('mousedown', rememberRichSelection);
+            $('#selected-highlight-color').addEventListener('input', e => {
+                const color = e.target.value.trim();
+                if (/^#[0-9a-fA-F]{6}$/.test(color)) applySelectedHighlightColor(color.toLowerCase());
+            });
+            $('#selected-text-color').addEventListener('input', e => {
+                const color = e.target.value.trim();
+                if (/^#[0-9a-fA-F]{6}$/.test(color)) applySelectedTextColor(color.toLowerCase());
+            });
+            $('#selected-text-color').addEventListener('change', e => {
+                const color = e.target.value.trim();
+                if (!/^#[0-9a-fA-F]{6}$/.test(color)) {
+                    e.target.setCustomValidity('HEX 색상은 #000000 형식으로 입력하세요.');
+                    e.target.reportValidity();
+                    e.target.setCustomValidity('');
+                } else e.target.value = color.toLowerCase();
+            });
+            ['#preview','#block-list'].forEach(rootSelector => {
+                const root = $(rootSelector);
+                root.addEventListener('input', e => { const el = e.target.closest('[contenteditable="true"][data-edit]'); if (el) setEditedValue(el); });
+                root.addEventListener('focusout', e => { const el = e.target.closest('[contenteditable="true"][data-edit]'); if (el) setEditedValue(el); });
+            });
+            function updateHeroBackgroundPreview() {
+                const color = String(heroBgInput?.value || '').trim();
+                if (!/^#[0-9a-fA-F]{6}$/.test(color)) return;
+                const preview = $('#preview');
+                preview.style.setProperty('--hero-bg', color);
+                preview.querySelectorAll('.hero').forEach(el => { el.style.background = color; el.style.color = '#ffffff'; });
+            }
+            // HEX 입력 중에는 preview DOM 전체를 다시 만들지 않아 입력 포커스와 커서를 유지합니다.
+            heroBgInput?.addEventListener('input', () => { updateHeroBackgroundPreview(); renderColorPresets(); });
+            heroBgInput?.addEventListener('change', () => { updateHeroBackgroundPreview(); renderColorPresets(); });
+            [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('input', () => { renderPreview(); renderColorPresets(); }));
+            [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('change', () => { renderPreview(); renderColorPresets(); }));
+            function syncSettingChoiceButtons() {
+                document.querySelectorAll('[data-setting-font-choice]').forEach(b => b.classList.toggle('is-active', b.dataset.settingFontChoice === globalFontInput.value));
+                document.querySelectorAll('[data-setting-theme-choice]').forEach(b => b.classList.toggle('is-active', b.dataset.settingThemeChoice === outputThemeInput.value));
+            }
+            syncSettingChoiceButtons();
+            $('#block-list').addEventListener('change', async e => {
+                const fileInput = e.target.closest('input[type="file"][data-upload-id]');
+                if (!fileInput || !fileInput.files?.[0]) return;
+                const file = fileInput.files[0];
+                if (fileInput.dataset.reading === 'true') return;
+                fileInput.dataset.reading = 'true'; fileInput.disabled = true;
+                try {
+                    if (!looksLikeImageFile(file)) throw new Error('이미지 파일만 업로드할 수 있습니다.');
+                    if (file.size > 12 * 1024 * 1024) throw new Error('이미지 파일은 12MB 이하로 선택하세요.');
+                    const dataUrl = await readImageFileAsDataURL(file);
+                    const b = getBlock(fileInput.dataset.uploadId), key = fileInput.dataset.uploadKey;
+                    if (b) {
+                        if (key === 'backgroundImage') b.backgroundImage = dataUrl;
+                        else if (key.startsWith('word-') && b.words?.[Number(key.split('-')[1])]) b.words[Number(key.split('-')[1])].image = dataUrl;
+                        else if (key.startsWith('photo-') && b.photos?.[Number(key.split('-')[1])]) b.photos[Number(key.split('-')[1])].image = dataUrl;
+                        renderAll();
+                    }
+                } catch (err) {
+                    console.error('학습지 이미지 업로드 실패:', err);
+                    alert(err.message || '이미지 파일을 읽지 못했습니다. 파일을 다시 선택해 주세요.');
+                } finally {
+                    fileInput.value = ''; fileInput.disabled = false; delete fileInput.dataset.reading;
+                }
+            });
+            function updateBlockFieldFromEditor(el) {
+                if (!el || !el.dataset.id || !el.dataset.key) return false;
+                const b = getBlock(el.dataset.id), key = el.dataset.key, val = el.value;
+                if (!b) return false;
+                // Route quiz choices first. Never let a choice input fall through to generic fields.
+                const optionMatch = key.match(/^q-(\d+)-opt-(\d+)$/);
+                if (optionMatch) {
+                    const qi = Number(optionMatch[1]), oi = Number(optionMatch[2]);
+                    if (!b.questions?.[qi] || !Number.isInteger(oi) || oi < 0 || oi >= b.questions[qi].options.length) return false;
+                    b.questions[qi].options[oi] = val;
+                    delete b.questions[qi]['opt'+oi+'Html'];
+                    lastRichEditable = lastRichRange = lastRichBookmark = null;
+                    renderPreview();
+                    return true;
+                }
+                const questionMatch = key.match(/^q-(\d+)-text$/);
+                if (questionMatch) {
+                    const qi = Number(questionMatch[1]);
+                    if (!b.questions?.[qi]) return false;
+                    b.questions[qi].text = val;
+                    delete b.questions[qi].textHtml;
+                    lastRichEditable = lastRichRange = lastRichBookmark = null;
+                    renderPreview();
+                    return true;
+                }
+                if (key === 'title' || key === 'text' || key === 'heading') delete b[key + 'Html'];
+                else if (key === 'page' || key === 'chapter') delete b.metaHtml;
+                else if (key.startsWith('word-')) { const p=key.split('-'); if (b.words?.[Number(p[1])]) delete b.words[Number(p[1])][p[2]+'Html']; }
+                else if (key.startsWith('photo-')) { const p=key.split('-'); if (b.photos?.[Number(p[1])]) delete b.photos[Number(p[1])][p[2]+'Html']; }
+                if (key.startsWith('word-')) {
+                    const p=key.split('-'), wi=Number(p[1]);
+                    if (!b.words?.[wi]) return false;
+                    b.words[wi][p[2]]=val;
+                } else if (key.startsWith('station-')) {
+                    const p=key.split('-'), si=Number(p[1]);
+                    if (!b.stations?.[si]) return false;
+                    b.stations[si][p[2]]=['x','y'].includes(p[2]) ? Math.max(0,Math.min(100,Number(val)||0)) : val;
+                } else if (key.startsWith('photo-')) {
+                    const p=key.split('-'), pi=Number(p[1]);
+                    if (!b.photos?.[pi]) return false;
+                    b.photos[pi][p[2]]=val;
+                } else if (key === 'backgroundFit' || key === 'backgroundImage' || key === 'imageFit' || key === 'title' || key === 'page' || key === 'chapter' || key === 'text' || key === 'heading' || key === 'html') {
+                    b[key]=val;
+                } else if (key.startsWith('word-') || key.startsWith('station-') || key.startsWith('photo-')) {
+                    // handled above
+                } else {
+                    b[key]=val;
+                }
+                if (['title','page','chapter'].includes(key)) {
+                    const card=el.closest('[data-block-id]'), index=blocks.findIndex(item=>item.id===b.id), name=card?.querySelector('.block-name');
+                    if (name) name.innerHTML=blockHeaderLabel(b,index);
+                }
+                lastRichEditable = lastRichRange = lastRichBookmark = null;
+                renderPreview();
+                return true;
+            }
+            $('#block-list').addEventListener('input', e => {
+                const el=e.target;
+                if (el.matches('input[type="text"], input[type="number"], textarea')) updateBlockFieldFromEditor(el);
+            });
+            $('#block-list').addEventListener('change', e => {
+                const el=e.target;
+                if (el.matches('select')) updateBlockFieldFromEditor(el);
+                if (el.dataset.action === 'answer') {
+                    const b=getBlock(el.dataset.id);
+                    if (b) { b.questions[Number(el.dataset.qi)].answer=el.value; lastRichEditable = lastRichRange = lastRichBookmark = null; renderPreview(); }
+                }
+            });
+            [[titleInput,'doc-title'],[subtitleInput,'subtitle'],[kickerInput,'kicker']].forEach(([el,key]) => el.addEventListener('input', () => { heroRich[key] = null; renderPreview(); }));
             $$('[data-add]').forEach(btn => btn.addEventListener('click', () => {
                 const b = newBlock(btn.dataset.add);
                 blocks.push(b);
                 renderAll();
             }));
-            $('#preview').addEventListener('change', e => {
-                const radio = e.target;
-                if (radio.type !== 'radio' || !radio.name.startsWith('learn-')) return;
-                const q = radio.closest('.quiz-q');
-                if (!q) return;
-                q.classList.remove('correct', 'wrong');
-                q.querySelectorAll('label').forEach(l => l.classList.remove('selected'));
-                radio.closest('label').classList.add('selected');
-                q.classList.add(radio.dataset.correct === 'yes' ? 'correct' : 'wrong');
-            });
+            // 라디오 버튼 클릭은 기본 동작을 유지해야 change 이벤트로 즉시 채점됩니다.
+            // 선택지 텍스트 편집을 위한 클릭 처리로 라디오 버튼을 가로채지 않습니다.
             // 미리보기에서 지점과 지점 이름을 각각 드래그해 배치합니다.
             let movingStation = null;
             $('#preview').addEventListener('pointerdown', e => {
@@ -1455,10 +3059,23 @@
 
             function exportDocument() {
                 const title = titleInput.value;
-                const css = document.getElementById('export-css').textContent;
-                const markup = renderDocumentMarkup();
-                const script = `document.addEventListener('change',function(e){const r=e.target;if(r.type!=='radio'||!r.name)return;const q=r.closest('.quiz-q');if(!q)return;q.classList.remove('correct','wrong');q.querySelectorAll('label').forEach(l=>l.classList.remove('selected'));r.closest('label').classList.add('selected');q.classList.add(r.dataset.correct==='yes'?'correct':'wrong')});`;
-                const full = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${css}</style></head><body>${markup}<script>${script}<\/script></body></html>`;
+                let css = document.getElementById('export-css').textContent;
+                let markup = renderDocumentMarkup();
+                markup = markup.replace(/<div class="preview-section-tools">[\s\S]*?<\/div>/g, '')
+                    .replace(/ contenteditable="true"/g, '')
+                    .replace(/ data-edit="[^"]*"/g, '')
+                    .replace(/ data-block-id="[^"]*"/g, '')
+                    .replace(/ preview-section/g, '')
+                    .replace(/ collapsed/g, '');
+                const theme = outputThemeInput.value || 'light';
+                const scale = getFontScale();
+                css += `\n:root{--font-scale:${scale};--worksheet-font:${globalFontInput.value || 'system-ui, -apple-system, \"Noto Sans KR\", sans-serif'};--worksheet-bg:${worksheetBgInput?.value || '#ffffff'}} html{font-size:16px} body{font-size:1rem;font-family:var(--worksheet-font);background:var(--worksheet-bg)}
+                .options .quiz-option-label.selected{background:rgba(230,230,230,.7)}
+                .q.correct{background:url(\"https://github.com/kimgreentea/kimnokcha/blob/main/css/images/check-O.png?raw=true\") no-repeat calc(0px - 10px) calc(0px - 5px)}
+                .q.wrong{background:url(\"https://github.com/kimgreentea/kimnokcha/blob/main/css/images/check-X.png?raw=true\") no-repeat calc(0px - 10px) calc(0px - 5px)}`;
+                if (theme === 'dark') css += `\nbody{background:#151922;color:#e7ebf2} .section,.learn-section{background:#202633;color:#e7ebf2;border-color:#3a4354} .section-meta,.foot{color:#aeb8c8} .example{background:#30394a} .map-frame{background:#252d3b;border-color:#414b5e} .map-frame text{fill:#edf1f7} .photo-item img,.vocab img{background:#252d3b} .options .quiz-option-label.selected{background:rgba(255,255,255,.14)}`;
+                const script = `(function(){function grade(r){if(!r||r.type!=="radio"||!r.name||!r.checked)return;const q=r.closest(".quiz-q");if(!q)return;q.classList.remove("correct","wrong");q.querySelectorAll(".quiz-option-label").forEach(function(label){label.classList.remove("selected")});const label=r.closest(".quiz-option-label");if(label)label.classList.add("selected");q.classList.add(r.dataset.correct==="yes"?"correct":"wrong")}function findRadio(target){return target.closest('input[type="radio"][name^="learn-"]')||target.closest(".quiz-option-label")?.querySelector('input[type="radio"][name^="learn-"]')}document.addEventListener("change",function(e){if(e.target&&e.target.matches('input[type="radio"][name^="learn-"]'))grade(e.target)});document.addEventListener("click",function(e){const r=findRadio(e.target);if(!r)return;if(!r.checked){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}grade(r)})})();`;
+                const full = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>${css}</style></head><body data-theme="${theme}" style="--font-scale:${scale}">${markup}<script>${script}<\/script></body></html>`;
                 const blob = new Blob([full], {
                         type: 'text/html;charset=utf-8'
                     }),
@@ -1478,9 +3095,8 @@
                     title: titleInput.value,
                     subtitle: subtitleInput.value,
                     kicker: kickerInput.value,
-                    titleAlign: titleAlign.value,
-                    subtitleAlign: subtitleAlign.value,
-                    kickerAlign: kickerAlign.value,
+                    heroRich,
+                    heroBg: heroBgInput.value, worksheetBg: worksheetBgInput?.value || '#ffffff', fontScale: fontScaleInput.value, globalFont: globalFontInput.value, outputTheme: outputThemeInput.value,
                     blocks
                 };
                 const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -1504,9 +3120,10 @@
                     titleInput.value = data.title || '';
                     subtitleInput.value = data.subtitle || '';
                     kickerInput.value = data.kicker || '';
-                    titleAlign.value = data.titleAlign || 'center';
-                    subtitleAlign.value = data.subtitleAlign || 'center';
-                    kickerAlign.value = data.kickerAlign || 'center';
+                    heroBgInput.value = data.heroBg || '#23385f'; if (worksheetBgInput) worksheetBgInput.value = data.worksheetBg || '#ffffff'; { const savedSize=Number(data.fontScale); fontScaleInput.value=String(Number.isFinite(savedSize) && savedSize > 2 ? Math.max(8,Math.min(48,savedSize)) : Math.round(16*(Number.isFinite(savedSize)&&savedSize>0?savedSize:1))); } globalFontInput.value = data.globalFont || 'system-ui, -apple-system, \"Noto Sans KR\", sans-serif'; outputThemeInput.value = data.outputTheme || 'light'; syncSettingChoiceButtons();
+                    heroRich.kicker = data.heroRich?.kicker ?? null;
+                    heroRich['doc-title'] = data.heroRich?.['doc-title'] ?? null;
+                    heroRich.subtitle = data.heroRich?.subtitle ?? null;
                     renderAll();
                 } catch (err) {
                     alert('양식을 불러오지 못했습니다: ' + err.message)
