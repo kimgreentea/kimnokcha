@@ -2276,7 +2276,7 @@ const ICONS = {
             function renderQuizEditor(b) {
                 return `<div class="field"><label>문항 구성</label></div>
     ${(b.questions||[]).map((q,qi)=>`<div class="question-editor" data-q-index="${qi}">
-      <div class="question-top"><strong>문항 ${qi+1}</strong><button class="btn danger" data-action="remove-question" data-id="${b.id}" data-index="${qi}"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <div class="question-top"><strong>문항 ${qi+1}</strong><button class="btn danger" data-action="remove-question" data-id="${b.id}" data-index="${qi}" title="문항 삭제"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path d="M3 6h18"/>
   <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
   <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
@@ -2289,35 +2289,53 @@ const ICONS = {
         <div class="choice-editor-main"><label><input type="radio" name="correct-${b.id}-${qi}" data-action="answer" data-id="${b.id}" data-qi="${qi}" value="${oi+1}" ${String(q.answer)===String(oi+1)?'checked':''}></label><div class="editor-rich-input choice-text" contenteditable="true" spellcheck="false" data-edit="qoption" data-block-id="${b.id}" data-index="${qi}" data-subindex="${oi}" aria-label="">${q['opt'+oi+'Html'] != null ? q['opt'+oi+'Html'] : esc(opt ?? '').replace(/\r\n|\r|\n/g,'<br>')}</div></div>
         <button class="btn danger" data-action="remove-option" data-id="${b.id}" data-qi="${qi}" data-index="${oi}" title="선택지 삭제">×</button>
       </div>`).join('')}
-      <button class="btn" data-action="add-option" data-id="${b.id}" data-qi="${qi}">＋ 선택지 추가</button>
+      <button class="btn" data-action="add-option" data-id="${b.id}" data-qi="${qi}">＋ 선택지</button>
     </div>`).join('')}
-    <button class="btn" data-action="add-question" data-id="${b.id}">＋ 문항 추가</button>`;
+    <button class="btn" data-action="add-question" data-id="${b.id}">＋ 문항</button>`;
             }
 
             function renderVocabEditor(b) {
                 return `${(b.words||[]).map((w,wi)=>`<div class="question-editor">
-      <div class="question-top"><strong>단어 ${wi+1}</strong><button class="btn danger" data-action="remove-word" data-id="${b.id}" data-index="${wi}">삭제</button></div>
+      <div class="question-top"><strong>단어 ${wi+1}</strong><button class="btn danger" data-action="remove-word" data-id="${b.id}" data-index="${wi}" title="단어 삭제"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M3 6h18"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+  <line x1="10" y1="11" x2="10" y2="17"/>
+  <line x1="14" y1="11" x2="14" y2="17"/>
+</svg></button></div>
       ${richField('단어',w,'word','word',b.id,wi,null,'단어')}
       ${richField('설명',w,'meaning','meaning',b.id,wi,null,'설명',true)}
       ${field('사진 URL',b.id,`word-${wi}-image`,w.image,'https://...')}${imageUpload('단어 사진',b.id,`word-${wi}-image`,w.image)}
       <div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="word-${wi}-imageFit"><option value="cover" ${(w.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${w.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${w.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${w.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div>
       ${richField('용례',w,'example','example',b.id,wi,null,'용례',true)}
-    </div>`).join('')}<button class="btn" data-action="add-word" data-id="${b.id}">＋ 단어 추가</button>`;
+    </div>`).join('')}<button class="btn" data-action="add-word" data-id="${b.id}">＋ 단어</button>`;
             }
 
             function renderPhotoEditor(b) {
-                return `${(b.photos||[]).map((photo,i)=>`<div class="question-editor"><div class="question-top"><strong>사진 ${i+1}</strong><button class="btn danger" data-action="remove-photo" data-id="${b.id}" data-index="${i}">삭제</button></div>${field('사진 URL',b.id,`photo-${i}-image`,photo.image||'','https://...')}${imageUpload('사진',b.id,`photo-${i}-image`,photo.image||'')}${richField('사진 설명',photo,'caption','caption',b.id,i,null,'사진 설명',true)}<div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="photo-${i}-imageFit"><option value="cover" ${(photo.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${photo.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${photo.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${photo.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div></div>`).join('')}<button class="btn" data-action="add-photo" data-id="${b.id}">＋ 사진 추가</button>`;
+                return `${(b.photos||[]).map((photo,i)=>`<div class="question-editor"><div class="question-top"><strong>사진 ${i+1}</strong><button class="btn danger" data-action="remove-photo" data-id="${b.id}" data-index="${i}" title="사진 삭제"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M3 6h18"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+  <line x1="10" y1="11" x2="10" y2="17"/>
+  <line x1="14" y1="11" x2="14" y2="17"/>
+</svg></button></div>${field('사진 URL',b.id,`photo-${i}-image`,photo.image||'','https://...')}${imageUpload('사진',b.id,`photo-${i}-image`,photo.image||'')}${richField('사진 설명',photo,'caption','caption',b.id,i,null,'사진 설명',true)}<div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="photo-${i}-imageFit"><option value="cover" ${(photo.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${photo.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${photo.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${photo.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div></div>`).join('')}<button class="btn" data-action="add-photo" data-id="${b.id}">＋ 사진</button>`;
             }
 
             function renderMapEditor(b) {
                 return `<p class="small">미리보기에서 지점을 직접 드래그해 위치를 바꿀 수 있습니다. </p>${field('배경 이미지 URL',b.id,'backgroundImage',b.backgroundImage||'','https://...')}${imageUpload('지도 배경',b.id,'backgroundImage',b.backgroundImage||'')}
     <div class="field"><label>배경 사진 맞춤 방식</label><select data-id="${b.id}" data-key="backgroundFit"><option value="cover" ${(b.backgroundFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${b.backgroundFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${b.backgroundFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${b.backgroundFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div>
     ${(b.stations||[]).map((s,si)=>`<div class="question-editor">
-      <div class="question-top"><strong>지점 ${si+1}</strong><button class="btn danger" data-action="remove-station" data-id="${b.id}" data-index="${si}">삭제</button></div>
+      <div class="question-top"><strong>지점 ${si+1}</strong><button class="btn danger" data-action="remove-station" data-id="${b.id}" data-index="${si}" title="지점 삭제"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <path d="M3 6h18"/>
+  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+  <line x1="10" y1="11" x2="10" y2="17"/>
+  <line x1="14" y1="11" x2="14" y2="17"/>
+</svg></button></div>
       ${field('지점 이름',b.id,`station-${si}-name`,s.name)}
       
       <div class="field"><label>노선 색</label><select data-id="${b.id}" data-key="station-${si}-line"><option value="blue" ${s.line==='blue'?'selected':''}>파랑 노선</option><option value="orange" ${s.line==='orange'?'selected':''}>주황 노선</option><option value="green" ${s.line==='green'?'selected':''}>초록 노선</option></select></div>
-    </div>`).join('')}<button class="btn" data-action="add-station" data-id="${b.id}">＋ 지점 추가</button>`;
+    </div>`).join('')}<button class="btn" data-action="add-station" data-id="${b.id}">＋ 지점 </button>`;
             }
 
             function renderMapSvg(b) {
