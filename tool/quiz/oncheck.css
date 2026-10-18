@@ -700,4 +700,47 @@ textarea {
 
 
 
+/* 영역 외곽선 표시 설정 */
+.section-border-setting {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    margin: 10px 0 2px;
+    font-size: .88rem;
+    color: var(--muted);
+    cursor: pointer;
+}
+.section-border-setting input { margin: 0; }
+.no-outer-border { border-color: transparent !important; box-shadow: none !important; }
+
+/* 표 다크모드 */
+body[data-theme="dark"] .inserted-table,
+#preview[data-theme="dark"] .inserted-table {
+    color: #e7ebf2;
+    background: #202633;
+    border-color: #465166;
+}
+
+
+
+body[data-theme="dark"] .inserted-table td,
+body[data-theme="dark"] .inserted-table th,
+#preview[data-theme="dark"] .inserted-table td,
+#preview[data-theme="dark"] .inserted-table th {
+    color: #e7ebf2;
+    background-color: #202633;
+    border-right-color: #465166;
+    border-bottom-color: #465166;
+}
+body[data-theme="dark"] .inserted-table tr:first-child td,
+body[data-theme="dark"] .inserted-table tr:first-child th,
+#preview[data-theme="dark"] .inserted-table tr:first-child td,
+#preview[data-theme="dark"] .inserted-table tr:first-child th {
+    background-color: #303b4d;
+    color: #f2f5fa;
+}
+
+
+
 </style>
