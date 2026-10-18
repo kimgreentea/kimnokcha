@@ -327,8 +327,7 @@
         margin: 0 !important;
     }
 
-    .chapter-page-row label,
-    .chapter-page-row span {
+    .chapter-page-row label {
         display: block !important;
         height: 20px !important;
         line-height: 20px !important;
@@ -390,7 +389,8 @@
         pointer-events: none;
     }
 
-    .editor-rich-input[data-edit="word"] strong {
+    .editor-rich-input[data-edit="word"] strong,
+    .editor-rich-input[data-edit="doc-title"] strong {
         font-weight: 700;
     }
 
@@ -781,8 +781,18 @@
         text-align: right !important;
         flex: 0 1 auto;
         max-width: 48%;
+        min-height: 1.2em;
+        min-width: 2em;
         white-space: normal;
         overflow-wrap: anywhere;
+    }
+
+    #preview .preview-section .section-meta { min-height: 1.2em; cursor: text; }
+    #preview .preview-section .section-meta:empty::before { content: none; }
+
+    #block-list .editor-rich-input[data-edit="section-subtitle"] strong,
+    #preview .section-meta strong {
+        font-weight: 700;
     }
 
     #preview .preview-section-tools {
@@ -972,9 +982,58 @@
         width: 100%;
         min-width: 0;
         min-height: 78px;
-        overflow: auto;
-        resize: vertical !important;
         max-width: 100%;
+        box-sizing: border-box;
+        border-radius: 8px;
+        overflow: hidden;
+        resize: vertical !important;
+    }
+
+    /* 지정된 입력 영역의 모양과 크기 조절 방식을 통일 */
+    .settings-rich-input,
+    #block-list .section-title-subtitle-row .editor-rich-input,
+    #block-list .editor-rich-input[data-edit="text"],
+    #block-list .editor-rich-input[data-edit="qtext"],
+    #block-list .editor-rich-input.choice-text,
+    #block-list .editor-rich-input[data-edit="caption"],
+    #block-list .editor-rich-input[data-edit="word"],
+    #block-list .editor-rich-input[data-edit="meaning"],
+    #block-list .editor-rich-input[data-edit="example"] {
+        box-sizing: border-box;
+        border: 1px solid #cbd3df;
+        border-radius: 8px !important;
+        overflow: hidden;
+        resize: vertical;
+        max-width: 100%;
+    }
+
+    .settings-rich-input {
+        min-height: 38px;
+    }
+
+    #block-list .section-title-subtitle-row .editor-rich-input {
+        height: 42px;
+        min-height: 42px;
+        max-height: none;
+        white-space: nowrap;
+        overflow: hidden;
+        resize: vertical;
+    }
+
+    #block-list .editor-rich-input[data-edit="text"],
+
+    #block-list .editor-rich-input.choice-text,
+    #block-list .editor-rich-input[data-edit="caption"],
+    #block-list .editor-rich-input[data-edit="meaning"],
+    #block-list .editor-rich-input[data-edit="example"] {
+        min-height: 78px;
+        white-space: pre-wrap;
+    }
+
+    #block-list .editor-rich-input[data-edit="word"],
+    #block-list .editor-rich-input[data-edit="qtext"],
+    #block-list .editor-rich-input.choice-text {
+        min-height: 38px;
     }
 
     .settings-heading {
@@ -1845,6 +1904,15 @@
         }
     }
 
+
+    .section-title-subtitle-row { align-items: flex-start !important; }
+    .section-title-subtitle-row .field { min-width: 0; }
+    .section-title-subtitle-row .field:first-child { flex: 1.2; }
+    .section-title-subtitle-row .field:last-child { flex: 1; }
+
+    .custom-webfont-field { margin-top: 8px; }
+    .custom-webfont-field input { width: 100%; box-sizing: border-box; }
+
 </style>
 <link rel="stylesheet" href="https://kimgreentea.github.io/kimnokcha/tool/quiz/oncheck.css">
 
@@ -1870,9 +1938,11 @@
                 </div>
             </div>
             <div class="card">
-            <div class="field"><label for="doc-kicker">상단 문구</label><input id="doc-kicker" type="text" value="학습지 상단 문구"></div>
-                <div class="field"><label for="doc-title">학습지 제목</label><input id="doc-title" type="text" value="학습지 제목"></div>
-                <div class="field"><label for="doc-subtitle">학습지 부제</label><input id="doc-subtitle" type="text" value="학습지 부제"></div>
+            <div id="worksheet-settings-fields">
+                <div class="field"><label for="doc-kicker-editor">상단 문구</label><div id="doc-kicker-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="kicker" data-placeholder="상단 문구">학습지 상단 문구</div><input id="doc-kicker" type="hidden" value="학습지 상단 문구"></div>
+                <div class="field"><label for="doc-title-editor">학습지 제목</label><div id="doc-title-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="doc-title" data-placeholder="학습지 제목"><strong>학습지 제목</strong></div><input id="doc-title" type="hidden" value="학습지 제목"></div>
+                <div class="field"><label for="doc-subtitle-editor">학습지 부제</label><div id="doc-subtitle-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="subtitle" data-placeholder="학습지 부제">학습지 부제</div><input id="doc-subtitle" type="hidden" value="학습지 부제"></div>
+            </div>
 
                 <div class="design-settings">
                     <div class="settings-icon-grid" aria-label="학습지 디자인 설정">
@@ -1902,6 +1972,7 @@
 <button class="btn setting-choice" type="button" data-setting-font-choice="IsYun">이서윤체</button>
 <button class="btn setting-choice" type="button" data-setting-font-choice="NexonMaplestory">메이플스토리</button>
 <button class="btn setting-choice" type="button" data-setting-font-choice="monospace">고정폭 글꼴</button>
+<div class="field custom-webfont-field"><label for="custom-font-name">웹폰트 이름</label><input id="custom-font-name" type="text" placeholder="예: MyFont"></div><div class="field custom-webfont-field"><label for="custom-font-url">웹폰트 CSS/파일 URL</label><input id="custom-font-url" type="url" placeholder="https://..."><button class="btn" id="apply-custom-webfont" type="button">웹폰트 목록에 추가</button><span class="small">Google Fonts CSS 주소 또는 .woff2 파일 주소</span></div>
 
 <select id="global-font-family" class="setting-hidden-control" aria-hidden="true" tabindex="-1">
     <option value='system-ui, -apple-system, "Noto Sans KR", sans-serif' selected>기본 글꼴</option>
@@ -2176,7 +2247,9 @@ const ICONS = {
             const titleInput = $('#doc-title'),
                 subtitleInput = $('#doc-subtitle'),
                 kickerInput = $('#doc-kicker');
-            const heroBgInput = $('#hero-bg'), worksheetBgInput = null, fontScaleInput = $('#font-scale'), outputThemeInput = $('#output-theme'), globalFontInput = $('#global-font-family');
+            const heroBgInput = $('#hero-bg'), worksheetBgInput = null, fontScaleInput = $('#font-scale'), outputThemeInput = $('#output-theme'), globalFontInput = $('#global-font-family'), customFontNameInput = $('#custom-font-name'), customFontUrlInput = $('#custom-font-url');
+            let customFonts = [];
+            let customFont = { name: '', url: '' }; // 이전 저장 파일 호환용
             const getFontScale = () => { const pt = Number(fontScaleInput?.value || 12); return String(Math.max(6, Math.min(36, Number.isFinite(pt) ? pt : 12)) / 12); };
             const colorDefaults = ['#23385f','#315fd3','#ffffff','#202a3a','#f3f5f9','#e6a23c','#c43f4b','#2f855a'];
             const backgroundOnlyColors = ['#151922','#202633'];
@@ -2198,6 +2271,22 @@ const ICONS = {
             });
             const previewCollapsed = new Set();
             const heroRich = { kicker: null, 'doc-title': null, subtitle: null };
+            function syncHeroSettingsEditors() {
+                const fields = [
+                    [kickerInput, $('#doc-kicker-editor'), 'kicker'],
+                    [titleInput, $('#doc-title-editor'), 'doc-title'],
+                    [subtitleInput, $('#doc-subtitle-editor'), 'subtitle']
+                ];
+                fields.forEach(([input, editor, key]) => {
+                    if (!input || !editor) return;
+                    if (heroRich[key] != null) editor.innerHTML = heroRich[key];
+                    else if (key === 'doc-title') {
+                        const strong = document.createElement('strong');
+                        strong.textContent = input.value || '';
+                        editor.replaceChildren(strong);
+                    } else editor.textContent = input.value || '';
+                });
+            }
             const richValue = (object, key, defaultBold = false) => {
                 const hasHtml = object && object[key + 'Html'] != null;
                 let html = hasHtml ? object[key + 'Html'] : esc(object?.[key] ?? '').replace(/\r\n|\r|\n/g, '<br>');
@@ -2237,7 +2326,7 @@ const ICONS = {
             function blockHeaderLabel(b, index) {
                 const title = `${index + 1}. ${b.title || kinds[b.type]?.label || '영역'}`;
                 if (!collapsedBlocks.has(b.id)) return esc(title);
-                const meta = [b.page, b.chapter].filter(value => String(value || '').trim()).map(value => String(value).trim());
+                const meta = [b.subtitle || [b.page, b.chapter].filter(Boolean).join(' · ')].filter(value => String(value || '').trim()).map(value => String(value).trim());
                 return `${esc(title)}${meta.length ? ` <span class="block-meta-inline">${meta.map(esc).join(' · ')}</span>` : ''}`;
             }
 
@@ -2260,8 +2349,8 @@ const ICONS = {
           <button class="btn danger" data-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button>
         </div>
         <div class="block-body">
-          ${richField('영역 제목',b,'title','title',b.id,null,null,'영역 제목')}
-          <div class="chapter-page-row">${field('쪽수',b.id,'page',b.page||'','2쪽')}${field('챕터',b.id,'chapter',b.chapter||'','2장')}</div>
+          <div class="chapter-page-row section-title-subtitle-row">${richField('제목',b,'title','title',b.id,null,null,'영역 제목')}${richField('부제',b,'subtitle','section-subtitle',b.id,null,null,'예: 2쪽 · 1장')}</div>
+          <label class="section-border-setting"><input type="checkbox" data-action="toggle-border" data-id="${b.id}" ${b.showBorder !== false ? 'checked' : ''}> 영역 테두리 표시</label>
           ${b.type==='quiz'?renderQuizEditor(b):''}
           ${b.type==='vocab'?renderVocabEditor(b):''}
           ${b.type==='map'?renderMapEditor(b):''}
@@ -2372,9 +2461,9 @@ const ICONS = {
                 else if (b.type === 'body') inner = `<div class="reading-body" contenteditable="true" data-edit="text" data-block-id="${b.id}"${richAlign(b, 'text')}>${richValue(b, 'text')}</div>`;
                 else if (b.type === 'photo') inner = `<div class="photo-grid">${(b.photos||[]).map((photo,pi)=>`${photo.image?`<figure class="photo-item"><img class="fit-${attr(photo.imageFit||'cover')}" src="${attr(photo.image)}" alt="${attr(photo.caption||'사진')}" onerror="this.style.display='none'"><figcaption contenteditable="true" data-edit="caption" data-block-id="${b.id}" data-index="${pi}"${richAlign(photo, 'caption')}>${richValue(photo, 'caption')}</figcaption></figure>`:''}`).join('')}</div>`;
                 else inner = `<div class="custom-body" contenteditable="true" data-edit="html" data-block-id="${b.id}">${b.html||''}</div>`;
-                const meta = b.metaHtml != null ? b.metaHtml : [b.page ? esc(b.page) : '', b.chapter ? esc(b.chapter) : ''].filter(Boolean).join(' · ');
+                const meta = b.subtitleHtml != null ? b.subtitleHtml : esc(b.subtitle || [b.page ? b.page : '', b.chapter ? b.chapter : ''].filter(Boolean).join(' · '));
                 const isCollapsed = previewCollapsed.has(b.id);
-                return `<section class="learn-section section preview-section ${isCollapsed?'collapsed':''}" data-block-id="${b.id}" draggable="true"><div class="section-heading"><div class="section-heading-main"><h2 contenteditable="true" data-edit="title" data-block-id="${b.id}"${richAlign(b, 'title')}>${richValue(b, 'title', true)}</h2><div class="section-meta" contenteditable="true" data-edit="meta" data-block-id="${b.id}"${richAlign(b, 'meta')}>${meta}</div></div><div class="preview-section-tools"><button class="btn" type="button" data-preview-action="collapse" data-id="${b.id}" title="${isCollapsed ? '영역 펼치기' : '영역 접기'}" aria-label="${isCollapsed ? '영역 펼치기' : '영역 접기'}">${iconSvg(isCollapsed ? 'chevronDown' : 'chevronUp', 17)}</button><button class="btn" type="button" data-preview-action="up" data-id="${b.id}" title="위로 이동" aria-label="위로 이동">${iconSvg('arrowUp',16)}</button><button class="btn" type="button" data-preview-action="down" data-id="${b.id}" title="아래로 이동" aria-label="아래로 이동">${iconSvg('arrowDown',16)}</button><button class="btn danger" type="button" data-preview-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button></div></div><div class="section-body">${inner}</div></section>`;
+                return `<section class="learn-section section preview-section ${isCollapsed?'collapsed':''} ${b.showBorder === false ? 'no-outer-border' : ''}" data-block-id="${b.id}" draggable="true"><div class="section-heading"><div class="section-heading-main"><h2 contenteditable="true" data-edit="title" data-block-id="${b.id}"${richAlign(b, 'title')}>${richValue(b, 'title', true)}</h2><div class="section-meta" contenteditable="true" data-edit="section-subtitle" data-block-id="${b.id}">${meta || ''}</div></div><div class="preview-section-tools"><button class="btn" type="button" data-preview-action="collapse" data-id="${b.id}" title="${isCollapsed ? '영역 펼치기' : '영역 접기'}" aria-label="${isCollapsed ? '영역 펼치기' : '영역 접기'}">${iconSvg(isCollapsed ? 'chevronDown' : 'chevronUp', 17)}</button><button class="btn" type="button" data-preview-action="up" data-id="${b.id}" title="위로 이동" aria-label="위로 이동">${iconSvg('arrowUp',16)}</button><button class="btn" type="button" data-preview-action="down" data-id="${b.id}" title="아래로 이동" aria-label="아래로 이동">${iconSvg('arrowDown',16)}</button><button class="btn danger" type="button" data-preview-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button></div></div><div class="section-body">${inner}</div></section>`;
             }
             function renderDocumentMarkup() {
                 const title = titleInput.value, subtitle = subtitleInput.value, kicker = kickerInput.value;
@@ -2393,6 +2482,12 @@ const ICONS = {
                 preview.style.setProperty('--font-scale', getFontScale());
                 preview.style.backgroundColor = (outputThemeInput?.value || 'light') === 'dark' ? '#151922' : '#ffffff';
                 preview.style.setProperty('--worksheet-font', globalFontInput?.value || 'system-ui, -apple-system, "Noto Sans KR", sans-serif');
+                let customFontStyle = preview.querySelector('#custom-webfont-style');
+                if (!customFontStyle) { customFontStyle = document.createElement('style'); customFontStyle.id = 'custom-webfont-style'; preview.prepend(customFontStyle); }
+                const fontsForPreview = [...customFonts];
+                if (customFont?.name && customFont?.url && !fontsForPreview.some(f => f.name === customFont.name)) fontsForPreview.push(customFont);
+                customFontStyle.textContent = fontsForPreview.map(font => font.url.includes('.css') ? `@import url('${font.url.replace(/'/g, '%27')}');` : `@font-face{font-family:'${font.name.replace(/['\\]/g, '')}';src:url('${font.url.replace(/'/g, '%27')}') format('woff2');font-display:swap;}`).join('\n');
+                if (fontsForPreview.some(f => f.name === globalFontInput.value)) preview.style.setProperty('--worksheet-font', `"${globalFontInput.value}", sans-serif`);
                 preview.style.setProperty('--hero-bg', heroBgInput?.value || '#23385f');
                 preview.style.setProperty('--hero-color', '#ffffff');
                 preview.querySelectorAll('.hero').forEach(el => { el.style.background = heroBgInput?.value || '#23385f'; el.style.color = '#ffffff'; });
@@ -2630,13 +2725,15 @@ const ICONS = {
              
                 const value = (el.innerText ?? el.textContent ?? '').replace(/\r\n?/g, '\n');
                 const htmlValue = el.innerHTML;
-                if (kind === 'doc-title') { titleInput.value = value; heroRich[kind] = htmlValue; return; }
-                if (kind === 'subtitle') { subtitleInput.value = value; heroRich[kind] = htmlValue; return; }
-                if (kind === 'kicker') { kickerInput.value = value; heroRich[kind] = htmlValue; return; }
-                if (!b) return;
                 const i = Number(el.dataset.index), j = Number(el.dataset.subindex);
                 let editorKey = null;
+                if (kind === 'doc-title') { titleInput.value = value; heroRich[kind] = htmlValue; }
+                else if (kind === 'subtitle') { subtitleInput.value = value; heroRich[kind] = htmlValue; }
+                else if (kind === 'kicker') { kickerInput.value = value; heroRich[kind] = htmlValue; }
+                else {
+                    if (!b) return;
                 if (kind === 'title') { b.title = value; b.titleHtml = htmlValue; editorKey = 'title'; }
+                else if (kind === 'section-subtitle') { b.subtitle = value; b.subtitleHtml = htmlValue; b.metaHtml = null; b.page = ''; b.chapter = ''; editorKey = 'subtitle'; }
                 else if (kind === 'meta') {
                     const parts = value.split('·').map(x => x.trim());
                     b.metaHtml = htmlValue;
@@ -2665,14 +2762,17 @@ const ICONS = {
                     b[kind] = value; b[kind+'Html'] = htmlValue;
                     editorKey = kind;
                 } else if (kind === 'html') { b.html = htmlValue; editorKey = kind; }
-              
+                }
+
                 const descriptor = editableDescriptor(el);
                 const previewEditable = findRichEditable($('#preview'), descriptor);
                 const editorEditable = findRichEditable($('#block-list'), descriptor);
-                const counterpart = $('#preview').contains(el) ? editorEditable : previewEditable;
-                if (counterpart && counterpart !== el) {
-                    if (counterpart.innerHTML !== htmlValue) counterpart.innerHTML = htmlValue;
-                }
+                const settingsEditable = findRichEditable($('#worksheet-settings-fields'), descriptor);
+                let counterpart = null;
+                if ($('#preview').contains(el)) counterpart = editorEditable || settingsEditable;
+                else if ($('#block-list').contains(el)) counterpart = previewEditable;
+                else if ($('#worksheet-settings-fields').contains(el)) counterpart = previewEditable;
+                if (counterpart && counterpart !== el && counterpart.innerHTML !== htmlValue) counterpart.innerHTML = htmlValue;
         
                 if (kind === 'example') {
                     const plainExample = String(value || '').replace(/\u00a0/g, ' ').trim();
@@ -2683,7 +2783,7 @@ const ICONS = {
                     const editorValue = kind === 'html' ? htmlValue : value;
                     if (editor && 'value' in editor && editor.value !== editorValue) editor.value = editorValue;
                 }
-                if (kind === 'title' || kind === 'meta') {
+                if (kind === 'title' || kind === 'meta' || kind === 'section-subtitle') {
                     const card = $(`#block-list [data-block-id="${b.id}"] .block-name`);
                     if (card) card.innerHTML = blockHeaderLabel(b, blocks.findIndex(x => x.id === b.id));
                 }
@@ -2693,11 +2793,12 @@ const ICONS = {
             let lastRichBookmark = null;
             function isRichEditable(editable) {
                 return !!editable && editable.matches?.('[contenteditable="true"][data-edit]') &&
-                    ($('#preview').contains(editable) || $('#block-list').contains(editable));
+                    ($('#preview').contains(editable) || $('#block-list').contains(editable) || $('#worksheet-settings-fields').contains(editable));
             }
             function richRoot(editable) {
                 if ($('#preview').contains(editable)) return $('#preview');
                 if ($('#block-list').contains(editable)) return $('#block-list');
+                if ($('#worksheet-settings-fields').contains(editable)) return $('#worksheet-settings-fields');
                 return null;
             }
             function findRichEditable(root, descriptor) {
@@ -2739,13 +2840,18 @@ const ICONS = {
                 const startPath = nodePath(editable, range.startContainer);
                 const endPath = nodePath(editable, range.endContainer);
                 if (!startPath || !endPath) return null;
-                return { surface: $('#block-list').contains(editable) ? 'editor' : 'preview', descriptor: editableDescriptor(editable), startPath, startOffset: range.startOffset, endPath, endOffset: range.endOffset, collapsed: range.collapsed };
+                const surface = $('#block-list').contains(editable) ? 'editor' : $('#worksheet-settings-fields').contains(editable) ? 'settings' : 'preview';
+                return { surface, descriptor: editableDescriptor(editable), startPath, startOffset: range.startOffset, endPath, endOffset: range.endOffset, collapsed: range.collapsed };
             }
             function findEditableForBookmark(bookmark) {
                 if (!bookmark) return null;
-                const preferred = bookmark.surface === 'editor' ? $('#block-list') : $('#preview');
-                const fallback = bookmark.surface === 'editor' ? $('#preview') : $('#block-list');
-                return findRichEditable(preferred, bookmark.descriptor) || findRichEditable(fallback, bookmark.descriptor);
+                const roots = { settings: $('#worksheet-settings-fields'), editor: $('#block-list'), preview: $('#preview') };
+                const order = bookmark.surface === 'settings' ? ['settings','preview','editor'] : bookmark.surface === 'editor' ? ['editor','preview','settings'] : ['preview','editor','settings'];
+                for (const key of order) {
+                    const editable = findRichEditable(roots[key], bookmark.descriptor);
+                    if (editable) return editable;
+                }
+                return null;
             }
             function restoreRichBookmark() {
                 if (!lastRichBookmark) return false;
@@ -2787,7 +2893,7 @@ const ICONS = {
                     refreshToolbarState();
                 }
             }
-            ['#preview','#block-list'].forEach(rootSelector => {
+            ['#preview','#block-list','#worksheet-settings-fields'].forEach(rootSelector => {
                 const root = $(rootSelector);
                 root.addEventListener('mouseup', rememberRichSelection);
                 root.addEventListener('pointerup', rememberRichSelection);
@@ -2797,7 +2903,7 @@ const ICONS = {
                 const selection = window.getSelection();
                 if (!selection || !selection.rangeCount) return;
                 const node = selection.anchorNode?.nodeType === 1 ? selection.anchorNode : selection.anchorNode?.parentElement;
-                if (node && ( $('#preview').contains(node) || $('#block-list').contains(node) )) rememberRichSelection();
+                if (node && ( $('#preview').contains(node) || $('#block-list').contains(node) || $('#worksheet-settings-fields').contains(node) )) rememberRichSelection();
             });
             $('#selected-text-size').addEventListener('pointerdown', rememberRichSelection);
             $('#selected-text-size').addEventListener('mousedown', rememberRichSelection);
@@ -2828,7 +2934,46 @@ const ICONS = {
                 }
                 if (!isRichEditable(editable)) return;
                 editable.focus({ preventScroll: true });
-                if (button.dataset.format) document.execCommand(button.dataset.format, false, null);
+                if (button.dataset.format) {
+                    const formatRange = selection?.rangeCount ? selection.getRangeAt(0).cloneRange() : null;
+                    if (button.dataset.format === 'bold' && formatRange && !formatRange.collapsed && editable.dataset.edit === 'doc-title') {
+                        // The preview title is an h1, which is bold by browser default.
+                        // Apply an explicit normal weight when toggling bold off so the
+                        // preview does not inherit the h1's default bold styling.
+                        const startNode = formatRange.startContainer.nodeType === 1 ? formatRange.startContainer : formatRange.startContainer.parentElement;
+                        const endNode = formatRange.endContainer.nodeType === 1 ? formatRange.endContainer : formatRange.endContainer.parentElement;
+                        const nearestWeight = node => {
+                            let current = node;
+                            while (current && current !== editable) {
+                                if (current.nodeType === 1) {
+                                    const weight = current.style?.fontWeight?.trim().toLowerCase();
+                                    if (weight === 'normal' || weight === '400') return 'normal';
+                                    if (weight === 'bold' || weight === '700' || weight === '800' || weight === '900') return 'bold';
+                                    if (current.matches?.('strong,b')) return 'bold';
+                                }
+                                current = current.parentElement;
+                            }
+                            return 'default';
+                        };
+                        const startWeight = nearestWeight(startNode);
+                        const endWeight = nearestWeight(endNode);
+                        const alreadyExplicitlyBold = startWeight === 'bold' && endWeight === 'bold';
+                        const wrapper = document.createElement('span');
+                        wrapper.style.fontWeight = alreadyExplicitlyBold ? 'normal' : 'bold';
+                        try {
+                            wrapper.appendChild(formatRange.extractContents());
+                            formatRange.insertNode(wrapper);
+                            const r = document.createRange();
+                            r.selectNodeContents(wrapper);
+                            selection.removeAllRanges();
+                            selection.addRange(r);
+                        } catch (err) {
+                            document.execCommand('bold', false, null);
+                        }
+                    } else {
+                        document.execCommand(button.dataset.format, false, null);
+                    }
+                }
                 else if (button.dataset.align) {
                     const command = ({left:'justifyLeft', center:'justifyCenter', right:'justifyRight'})[button.dataset.align];
                     if (command) document.execCommand(command, false, null);
@@ -3484,7 +3629,7 @@ const ICONS = {
             });
             document.addEventListener('keydown', e => {
                 if (e.isComposing || e.repeat || e.metaKey) return;
-                const active=e.target instanceof Element ? e.target.closest('#preview [contenteditable="true"][data-edit], #block-list [contenteditable="true"][data-edit]') : null;
+                const active=e.target instanceof Element ? e.target.closest('#preview [contenteditable="true"][data-edit], #block-list [contenteditable="true"][data-edit], #worksheet-settings-fields [contenteditable="true"][data-edit]') : null;
                 if (!active || (!e.ctrlKey && !e.shiftKey && !e.altKey)) return;
                 const key=String(e.key||'').toUpperCase();
                 if (!/^[A-Z]$/.test(key)) return;
@@ -3586,7 +3731,7 @@ const ICONS = {
             renderToolbarConfigList();
             applyToolbarLayout();
             document.addEventListener('selectionchange', refreshToolbarState);
-            ['#preview','#block-list'].forEach(rootSelector => {
+            ['#preview','#block-list','#worksheet-settings-fields'].forEach(rootSelector => {
                 const root = $(rootSelector);
                 root.addEventListener('keyup', refreshToolbarState);
                 root.addEventListener('mouseup', refreshToolbarState);
@@ -3623,7 +3768,7 @@ const ICONS = {
                     e.target.setCustomValidity('');
                 } else e.target.value = color.toLowerCase();
             });
-            ['#preview','#block-list'].forEach(rootSelector => {
+            ['#preview','#block-list','#worksheet-settings-fields'].forEach(rootSelector => {
                 const root = $(rootSelector);
                 root.addEventListener('input', e => { const el = e.target.closest('[contenteditable="true"][data-edit]'); if (el) setEditedValue(el); });
                 root.addEventListener('focusout', e => { const el = e.target.closest('[contenteditable="true"][data-edit]'); if (el) setEditedValue(el); });
@@ -3638,6 +3783,20 @@ const ICONS = {
 
             heroBgInput?.addEventListener('input', () => { updateHeroBackgroundPreview(); renderColorPresets(); });
             heroBgInput?.addEventListener('change', () => { updateHeroBackgroundPreview(); renderColorPresets(); });
+            $('#apply-custom-webfont').addEventListener('click', () => {
+                const name = customFontNameInput.value.trim(), url = customFontUrlInput.value.trim();
+                if (!name || !/^https?:\/\//i.test(url)) { alert('웹폰트 이름과 http(s) 주소를 입력하세요.'); return; }
+                if (customFonts.some(font => font.name.toLowerCase() === name.toLowerCase())) { alert('이미 목록에 있는 웹폰트 이름입니다.'); return; }
+                customFonts.push({ name, url });
+                if (![...globalFontInput.options].some(o => o.value === name)) { const option = document.createElement('option'); option.value = name; option.textContent = name; globalFontInput.appendChild(option); }
+                const selectedFont = $('#selected-font-family');
+                if (![...selectedFont.options].some(o => o.value === name)) { const option = document.createElement('option'); option.value = name; option.textContent = name; selectedFont.appendChild(option); }
+                const fontMenu = $('#font-family-menu');
+                if (![...fontMenu.querySelectorAll('[data-font-family]')].some(o => o.dataset.fontFamily === name)) { const button = document.createElement('button'); button.className = 'btn'; button.type = 'button'; button.dataset.fontFamily = name; button.textContent = name; fontMenu.appendChild(button); }
+                const settingChoices = document.querySelector('[data-setting-font-choice="monospace"]');
+                if (settingChoices && !document.querySelector(`[data-setting-font-choice="${CSS.escape(name)}"]`)) { const button = document.createElement('button'); button.className = 'btn setting-choice'; button.type = 'button'; button.dataset.settingFontChoice = name; button.textContent = name; settingChoices.insertAdjacentElement('afterend', button); }
+                customFontNameInput.value = ''; customFontUrlInput.value = '';
+            });
             [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('input', () => { renderPreview(); renderColorPresets(); }));
             [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('change', () => { renderPreview(); renderColorPresets(); }));
             function syncSettingChoiceButtons() {
@@ -3731,13 +3890,23 @@ const ICONS = {
             });
             $('#block-list').addEventListener('change', e => {
                 const el=e.target;
+                if (el.dataset.action === 'toggle-border') {
+                    const b = getBlock(el.dataset.id);
+                    if (b) { b.showBorder = el.checked; renderPreview(); }
+                    return;
+                }
                 if (el.matches('select')) updateBlockFieldFromEditor(el);
                 if (el.dataset.action === 'answer') {
                     const b=getBlock(el.dataset.id);
                     if (b) { b.questions[Number(el.dataset.qi)].answer=el.value; lastRichEditable = lastRichRange = lastRichBookmark = null; renderPreview(); }
                 }
             });
-            [[titleInput,'doc-title'],[subtitleInput,'subtitle'],[kickerInput,'kicker']].forEach(([el,key]) => el.addEventListener('input', () => { heroRich[key] = null; renderPreview(); }));
+            [[titleInput,'doc-title'],[subtitleInput,'subtitle'],[kickerInput,'kicker']].forEach(([el,key]) => el.addEventListener('input', () => {
+                heroRich[key] = null;
+                const preview = $('#preview');
+                const target = preview.querySelector(key === 'doc-title' ? '.hero h1' : key === 'subtitle' ? '.hero p' : '.hero .kicker');
+                if (target) target.textContent = el.value;
+            }));
             $$('[data-add]').forEach(btn => btn.addEventListener('click', () => {
                 const b = newBlock(btn.dataset.add);
                 blocks.push(b);
@@ -3867,7 +4036,11 @@ const ICONS = {
                 const exportCssUrl = 'https://kimgreentea.github.io/kimnokcha/tool/quiz/oncheck.css';
                 // Layout and theme styles are provided by the external stylesheet.
                 // Keep only user-selected values inline so each exported worksheet preserves its settings.
-                const dynamicCss = `:root{--font-scale:${scale};--worksheet-font:${fontFamily};--worksheet-bg:${worksheetBg}} body{font-family:var(--worksheet-font);background:var(--worksheet-bg)}`;
+                const fontsForExport = [...customFonts];
+                if (customFont?.name && customFont?.url && !fontsForExport.some(f => f.name === customFont.name)) fontsForExport.push(customFont);
+                const customFontCss = fontsForExport.map(font => font.url.includes('.css') ? `@import url('${font.url.replace(/'/g, '%27')}');` : `@font-face{font-family:'${font.name.replace(/['\\]/g, '')}';src:url('${font.url.replace(/'/g, '%27')}') format('woff2');font-display:swap;}`).join('\n');
+                const effectiveFont = fontsForExport.some(font => font.name === fontFamily) ? `\"${fontFamily}\",sans-serif` : fontFamily;
+                const dynamicCss = `${customFontCss}:root{--font-scale:${scale};--worksheet-font:${effectiveFont};--worksheet-bg:${worksheetBg}} body{font-family:var(--worksheet-font);background:var(--worksheet-bg)}`;
                 const script = `(function(){function grade(r){if(!r||r.type!=="radio"||!r.name||!r.checked)return;const q=r.closest(".quiz-q");if(!q)return;q.classList.remove("correct","wrong");q.querySelectorAll(".quiz-option-label").forEach(function(label){label.classList.remove("selected")});const label=r.closest(".quiz-option-label");if(label)label.classList.add("selected");q.classList.add(r.dataset.correct==="yes"?"correct":"wrong")}function findRadio(target){return target.closest('input[type="radio"][name^="learn-"]')||target.closest(".quiz-option-label")?.querySelector('input[type="radio"][name^="learn-"]')}document.addEventListener("change",function(e){if(e.target&&e.target.matches('input[type="radio"][name^="learn-"]'))grade(e.target)});document.addEventListener("click",function(e){const r=findRadio(e.target);if(!r)return;if(!r.checked){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}grade(r)})})();`;
                 const full = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="${exportCssUrl}"><style>${dynamicCss}</style></head><body data-theme="${theme}">${markup}<script>${script}<\/script></body></html>`;
                 const blob = new Blob([full], {
@@ -3890,7 +4063,7 @@ const ICONS = {
                     subtitle: subtitleInput.value,
                     kicker: kickerInput.value,
                     heroRich,
-                    heroBg: heroBgInput.value, worksheetBg: worksheetBgInput?.value || '#ffffff', fontScale: fontScaleInput.value, fontScaleUnit: 'pt', globalFont: globalFontInput.value, outputTheme: outputThemeInput.value,
+                    heroBg: heroBgInput.value, worksheetBg: worksheetBgInput?.value || '#ffffff', fontScale: fontScaleInput.value, fontScaleUnit: 'pt', globalFont: globalFontInput.value, customFont, customFonts, outputTheme: outputThemeInput.value,
                     blocks
                 };
                 const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -3914,10 +4087,11 @@ const ICONS = {
                     titleInput.value = data.title || '';
                     subtitleInput.value = data.subtitle || '';
                     kickerInput.value = data.kicker || '';
-                    heroBgInput.value = data.heroBg || '#23385f'; if (worksheetBgInput) worksheetBgInput.value = data.worksheetBg || '#ffffff'; { const savedSize=Number(data.fontScale); const savedPt=data.fontScaleUnit === 'pt' ? savedSize : (savedSize > 2 ? savedSize * 0.75 : 12*(Number.isFinite(savedSize)&&savedSize>0?savedSize:1)); fontScaleInput.value=String(Math.max(6,Math.min(36,Number.isFinite(savedPt)?savedPt:12))); } globalFontInput.value = data.globalFont || 'system-ui, -apple-system, \"Noto Sans KR\", sans-serif'; outputThemeInput.value = data.outputTheme || 'light'; syncSettingChoiceButtons();
+                    heroBgInput.value = data.heroBg || '#23385f'; if (worksheetBgInput) worksheetBgInput.value = data.worksheetBg || '#ffffff'; { const savedSize=Number(data.fontScale); const savedPt=data.fontScaleUnit === 'pt' ? savedSize : (savedSize > 2 ? savedSize * 0.75 : 12*(Number.isFinite(savedSize)&&savedSize>0?savedSize:1)); fontScaleInput.value=String(Math.max(6,Math.min(36,Number.isFinite(savedPt)?savedPt:12))); } globalFontInput.value = data.globalFont || 'system-ui, -apple-system, \"Noto Sans KR\", sans-serif'; customFont = data.customFont || { name: '', url: '' }; customFonts = Array.isArray(data.customFonts) ? data.customFonts : (customFont.name && customFont.url ? [customFont] : []); customFontNameInput.value = ''; customFontUrlInput.value = ''; customFonts.forEach(font => { if (![...globalFontInput.options].some(o => o.value === font.name)) { const o=document.createElement('option'); o.value=font.name; o.textContent=font.name; globalFontInput.appendChild(o); } const sf=$('#selected-font-family'); if (![...sf.options].some(o => o.value === font.name)) { const o=document.createElement('option'); o.value=font.name; o.textContent=font.name; sf.appendChild(o); } const fm=$('#font-family-menu'); if (![...fm.querySelectorAll('[data-font-family]')].some(o => o.dataset.fontFamily === font.name)) { const b=document.createElement('button'); b.className='btn'; b.type='button'; b.dataset.fontFamily=font.name; b.textContent=font.name; fm.appendChild(b); } const anchor=document.querySelector('[data-setting-font-choice="monospace"]'); if (anchor && !document.querySelector(`[data-setting-font-choice="${CSS.escape(font.name)}"]`)) { const b=document.createElement('button'); b.className='btn setting-choice'; b.type='button'; b.dataset.settingFontChoice=font.name; b.textContent=font.name; anchor.insertAdjacentElement('afterend',b); } }); outputThemeInput.value = data.outputTheme || 'light'; syncSettingChoiceButtons();
                     heroRich.kicker = data.heroRich?.kicker ?? null;
                     heroRich['doc-title'] = data.heroRich?.['doc-title'] ?? null;
                     heroRich.subtitle = data.heroRich?.subtitle ?? null;
+                    syncHeroSettingsEditors();
                     renderAll();
                 } catch (err) {
                     alert('양식을 불러오지 못했습니다: ' + err.message)
