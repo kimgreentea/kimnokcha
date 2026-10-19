@@ -105,6 +105,161 @@
     }
 
     .editor,
+
+    /* 지도 전용 속성 패널 및 캔버스 높이 조절 */
+    .preview-workspace { display: block; min-width: 0; }
+    .map-list-section { border:1px solid var(--line); border-radius:9px; padding:9px; margin-top:10px; }
+    .map-list-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:7px; }
+    .map-list-rows { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:9px; align-items:start; }
+    .map-object-row { position:relative; display:grid; grid-template-columns:minmax(0,1fr) 34px; gap:7px; min-width:0; align-content:start; padding:8px; border:1px solid var(--line); border-radius:10px; background:var(--panel, #fff); }
+    .map-object-row > .field { grid-column:1 / -1; margin:2px 0 0; min-width:0; }
+    .map-object-row > .map-object-select { grid-column:1; grid-row:1; }
+    .map-object-row > .map-list-delete { grid-column:2; grid-row:1; align-self:start; display:flex; align-items:center; justify-content:center; min-width:34px; width:34px; height:34px; padding:0; }
+    .map-object-row .editor-rich-input { min-height:36px; padding:8px; overflow-wrap:anywhere; }
+    .map-object-row .field > label { font-size:.78rem; margin-bottom:4px; }
+    .map-list-rows > .small { grid-column:1 / -1; }
+    .map-object-select { width:100%; min-width:0; min-height:34px; text-align:left; display:grid; align-content:center; gap:2px; padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
+    .map-object-select strong { display:block; min-width:0; font-size:.83rem; font-weight:700; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; overflow-wrap:normal; }
+    .map-object-select span { display:block; min-width:0; max-width:100%; font-size:.75rem; color:var(--muted); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; overflow-wrap:normal; }
+    .map-object-select.is-selected { border-color:var(--blue); background:var(--blue-soft); box-shadow:inset 0 0 0 1px var(--blue); }
+    .map-list-delete { flex:none; }
+    .map-resize-handle { display:flex; align-items:center; justify-content:center; gap:7px; width:100%; min-height:23px; padding:3px 8px; border:0; border-radius:0 0 8px 8px; background:#e9eef8; color:#526075; font-size:.75rem; cursor:ns-resize; touch-action:none; user-select:none; }
+    .map-resize-handle::before, .map-resize-handle::after { content:""; width:32px; height:3px; border-top:1px solid #9ca9be; border-bottom:1px solid #9ca9be; }
+    #preview .map-frame-shell { display:flex; flex-direction:column; align-items:stretch; gap:0; width:100%; min-width:0; }
+    #preview .map-frame { display:block; flex:none; margin:0; aspect-ratio:300 / 300; overflow:hidden; }
+    #preview .map-resize-handle { flex:none; margin:0; }
+    #preview .map-frame svg { position:absolute; inset:0; width:100%; height:100%; }
+    #preview .map-frame .map-bg { position:absolute; inset:8px; width:calc(100% - 16px); height:calc(100% - 16px); max-width:none; max-height:none; object-position:center; }
+    /* 지도 배경 맞춤 방식: 선택값별로 위치와 크기를 명시해 브라우저의 기본 배치에 의존하지 않는다. */
+    #preview .map-frame .map-bg.fit-cover {
+        position:absolute; inset:8px; width:calc(100% - 16px) !important; height:calc(100% - 16px) !important;
+        max-width:none !important; max-height:none !important; transform:none; object-fit:cover; object-position:center;
+    }
+    #preview .map-frame .map-bg.fit-contain {
+        position:absolute; inset:8px; width:calc(100% - 16px) !important; height:calc(100% - 16px) !important;
+        max-width:none !important; max-height:none !important; transform:none; object-fit:contain; object-position:center;
+    }
+    #preview .map-frame .map-bg.fit-width {
+        position:absolute; top:50% !important; right:0 !important; bottom:auto !important; left:0 !important;
+        inset:auto 0 auto 0; width:100% !important; height:auto !important; max-width:none !important; max-height:none !important;
+        transform:translateY(-50%) !important; object-fit:fill; object-position:center;
+    }
+    #preview .map-frame .map-bg.fit-height {
+        position:absolute; top:0 !important; right:auto !important; bottom:0 !important; left:50% !important;
+        inset:0 auto 0 50%; width:auto !important; height:100% !important; max-width:none !important; max-height:none !important;
+        transform:translateX(-50%) !important; object-fit:fill; object-position:center;
+    }
+    #preview .map-node-shape, #preview .map-node-text, #preview .map-independent-text { cursor:pointer; }
+    #preview .map-node-selected { stroke:#315fd3 !important; stroke-width:3 !important; filter:drop-shadow(0 0 2px #315fd399); }
+    #preview .map-node-coordinate.map-node-selected { stroke:#315fd3 !important; stroke-width:1.5 !important; stroke-dasharray:4 3; }
+    #preview .map-edge-group { cursor:pointer; }
+    #preview .map-edge-selected line { stroke:#315fd3 !important; stroke-width:4 !important; }
+    #preview .map-independent-selected { paint-order:stroke fill; stroke:#315fd3; stroke-width:1.2; }
+    /* 지도 요소 옆의 작은 스타일 팝업: 상단 서식 도구의 버튼/패널과 같은 디자인 언어 */
+    .map-inline-colors { position:absolute; z-index:85; display:flex; align-items:center; }
+    .map-inline-colors[hidden] { display:none !important; }
+    .map-inline-tool-wrap {
+        position:relative; display:flex; align-items:center; justify-content:center;
+        padding:2px; border:1px solid #d5dce6; border-radius:11px;
+        background:#f8faff; box-shadow:0 4px 12px rgba(25,35,55,.18);
+    }
+    .map-inline-tool-wrap > .toolbar-icon-btn {
+        background:#fff; color:#202a3a; border:1px solid #cbd3df;
+    }
+    .map-inline-tool-wrap > .toolbar-icon-btn:hover {
+        background:#e7efff; border-color:#b8cdf8;
+    }
+    .map-inline-tool-wrap > .toolbar-icon-btn.is-active {
+        background:#d9e7ff !important; border-color:#7ea5f4 !important;
+        color:#174ea6 !important; box-shadow:inset 0 0 0 1px #a9c4fb;
+    }
+    #preview .map-inline-style-popup {
+        width:300px; max-width:min(330px, calc(100vw - 24px));
+        max-height:min(72vh, 470px); overflow:auto; display:block;
+        padding:10px; border:1px solid #d5dce6; border-radius:12px;
+        background:var(--panel-bg, #fff); color:var(--text, #202a3a); box-shadow:0 8px 24px rgba(25,35,55,.18);
+    }
+    .map-inline-popup-tools { display:flex; flex-wrap:wrap; gap:5px; padding-bottom:9px; margin-bottom:10px; border-bottom:1px solid #e1e6ee; }
+    .map-inline-popup-tools .toolbar-icon-btn { width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; border:1px solid #d5dce6; border-radius:8px; background:#fff; color:#344054; cursor:pointer; }
+    .map-inline-popup-tools .toolbar-icon-btn:hover, .map-inline-popup-tools .toolbar-icon-btn.is-active { background:#e8efff; border-color:#a9c2f5; color:#214eaa; }
+    .map-inline-popup-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    .map-inline-popup-panel[hidden] { display:none !important; }
+    .map-inline-popup-panel > .map-inline-field[style*="grid-column: 1 / -1"] { grid-column:1 / -1; }
+    .map-inline-popup-footer { display:flex; justify-content:flex-end; margin-top:10px; padding-top:8px; border-top:1px solid #e1e6ee; }
+    .map-inline-popup-footer .btn { min-width:76px; }
+    .map-inline-style-popup .map-inline-color,
+    .map-inline-style-popup .map-inline-field {
+        display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start;
+        gap:5px; min-width:0; max-width:none; width:auto;
+        font-size:.82rem; line-height:1.35; font-weight:650; color:#202a3a;
+    }
+    .map-inline-style-popup .map-inline-color > label { display:block; font:inherit; }
+    .map-inline-style-popup .map-inline-color input {
+        width:100%; height:32px; min-width:0; padding:5px 8px;
+        flex:none; border:1px solid #cbd3df; border-radius:7px;
+        background:#fff; color:#202a3a; font:inherit; font-weight:400; cursor:text;
+        box-sizing:border-box;
+    }
+    .map-inline-style-popup .map-inline-swatches {
+        display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:5px;
+    }
+    .map-inline-style-popup .map-inline-swatches button {
+        width:100%; height:21px; min-width:0; padding:0; border:1px solid #aeb8c7;
+        border-radius:6px; cursor:pointer;
+    }
+    .map-inline-style-popup .map-inline-swatches button.is-current { outline:2px solid #315fd3; outline-offset:1px; }
+    .map-inline-style-popup .map-inline-field select,
+    .map-inline-style-popup .map-inline-field input {
+        width:100%; min-width:0; height:32px; padding:5px 8px;
+        border:1px solid #cbd3df; border-radius:7px;
+        background:#fff; color:#202a3a; font:inherit; font-weight:400;
+    }
+    .map-inline-style-popup .map-inline-format-toggle {
+        display:flex; align-items:center; justify-content:center; min-width:0; height:38px;
+        border:1px solid #cbd3df; border-radius:8px; background:#fff; color:#202a3a;
+        font-size:1rem; cursor:pointer;
+    }
+    .map-inline-style-popup .map-inline-format-toggle.is-active {
+        background:#d9e7ff; color:#174ea6; border-color:#7ea5f4;
+        box-shadow:inset 0 0 0 1px #a9c4fb;
+    }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-format-toggle {
+        background:#202633; color:#e7ebf2; border-color:#465166;
+    }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-format-toggle.is-active {
+        background:#334d77; color:#eaf1ff; border-color:#7799d2;
+    }
+    .map-inline-style-popup .map-inline-color input::-webkit-color-swatch-wrapper { padding:2px; }
+    .map-inline-style-popup .map-inline-color input::-webkit-color-swatch { border:0; border-radius:4px; }
+    #preview[data-theme="dark"] .map-inline-tool-wrap {
+        background:#202633; border-color:#465166;
+    }
+    #preview[data-theme="dark"] .map-inline-tool-wrap > .toolbar-icon-btn {
+        background:#30394a; color:#e7ebf2; border-color:#465166;
+    }
+    #preview[data-theme="dark"] .map-inline-tool-wrap > .toolbar-icon-btn:hover,
+    #preview[data-theme="dark"] .map-inline-tool-wrap > .toolbar-icon-btn.is-active {
+        background:#334d77 !important; color:#eaf1ff !important; border-color:#7799d2 !important;
+    }
+    #preview[data-theme="dark"] .map-inline-style-popup { background:#252d3b; color:#e7ebf2; border-color:#465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools { border-color:#465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools .toolbar-icon-btn { background:#30394a; color:#e7ebf2; border-color:#465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools .toolbar-icon-btn:hover, #preview[data-theme="dark"] .map-inline-popup-tools .toolbar-icon-btn.is-active { background:#334d77; color:#eaf1ff; border-color:#7799d2; }
+    #preview[data-theme="dark"] .map-inline-popup-footer { border-color:#465166; }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-color,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field { color:#e7ebf2; }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-color input,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field select,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field input {
+        background:#202633; color:#e7ebf2; border-color:#465166;
+    }
+    .map-inline-style-popup > .map-inline-field { min-width:0; }
+    .map-inline-color { position:relative; cursor:pointer; }
+    .map-inline-field { display:grid; }
+    .map-frame { position:relative; }
+    @media (max-width: 900px) {
+    }
+
     .preview-shell {
         min-width: 0;
         width: 100%;
@@ -1913,6 +2068,90 @@
     .custom-webfont-field { margin-top: 8px; }
     .custom-webfont-field input { width: 100%; box-sizing: border-box; }
 
+
+
+    /* 지도 요소 팝업: 상단 서식 도구의 아이콘/팝오버 스타일에 맞춘 레이아웃 복구 */
+    #preview { position: relative; }
+    #preview .map-inline-colors {
+        position: absolute; z-index: 160; display: block; min-width: 0;
+        max-width: calc(100% - 8px); pointer-events: auto;
+    }
+    #preview .map-inline-style-popup {
+        position: relative !important; inset: auto !important; display: block !important;
+        box-sizing: border-box; width: min(270px, calc(100vw - 24px));
+        max-width: min(270px, calc(100vw - 24px));
+        max-height: min(68vh, 440px); overflow: auto; overscroll-behavior: contain;
+        padding: 9px; border: 1px solid #cbd3df; border-radius: 10px;
+        background: #fff; color: #202a3a;
+        box-shadow: 0 8px 24px rgba(25,35,55,.18);
+        font-size: .82rem; line-height: 1.35;
+    }
+    #preview .map-inline-popup-tools {
+        display: flex; align-items: center; flex-wrap: wrap; gap: 5px;
+        padding: 0 0 8px; margin: 0 0 9px; border-bottom: 1px solid #e1e6ee;
+    }
+    #preview .map-inline-popup-tools .toolbar-icon-btn {
+        flex: 0 0 32px; width: 32px; min-width: 32px; height: 32px; padding: 0 !important;
+        border: 1px solid #cbd3df; border-radius: 8px; background: #fff; color: #344054;
+    }
+    #preview .map-inline-popup-tools .toolbar-icon-btn:hover,
+    #preview .map-inline-popup-tools .toolbar-icon-btn.is-active {
+        background: #e8efff; border-color: #a9c2f5; color: #214eaa;
+    }
+    #preview .map-inline-popup-panel {
+        display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start; gap: 8px; min-width: 0;
+    }
+    #preview .map-inline-popup-panel[hidden] { display: none !important; }
+    #preview .map-inline-style-popup .map-inline-color,
+    #preview .map-inline-style-popup .map-inline-field {
+        display: flex; flex-direction: column; align-items: stretch; gap: 4px;
+        min-width: 0; width: auto; margin: 0; color: #344054;
+        font-size: .78rem; line-height: 1.25; font-weight: 650;
+    }
+    #preview .map-inline-style-popup .map-inline-color > label { display: block; font: inherit; }
+    #preview .map-inline-style-popup .map-inline-color input,
+    #preview .map-inline-style-popup .map-inline-field select,
+    #preview .map-inline-style-popup .map-inline-field input:not([type="file"]) {
+        box-sizing: border-box; width: 100%; min-width: 0; height: 31px; padding: 5px 7px;
+        border: 1px solid #cbd3df; border-radius: 6px; background: #fff; color: #202a3a;
+        font: inherit; font-weight: 400;
+    }
+    #preview .map-inline-style-popup .map-inline-field input[type="file"] {
+        box-sizing: border-box; width: 100%; min-width: 0; max-width: 100%; height: auto;
+        padding: 5px; border: 1px solid #cbd3df; border-radius: 6px; background: #fff;
+        font: inherit; font-weight: 400;
+    }
+    #preview .map-inline-style-popup .map-inline-swatches {
+        display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin-top: 6px;
+    }
+    #preview .map-inline-style-popup .map-inline-swatches button {
+        width: 100%; min-width: 0; height: 22px; padding: 0; border: 1px solid #aeb8c7;
+        border-radius: 5px; cursor: pointer;
+    }
+    #preview .map-inline-style-popup .map-inline-swatches button.is-current { outline: 2px solid #315fd3; outline-offset: 1px; }
+    #preview .map-inline-popup-footer {
+        display: flex; justify-content: flex-end; margin-top: 9px; padding-top: 8px;
+        border-top: 1px solid #e1e6ee;
+    }
+    #preview .map-inline-popup-footer .map-popup-delete {
+        flex: 0 0 32px; width: 32px; min-width: 32px; height: 32px; padding: 0 !important;
+        border: 1px solid #e4bdc1; border-radius: 8px; background: #fff7f7; color: #b42332;
+    }
+    #preview[data-theme="dark"] .map-inline-style-popup {
+        background: #202633; color: #e7ebf2; border-color: #465166;
+    }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-color,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field { color: #e7ebf2; }
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-color input,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field select,
+    #preview[data-theme="dark"] .map-inline-style-popup .map-inline-field input { background: #252d3b; color: #e7ebf2; border-color: #465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools { border-bottom-color: #465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools .toolbar-icon-btn { background: #30394a; color: #e7ebf2; border-color: #465166; }
+    #preview[data-theme="dark"] .map-inline-popup-tools .toolbar-icon-btn.is-active { background: #334d77; color: #eaf1ff; border-color: #7799d2; }
+    #preview[data-theme="dark"] .map-inline-popup-footer { border-top-color: #465166; }
+    #preview[data-theme="dark"] .map-inline-popup-footer .map-popup-delete { background: #3a292f; color: #ffb4bd; border-color: #71434b; }
+
 </style>
 <link rel="stylesheet" href="https://kimgreentea.github.io/kimnokcha/tool/quiz/oncheck.css">
 
@@ -1972,7 +2211,7 @@
 <button class="btn setting-choice" type="button" data-setting-font-choice="IsYun">이서윤체</button>
 <button class="btn setting-choice" type="button" data-setting-font-choice="NexonMaplestory">메이플스토리</button>
 <button class="btn setting-choice" type="button" data-setting-font-choice="monospace">고정폭 글꼴</button>
-<div class="field custom-webfont-field"><label for="custom-font-name">웹폰트 이름</label><input id="custom-font-name" type="text" placeholder="예: MyFont"></div><div class="field custom-webfont-field"><label for="custom-font-url">웹폰트 CSS/파일 URL</label><input id="custom-font-url" type="url" placeholder="https://..."><button class="btn" id="apply-custom-webfont" type="button">웹폰트 목록에 추가</button><span class="small">Google Fonts CSS 주소 또는 .woff2 파일 주소</span></div>
+<div class="field custom-webfont-field"><label for="custom-font-name">웹폰트 이름</label><input id="custom-font-name" type="text" placeholder=""></div><div class="field custom-webfont-field"><label for="custom-font-url">웹폰트 CSS/파일 URL</label><input id="custom-font-url" type="url" placeholder="https://..."><button class="btn" id="apply-custom-webfont" type="button">+ 폰트</button></div>
 
 <select id="global-font-family" class="setting-hidden-control" aria-hidden="true" tabindex="-1">
     <option value='system-ui, -apple-system, "Noto Sans KR", sans-serif' selected>기본 글꼴</option>
@@ -2100,7 +2339,7 @@
   <path d="M3 20h18" stroke="#9CA3AF"/>
   <!-- 물방울 (강렬한 파란색 포인트) -->
   <path d="M17 16c0 1.1.9 2 2 2s2-.9 2-2-2-3-2-3-2 1.9-2 3Z" fill="#3B82F6" stroke="#3B82F6"/>
-</svg></button><div class="toolbar-popup color-toolbar-popup" id="highlight-color-menu" hidden><label for="selected-highlight-color">배경색</label><input id="selected-highlight-color" class="hex-color-input" type="text" value="#ffffff" placeholder="#ffffff" aria-label="배경색 HEX 입력" maxlength="7" autocomplete="off"><span id="highlight-color-presets" class="toolbar-color-presets"></span></div></div>
+</svg></button><div class="toolbar-popup color-toolbar-popup" id="highlight-color-menu" hidden><label for="selected-highlight-color">배경색</label><input id="selected-highlight-color" class="hex-color-input" type="text" value="#ffffff" placeholder="#ffffff" aria-label="배경색 HEX 입력" maxlength="7" autocomplete="off"><span id="highlight-color-presets" class="toolbar-color-presets"></span><button type="button" class="btn" id="clear-highlight-color" style="margin-top:8px;width:100%">배경색 적용 취소</button></div></div>
     <div class="toolbar-group" data-toolbar-item="columns"><button class="btn toolbar-icon-btn" id="insert-two-columns" type="button" title="2단 레이아웃 삽입" aria-label="2단 레이아웃 삽입"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <path d="M4 5h6M4 9h6M4 13h6M4 17h6"/>
   <path d="M14 5h6M14 9h6M14 13h6M14 17h6"/>
@@ -2120,14 +2359,16 @@
                     <div id="toolbar-config-list" class="toolbar-config-list"></div>
                 </div>
             </div>
-            <div class="preview" id="preview">
-                <header class="hero">
-                    <div class="kicker"></div>
-                    <h1></h1>
-                    <p></p>
-                </header>
-                <main class="content"></main>
-                <footer class="foot"></footer>
+            <div class="preview-workspace" id="preview-workspace">
+                <div class="preview" id="preview">
+                    <header class="hero">
+                        <div class="kicker"></div>
+                        <h1></h1>
+                        <p></p>
+                    </header>
+                    <main class="content"></main>
+                    <footer class="foot"></footer>
+                </div>
             </div>
         </aside>
     </div>
@@ -2214,13 +2455,12 @@ const ICONS = {
                 if (type === 'map') {
                     base.backgroundImage = '';
                     base.backgroundFit = 'cover';
-                    base.stations = [{
-                            name: '시작',
-                            x: 12,
-                            y: 14,
-                            line: 'blue'
-                        }
-                    ]
+                    base.canvasHeight = 200;
+                    base.coordinateUnit = 'pt';
+                    base.nodes = [{id:uid(), x:66, y:55, w:32, h:22, shape:'rect', fill:'#ffffff', stroke:'#3976df', strokeWidth:2, image:'', text:'노드 1', textColor:'#202a3a', textSize:9}, {id:uid(), x:204, y:155, w:36, h:25, shape:'ellipse', fill:'#ffffff', stroke:'#1a9b7a', strokeWidth:2, image:'', text:'노드 2', textColor:'#202a3a', textSize:9}];
+                    base.edges = [{id:uid(), from:null, to:null, color:'#64748b', width:2, style:'solid', arrow:'end', label:''}];
+                    base.texts = [{id:uid(), text:'텍스트', x:150, y:36, size:12, color:'#222222', bold:false, italic:false, align:'middle'}];
+                    base.edges[0].from=base.nodes[0].id; base.edges[0].to=base.nodes[1].id;
                 }
                 if (type === 'body') base.text = '';
                 if (type === 'photo') base.photos = [{
@@ -2251,6 +2491,29 @@ const ICONS = {
             let customFonts = [];
             let customFont = { name: '', url: '' }; // 이전 저장 파일 호환용
             const getFontScale = () => { const pt = Number(fontScaleInput?.value || 12); return String(Math.max(6, Math.min(36, Number.isFinite(pt) ? pt : 12)) / 12); };
+            function scaleSvgFontValue(value, ratio) {
+                const match = String(value || '').trim().match(/^(-?(?:\d+\.?\d*|\.\d+))(px|pt|em|rem|%)?$/i);
+                if (!match) return value;
+                const n = Number(match[1]) * ratio;
+                return `${Number(n.toFixed(4))}${match[2] || ''}`;
+            }
+            function applyLiveFontScale() {
+                const preview = $('#preview');
+                if (!preview || !fontScaleInput) return;
+                const next = Number(getFontScale()) || 1;
+                const previous = Number(preview.dataset.mapFontScale || next) || next;
+                const ratio = previous ? next / previous : 1;
+                preview.style.setProperty('--font-scale', String(next));
+                if (Number.isFinite(ratio) && ratio > 0 && Math.abs(ratio - 1) > 0.00001) {
+                    preview.querySelectorAll('.map-frame svg text, .map-frame svg tspan').forEach(el => {
+                        const attrSize = el.getAttribute('font-size');
+                        if (attrSize) el.setAttribute('font-size', scaleSvgFontValue(attrSize, ratio));
+                        const inlineSize = el.style?.fontSize;
+                        if (inlineSize) el.style.fontSize = scaleSvgFontValue(inlineSize, ratio);
+                    });
+                }
+                preview.dataset.mapFontScale = String(next);
+            }
             const colorDefaults = ['#23385f','#315fd3','#ffffff','#202a3a','#f3f5f9','#e6a23c','#c43f4b','#2f855a'];
             const backgroundOnlyColors = ['#151922','#202633'];
             function renderColorPresets() {
@@ -2312,6 +2575,11 @@ const ICONS = {
                 const embedded = typeof value === 'string' && value.startsWith('data:image/');
                 return `<div class="upload-row"><label class="field-label">${esc(label)} 파일 업로드 ${embedded ? '✓ 이미지 포함됨' : ''}</label><input type="file" accept="image/*" data-upload-id="${id}" data-upload-key="${key}"></div>`;
             }
+            function mapRichField(label, object, key, edit, blockId, index, placeholder, align='center') {
+                const html=richField(label,object,key,edit,blockId,index,null,placeholder);
+                const textAlign=align==='left'?'left':align==='right'?'right':'center';
+                return html.replace('contenteditable="true"',`style="text-align:${textAlign}" contenteditable="true"`);
+            }
 
             function textArea(label, id, key, value, placeholder = '') {
                 return `<div class="field"><label>${esc(label)}</label><textarea data-id="${id}" data-key="${key}" placeholder="${attr(placeholder)}">${esc(value)}</textarea></div>`;
@@ -2349,7 +2617,7 @@ const ICONS = {
           <button class="btn danger" data-action="delete" data-id="${b.id}" title="영역 삭제" aria-label="영역 삭제">${iconSvg('trash',16)}</button>
         </div>
         <div class="block-body">
-          <div class="chapter-page-row section-title-subtitle-row">${richField('제목',b,'title','title',b.id,null,null,'영역 제목')}${richField('부제',b,'subtitle','section-subtitle',b.id,null,null,'예: 2쪽 · 1장')}</div>
+          <div class="chapter-page-row section-title-subtitle-row">${richField('제목',b,'title','title',b.id,null,null,'영역 제목')}${richField('부제',b,'subtitle','section-subtitle',b.id,null,null,'부제')}</div>
           <label class="section-border-setting"><input type="checkbox" data-action="toggle-border" data-id="${b.id}" ${b.showBorder !== false ? 'checked' : ''}> 영역 테두리 표시</label>
           ${b.type==='quiz'?renderQuizEditor(b):''}
           ${b.type==='vocab'?renderVocabEditor(b):''}
@@ -2410,47 +2678,348 @@ const ICONS = {
 </svg></button></div>${field('사진 URL',b.id,`photo-${i}-image`,photo.image||'','https://...')}${imageUpload('사진',b.id,`photo-${i}-image`,photo.image||'')}${richField('사진 설명',photo,'caption','caption',b.id,i,null,'사진 설명',true)}<div class="field"><label>사진 맞춤 방식</label><select data-id="${b.id}" data-key="photo-${i}-imageFit"><option value="cover" ${(photo.imageFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${photo.imageFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${photo.imageFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${photo.imageFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div></div>`).join('')}<button class="btn" data-action="add-photo" data-id="${b.id}">＋ 사진</button>`;
             }
 
+            function ensureMapTextHtml(item, key, styleObject = {}) {
+                const htmlKey = key + 'Html';
+                if (item[htmlKey] != null) return;
+                const styles = [];
+                if (styleObject.fontFamily) styles.push(`font-family:${styleObject.fontFamily}`);
+                if (styleObject.fontSize) styles.push(`font-size:${styleObject.fontSize}px`);
+                if (styleObject.color) styles.push(`color:${styleObject.color}`);
+                if (styleObject.bold) styles.push('font-weight:bold');
+                if (styleObject.italic) styles.push('font-style:italic');
+                if (styleObject.underline) styles.push('text-decoration:underline');
+                if (styleObject.backgroundColor) styles.push(`background-color:${styleObject.backgroundColor}`);
+                const text = String(item[key] ?? '').replace(/\r\n?|\n/g, ' ');
+                item[htmlKey] = `<span${styles.length ? ` style="${attr(styles.join(';'))}"` : ''}>${esc(text)}</span>`;
+            }
             function renderMapEditor(b) {
-                return `<p class="small">미리보기에서 지점을 직접 드래그해 위치를 바꿀 수 있습니다. </p>${field('배경 이미지 URL',b.id,'backgroundImage',b.backgroundImage||'','https://...')}${imageUpload('지도 배경',b.id,'backgroundImage',b.backgroundImage||'')}
-    <div class="field"><label>배경 사진 맞춤 방식</label><select data-id="${b.id}" data-key="backgroundFit"><option value="cover" ${(b.backgroundFit||'cover')==='cover'?'selected':''}>영역 꽉 채우기</option><option value="contain" ${b.backgroundFit==='contain'?'selected':''}>사진 전체 보이기</option><option value="width" ${b.backgroundFit==='width'?'selected':''}>가로 길이 맞춤</option><option value="height" ${b.backgroundFit==='height'?'selected':''}>세로 길이 맞춤</option></select></div>
-    ${(b.stations||[]).map((s,si)=>`<div class="question-editor">
-      <div class="question-top"><strong>지점 ${si+1}</strong><button class="btn danger" data-action="remove-station" data-id="${b.id}" data-index="${si}" title="지점 삭제"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <path d="M3 6h18"/>
-  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
-  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-  <line x1="10" y1="11" x2="10" y2="17"/>
-  <line x1="14" y1="11" x2="14" y2="17"/>
-</svg></button></div>
-      ${field('지점 이름',b.id,`station-${si}-name`,s.name)}
-      
-      <div class="field"><label>노선 색</label><select data-id="${b.id}" data-key="station-${si}-line"><option value="blue" ${s.line==='blue'?'selected':''}>파랑 노선</option><option value="orange" ${s.line==='orange'?'selected':''}>주황 노선</option><option value="green" ${s.line==='green'?'selected':''}>초록 노선</option></select></div>
-    </div>`).join('')}<button class="btn" data-action="add-station" data-id="${b.id}">＋ 지점 </button>`;
+                b.nodes ||= []; b.edges ||= []; b.texts ||= []; b.canvasHeight ||= 300;
+                b.nodes.forEach(n => ensureMapTextHtml(n, 'text', {
+                    fontFamily:n.fontFamily || '', fontSize:Number(n.textSize) || 9,
+                    color:n.textColor || '#202a3a', bold:!!n.bold, italic:!!n.italic, underline:!!n.underline, backgroundColor:n.highlightColor || ''
+                }));
+                b.edges.forEach(ed => {
+                    if (ed.label && ed.labelColor == null) ed.labelColor = ed.color || '#64748b';
+                    ensureMapTextHtml(ed, 'label', {
+                        fontFamily:ed.labelFontFamily || '', fontSize:Number(ed.labelSize) || 5,
+                        color:ed.labelColor || '#64748b', bold:!!ed.labelBold, italic:!!ed.labelItalic, underline:!!ed.labelUnderline
+                    });
+                });
+                b.texts.forEach(t => ensureMapTextHtml(t, 'text', {
+                    fontFamily:t.fontFamily || '', fontSize:Number(t.size) || 6,
+                    color:t.color || '#222222', bold:!!t.bold, italic:!!t.italic, underline:!!t.underline, backgroundColor:t.highlightColor || ''
+                }));
+                const nodeName = (n, i) => String(n.text || '').replace(/\s+/g, ' ').trim() || `노드 ${i + 1}`;
+                const selected = (kind, id) => selectedMapItem?.blockId === b.id && selectedMapItem?.kind === kind && selectedMapItem?.itemId === id;
+                const nodeOptions = chosen => b.nodes.map((n,j)=>`<option value="${attr(n.id)}" ${chosen===n.id?'selected':''}>${esc(nodeName(n,j))}</option>`).join('');
+                return `<p class="small"></p>
+                <div class="field"><label>배경 이미지 맞춤</label><select data-map-canvas-field="backgroundFit" data-map-block="${b.id}"><option value="cover" ${(b.backgroundFit||'cover')==='cover'?'selected':''}>영역 채우기</option><option value="contain" ${b.backgroundFit==='contain'?'selected':''}>이미지 전체 보이기</option><option value="width" ${b.backgroundFit==='width'?'selected':''}>가로 맞춤</option><option value="height" ${b.backgroundFit==='height'?'selected':''}>세로 맞춤</option></select></div>
+                <div class="field"><label>배경 이미지 URL</label><input type="text" data-map-canvas-field="backgroundImage" data-map-block="${b.id}" value="${attr(b.backgroundImage||'')}" placeholder="https://..."></div>
+                ${imageUpload('배경 이미지',b.id,'backgroundImage',b.backgroundImage||'')}
+                <div class="map-list-section"><div class="map-list-head"><strong>노드 (${b.nodes.length})</strong><button class="btn" type="button" data-action="add-node" data-id="${b.id}">＋ 노드</button></div>
+                  <div class="map-list-rows" data-map-list="${b.id}">${b.nodes.map((n,i)=>`<div class="map-object-row" data-map-row data-search-text="${attr(`노드 ${i+1} ${n.text||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('node',n.id)?'is-selected':''}" data-map-select="node" data-map-block="${b.id}" data-map-item="${attr(n.id)}"><strong>노드 ${i+1}</strong><span>${esc(({rect:'사각형',round:'둥근 사각형',ellipse:'타원',diamond:'마름모',none:'윤곽 없음'})[n.shape] || '노드')}</span></button><button class="btn danger map-list-delete" type="button" data-action="remove-node" data-id="${b.id}" data-index="${i}" title="노드 삭제" aria-label="노드 삭제">${iconSvg('trash',15)}</button>${mapRichField('내용',n,'text','map-node-text',b.id,i,'노드 텍스트',n.align||'center')}</div>`).join('') || '<span class="small">노드가 없습니다.</span>'}</div></div>
+                <div class="map-list-section"><div class="map-list-head"><strong>연결선 (${b.edges.length})</strong><button class="btn" type="button" data-action="add-edge" data-id="${b.id}">＋ 연결선</button></div>
+                  <div class="map-list-rows" data-map-list="${b.id}">${b.edges.map((ed,i)=>{const from=b.nodes.findIndex(n=>n.id===ed.from),to=b.nodes.findIndex(n=>n.id===ed.to),label=`${from>=0?nodeName(b.nodes[from],from):'미지정'} → ${to>=0?nodeName(b.nodes[to],to):'미지정'}`;return `<div class="map-object-row" data-map-row data-search-text="${attr(`연결선 ${label} ${ed.label||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('edge',ed.id)?'is-selected':''}" data-map-select="edge" data-map-block="${b.id}" data-map-item="${attr(ed.id)}"><strong>연결선 ${i+1}</strong><span data-map-route-summary="${attr(ed.id)}" data-map-route-block="${attr(b.id)}">${esc(label)}</span></button><button class="btn danger map-list-delete" type="button" data-action="remove-edge" data-id="${b.id}" data-index="${i}" title="연결선 삭제" aria-label="연결선 삭제">${iconSvg('trash',15)}</button>${mapRichField('라벨',ed,'label','map-edge-text',b.id,i,'연결선 텍스트',ed.labelAlign||'center')}</div>`}).join('') || '<span class="small">연결선이 없습니다.</span>'}</div></div>
+                <div class="map-list-section"><div class="map-list-head"><strong>독립 텍스트 (${b.texts.length})</strong><button class="btn" type="button" data-action="add-map-text" data-id="${b.id}">＋ 텍스트</button></div>
+                  <div class="map-list-rows" data-map-list="${b.id}">${b.texts.map((t,i)=>`<div class="map-object-row" data-map-row data-search-text="${attr(`텍스트 ${i+1} ${t.text||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('text',t.id)?'is-selected':''}" data-map-select="text" data-map-block="${b.id}" data-map-item="${attr(t.id)}"><strong>텍스트 ${i+1}</strong></button><button class="btn danger map-list-delete" type="button" data-action="remove-map-text" data-id="${b.id}" data-index="${i}" title="텍스트 삭제" aria-label="텍스트 삭제">${iconSvg('trash',15)}</button>${mapRichField('내용',t,'text','map-independent-text',b.id,i,'독립 텍스트',t.align||'center')}</div>`).join('') || '<span class="small">독립 텍스트가 없습니다.</span>'}</div></div>`;
+            }
+
+            function updateMapEdgeRouteSummaries(b) {
+                if (!b || b.type !== 'map') return;
+                const root = $('#block-list');
+                (b.edges || []).forEach(edge => {
+                    const summary = Array.from(root.querySelectorAll('[data-map-route-summary]')).find(el =>
+                        el.dataset.mapRouteBlock === b.id && el.dataset.mapRouteSummary === edge.id
+                    );
+                    if (!summary) return;
+                    const nodeName = id => {
+                        const index = (b.nodes || []).findIndex(n => n.id === id);
+                        if (index < 0) return '미지정';
+                        return String(b.nodes[index].text || '').replace(/\s+/g, ' ').trim() || `노드 ${index + 1}`;
+                    };
+                    summary.textContent = `${nodeName(edge.from)} → ${nodeName(edge.to)}`;
+                });
+            }
+
+            function getSelectedMapObject() {
+                if (!selectedMapItem || selectedMapItem.kind === 'canvas') return null;
+                const b=getBlock(selectedMapItem.blockId); if(!b || b.type!=='map') return null;
+                const arr=selectedMapItem.kind==='node'?b.nodes:selectedMapItem.kind==='edge'?b.edges:b.texts;
+                return { b, item: arr?.find(x=>x.id===selectedMapItem.itemId), index: arr?.findIndex(x=>x.id===selectedMapItem.itemId) ?? -1, kind:selectedMapItem.kind };
+            }
+            function renderMapInspector() {
+                const workspace=$('#preview-workspace');
+                workspace?.classList.remove('has-map-inspector');
+                workspace?.querySelectorAll('#map-inspector').forEach(panel=>panel.remove());
+                $('#preview')?.querySelectorAll('.map-editor-layout').forEach(layout=>{
+                    const shell=layout.querySelector('.map-frame-shell');
+                    if(shell && layout.parentNode) layout.parentNode.insertBefore(shell,layout);
+                    layout.remove();
+                });
+            }
+            function clearMapSelection() {
+                selectedMapItem = null;
+                $('#preview').querySelectorAll('.map-inline-colors').forEach(el=>el.remove());
+                $('#preview').querySelectorAll('.map-node-selected,.map-edge-selected,.map-independent-selected').forEach(el => {
+                    el.classList.remove('map-node-selected', 'map-edge-selected', 'map-independent-selected');
+                });
+                $('#preview').querySelectorAll('[data-node-resize]').forEach(handle=>handle.remove());
+                $('#block-list').querySelectorAll('[data-map-select].is-selected').forEach(el => el.classList.remove('is-selected'));
+                renderMapInspector();
+            }
+            function positionMapInlinePopup(wrap,target) {
+                const preview=$('#preview'), popup=wrap?.querySelector('.map-inline-style-popup');
+                if(!preview || !wrap || !popup || !target) return;
+                const previewRect=preview.getBoundingClientRect(), targetRect=target.getBoundingClientRect();
+                const fw=preview.clientWidth, fh=Math.max(preview.scrollHeight,preview.clientHeight);
+                const pw=popup.offsetWidth, ph=popup.offsetHeight;
+                const tx=targetRect.left-previewRect.left, ty=targetRect.top-previewRect.top;
+                const tw=targetRect.width, th=targetRect.height, gap=8;
+                const candidates=[
+                    {x:tx+tw+gap,y:ty+(th-ph)/2},
+                    {x:tx-pw-gap,y:ty+(th-ph)/2},
+                    {x:tx+(tw-pw)/2,y:ty+th+gap},
+                    {x:tx+(tw-pw)/2,y:ty-ph-gap}
+                ];
+                let place=candidates.find(c=>c.x>=0&&c.y>=0&&c.x+pw<=fw&&c.y+ph<=fh);
+                if(!place) {
+                    const clamp=(v,max)=>Math.max(0,Math.min(Math.max(0,max),v));
+                    place=candidates.map(c=>({x:clamp(c.x,fw-pw),y:clamp(c.y,fh-ph)}))
+                        .map(c=>({...c,overlapX:Math.max(0,Math.min(c.x+pw,tx+tw)-Math.max(c.x,tx)),overlapY:Math.max(0,Math.min(c.y+ph,ty+th)-Math.max(c.y,ty))}))
+                        .sort((a,b)=>a.overlapX*a.overlapY-b.overlapX*b.overlapY)[0];
+                }
+                wrap.style.left=`${place.x}px`; wrap.style.top=`${place.y}px`;
+            }
+            function syncSelectedNodeResizeHandle() {
+                const preview=$('#preview');
+                if(!preview) return;
+                preview.querySelectorAll('[data-node-resize]').forEach(handle=>handle.remove());
+                const sel=getSelectedMapObject();
+                if(!sel || sel.kind!=='node' || !sel.item) return;
+                const frame=preview.querySelector(`[data-map-id="${CSS.escape(sel.b.id)}"]`);
+                const svg=frame?.querySelector('svg');
+                if(!svg) return;
+                const n=sel.item, x=Number(n.x)||0, y=Number(n.y)||0, w=Number(n.w)||72, h=Number(n.h)||42;
+                const ns='http://www.w3.org/2000/svg';
+                const handle=document.createElementNS(ns,'rect');
+                handle.setAttribute('data-node-resize',n.id);
+                handle.setAttribute('x',String(x+w-4)); handle.setAttribute('y',String(y+h-4));
+                handle.setAttribute('width','8'); handle.setAttribute('height','8');
+                handle.setAttribute('rx','1'); handle.setAttribute('fill','#ffffff');
+                handle.setAttribute('stroke','#315fd3'); handle.setAttribute('stroke-width','1.5');
+                handle.setAttribute('style','cursor:nwse-resize;pointer-events:all');
+                svg.appendChild(handle);
+            }
+            function renderMapInlineColorControls(preferredTabId=null) {
+                $('#preview').querySelectorAll('.map-inline-colors').forEach(el=>el.remove());
+                syncSelectedNodeResizeHandle();
+                const sel=getSelectedMapObject();
+                if(!sel || !['node','edge','text'].includes(sel.kind) || !sel.item) return;
+                const frame=$(`[data-map-id="${sel.b.id}"]`,$('#preview'));
+                if(!frame) return;
+                const target=sel.kind==='node'
+                    ? frame.querySelector(`[data-node-id="${CSS.escape(sel.item.id)}"]`)
+                    : sel.kind==='text' ? frame.querySelector(`[data-map-text-id="${CSS.escape(sel.item.id)}"]`)
+                    : frame.querySelector(`[data-edge-id="${CSS.escape(sel.item.id)}"]`);
+                if(!target) return;
+                const preview=$('#preview');
+                const wrap=document.createElement('div'); wrap.className='map-inline-colors'; wrap.setAttribute('data-map-editor-only','true');
+                const popup=document.createElement('div'); popup.className='toolbar-popup map-inline-style-popup'; popup.hidden=false;
+                const addColor=(prop,labelText,value)=>{
+                    const field=document.createElement('div'); field.className='map-inline-color'; field.title=labelText;
+                    const title=document.createElement('label'); title.textContent=labelText; field.appendChild(title);
+                    const input=document.createElement('input'); input.type='text'; input.className='map-inline-hex'; input.maxLength=7;
+                    input.placeholder='#rrggbb'; input.value=/^#[0-9a-f]{6}$/i.test(value)?value.toLowerCase():'#64748b';
+                    Object.assign(input.dataset,{mapInlineColor:'true',mapBlock:sel.b.id,mapKind:sel.kind,mapItem:sel.item.id,mapProp:prop}); input.setAttribute('aria-label',`${labelText} HEX 입력`);
+                    field.appendChild(input);
+                    const swatches=document.createElement('div'); swatches.className='map-inline-swatches';
+                    const palette=['#23385f','#315fd3','#ffffff','#202a3a','#f3f5f9','#e6a23c','#c43f4b','#2f855a'];
+                    palette.forEach(color=>{
+                        const button=document.createElement('button'); button.type='button'; button.title=color; button.setAttribute('aria-label',`${labelText} ${color}`); button.style.backgroundColor=color;
+                        if(color.toLowerCase()===input.value.toLowerCase()) button.classList.add('is-current');
+                        Object.assign(button.dataset,{mapInlineSwatch:'true',mapColor:color,mapBlock:sel.b.id,mapKind:sel.kind,mapItem:sel.item.id,mapProp:prop});
+                        swatches.appendChild(button);
+                    });
+                    field.appendChild(swatches); popup.appendChild(field);
+                };
+                const addImageUpload=()=>{
+                    const label=document.createElement('label'); label.className='map-inline-field'; label.style.gridColumn='1 / -1';
+                    label.appendChild(document.createTextNode('파일'));
+                    const input=document.createElement('input'); input.type='file'; input.accept='image/*'; input.setAttribute('aria-label','노드 이미지 업로드');
+                    Object.assign(input.dataset,{mapPopupImage:'true',mapBlock:sel.b.id,mapKind:sel.kind,mapItem:sel.item.id});
+                    label.appendChild(input); popup.appendChild(label);
+                    if(sel.item.image){ const note=document.createElement('span'); note.className='small'; note.textContent='이미지 설정됨'; label.appendChild(note); }
+                };
+                const addField=(prop,labelText,value,options=[],type='select')=>{
+                    const label=document.createElement('label'); label.className='map-inline-field'; label.title=labelText; label.appendChild(document.createTextNode(labelText));
+                    let input;
+                    if(type==='number' || type==='text') {
+                        input=document.createElement('input'); input.type=type;
+                        if(type==='number') {
+                            input.min=prop==='x'||prop==='y'?'0':prop==='strokeWidth'||prop==='outlineWidth'||prop==='textOutlineWidth'?'0':prop==='width'?'1':prop==='w'?'15':prop==='h'?'15':'0';
+                            input.max=prop==='x'?(sel.kind==='node'?String(Math.max(0,300-(Number(sel.item.w)||72))):'300'):prop==='y'?(sel.kind==='node'?String(Math.max(0,(Number(sel.b.canvasHeight)||300)-(Number(sel.item.h)||42))):String(Math.max(0,Number(sel.b.canvasHeight)||300))):prop==='w'?'300':prop==='h'?'600':prop==='strokeWidth'||prop==='outlineWidth'||prop==='textOutlineWidth'?'10':prop==='width'?'12':'600';
+                            input.step=['strokeWidth','outlineWidth','textOutlineWidth'].includes(prop)?'0.5':'1';
+                        }
+                        input.value=value??'';
+                        if(prop==='image' && type==='text') { input.placeholder='이미지 URL'; label.style.gridColumn='1 / -1'; }
+                    } else {
+                        input=document.createElement('select');
+                        input.innerHTML=options.map(([v,l])=>`<option value="${attr(v)}" ${String(value)===String(v)?'selected':''}>${esc(l)}</option>`).join('');
+                    }
+                    Object.assign(input.dataset,{mapInlineField:'true',mapBlock:sel.b.id,mapKind:sel.kind,mapItem:sel.item.id,mapProp:prop});
+                    label.appendChild(input); popup.appendChild(label);
+                };
+                const addDelete=()=>{
+                    const button=document.createElement('button'); button.type='button'; button.className='toolbar-icon-btn map-popup-delete'; button.title='삭제'; button.setAttribute('aria-label','삭제');
+                    button.innerHTML='<svg class="ui-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m-9 0 1 13h10l1-13M10 11v5m4-5v5"/></svg>';
+                    button.dataset.mapPopupDelete='true'; button.dataset.mapBlock=sel.b.id; button.dataset.mapKind=sel.kind; button.dataset.mapItem=sel.item.id;
+                    button.style.gridColumn='1 / -1'; popup.appendChild(button);
+                };
+                if(sel.kind==='node') {
+                    const n=sel.item;
+                    addField('shape','모양',n.shape||'rect',[['rect','사각형'],['round','둥근 사각형'],['ellipse','타원'],['diamond','마름모'],['none','좌표만']]);
+                    addColor('fill','채움',n.fill||'#ffffff'); addColor('stroke','도형선',n.stroke||'#3976df');
+                    addField('strokeWidth','선 굵기',Number(n.strokeWidth??2),[],'number');
+                    addColor('textOutlineColor','글자선',n.textOutlineColor||'#ffffff');
+                    addField('textOutlineWidth','글자 굵기',Number(n.textOutlineWidth??0),[],'number');
+                    addField('image','URL',n.image||'','', 'text');
+                    addImageUpload();
+                } else if(sel.kind==='edge') {
+                    const ed=sel.item;
+                    const nodeOptions=sel.b.nodes.map((n,i)=>[n.id,String(n.text||'').trim()||`노드 ${i+1}`]);
+                    addField('from','시작',ed.from,nodeOptions);
+                    addField('to','끝',ed.to,nodeOptions);
+                    addColor('color','선 색',ed.color||'#64748b');
+                    addField('width','선 굵기',Number(ed.width||2),[],'number');
+                    addField('style','선',ed.style||'solid',[['solid','실선'],['dashed','점선'],['dotted','점선']]);
+                    addField('arrow','화살표',ed.arrow||'end',[['none','없음'],['start','시작'],['end','끝'],['both','양쪽']]);
+                    if(ed.label){ addColor('outlineColor','글자 테두리색',ed.outlineColor||'#ffffff'); addField('outlineWidth','테두리 두께',Number(ed.outlineWidth??3),[],'number'); }
+                } else {
+                    addColor('outlineColor','글자선',sel.item.outlineColor||'#ffffff');
+                    addField('outlineWidth','글자 굵기',Number(sel.item.outlineWidth??3),[],'number');
+                }
+                // 상단 서식 도구와 같은 아이콘 탭 + 팝업 패널 구조로 정리
+                addDelete();
+                const rawFields=[...popup.children];
+                const deleteButton=rawFields.find(el=>el.matches('[data-map-popup-delete]'));
+                const categories=sel.kind==='edge'
+                    ? [
+                        {id:'connect',label:'연결 노드',icon:'<rect x="3.5" y="4" width="6" height="6" rx="1"/><rect x="14.5" y="14" width="6" height="6" rx="1"/><path d="M9.5 7h5v10h-5"/>',props:['from','to']},
+                        {id:'line',label:'선 색·굵기',icon:'<path d="M4 18 20 6"/><path d="M3 21h18" stroke-width="3"/>',props:['color','width']},
+                        {id:'lineStyle',label:'선 모양·화살표',icon:'<path d="M3 12h17m-6-6 6 6-6 6"/><path d="M3 5h8M3 19h8" stroke-dasharray="2 2"/>',props:['style','arrow']},
+                        ...(sel.item.label?[{id:'textOutline',label:'글자 테두리',icon:'<path d="M5 19 12 5l7 14M8 14h8"/><path d="M4 21h16"/>',props:['outlineColor','outlineWidth']}]:[])
+                    ]
+                    : sel.kind==='node'
+                    ? [
+                        {id:'shapeFill',label:'모양·채움',icon:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 4v16"/>',props:['shape','fill']},
+                        {id:'stroke',label:'도형선·굵기',icon:'<rect x="4" y="4" width="16" height="16" rx="3" fill="none"/><path d="M7 17 17 7"/><path d="M3 21h18" stroke-width="3"/>',props:['stroke','strokeWidth']},
+                        {id:'textOutline',label:'글자 테두리',icon:'<path d="M5 19 12 5l7 14M8 14h8"/><path d="M4 21h16"/>',props:['textOutlineColor','textOutlineWidth']},
+                        {id:'image',label:'이미지',icon:'<rect x="3.5" y="4" width="17" height="16" rx="2"/><circle cx="9" cy="9" r="1.5"/><path d="m5 17 4-4 3 3 3-5 4 6"/>',props:['image']}
+                    ]
+                    : [{id:'textOutline',label:'글자 테두리',icon:'<path d="M5 19 12 5l7 14M8 14h8"/><path d="M4 21h16"/>',props:['outlineColor','outlineWidth']}];
+                popup.replaceChildren();
+                const toolBar=document.createElement('div'); toolBar.className='map-inline-popup-tools'; toolBar.setAttribute('role','toolbar'); toolBar.setAttribute('aria-label','지도 요소 서식 도구');
+                const panels=[];
+                const activeTabId=categories.some(cat=>cat.id===preferredTabId)?preferredTabId:categories[0]?.id;
+                const propOf=el=>el.querySelector('[data-map-inline-field],[data-map-inline-color],[data-map-popup-image]')?.dataset.mapProp || (el.querySelector('[data-map-popup-image]')?'image':'');
+                categories.forEach(cat=>{
+                    const active=cat.id===activeTabId;
+                    const button=document.createElement('button'); button.type='button'; button.className='toolbar-icon-btn'+(active?' is-active':''); button.title=cat.label; button.setAttribute('aria-label',cat.label); button.setAttribute('aria-expanded',String(active)); button.dataset.mapPopupTab=cat.id;
+                    button.innerHTML=`<svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${cat.icon}</svg>`;
+                    toolBar.appendChild(button);
+                    const panel=document.createElement('div'); panel.className='map-inline-popup-panel'; panel.dataset.mapPopupPanel=cat.id; panel.hidden=!active;
+                    rawFields.filter(el=>cat.props.includes(propOf(el))).forEach(el=>panel.appendChild(el));
+                    panels.push(panel);
+                });
+                popup.appendChild(toolBar); panels.forEach(panel=>popup.appendChild(panel));
+                if(deleteButton){ const footer=document.createElement('div'); footer.className='map-inline-popup-footer'; footer.appendChild(deleteButton); popup.appendChild(footer); }
+                wrap.append(popup);
+                popup.style.position='relative'; popup.style.top='0'; popup.style.left='0';
+                wrap.style.left='0px'; wrap.style.top='0px';
+                preview.appendChild(wrap);
+                positionMapInlinePopup(wrap,target);
+            }
+            function selectMapItem(blockId, kind, itemId=null, toggle=false) {
+                if (toggle && selectedMapItem && selectedMapItem.blockId===blockId && selectedMapItem.kind===kind && (selectedMapItem.itemId||null)===(itemId||null)) {
+                    clearMapSelection();
+                    return;
+                }
+                selectedMapItem={blockId,kind,itemId};
+                renderMapInspector();
+                $('#preview').querySelectorAll('[data-node-id]').forEach(el=>el.classList.toggle('map-node-selected',kind==='node' && el.dataset.nodeId===itemId && blockId===el.closest('[data-map-id]')?.dataset.mapId));
+                $('#preview').querySelectorAll('[data-node-text-id]').forEach(el=>el.classList.toggle('map-node-selected',kind==='node' && el.dataset.nodeTextId===itemId && blockId===el.closest('[data-map-id]')?.dataset.mapId));
+                $('#preview').querySelectorAll('[data-edge-id]').forEach(el=>el.classList.toggle('map-edge-selected',kind==='edge' && el.dataset.edgeId===itemId && blockId===el.closest('[data-map-id]')?.dataset.mapId));
+                $('#preview').querySelectorAll('[data-map-text-id]').forEach(el=>el.classList.toggle('map-independent-selected',kind==='text' && el.dataset.mapTextId===itemId && blockId===el.closest('[data-map-id]')?.dataset.mapId));
+                $('#block-list').querySelectorAll('[data-map-select]').forEach(el=>el.classList.toggle('is-selected',el.dataset.mapSelect===kind && el.dataset.mapBlock===blockId && el.dataset.mapItem===itemId));
+                renderMapInlineColorControls();
+            }
+            let refreshingMapVisual = false;
+            function refreshMapVisual(b) {
+                if(!b || b.type!=='map' || refreshingMapVisual)return;
+                const current=$(`[data-map-shell="${b.id}"]`,$('#preview'));
+                if(!current || !current.parentNode)return;
+                refreshingMapVisual = true;
+                try {
+                    const temp=document.createElement('div'); temp.innerHTML=renderMapSvg(b);
+                    const replacement=temp.firstElementChild;
+                    if(replacement && current.parentNode) current.replaceWith(replacement);
+                } finally {
+                    refreshingMapVisual = false;
+                }
+            }
+            function mapRichHtmlToSvg(html) {
+                const root=document.createElement('div');
+                root.innerHTML=String(html ?? '');
+                const walk=node=>{
+                    if(node.nodeType===Node.TEXT_NODE) return esc(node.nodeValue||'');
+                    if(node.nodeType!==Node.ELEMENT_NODE) return '';
+                    const tag=node.tagName.toLowerCase();
+                    if(tag==='br') return ' ';
+                    if(['script','style','iframe','object','embed','img','video','audio'].includes(tag)) return '';
+                    const css=node.style||{}; const styles={};
+                    if(['b','strong'].includes(tag)) styles['font-weight']='bold';
+                    if(['i','em'].includes(tag)) styles['font-style']='italic';
+                    if(tag==='u') styles['text-decoration']='underline';
+                    if(['s','strike','del'].includes(tag)) styles['text-decoration']='line-through';
+                    if(css.fontFamily) styles['font-family']=css.fontFamily;
+                    if(css.fontSize) styles['font-size']=css.fontSize;
+                    if(css.color) styles.fill=css.color;
+                    if(css.fontWeight) styles['font-weight']=css.fontWeight;
+                    if(css.fontStyle) styles['font-style']=css.fontStyle;
+                    if(css.textDecoration) styles['text-decoration']=css.textDecoration;
+                    if(css.backgroundColor && css.backgroundColor!=='transparent') { styles.stroke=css.backgroundColor; styles['stroke-width']='4'; styles['paint-order']='stroke fill'; styles['stroke-linejoin']='round'; }
+                    if(tag==='font' && node.getAttribute('color')) styles.fill=node.getAttribute('color');
+                    const attrs=Object.entries(styles).map(([k,v])=>`${k}="${attr(v)}"`);
+                    const inside=Array.from(node.childNodes).map(walk).join('');
+                    if(attrs.length) return `<tspan ${attrs.join(' ')}>${inside}</tspan>`;
+                    if(['div','p','li'].includes(tag)) return `${inside} `;
+                    return inside;
+                };
+                return Array.from(root.childNodes).map(walk).join('').trim();
+            }
+            function mapHtmlTextAlign(html) {
+                const root=document.createElement('div'); root.innerHTML=String(html||'');
+                const aligned=[root,...root.querySelectorAll('[style]')].map(el=>String(el.style?.textAlign||'').toLowerCase()).find(v=>['left','center','right'].includes(v));
+                return aligned || '';
             }
 
             function renderMapSvg(b) {
-                const colors = {
-                    blue: '#3976df',
-                    orange: '#e59a37',
-                    green: '#1a9b7a'
-                };
-                const stations = b.stations || [];
-                const pts = stations.map(s => ({
-                    x: 20 + (Number(s.x) || 0) * 2.6,
-                    y: 20 + (Number(s.y) || 0) * 2.6
-                }));
-                let paths = '';
-               
-                for (let i = 1; i < stations.length; i++) {
-                    paths += `<line x1="${pts[i-1].x}" y1="${pts[i-1].y}" x2="${pts[i].x}" y2="${pts[i].y}" stroke="${colors[stations[i].line]||colors.blue}" stroke-width="7" stroke-linecap="round"/>`;
+                b.nodes ||= []; b.edges ||= []; b.texts ||= [];
+                if (b.coordinateUnit !== 'pt') {
+                    b.nodes.forEach(n => { ['x','y','w','h'].forEach(k => { if (Number.isFinite(Number(n[k]))) n[k] = Number(n[k]) * 3; }); });
+                    b.texts.forEach(t => { ['x','y'].forEach(k => { if (Number.isFinite(Number(t[k]))) t[k] = Number(t[k]) * 3; }); });
+                    b.coordinateUnit = 'pt';
                 }
-                return `<div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:1/1">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="지도 배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 300" role="img" aria-label="학습 노선도">${paths}${stations.map((s,i)=>{
-      const p=pts[i],c=colors[s.line]||colors.blue;
-      const anchor=p.x>220?'end':'start',baseX=p.x>220?p.x-11:p.x+11,baseY=p.y<32?p.y+19:p.y-10;
-      const tx=baseX+(Number(s.labelDx)||0),ty=baseY+(Number(s.labelDy)||0);
-      return `<circle data-station-index="${i}" cx="${p.x}" cy="${p.y}" r="7" fill="#fff" stroke="${c}" stroke-width="4"/><text data-station-label-index="${i}" x="${tx}" y="${ty}" text-anchor="${anchor}">${esc(s.name)}</text>`;
-    }).join('')}</svg></div>`;
+                b.canvasHeight = Math.max(150, Math.min(600, Number(b.canvasHeight) || 300));
+                const H = b.canvasHeight;
+                const pos=n=>({x:Number(n.x)||0,y:Number(n.y)||0,w:Number(n.w)||72,h:Number(n.h)||42});
+                const nodes=Object.fromEntries(b.nodes.map(n=>[n.id,n]));
+                const chosen = (kind,id) => selectedMapItem?.blockId===b.id && selectedMapItem?.kind===kind && selectedMapItem?.itemId===id;
+                const edgePoint=(node,toward)=>{const p=pos(node),cx=p.x+p.w/2,cy=p.y+p.h/2,dx=toward.x-cx,dy=toward.y-cy;if(!dx&&!dy)return {x:cx,y:cy};let t;if(node.shape==='ellipse'){const rx=Math.max(1,p.w/2),ry=Math.max(1,p.h/2);t=1/Math.sqrt(dx*dx/(rx*rx)+dy*dy/(ry*ry));}else if(node.shape==='diamond'){t=1/(Math.abs(dx)/Math.max(1,p.w/2)+Math.abs(dy)/Math.max(1,p.h/2));}else{const tx=Math.abs(dx)>0?(p.w/2)/Math.abs(dx):Infinity,ty=Math.abs(dy)>0?(p.h/2)/Math.abs(dy):Infinity;t=Math.min(tx,ty);}return {x:cx+dx*t,y:cy+dy*t};};
+                const edges=b.edges.map(e=>{const a=nodes[e.from],c=nodes[e.to];if(!a||!c)return '';const p=pos(a),q=pos(c),ac={x:p.x+p.w/2,y:p.y+p.h/2},cc={x:q.x+q.w/2,y:q.y+q.h/2},s=edgePoint(a,cc),t=edgePoint(c,ac),x1=s.x,y1=s.y,x2=t.x,y2=t.y;return `<g data-edge-id="${attr(e.id)}" class="map-edge-group ${chosen('edge',e.id)?'map-edge-selected':''}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${attr(e.color||'#64748b')}" stroke-width="${Number(e.width)||2}" ${e.style==='dashed'?'stroke-dasharray="8 5"':e.style==='dotted'?'stroke-dasharray="2 5"':''} ${e.arrow==='end'||e.arrow==='both'||!e.arrow?`marker-end="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''} ${e.arrow==='start'||e.arrow==='both'?`marker-start="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''}/>${e.label?`<text data-edge-label-id="${attr(e.id)}" x="${(x1+x2)/2}" y="${(y1+y2)/2-5}" text-anchor="${({left:'start',right:'end',center:'middle'})[e.labelAlign]||'middle'}" font-size="${5 * Number(getFontScale())}" fill="${attr(e.labelColor||'#64748b')}" ${Number(e.outlineWidth??3)>0?`paint-order="stroke fill" stroke="${attr(e.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(e.outlineWidth??3)||0))}" stroke-linejoin="round"`:''}>${mapRichHtmlToSvg(e.labelHtml ?? esc(e.label))}</text>`:''}</g>`}).join('');
+                return `<div class="map-frame-shell" data-map-shell="${b.id}"><div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:300 / ${H};position:relative">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노드 연결도" style="position:absolute;inset:0;width:100%;height:100%"><defs>${b.edges.map(e=>`<marker id="arrow-${attr(b.id)}-${attr(e.id)}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="${'M0,0 L0,6 L6,3 z'}" fill="${attr(e.color||'#64748b')}"/></marker>`).join('')}${b.nodes.filter(n=>n.image).map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,id=`mapclip-${b.id}-${n.id}`;let clip=n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`:n.shape==='round'?`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>`:n.shape==='none'?`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;return `<clipPath id="${attr(id)}">${clip}</clipPath>`}).join('')}</defs>${edges}${b.nodes.map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,sel=chosen('node',n.id),cls=`map-node-shape ${sel?'map-node-selected':''}`;const common=`data-node-id="${attr(n.id)}" class="${cls}" fill="${attr(n.fill||'#fff')}" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"`;let shape='';if(n.shape==='diamond')shape=`<polygon ${common} points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`;else if(n.shape==='ellipse')shape=`<ellipse ${common} cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`;else if(n.shape==='none')shape=`<rect data-node-id="${attr(n.id)}" class="${cls} map-node-coordinate" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" stroke="none"/>`;else shape=`<rect ${common} x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}"/>`;const anchor=({left:'start',right:'end',center:'middle'})[n.align]||'middle',tx=anchor==='start'?x+3:anchor==='end'?x+w-3:x+w/2;const fFamily=n.fontFamily?`font-family="${attr(n.fontFamily)}"`:'';return `${shape}${n.image?`<image href="${attr(n.image)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip-${attr(b.id)}-${attr(n.id)})" pointer-events="none"/>${n.shape==='none'?'':(n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`)}`:''}${n.text?`<text data-node-text-id="${attr(n.id)}" class="map-node-text ${sel?'map-node-selected':''}" x="${tx}" y="${y+h/2}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${(n.textHtml != null ? 9 : (n.textSize||9)) * Number(getFontScale())}" fill="${n.textHtml != null ? '#202a3a' : attr(n.textColor||'#202a3a')}" font-weight="${n.textHtml != null ? 'normal' : (n.bold?'bold':'normal')}" font-style="${n.textHtml != null ? 'normal' : (n.italic?'italic':'normal')}" text-decoration="${n.textHtml != null ? 'none' : (n.underline?'underline':'none')}" ${n.textOutlineWidth>0?`stroke="${attr(n.textOutlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(n.textOutlineWidth)||0))}" paint-order="stroke fill" stroke-linejoin="round"`:n.textHtml == null && n.highlightColor?`stroke="${attr(n.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily} pointer-events="none">${mapRichHtmlToSvg(n.textHtml ?? esc(n.text))}</text>`:''}${sel?`<rect data-node-resize="${attr(n.id)}" x="${x+w-4}" y="${y+h-4}" width="8" height="8" rx="1" fill="#ffffff" stroke="#315fd3" stroke-width="1.5" style="cursor:nwse-resize;pointer-events:all"/>`:''}`}).join('')}${b.texts.map(t=>{const sel=chosen('text',t.id),fFamily=`font-family="${attr(t.fontFamily||globalFontInput?.value||'system-ui, sans-serif')}"`;return `<text data-map-text-id="${attr(t.id)}" class="map-independent-text ${sel?'map-independent-selected':''}" data-text-id="${attr(t.id)}" x="${(t.x!==undefined&&t.x!==null&&t.x!==''&&Number.isFinite(Number(t.x))?Number(t.x):150)}" y="${(t.y!==undefined&&t.y!==null&&t.y!==''&&Number.isFinite(Number(t.y))?Number(t.y):36)}" font-size="${(t.textHtml != null ? 6 : (t.size||6)) * Number(getFontScale())}" style="font-family:${attr(t.textHtml != null ? (globalFontInput?.value||'system-ui, sans-serif') : (t.fontFamily||globalFontInput?.value||'system-ui, sans-serif'))};font-size:${(t.textHtml != null ? 6 : (Number(t.size)||6)) * Number(getFontScale())}px;fill:${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))} !important" fill="${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))}" font-weight="${t.textHtml != null ? 'normal' : (t.bold?'bold':'normal')}" font-style="${t.textHtml != null ? 'normal' : (t.italic?'italic':'normal')}" text-decoration="${t.textHtml != null ? 'none' : (t.underline?'underline':'none')}" text-anchor="${({left:'start',right:'end',center:'middle'})[t.align]||t.align||'middle'}" ${(t.outlineColor||t.outlineWidth!=null||!t.highlightColor)?`stroke="${attr(t.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(t.outlineWidth??3)))}" paint-order="stroke fill" stroke-linejoin="round"`:''} ${t.textHtml == null && t.highlightColor?`stroke="${attr(t.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily}>${mapRichHtmlToSvg(t.textHtml ?? esc(t.text))}</text>`}).join('')}</svg></div><div class="map-resize-handle" role="separator" aria-label="드래그하여 지도 캔버스 높이 조절" tabindex="0" data-map-editor-only data-map-resize="${b.id}">캔버스 높이 조절</div></div>`;
             }
-            
+
             function renderBlock(b) {
                 let inner = '';
                 if (b.type === 'quiz') {
@@ -2480,6 +3049,7 @@ const ICONS = {
                 preview.dataset.theme = outputThemeInput?.value || 'light';
                 $('#rich-toolbar').dataset.theme = preview.dataset.theme;
                 preview.style.setProperty('--font-scale', getFontScale());
+                preview.dataset.mapFontScale = getFontScale();
                 preview.style.backgroundColor = (outputThemeInput?.value || 'light') === 'dark' ? '#151922' : '#ffffff';
                 preview.style.setProperty('--worksheet-font', globalFontInput?.value || 'system-ui, -apple-system, "Noto Sans KR", sans-serif');
                 let customFontStyle = preview.querySelector('#custom-webfont-style');
@@ -2494,6 +3064,8 @@ const ICONS = {
                 if (lastRichBookmark && !restoreRichBookmark()) { lastRichEditable = null; lastRichRange = null; lastRichBookmark = null; }
                 updatePreviewToggleLabel();
                 refreshToolbarState();
+                renderMapInspector();
+                renderMapInlineColorControls();
             }
 
             function renderAll() {
@@ -2566,17 +3138,15 @@ const ICONS = {
                 } else if (action === 'remove-word') {
                     b.words.splice(idx, 1);
                     renderAll();
-                } else if (action === 'add-station') {
-                    b.stations.push({
-                        name: `지점 ${b.stations.length+1}`,
-                        x: 50,
-                        y: 50,
-                        line: 'blue'
-                    });
-                    renderAll();
-                } else if (action === 'remove-station') {
-                    b.stations.splice(idx, 1);
-                    renderAll();
+                } else if (action === 'add-node') {
+                    b.nodes ||= []; const n={id:uid(),x:120+Math.random()*60,y:120+Math.random()*60,w:32,h:22,shape:'rect',fill:'#ffffff',stroke:'#3976df',strokeWidth:2,image:'',text:'노드',textColor:'#202a3a',textSize:9}; b.nodes.push(n); selectedMapItem={blockId:b.id,kind:'node',itemId:n.id}; renderAll();
+                } else if (action === 'remove-node') {
+                    const removed=b.nodes.splice(idx,1)[0]; b.edges=(b.edges||[]).filter(e=>e.from!==removed?.id&&e.to!==removed?.id); renderAll();
+                } else if (action === 'add-edge') {
+                    b.edges ||= []; if(b.nodes.length>=2){const ed={id:uid(),from:b.nodes[0].id,to:b.nodes[1].id,color:'#64748b',width:2,style:'solid',arrow:'end',label:''};b.edges.push(ed);selectedMapItem={blockId:b.id,kind:'edge',itemId:ed.id};} renderAll();
+                } else if (action === 'remove-edge') { b.edges.splice(idx,1); renderAll();
+                } else if (action === 'add-map-text') { b.texts ||= []; const t={id:uid(),text:'텍스트',x:150,y:150,size:12,color:'#222222',bold:false,italic:false,align:'middle'};b.texts.push(t);selectedMapItem={blockId:b.id,kind:'text',itemId:t.id};renderAll();
+                } else if (action === 'remove-map-text') { b.texts.splice(idx,1); renderAll();
                 } else if (action === 'add-photo') {
                     b.photos.push({
                         image: '',
@@ -2590,10 +3160,156 @@ const ICONS = {
                 }
             }
             $('#block-list').addEventListener('click', e => {
+                const mapSelect = e.target.closest('[data-map-select]');
+                if (mapSelect) {
+                    selectMapItem(mapSelect.dataset.mapBlock, mapSelect.dataset.mapSelect, mapSelect.dataset.mapItem || null, true);
+                    return;
+                }
+                if (selectedMapItem) clearMapSelection();
+                const colorTrigger = e.target.closest('.map-color-trigger');
+                if (colorTrigger) {
+                    mapColorTarget = { blockId: colorTrigger.dataset.mapColorBlock, kind: colorTrigger.dataset.mapColorKind, index: Number(colorTrigger.dataset.mapColorIndex), prop: colorTrigger.dataset.mapColorProp };
+                    const input = $('#selected-text-color');
+                    const block = blocks.find(x => x.id === mapColorTarget.blockId);
+                    input.value = block?.[mapColorTarget.kind]?.[mapColorTarget.index]?.[mapColorTarget.prop] || '#202a3a';
+                    renderToolbarPalette('#text-color-presets', textPalette, 'text');
+                    $('#text-color-menu').hidden = false;
+                    $('#toggle-text-color').setAttribute('aria-expanded', 'true');
+                    return;
+                }
                 const btn = e.target.closest('[data-action]');
                 if (btn) handleAction(btn.dataset.action, btn);
             });
         
+            // 캔버스 설정은 고정 패널 대신 지도 영역의 왼쪽 편집창에서 관리한다.
+            $('#block-list').addEventListener('input', e => {
+                const canvasField=e.target.closest('[data-map-canvas-field]');
+                if(!canvasField)return;
+                const b=getBlock(canvasField.dataset.mapBlock); if(!b||b.type!=='map')return;
+                const prop=canvasField.dataset.mapCanvasField;
+                if(prop==='backgroundImage') { b.backgroundImage=canvasField.value; refreshMapVisual(b); }
+            });
+            $('#block-list').addEventListener('change', e => {
+                const canvasField=e.target.closest('[data-map-canvas-field]');
+                if(canvasField) {
+                    const b=getBlock(canvasField.dataset.mapBlock); if(!b||b.type!=='map')return;
+                    const prop=canvasField.dataset.mapCanvasField;
+                    if(prop==='canvasHeight') b.canvasHeight=Math.max(150,Math.min(600,Number(canvasField.value)||300));
+                    else b[prop]=canvasField.value;
+                    if(prop==='canvasHeight') canvasField.value=b.canvasHeight;
+                    refreshMapVisual(b); renderMapInlineColorControls();
+                    return;
+                }
+                const fileInput=e.target.closest('input[type="file"][data-upload-id]');
+                if(!fileInput || fileInput.dataset.uploadKey!=='backgroundImage' || !fileInput.files?.[0])return;
+                (async()=>{
+                    const file=fileInput.files[0]; if(fileInput.dataset.reading==='true')return;
+                    fileInput.dataset.reading='true'; fileInput.disabled=true;
+                    try {
+                        if(!looksLikeImageFile(file))throw new Error('이미지 파일만 업로드할 수 있습니다.');
+                        if(file.size>12*1024*1024)throw new Error('이미지 파일은 12MB 이하로 선택하세요.');
+                        const dataUrl=await readImageFileAsDataURL(file); const b=getBlock(fileInput.dataset.uploadId);
+                        if(b&&b.type==='map'){b.backgroundImage=dataUrl;const urlField=$(`[data-map-canvas-field="backgroundImage"][data-map-block="${b.id}"]`,$('#block-list'));if(urlField)urlField.value='';renderAll();}
+                    } catch(err) { console.error('지도 배경 이미지 업로드 실패:',err); alert(err.message||'이미지 파일을 읽지 못했습니다.'); }
+                    finally {fileInput.value='';fileInput.disabled=false;delete fileInput.dataset.reading;}
+                })();
+            });
+            window.addEventListener('resize',()=>{
+                const wrap=$('#preview .map-inline-colors');
+                const sel=getSelectedMapObject();
+                if(!wrap || !sel) return;
+                const frame=$(`[data-map-id="${sel.b.id}"]`,$('#preview'));
+                const target=frame && (sel.kind==='node'
+                    ? frame.querySelector(`[data-node-id="${CSS.escape(sel.item.id)}"]`)
+                    : sel.kind==='text' ? frame.querySelector(`[data-map-text-id="${CSS.escape(sel.item.id)}"]`)
+                    : frame.querySelector(`[data-edge-id="${CSS.escape(sel.item.id)}"]`));
+                if(target) positionMapInlinePopup(wrap,target);
+            });
+            document.addEventListener('click', e => {
+                const tab=e.target.closest('[data-map-popup-tab]');
+                if(tab){
+                    const popup=tab.closest('.map-inline-style-popup'); if(!popup)return;
+                    popup.querySelectorAll('[data-map-popup-tab]').forEach(btn=>{const active=btn===tab;btn.classList.toggle('is-active',active);btn.setAttribute('aria-expanded',String(active));});
+                    popup.querySelectorAll('[data-map-popup-panel]').forEach(panel=>panel.hidden=panel.dataset.mapPopupPanel!==tab.dataset.mapPopupTab);
+                    const wrap=popup.closest('.map-inline-colors');
+                    const sel=getSelectedMapObject();
+                    if(wrap && sel) {
+                        const frame=$(`[data-map-id="${sel.b.id}"]`,$('#preview'));
+                        const target=frame && (sel.kind==='node'
+                            ? frame.querySelector(`[data-node-id="${CSS.escape(sel.item.id)}"]`)
+                            : sel.kind==='text' ? frame.querySelector(`[data-map-text-id="${CSS.escape(sel.item.id)}"]`)
+                            : frame.querySelector(`[data-edge-id="${CSS.escape(sel.item.id)}"]`));
+                        if(target) positionMapInlinePopup(wrap,target);
+                    }
+                    return;
+                }
+                const del=e.target.closest('[data-map-popup-delete]');
+                if(!del)return;
+                const b=getBlock(del.dataset.mapBlock); if(!b||b.type!=='map')return;
+                const kind=del.dataset.mapKind, id=del.dataset.mapItem;
+                if(kind==='node') { const removed=b.nodes.find(n=>n.id===id); b.nodes=b.nodes.filter(n=>n.id!==id); b.edges=b.edges.filter(ed=>ed.from!==removed?.id&&ed.to!==removed?.id); }
+                else if(kind==='edge') b.edges=b.edges.filter(ed=>ed.id!==id);
+                else if(kind==='text') b.texts=b.texts.filter(t=>t.id!==id);
+                selectedMapItem={blockId:b.id,kind:'canvas'}; renderAll();
+            });
+            // 팝업은 요소의 비텍스트 속성만 편집한다. 텍스트 서식은 왼쪽 공통 리치 편집기로 처리한다.
+            document.addEventListener('click', e => {
+                const swatch=e.target.closest('[data-map-inline-swatch]');
+                if(!swatch)return;
+                const popup=swatch.closest('.map-inline-color');
+                const input=popup?.querySelector('[data-map-inline-color]');
+                if(!input)return;
+                input.value=swatch.dataset.mapColor.toLowerCase();
+                input.dispatchEvent(new Event('change',{bubbles:true}));
+            });
+            document.addEventListener('change', async e => {
+                const imageInput=e.target.closest('[data-map-popup-image]');
+                if(imageInput && imageInput.files?.[0]) {
+                    const activeTabId=imageInput.closest('.map-inline-style-popup')?.querySelector('[data-map-popup-tab].is-active')?.dataset.mapPopupTab;
+                    const file=imageInput.files[0];
+                    try {
+                        if(!looksLikeImageFile(file))throw new Error('이미지 파일만 업로드할 수 있습니다.');
+                        if(file.size>12*1024*1024)throw new Error('이미지 파일은 12MB 이하로 선택하세요.');
+                        const dataUrl=await readImageFileAsDataURL(file);
+                        const b=getBlock(imageInput.dataset.mapBlock);
+                        const n=b?.nodes?.find(item=>item.id===imageInput.dataset.mapItem);
+                        if(!b||b.type!=='map'||!n)throw new Error('이미지를 적용할 노드를 찾지 못했습니다.');
+                        n.image=dataUrl;
+                        refreshMapVisual(b);
+                        renderMapInlineColorControls(activeTabId);
+                    } catch(err) {
+                        console.error('노드 이미지 업로드 실패:',err);
+                        alert(err.message||'이미지 파일을 읽지 못했습니다.');
+                    } finally { imageInput.value=''; }
+                    return;
+                }
+                const colorInput=e.target.closest('[data-map-inline-color]');
+                const styleInput=e.target.closest('[data-map-inline-field]');
+                if(!colorInput && !styleInput)return;
+                const el=colorInput||styleInput;
+                const activeTabId=el.closest('.map-inline-style-popup')?.querySelector('[data-map-popup-tab].is-active')?.dataset.mapPopupTab;
+                const b=getBlock(el.dataset.mapBlock); if(!b||b.type!=='map')return;
+                const kind=el.dataset.mapKind;
+                const arr=kind==='node'?b.nodes:kind==='text'?b.texts:b.edges;
+                const item=arr?.find(x=>x.id===el.dataset.mapItem); if(!item)return;
+                const prop=el.dataset.mapProp;
+                if(colorInput) {
+                    const color=el.value.trim();
+                    if(!/^#[0-9a-f]{6}$/i.test(color)) { el.value=item[prop]||'#64748b'; return; }
+                    item[prop]=color.toLowerCase();
+                } else if(['strokeWidth','outlineWidth','textOutlineWidth'].includes(prop)) item[prop]=Math.max(0,Math.min(10,Number(el.value)||0));
+                else if(prop==='width') item[prop]=Math.max(1,Math.min(12,Number(el.value)||2));
+                else if(prop==='w') item[prop]=Math.max(15,Math.min(300,Number(el.value)||72));
+                else if(prop==='h') item[prop]=Math.max(15,Math.min(600,Number(el.value)||42));
+                else if(prop==='x') item[prop]=Math.max(0,Math.min(kind==='node'?300-(Number(item.w)||72):300,Number(el.value)||0));
+                else if(prop==='y') {
+                    const max=kind==='node'?Math.max(0,(Number(b.canvasHeight)||300)-(Number(item.h)||42)):(Number(b.canvasHeight)||300);
+                    item[prop]=Math.max(0,Math.min(max,Number(el.value)||0));
+                } else if(prop==='image') item[prop]=el.value.trim();
+                else item[prop]=el.type==='number'?Number(el.value):el.value;
+                refreshMapVisual(b);
+                renderMapInlineColorControls(activeTabId);
+            });
             function expandAllEditorSections() {
                 collapsedBlocks.clear();
                 renderBlockEditors();
@@ -2758,6 +3474,18 @@ const ICONS = {
                     if (!b.photos?.[i]) return;
                     b.photos[i].caption = value; b.photos[i].captionHtml = htmlValue;
                     editorKey = `photo-${i}-caption`;
+                } else if (kind === 'map-node-text') {
+                    const item=b.nodes?.[i]; if(!item)return;
+                    item.text=value; item.textHtml=htmlValue;
+                    const align=mapHtmlTextAlign(el.outerHTML); if(align)item.align=align;
+                } else if (kind === 'map-edge-text') {
+                    const item=b.edges?.[i]; if(!item)return;
+                    item.label=value; item.labelHtml=htmlValue;
+                    const align=mapHtmlTextAlign(el.outerHTML); if(align)item.labelAlign=align;
+                } else if (kind === 'map-independent-text') {
+                    const item=b.texts?.[i]; if(!item)return;
+                    item.text=value; item.textHtml=htmlValue;
+                    const align=mapHtmlTextAlign(el.outerHTML); if(align)item.align=align;
                 } else if (kind === 'text' || kind === 'heading') {
                     b[kind] = value; b[kind+'Html'] = htmlValue;
                     editorKey = kind;
@@ -2786,6 +3514,12 @@ const ICONS = {
                 if (kind === 'title' || kind === 'meta' || kind === 'section-subtitle') {
                     const card = $(`#block-list [data-block-id="${b.id}"] .block-name`);
                     if (card) card.innerHTML = blockHeaderLabel(b, blocks.findIndex(x => x.id === b.id));
+                }
+                if (['map-node-text','map-edge-text','map-independent-text'].includes(kind)) {
+                    // 선택 행에는 텍스트 내용을 다시 출력하지 않는다. 노드명 변경 시 연결 상태만 갱신한다.
+                    if (kind === 'map-node-text') updateMapEdgeRouteSummaries(b);
+                    refreshMapVisual(b);
+                    renderMapInlineColorControls();
                 }
             }
             let lastRichRange = null;
@@ -2919,6 +3653,18 @@ const ICONS = {
             $('#rich-toolbar').addEventListener('click', e => {
                 const button = e.target.closest('button[data-format],button[data-align]');
                 if (!button) return;
+                if (selectedMapItem && (selectedMapItem.kind === 'node' || selectedMapItem.kind === 'text')) {
+                    const sel=getSelectedMapObject();
+                    if(sel?.item) {
+                        if(button.dataset.format==='bold') sel.item.bold=!sel.item.bold;
+                        else if(button.dataset.format==='italic') sel.item.italic=!sel.item.italic;
+                        else if(button.dataset.format==='underline') sel.item.underline=!sel.item.underline;
+                        else if(button.dataset.align) sel.item.align=({left:'left',center:'center',right:'right'})[button.dataset.align]||'center';
+                        renderAll();
+                    }
+                    if(button.dataset.align) { $('#align-menu').hidden=true; $('#toggle-align-menu').setAttribute('aria-expanded','false'); }
+                    return;
+                }
                 if (button.dataset.align) {
                     $('#align-menu').hidden = true;
                     $('#toggle-align-menu').setAttribute('aria-expanded', 'false');
@@ -3078,7 +3824,10 @@ const ICONS = {
                 setEditedValue(editable);
                 select.value = '';
             }
-            $('#selected-font-family').addEventListener('change', e => { const value=e.target.value; if (value) applySelectedFontFamily(value); });
+            $('#selected-font-family').addEventListener('change', e => {
+                const value=e.target.value; if(!value)return;
+                applySelectedFontFamily(value);
+            });
 
             function getInsertionRange() {
                 let editable = lastRichEditable;
@@ -3309,7 +4058,19 @@ const ICONS = {
                 wrapper.appendChild(iframe); insertNodeAtSelection(wrapper);
             });
 
+            let mapColorTarget = null;
+            let selectedMapItem = null;
             function applySelectedTextColor(color) {
+                if (mapColorTarget) {
+                    const { blockId, kind, index, prop } = mapColorTarget;
+                    const block = blocks.find(x => x.id === blockId);
+                    const item = block?.[kind]?.[index];
+                    if (item) { item[prop] = color; renderAll(); }
+                    mapColorTarget = null;
+                    $('#text-color-menu').hidden = true;
+                    $('#toggle-text-color').setAttribute('aria-expanded', 'false');
+                    return;
+                }
                 const editable = lastRichEditable;
                 const range = lastRichRange?.cloneRange();
                 if (!isRichEditable(editable) || !range || range.collapsed || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) return;
@@ -3338,6 +4099,30 @@ const ICONS = {
                 try { span.appendChild(range.extractContents()); range.insertNode(span); } catch (err) { return; }
                 const selection = window.getSelection();
                 const newRange = document.createRange(); newRange.selectNodeContents(span);
+                if (selection) { selection.removeAllRanges(); selection.addRange(newRange); }
+                lastRichRange = newRange.cloneRange(); lastRichEditable = editable;
+                lastRichBookmark = makeRichBookmark(editable, lastRichRange);
+                setEditedValue(editable); editable.focus({ preventScroll: true });
+            }
+            function clearSelectedHighlightColor() {
+                const editable = lastRichEditable;
+                const range = lastRichRange?.cloneRange();
+                if (!isRichEditable(editable) || !range || range.collapsed || !(editable === range.commonAncestorContainer || editable.contains(range.commonAncestorContainer))) return;
+                let fragment;
+                try { fragment = range.extractContents(); } catch (err) { return; }
+                const elements = [];
+                const walker = document.createTreeWalker(fragment, NodeFilter.SHOW_ELEMENT);
+                while (walker.nextNode()) elements.push(walker.currentNode);
+                elements.forEach(el => {
+                    el.style.removeProperty('background-color');
+                    if (!el.getAttribute('style')?.trim()) el.removeAttribute('style');
+                });
+                const span = document.createElement('span');
+                span.appendChild(fragment);
+                try { range.insertNode(span); } catch (err) { return; }
+                const selection = window.getSelection();
+                const newRange = document.createRange();
+                newRange.selectNodeContents(span);
                 if (selection) { selection.removeAllRanges(); selection.addRange(newRange); }
                 lastRichRange = newRange.cloneRange(); lastRichEditable = editable;
                 lastRichBookmark = makeRichBookmark(editable, lastRichRange);
@@ -3516,7 +4301,7 @@ const ICONS = {
                 document.querySelectorAll('[data-setting-toggle]').forEach(b => b.setAttribute('aria-expanded','false'));
             });
             $('#toggle-align-menu').addEventListener('click', () => toggleToolbarPopup('align-menu','toggle-align-menu'));
-            document.addEventListener('click', e => { if (e.target.closest('#rich-toolbar')) return; closeToolbarPopups(); });
+            document.addEventListener('click', e => { if (e.target.closest('#rich-toolbar, .map-color-trigger, #text-color-menu')) return; closeToolbarPopups(); });
             $('#toggle-font-size-menu').addEventListener('pointerdown', rememberRichSelection);
             $('#toggle-font-family-menu').addEventListener('pointerdown', rememberRichSelection);
             $('#toggle-font-size-menu').addEventListener('click', () => toggleToolbarPopup('font-size-menu','toggle-font-size-menu'));
@@ -3698,7 +4483,8 @@ const ICONS = {
                 $('#toolbar-config-list').querySelectorAll('.dragging,.drop-target').forEach(el => el.classList.remove('dragging','drop-target'));
             });
             document.addEventListener('click', e => {
-                if (!e.target.closest('#rich-toolbar .toolbar-group')) closeToolbarPopups();
+                if (e.target.closest('#rich-toolbar .toolbar-group, .map-color-trigger')) return;
+                closeToolbarPopups();
             });
             function refreshToolbarState() {
                 const toolbar = $('#rich-toolbar');
@@ -3723,8 +4509,9 @@ const ICONS = {
                 if (editable) {
                     const align = getComputedStyle(editable).textAlign;
                     const value = align === 'center' ? 'center' : (align === 'right' || align === 'end' ? 'right' : 'left');
-                    $('#align-current-icon').innerHTML = iconSvg(value === 'center' ? 'center' : value === 'right' ? 'right' : 'left', 18);
-                    $('#align-menu').querySelectorAll('[data-align]').forEach(button => button.classList.toggle('is-active', button.dataset.align === value));
+                    const alignIcon=$('#align-current-icon');
+                    if(alignIcon) alignIcon.innerHTML = iconSvg(value === 'center' ? 'center' : value === 'right' ? 'right' : 'left', 18);
+                    $('#align-menu')?.querySelectorAll('[data-align]').forEach(button => button.classList.toggle('is-active', button.dataset.align === value));
                 }
             }
             loadToolbarSettings();
@@ -3748,6 +4535,7 @@ const ICONS = {
             renderToolbarPalette('#highlight-color-presets', backgroundPalette, 'highlight');
             $('#text-color-presets').addEventListener('click', e => { const swatch = e.target.closest('[data-toolbar-color]'); if (swatch) applySelectedTextColor(swatch.dataset.toolbarColor); });
             $('#highlight-color-presets').addEventListener('click', e => { const swatch = e.target.closest('[data-toolbar-color]'); if (swatch) applySelectedHighlightColor(swatch.dataset.toolbarColor); });
+            $('#clear-highlight-color').addEventListener('click', clearSelectedHighlightColor);
             $('#toggle-text-color').addEventListener('click', () => toggleToolbarPopup('text-color-menu','toggle-text-color'));
             $('#toggle-highlight-color').addEventListener('click', () => toggleToolbarPopup('highlight-color-menu','toggle-highlight-color'));
             $('#selected-highlight-color').addEventListener('pointerdown', rememberRichSelection);
@@ -3758,7 +4546,9 @@ const ICONS = {
             });
             $('#selected-text-color').addEventListener('input', e => {
                 const color = e.target.value.trim();
-                if (/^#[0-9a-fA-F]{6}$/.test(color)) applySelectedTextColor(color.toLowerCase());
+                if (!/^#[0-9a-fA-F]{6}$/.test(color)) return;
+                if (mapColorTarget) { const block=blocks.find(x=>x.id===mapColorTarget.blockId); const item=block?.[mapColorTarget.kind]?.[mapColorTarget.index]; if(item){item[mapColorTarget.prop]=color.toLowerCase();renderPreview();} }
+                else applySelectedTextColor(color.toLowerCase());
             });
             $('#selected-text-color').addEventListener('change', e => {
                 const color = e.target.value.trim();
@@ -3766,7 +4556,10 @@ const ICONS = {
                     e.target.setCustomValidity('HEX 색상은 #000000 형식으로 입력하세요.');
                     e.target.reportValidity();
                     e.target.setCustomValidity('');
-                } else e.target.value = color.toLowerCase();
+                } else {
+                    e.target.value = color.toLowerCase();
+                    if (mapColorTarget) { mapColorTarget = null; $('#text-color-menu').hidden = true; $('#toggle-text-color').setAttribute('aria-expanded','false'); renderAll(); }
+                }
             });
             ['#preview','#block-list','#worksheet-settings-fields'].forEach(rootSelector => {
                 const root = $(rootSelector);
@@ -3797,8 +4590,10 @@ const ICONS = {
                 if (settingChoices && !document.querySelector(`[data-setting-font-choice="${CSS.escape(name)}"]`)) { const button = document.createElement('button'); button.className = 'btn setting-choice'; button.type = 'button'; button.dataset.settingFontChoice = name; button.textContent = name; settingChoices.insertAdjacentElement('afterend', button); }
                 customFontNameInput.value = ''; customFontUrlInput.value = '';
             });
-            [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('input', () => { renderPreview(); renderColorPresets(); }));
-            [fontScaleInput, outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('change', () => { renderPreview(); renderColorPresets(); }));
+            fontScaleInput?.addEventListener('input', applyLiveFontScale);
+            fontScaleInput?.addEventListener('change', () => { applyLiveFontScale(); renderColorPresets(); });
+            [outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('input', () => { renderPreview(); renderColorPresets(); }));
+            [outputThemeInput, globalFontInput].filter(Boolean).forEach(el => el.addEventListener('change', () => { renderPreview(); renderColorPresets(); }));
             function syncSettingChoiceButtons() {
                 document.querySelectorAll('[data-setting-font-choice]').forEach(b => b.classList.toggle('is-active', b.dataset.settingFontChoice === globalFontInput.value));
                 document.querySelectorAll('[data-setting-theme-choice]').forEach(b => b.classList.toggle('is-active', b.dataset.settingThemeChoice === outputThemeInput.value));
@@ -3857,6 +4652,18 @@ const ICONS = {
                 else if (key === 'page' || key === 'chapter') delete b.metaHtml;
                 else if (key.startsWith('word-')) { const p=key.split('-'); if (b.words?.[Number(p[1])]) delete b.words[Number(p[1])][p[2]+'Html']; }
                 else if (key.startsWith('photo-')) { const p=key.split('-'); if (b.photos?.[Number(p[1])]) delete b.photos[Number(p[1])][p[2]+'Html']; }
+                if (b.type === 'map' && key.startsWith('edge-') && key.endsWith('-colorPreset')) {
+                    const i=Number(key.split('-')[1]); if (b.edges?.[i] && val !== 'custom') b.edges[i].color=val; renderPreview(); return true;
+                }
+                if (b.type === 'map' && /^(node|edge|text)-/.test(key)) {
+                    const p=key.split('-'), kind=p[0], i=Number(p[1]), prop=p.slice(2).join('-');
+                    const arr=kind==='node'?b.nodes:kind==='edge'?b.edges:b.texts, obj=arr?.[i];
+                    if(!obj) return false;
+                    const value=el.type==='checkbox'?el.checked:(['x','y','w','h','width','size','textSize'].includes(prop)?Number(val):val);
+                    obj[prop]=value;
+                    renderPreview();
+                    return true;
+                }
                 if (key.startsWith('word-')) {
                     const p=key.split('-'), wi=Number(p[1]);
                     if (!b.words?.[wi]) return false;
@@ -3886,6 +4693,21 @@ const ICONS = {
             }
             $('#block-list').addEventListener('input', e => {
                 const el=e.target;
+                // 노드 내부 텍스트는 일반 필드 처리보다 먼저 데이터에 직접 반영한다.
+                // 편집창의 값이 렌더링 중 기본 노드명으로 덮어써지는 문제를 방지한다.
+                const nodeTextMatch = (el.dataset.key || '').match(/^node-(\d+)-text$/);
+                if (nodeTextMatch) {
+                    const b = getBlock(el.dataset.id);
+                    const n = b?.nodes?.[Number(nodeTextMatch[1])];
+                    if (n) {
+                        n.text = el.value;
+                        const map = $(`[data-map-id="${b.id}"]`, $('#preview'));
+                        const svgText = map?.querySelector(`[data-node-text-id="${n.id}"]`);
+                        if (svgText) svgText.textContent = el.value;
+                        else renderPreview();
+                    }
+                    return;
+                }
                 if (el.matches('input[type="text"], input[type="number"], textarea')) updateBlockFieldFromEditor(el);
             });
             $('#block-list').addEventListener('change', e => {
@@ -3895,7 +4717,7 @@ const ICONS = {
                     if (b) { b.showBorder = el.checked; renderPreview(); }
                     return;
                 }
-                if (el.matches('select')) updateBlockFieldFromEditor(el);
+                if (el.matches('select') || el.type === 'checkbox' || el.type === 'color') updateBlockFieldFromEditor(el);
                 if (el.dataset.action === 'answer') {
                     const b=getBlock(el.dataset.id);
                     if (b) { b.questions[Number(el.dataset.qi)].answer=el.value; lastRichEditable = lastRichRange = lastRichBookmark = null; renderPreview(); }
@@ -3913,52 +4735,100 @@ const ICONS = {
                 renderAll();
             }));
 
-            let movingStation = null;
+            let movingMapItem = null;
+            let resizingMapNode = null;
+            let resizingMapCanvas = null;
+            let suppressMapClickAfterDrag = false;
             $('#preview').addEventListener('pointerdown', e => {
-                const label = e.target.closest('[data-station-label-index]');
-                const point = e.target.closest('circle[data-station-index]');
-                const node = label || point;
-                if (!node) return;
-                const svg = node.ownerSVGElement,
-                    map = svg?.closest('[data-map-id]');
-                if (!svg || !map) return;
-                movingStation = {
-                    id: map.dataset.mapId,
-                    index: Number(label ? label.dataset.stationLabelIndex : point.dataset.stationIndex),
-                    kind: label ? 'label' : 'point'
-                };
+                const otherEditable=e.target.closest('[contenteditable="true"][data-edit]');
+                if(otherEditable && !otherEditable.matches('[data-map-text-id]') && selectedMapItem) clearMapSelection();
+                const nodeResize=e.target.closest('[data-node-resize]');
+                if(nodeResize) {
+                    const map=nodeResize.closest('[data-map-id]'), b=map&&getBlock(map.dataset.mapId), n=b?.nodes?.find(item=>item.id===nodeResize.dataset.nodeResize), svg=map?.querySelector('svg');
+                    if(!b||!n||!svg)return;
+                    const rect=svg.getBoundingClientRect();
+                    resizingMapNode={id:b.id,itemId:n.id,startX:e.clientX,startY:e.clientY,startW:Number(n.w)||72,startH:Number(n.h)||42,scaleX:300/Math.max(1,rect.width),scaleY:(Number(b.canvasHeight)||300)/Math.max(1,rect.height),moved:false};
+                    e.preventDefault(); e.stopPropagation(); return;
+                }
+                const resize=e.target.closest('[data-map-resize]');
+                if(resize) {
+                    const b=getBlock(resize.dataset.mapResize); if(!b)return;
+                    const shell=$(`[data-map-shell="${b.id}"]`,$('#preview')), frame=shell?.querySelector('.map-frame'); if(!frame)return;
+                    resizingMapCanvas={id:b.id,startY:e.clientY,startHeight:Number(b.canvasHeight)||300,width:frame.getBoundingClientRect().width,moved:false};
+                    e.preventDefault(); return;
+                }
+                const node=e.target.closest('[data-node-id]'), txt=e.target.closest('[data-map-text-id]');
+                const item=node||txt; if(!item)return;
+                const svg=item.ownerSVGElement,map=svg?.closest('[data-map-id]'); if(!svg||!map)return;
+                const b=getBlock(map.dataset.mapId); if(!b)return;
+                movingMapItem={id:b.id,kind:node?'node':'text',itemId:node?node.dataset.nodeId:txt.dataset.mapTextId,startX:e.clientX,startY:e.clientY,moved:false};
                 e.preventDefault();
             });
-            document.addEventListener('pointermove', e => {
-                if (!movingStation) return;
-                const currentMap = $(`[data-map-id="${movingStation.id}"]`, $('#preview'));
-                const currentSvg = currentMap?.querySelector('svg');
-                if (!currentSvg) return;
-                const rect = currentSvg.getBoundingClientRect();
-                const svgX = (e.clientX - rect.left) / rect.width * 300;
-                const svgY = (e.clientY - rect.top) / rect.height * 300;
-                const b = getBlock(movingStation.id);
-                if (!b || !b.stations[movingStation.index]) return;
-                const station = b.stations[movingStation.index];
-                if (movingStation.kind === 'label') {
-                    const px = 20 + (Number(station.x) || 0) * 2.6;
-                    const py = 20 + (Number(station.y) || 0) * 2.6;
-                    const baseX = px > 220 ? px - 11 : px + 11;
-                    const baseY = py < 32 ? py + 19 : py - 10;
-                    station.labelDx = Math.round(svgX - baseX);
-                    station.labelDy = Math.round(svgY - baseY);
-                } else {
-                    station.x = Math.max(0, Math.min(100, Math.round((svgX - 20) / 2.6)));
-                    station.y = Math.max(0, Math.min(100, Math.round((svgY - 20) / 2.6)));
-                    const editor = $(`[data-id="${b.id}"][data-key="station-${movingStation.index}-x"]`);
-                    const editorY = $(`[data-id="${b.id}"][data-key="station-${movingStation.index}-y"]`);
-                    if (editor) editor.value = station.x;
-                    if (editorY) editorY.value = station.y;
+            document.addEventListener('pointermove',e=>{
+                if(resizingMapNode) {
+                    const state=resizingMapNode,b=getBlock(state.id),n=b?.nodes?.find(item=>item.id===state.itemId); if(!b||!n)return;
+                    const dx=(e.clientX-state.startX)*state.scaleX,dy=(e.clientY-state.startY)*state.scaleY;
+                    if(Math.abs(dx)>2||Math.abs(dy)>2)state.moved=true;
+                    n.w=Math.round(Math.max(18,Math.min(300-(Number(n.x)||0),state.startW+dx)));
+                    n.h=Math.round(Math.max(18,Math.min((Number(b.canvasHeight)||300)-(Number(n.y)||0),state.startH+dy)));
+                    renderPreview(); return;
                 }
+                if(resizingMapCanvas) {
+                    const b=getBlock(resizingMapCanvas.id), shell=$(`[data-map-shell="${resizingMapCanvas.id}"]`,$('#preview')), frame=shell?.querySelector('.map-frame'), svg=frame?.querySelector('svg');
+                    if(!b||!frame||!svg)return;
+                    if(Math.abs(e.clientY-resizingMapCanvas.startY)>2) resizingMapCanvas.moved=true;
+                    const h=Math.max(150,Math.min(600,Math.round((resizingMapCanvas.startHeight+(e.clientY-resizingMapCanvas.startY)/Math.max(1,resizingMapCanvas.width)*300)/10)*10));
+                    b.canvasHeight=h; frame.style.aspectRatio=`300 / ${h}`; svg.setAttribute('viewBox',`0 0 300 ${h}`);
+                    const field=$(`#block-list [data-map-canvas-field="canvasHeight"][data-map-block="${b.id}"]`); if(field)field.value=h;
+                    return;
+                }
+                if(!movingMapItem)return;
+                if(!movingMapItem.moved && Math.hypot(e.clientX-movingMapItem.startX,e.clientY-movingMapItem.startY)<3)return;
+                movingMapItem.moved=true;
+                const map=$(`[data-map-id="${movingMapItem.id}"]`,$('#preview')),svg=map?.querySelector('svg');if(!svg)return;
+                const r=svg.getBoundingClientRect(),b=getBlock(movingMapItem.id);if(!b)return;
+                const fracX=Math.max(0,Math.min(1,(e.clientX-r.left)/Math.max(1,r.width))),fracY=Math.max(0,Math.min(1,(e.clientY-r.top)/Math.max(1,r.height)));
+                if(movingMapItem.kind==='node') {
+                    const n=b.nodes.find(n=>n.id===movingMapItem.itemId); if(n){const x=fracX*300,y=fracY*(Number(b.canvasHeight)||300);n.x=Math.round(Math.max(0,Math.min(300-(Number(n.w)||72),x-(Number(n.w)||72)/2)));n.y=Math.round(Math.max(0,Math.min((Number(b.canvasHeight)||300)-(Number(n.h)||42),y-(Number(n.h)||42)/2)));}
+                } else {const t=b.texts.find(t=>t.id===movingMapItem.itemId);if(t){t.x=Math.round(fracX*300);t.y=Math.round(fracY*(Number(b.canvasHeight)||300));}}
                 renderPreview();
             });
-            document.addEventListener('pointerup', () => movingStation = null);
-            document.addEventListener('pointercancel', () => movingStation = null);
+            document.addEventListener('pointerup',()=>{
+                if(resizingMapNode) { if(resizingMapNode.moved)suppressMapClickAfterDrag=true; resizingMapNode=null; return; }
+                if(resizingMapCanvas) { if(resizingMapCanvas.moved) suppressMapClickAfterDrag=true; resizingMapCanvas=null; return; }
+                if(!movingMapItem)return;
+                const moved=movingMapItem.moved,{id,kind,itemId}=movingMapItem; movingMapItem=null;
+                if(moved) { suppressMapClickAfterDrag = true; }
+            });
+            document.addEventListener('pointercancel',()=>{movingMapItem=null;resizingMapNode=null;resizingMapCanvas=null;});
+            $('#preview').addEventListener('keydown',e=>{const handle=e.target.closest('[data-map-resize]');if(!handle||!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const b=getBlock(handle.dataset.mapResize);if(!b)return;b.canvasHeight=Math.max(150,Math.min(600,(Number(b.canvasHeight)||300)+(e.key==='ArrowUp'?-10:10)));selectedMapItem={blockId:b.id,kind:'canvas'};renderAll();});
+            $('#preview').addEventListener('click',e=>{
+                // 패널은 지도 레이아웃 내부에 있으므로 클릭이 미리보기 선택 해제까지 전파되지 않게 한다.
+                if(e.target.closest('.map-inline-colors')) return;
+                if(suppressMapClickAfterDrag) { suppressMapClickAfterDrag=false; e.preventDefault(); e.stopPropagation(); return; }
+                const edge=e.target.closest('[data-edge-id]');
+                if(edge) { const map=edge.closest('[data-map-id]'); if(map)selectMapItem(map.dataset.mapId,'edge',edge.dataset.edgeId,true); return; }
+                const node=e.target.closest('[data-node-id]'), txt=e.target.closest('[data-map-text-id]');
+                if(node||txt) { const item=node||txt, map=item.closest('[data-map-id]'); if(map)selectMapItem(map.dataset.mapId,node?'node':'text',node?node.dataset.nodeId:txt.dataset.mapTextId,true); return; }
+                const frame=e.target.closest('[data-map-id]');
+                if(frame) { selectMapItem(frame.dataset.mapId,'canvas'); return; }
+                if (selectedMapItem) clearMapSelection();
+            });
+            $('#preview').addEventListener('dblclick',e=>{
+                const node=e.target.closest('[data-node-id]'), txt=e.target.closest('[data-map-text-id]'), edge=e.target.closest('[data-edge-id]');
+                const target=node||txt||edge; const map=target?.closest('[data-map-id]'); if(!map)return;
+                const kind=node?'node':txt?'text':'edge', id=node?node.dataset.nodeId:txt?txt.dataset.mapTextId:edge.dataset.edgeId;
+                selectMapItem(map.dataset.mapId,kind,id);
+                const b=getBlock(map.dataset.mapId); if(!b)return;
+                const index=(kind==='node'?b.nodes:kind==='text'?b.texts:b.edges).findIndex(item=>item.id===id);
+                const editKind=kind==='node'?'map-node-text':kind==='text'?'map-independent-text':'map-edge-text';
+                const editor=$(`#block-list [data-edit="${editKind}"][data-block-id="${b.id}"][data-index="${index}"]`);
+                if(editor){editor.scrollIntoView({block:'nearest',behavior:'smooth'});editor.focus({preventScroll:true});}
+            });
+            $('#preview').addEventListener('input', e => {
+                const tEl=e.target.closest('[data-edit="map-text"]'); if(!tEl)return;
+                const b=getBlock(tEl.dataset.blockId), t=b?.texts?.find(x=>x.id===tEl.dataset.textId); if(t)t.text=tEl.textContent;
+            });
 
             let dragId = null;
             const blockList = $('#block-list');
@@ -4022,6 +4892,7 @@ const ICONS = {
                         if (headingBar) headingBar.remove();
                     }
                 });
+                exportRoot.querySelectorAll('[data-map-editor-only]').forEach(el => el.remove());
                 markup = exportRoot.innerHTML;
                 markup = markup.replace(/<div class="preview-section-tools">[\s\S]*?<\/div>/g, '')
                     .replace(/ contenteditable="true"/g, '')
@@ -4040,7 +4911,8 @@ const ICONS = {
                 if (customFont?.name && customFont?.url && !fontsForExport.some(f => f.name === customFont.name)) fontsForExport.push(customFont);
                 const customFontCss = fontsForExport.map(font => font.url.includes('.css') ? `@import url('${font.url.replace(/'/g, '%27')}');` : `@font-face{font-family:'${font.name.replace(/['\\]/g, '')}';src:url('${font.url.replace(/'/g, '%27')}') format('woff2');font-display:swap;}`).join('\n');
                 const effectiveFont = fontsForExport.some(font => font.name === fontFamily) ? `\"${fontFamily}\",sans-serif` : fontFamily;
-                const dynamicCss = `${customFontCss}:root{--font-scale:${scale};--worksheet-font:${effectiveFont};--worksheet-bg:${worksheetBg}} body{font-family:var(--worksheet-font);background:var(--worksheet-bg)}`;
+                const mapBackgroundFitCss = `.map-frame{position:relative;overflow:hidden}.map-frame .map-bg{position:absolute;object-position:center;max-width:none;max-height:none}.map-frame .map-bg.fit-cover{inset:8px;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important;transform:none;object-fit:cover}.map-frame .map-bg.fit-contain{inset:8px;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important;transform:none;object-fit:contain}.map-frame .map-bg.fit-width{top:50%!important;right:0!important;bottom:auto!important;left:0!important;inset:auto 0 auto 0;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;transform:translateY(-50%)!important;object-fit:fill}.map-frame .map-bg.fit-height{top:0!important;right:auto!important;bottom:0!important;left:50%!important;inset:0 auto 0 50%;width:auto!important;height:100%!important;max-width:none!important;max-height:none!important;transform:translateX(-50%)!important;object-fit:fill}`;
+                const dynamicCss = `${customFontCss}:root{--font-scale:${scale};--worksheet-font:${effectiveFont};--worksheet-bg:${worksheetBg}} body{font-family:var(--worksheet-font);background:var(--worksheet-bg)}${mapBackgroundFitCss}`;
                 const script = `(function(){function grade(r){if(!r||r.type!=="radio"||!r.name||!r.checked)return;const q=r.closest(".quiz-q");if(!q)return;q.classList.remove("correct","wrong");q.querySelectorAll(".quiz-option-label").forEach(function(label){label.classList.remove("selected")});const label=r.closest(".quiz-option-label");if(label)label.classList.add("selected");q.classList.add(r.dataset.correct==="yes"?"correct":"wrong")}function findRadio(target){return target.closest('input[type="radio"][name^="learn-"]')||target.closest(".quiz-option-label")?.querySelector('input[type="radio"][name^="learn-"]')}document.addEventListener("change",function(e){if(e.target&&e.target.matches('input[type="radio"][name^="learn-"]'))grade(e.target)});document.addEventListener("click",function(e){const r=findRadio(e.target);if(!r)return;if(!r.checked){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}grade(r)})})();`;
                 const full = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="${exportCssUrl}"><style>${dynamicCss}</style></head><body data-theme="${theme}">${markup}<script>${script}<\/script></body></html>`;
                 const blob = new Blob([full], {
