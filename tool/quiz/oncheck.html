@@ -115,7 +115,8 @@
     .map-object-row > .field { grid-column:1 / -1; margin:2px 0 0; min-width:0; }
     .map-object-row > .map-object-select { grid-column:1; grid-row:1; }
     .map-object-row > .map-list-delete { grid-column:2; grid-row:1; align-self:start; display:flex; align-items:center; justify-content:center; min-width:34px; width:34px; height:34px; padding:0; }
-    .map-object-row .editor-rich-input { min-height:36px; padding:8px; overflow-wrap:anywhere; }
+    .map-object-row .editor-rich-input { min-height:36px; padding:8px; overflow-wrap:anywhere;    border: 1px solid #cbd3df;
+    border-radius: 8px !important; }
     .map-object-row .field > label { font-size:.78rem; margin-bottom:4px; }
     .map-list-rows > .small { grid-column:1 / -1; }
     .map-object-select { width:100%; min-width:0; min-height:34px; text-align:left; display:grid; align-content:center; gap:2px; padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
@@ -2457,7 +2458,7 @@ const ICONS = {
                     base.backgroundFit = 'cover';
                     base.canvasHeight = 200;
                     base.coordinateUnit = 'pt';
-                    base.nodes = [{id:uid(), x:66, y:55, w:32, h:22, shape:'rect', fill:'#ffffff', stroke:'#3976df', strokeWidth:2, image:'', text:'노드 1', textColor:'#202a3a', textSize:9}, {id:uid(), x:204, y:155, w:36, h:25, shape:'ellipse', fill:'#ffffff', stroke:'#1a9b7a', strokeWidth:2, image:'', text:'노드 2', textColor:'#202a3a', textSize:9}];
+                    base.nodes = [{id:uid(), x:66, y:55, w:42, h:30, shape:'rect', fill:'#ffffff', stroke:'#3976df', strokeWidth:2, image:'', text:'노드 1', textColor:'#202a3a', textSize:12}, {id:uid(), x:204, y:155, w:45, h:35, shape:'ellipse', fill:'#ffffff', stroke:'#1a9b7a', strokeWidth:2, image:'', text:'노드 2', textColor:'#202a3a', textSize:12}];
                     base.edges = [{id:uid(), from:null, to:null, color:'#64748b', width:2, style:'solid', arrow:'end', label:''}];
                     base.texts = [{id:uid(), text:'텍스트', x:150, y:36, size:12, color:'#222222', bold:false, italic:false, align:'middle'}];
                     base.edges[0].from=base.nodes[0].id; base.edges[0].to=base.nodes[1].id;
@@ -3139,7 +3140,7 @@ const ICONS = {
                     b.words.splice(idx, 1);
                     renderAll();
                 } else if (action === 'add-node') {
-                    b.nodes ||= []; const n={id:uid(),x:120+Math.random()*60,y:120+Math.random()*60,w:32,h:22,shape:'rect',fill:'#ffffff',stroke:'#3976df',strokeWidth:2,image:'',text:'노드',textColor:'#202a3a',textSize:9}; b.nodes.push(n); selectedMapItem={blockId:b.id,kind:'node',itemId:n.id}; renderAll();
+                    b.nodes ||= []; const n={id:uid(),x:120+Math.random()*60,y:120+Math.random()*60,w:32,h:22,shape:'rect',fill:'#ffffff',stroke:'#3976df',strokeWidth:2,image:'',text:'노드',textColor:'#202a3a',textSize:12}; b.nodes.push(n); selectedMapItem={blockId:b.id,kind:'node',itemId:n.id}; renderAll();
                 } else if (action === 'remove-node') {
                     const removed=b.nodes.splice(idx,1)[0]; b.edges=(b.edges||[]).filter(e=>e.from!==removed?.id&&e.to!==removed?.id); renderAll();
                 } else if (action === 'add-edge') {
