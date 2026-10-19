@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>온책 학습지 메이커</title>
+    <title>학습지 메이커</title>
 <style>
     :root {
         --ink: #202a3a;
@@ -95,18 +95,17 @@
 
     .app {
         width: 100%;
-        max-width: 1500px;
+        max-width: 1600px;
         margin: auto;
         padding: 18px;
         display: grid;
-        grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+        grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr);
         gap: 18px;
         align-items: start;
     }
 
     .editor,
 
-    /* 지도 전용 속성 패널 및 캔버스 높이 조절 */
     .preview-workspace { display: block; min-width: 0; }
     .map-list-section { border:1px solid var(--line); border-radius:9px; padding:9px; margin-top:10px; }
     .map-list-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:7px; }
@@ -119,9 +118,9 @@
     border-radius: 8px !important; }
     .map-object-row .field > label { font-size:.78rem; margin-bottom:4px; }
     .map-list-rows > .small { grid-column:1 / -1; }
-    .map-object-select { width:100%; min-width:0; min-height:34px; text-align:left; display:grid; align-content:center; gap:2px; padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
-    .map-object-select strong { display:block; min-width:0; font-size:.83rem; font-weight:700; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; overflow-wrap:normal; }
-    .map-object-select span { display:block; min-width:0; max-width:100%; font-size:.75rem; color:var(--muted); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; overflow-wrap:normal; }
+    .map-object-select { width:100%; min-width:0; min-height:34px; text-align:left; display:flex; align-items:center; gap:6px; padding:6px 9px; border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--ink); }
+    .map-object-select strong { display:block; flex:0 1 auto; width:auto; max-width:45%; min-width:0; font-size:.83rem; font-weight:700; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; overflow-wrap:normal; }
+    .map-object-select span { display:block; flex:1 1 auto; width:auto; min-width:0; max-width:none; font-size:.75rem; color:var(--muted); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; overflow-wrap:normal; }
     .map-object-select.is-selected { border-color:var(--blue); background:var(--blue-soft); box-shadow:inset 0 0 0 1px var(--blue); }
     .map-list-delete { flex:none; }
     .map-resize-handle { display:flex; align-items:center; justify-content:center; gap:7px; width:100%; min-height:23px; padding:3px 8px; border:0; border-radius:0 0 8px 8px; background:#e9eef8; color:#526075; font-size:.75rem; cursor:ns-resize; touch-action:none; user-select:none; }
@@ -131,7 +130,7 @@
     #preview .map-resize-handle { flex:none; margin:0; }
     #preview .map-frame svg { position:absolute; inset:0; width:100%; height:100%; }
     #preview .map-frame .map-bg { position:absolute; inset:8px; width:calc(100% - 16px); height:calc(100% - 16px); max-width:none; max-height:none; object-position:center; }
-    /* 지도 배경 맞춤 방식: 선택값별로 위치와 크기를 명시해 브라우저의 기본 배치에 의존하지 않는다. */
+    
     #preview .map-frame .map-bg.fit-cover {
         position:absolute; inset:8px; width:calc(100% - 16px) !important; height:calc(100% - 16px) !important;
         max-width:none !important; max-height:none !important; transform:none; object-fit:cover; object-position:center;
@@ -156,7 +155,7 @@
     #preview .map-edge-group { cursor:pointer; }
     #preview .map-edge-selected line { stroke:#315fd3 !important; stroke-width:4 !important; }
     #preview .map-independent-selected { paint-order:stroke fill; stroke:#315fd3; stroke-width:1.2; }
-    /* 지도 요소 옆의 작은 스타일 팝업: 상단 서식 도구의 버튼/패널과 같은 디자인 언어 */
+ 
     .map-inline-colors { position:absolute; z-index:85; display:flex; align-items:center; }
     .map-inline-colors[hidden] { display:none !important; }
     .map-inline-tool-wrap {
@@ -266,13 +265,6 @@
         width: 100%;
     }
 
-    .sticky-title {
-        position: sticky;
-        top: 72px;
-        z-index: 10;
-        background: var(--bg);
-        padding: 0 0 10px;
-    }
 
     .heading {
         display: flex;
@@ -332,7 +324,7 @@
 
     .add-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 7px;
     }
 
@@ -1145,7 +1137,6 @@
         resize: vertical !important;
     }
 
-    /* 지정된 입력 영역의 모양과 크기 조절 방식을 통일 */
     .settings-rich-input,
     #block-list .section-title-subtitle-row .editor-rich-input,
     #block-list .editor-rich-input[data-edit="text"],
@@ -1437,15 +1428,13 @@
 
     .area-add-card {
         position: sticky;
-        top: 73px;
+        top: 65px;
         z-index: 18;
         align-self: start;
     }
 
     @media (max-width: 900px) {
-        .sticky-title {
-            position: static;
-        }
+
 
         .topbar {
             position: static;
@@ -1795,7 +1784,7 @@
 
     .toolbar-config-list {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 6px;
     }
 
@@ -2013,7 +2002,7 @@
         }
 
         .add-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
         .preview-shell {
@@ -2071,7 +2060,6 @@
 
 
 
-    /* 지도 요소 팝업: 상단 서식 도구의 아이콘/팝오버 스타일에 맞춘 레이아웃 복구 */
     #preview { position: relative; }
     #preview .map-inline-colors {
         position: absolute; z-index: 160; display: block; min-width: 0;
@@ -2247,14 +2235,14 @@
             </div>
             <div class="card area-add-card">
                 <div class="add-grid">
-                    <button class="btn" data-add="body">＋ 본문</button>
+                    <button class="btn" data-add="body">본문</button>
 
-                    <button class="btn" data-add="photo">＋ 사진</button>
-                    <button class="btn" data-add="quiz">＋ 문제</button>
-                    <button class="btn" data-add="vocab">＋ 단어</button>
-                    <button class="btn" data-add="map">＋ 지도</button>
+                    <button class="btn" data-add="photo">사진</button>
+                    <button class="btn" data-add="quiz">문제</button>
+                    <button class="btn" data-add="vocab">단어</button>
+                    <button class="btn" data-add="map">관계도</button>
 
-                    <button class="btn" data-add="custom">＋ HTML</button>
+                    <button class="btn" data-add="custom">HTML</button>
                 </div>
 
             </div>
@@ -2416,8 +2404,8 @@ const ICONS = {
                     title: '단어'
                 },
                 map: {
-                    label: '지도',
-                    title: '지도'
+                    label: '관계도',
+                    title: '관계도'
                 },
                 body: {
                     label: '본문',
@@ -2490,7 +2478,7 @@ const ICONS = {
                 kickerInput = $('#doc-kicker');
             const heroBgInput = $('#hero-bg'), worksheetBgInput = null, fontScaleInput = $('#font-scale'), outputThemeInput = $('#output-theme'), globalFontInput = $('#global-font-family'), customFontNameInput = $('#custom-font-name'), customFontUrlInput = $('#custom-font-url');
             let customFonts = [];
-            let customFont = { name: '', url: '' }; // 이전 저장 파일 호환용
+            let customFont = { name: '', url: '' }; 
             const getFontScale = () => { const pt = Number(fontScaleInput?.value || 12); return String(Math.max(6, Math.min(36, Number.isFinite(pt) ? pt : 12)) / 12); };
             function scaleSvgFontValue(value, ratio) {
                 const match = String(value || '').trim().match(/^(-?(?:\d+\.?\d*|\.\d+))(px|pt|em|rem|%)?$/i);
@@ -2721,8 +2709,8 @@ const ICONS = {
                   <div class="map-list-rows" data-map-list="${b.id}">${b.nodes.map((n,i)=>`<div class="map-object-row" data-map-row data-search-text="${attr(`노드 ${i+1} ${n.text||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('node',n.id)?'is-selected':''}" data-map-select="node" data-map-block="${b.id}" data-map-item="${attr(n.id)}"><strong>노드 ${i+1}</strong><span>${esc(({rect:'사각형',round:'둥근 사각형',ellipse:'타원',diamond:'마름모',none:'윤곽 없음'})[n.shape] || '노드')}</span></button><button class="btn danger map-list-delete" type="button" data-action="remove-node" data-id="${b.id}" data-index="${i}" title="노드 삭제" aria-label="노드 삭제">${iconSvg('trash',15)}</button>${mapRichField('내용',n,'text','map-node-text',b.id,i,'노드 텍스트',n.align||'center')}</div>`).join('') || '<span class="small">노드가 없습니다.</span>'}</div></div>
                 <div class="map-list-section"><div class="map-list-head"><strong>연결선 (${b.edges.length})</strong><button class="btn" type="button" data-action="add-edge" data-id="${b.id}">＋ 연결선</button></div>
                   <div class="map-list-rows" data-map-list="${b.id}">${b.edges.map((ed,i)=>{const from=b.nodes.findIndex(n=>n.id===ed.from),to=b.nodes.findIndex(n=>n.id===ed.to),label=`${from>=0?nodeName(b.nodes[from],from):'미지정'} → ${to>=0?nodeName(b.nodes[to],to):'미지정'}`;return `<div class="map-object-row" data-map-row data-search-text="${attr(`연결선 ${label} ${ed.label||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('edge',ed.id)?'is-selected':''}" data-map-select="edge" data-map-block="${b.id}" data-map-item="${attr(ed.id)}"><strong>연결선 ${i+1}</strong><span data-map-route-summary="${attr(ed.id)}" data-map-route-block="${attr(b.id)}">${esc(label)}</span></button><button class="btn danger map-list-delete" type="button" data-action="remove-edge" data-id="${b.id}" data-index="${i}" title="연결선 삭제" aria-label="연결선 삭제">${iconSvg('trash',15)}</button>${mapRichField('라벨',ed,'label','map-edge-text',b.id,i,'연결선 텍스트',ed.labelAlign||'center')}</div>`}).join('') || '<span class="small">연결선이 없습니다.</span>'}</div></div>
-                <div class="map-list-section"><div class="map-list-head"><strong>독립 텍스트 (${b.texts.length})</strong><button class="btn" type="button" data-action="add-map-text" data-id="${b.id}">＋ 텍스트</button></div>
-                  <div class="map-list-rows" data-map-list="${b.id}">${b.texts.map((t,i)=>`<div class="map-object-row" data-map-row data-search-text="${attr(`텍스트 ${i+1} ${t.text||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('text',t.id)?'is-selected':''}" data-map-select="text" data-map-block="${b.id}" data-map-item="${attr(t.id)}"><strong>텍스트 ${i+1}</strong></button><button class="btn danger map-list-delete" type="button" data-action="remove-map-text" data-id="${b.id}" data-index="${i}" title="텍스트 삭제" aria-label="텍스트 삭제">${iconSvg('trash',15)}</button>${mapRichField('내용',t,'text','map-independent-text',b.id,i,'독립 텍스트',t.align||'center')}</div>`).join('') || '<span class="small">독립 텍스트가 없습니다.</span>'}</div></div>`;
+                <div class="map-list-section"><div class="map-list-head"><strong>텍스트 (${b.texts.length})</strong><button class="btn" type="button" data-action="add-map-text" data-id="${b.id}">＋ 텍스트</button></div>
+                  <div class="map-list-rows" data-map-list="${b.id}">${b.texts.map((t,i)=>`<div class="map-object-row" data-map-row data-search-text="${attr(`텍스트 ${i+1} ${t.text||''}`.toLowerCase())}"><button type="button" class="map-object-select ${selected('text',t.id)?'is-selected':''}" data-map-select="text" data-map-block="${b.id}" data-map-item="${attr(t.id)}"><strong>텍스트 ${i+1}</strong></button><button class="btn danger map-list-delete" type="button" data-action="remove-map-text" data-id="${b.id}" data-index="${i}" title="텍스트 삭제" aria-label="텍스트 삭제">${iconSvg('trash',15)}</button>${mapRichField('내용',t,'text','map-independent-text',b.id,i,'텍스트',t.align||'center')}</div>`).join('') || '<span class="small">텍스트가 없습니다.</span>'}</div></div>`;
             }
 
             function updateMapEdgeRouteSummaries(b) {
@@ -2879,10 +2867,10 @@ const ICONS = {
                 if(sel.kind==='node') {
                     const n=sel.item;
                     addField('shape','모양',n.shape||'rect',[['rect','사각형'],['round','둥근 사각형'],['ellipse','타원'],['diamond','마름모'],['none','좌표만']]);
-                    addColor('fill','채움',n.fill||'#ffffff'); addColor('stroke','도형선',n.stroke||'#3976df');
-                    addField('strokeWidth','선 굵기',Number(n.strokeWidth??2),[],'number');
-                    addColor('textOutlineColor','글자선',n.textOutlineColor||'#ffffff');
-                    addField('textOutlineWidth','글자 굵기',Number(n.textOutlineWidth??0),[],'number');
+                    addColor('fill','채우기',n.fill||'#ffffff'); addColor('stroke','도형 테두리 색',n.stroke||'#3976df');
+                    addField('strokeWidth','도형 테두리 두께',Number(n.strokeWidth??2),[],'number');
+                    addColor('textOutlineColor','글자 테두리 색',n.textOutlineColor||'#ffffff');
+                    addField('textOutlineWidth','글자 테두리 두께',Number(n.textOutlineWidth??0),[],'number');
                     addField('image','URL',n.image||'','', 'text');
                     addImageUpload();
                 } else if(sel.kind==='edge') {
@@ -2891,15 +2879,15 @@ const ICONS = {
                     addField('from','시작',ed.from,nodeOptions);
                     addField('to','끝',ed.to,nodeOptions);
                     addColor('color','선 색',ed.color||'#64748b');
-                    addField('width','선 굵기',Number(ed.width||2),[],'number');
-                    addField('style','선',ed.style||'solid',[['solid','실선'],['dashed','점선'],['dotted','점선']]);
+                    addField('width','선 두께',Number(ed.width||2),[],'number');
+                    addField('style','선 모양',ed.style||'solid',[['solid','실선'],['dashed','점선'],['dotted','점선']]);
                     addField('arrow','화살표',ed.arrow||'end',[['none','없음'],['start','시작'],['end','끝'],['both','양쪽']]);
                     if(ed.label){ addColor('outlineColor','글자 테두리색',ed.outlineColor||'#ffffff'); addField('outlineWidth','테두리 두께',Number(ed.outlineWidth??3),[],'number'); }
                 } else {
-                    addColor('outlineColor','글자선',sel.item.outlineColor||'#ffffff');
-                    addField('outlineWidth','글자 굵기',Number(sel.item.outlineWidth??3),[],'number');
+                    addColor('outlineColor','글자 테두리 색',sel.item.outlineColor||'#ffffff');
+                    addField('outlineWidth','글자 테두리 두께',Number(sel.item.outlineWidth??3),[],'number');
                 }
-                // 상단 서식 도구와 같은 아이콘 탭 + 팝업 패널 구조로 정리
+            
                 addDelete();
                 const rawFields=[...popup.children];
                 const deleteButton=rawFields.find(el=>el.matches('[data-map-popup-delete]'));
@@ -3018,7 +3006,7 @@ const ICONS = {
                 const chosen = (kind,id) => selectedMapItem?.blockId===b.id && selectedMapItem?.kind===kind && selectedMapItem?.itemId===id;
                 const edgePoint=(node,toward)=>{const p=pos(node),cx=p.x+p.w/2,cy=p.y+p.h/2,dx=toward.x-cx,dy=toward.y-cy;if(!dx&&!dy)return {x:cx,y:cy};let t;if(node.shape==='ellipse'){const rx=Math.max(1,p.w/2),ry=Math.max(1,p.h/2);t=1/Math.sqrt(dx*dx/(rx*rx)+dy*dy/(ry*ry));}else if(node.shape==='diamond'){t=1/(Math.abs(dx)/Math.max(1,p.w/2)+Math.abs(dy)/Math.max(1,p.h/2));}else{const tx=Math.abs(dx)>0?(p.w/2)/Math.abs(dx):Infinity,ty=Math.abs(dy)>0?(p.h/2)/Math.abs(dy):Infinity;t=Math.min(tx,ty);}return {x:cx+dx*t,y:cy+dy*t};};
                 const edges=b.edges.map(e=>{const a=nodes[e.from],c=nodes[e.to];if(!a||!c)return '';const p=pos(a),q=pos(c),ac={x:p.x+p.w/2,y:p.y+p.h/2},cc={x:q.x+q.w/2,y:q.y+q.h/2},s=edgePoint(a,cc),t=edgePoint(c,ac),x1=s.x,y1=s.y,x2=t.x,y2=t.y;return `<g data-edge-id="${attr(e.id)}" class="map-edge-group ${chosen('edge',e.id)?'map-edge-selected':''}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${attr(e.color||'#64748b')}" stroke-width="${Number(e.width)||2}" ${e.style==='dashed'?'stroke-dasharray="8 5"':e.style==='dotted'?'stroke-dasharray="2 5"':''} ${e.arrow==='end'||e.arrow==='both'||!e.arrow?`marker-end="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''} ${e.arrow==='start'||e.arrow==='both'?`marker-start="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''}/>${e.label?`<text data-edge-label-id="${attr(e.id)}" x="${(x1+x2)/2}" y="${(y1+y2)/2-5}" text-anchor="${({left:'start',right:'end',center:'middle'})[e.labelAlign]||'middle'}" font-size="${5 * Number(getFontScale())}" fill="${attr(e.labelColor||'#64748b')}" ${Number(e.outlineWidth??3)>0?`paint-order="stroke fill" stroke="${attr(e.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(e.outlineWidth??3)||0))}" stroke-linejoin="round"`:''}>${mapRichHtmlToSvg(e.labelHtml ?? esc(e.label))}</text>`:''}</g>`}).join('');
-                return `<div class="map-frame-shell" data-map-shell="${b.id}"><div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:300 / ${H};position:relative">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노드 연결도" style="position:absolute;inset:0;width:100%;height:100%"><defs>${b.edges.map(e=>`<marker id="arrow-${attr(b.id)}-${attr(e.id)}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="${'M0,0 L0,6 L6,3 z'}" fill="${attr(e.color||'#64748b')}"/></marker>`).join('')}${b.nodes.filter(n=>n.image).map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,id=`mapclip-${b.id}-${n.id}`;let clip=n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`:n.shape==='round'?`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>`:n.shape==='none'?`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;return `<clipPath id="${attr(id)}">${clip}</clipPath>`}).join('')}</defs>${edges}${b.nodes.map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,sel=chosen('node',n.id),cls=`map-node-shape ${sel?'map-node-selected':''}`;const common=`data-node-id="${attr(n.id)}" class="${cls}" fill="${attr(n.fill||'#fff')}" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"`;let shape='';if(n.shape==='diamond')shape=`<polygon ${common} points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`;else if(n.shape==='ellipse')shape=`<ellipse ${common} cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`;else if(n.shape==='none')shape=`<rect data-node-id="${attr(n.id)}" class="${cls} map-node-coordinate" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" stroke="none"/>`;else shape=`<rect ${common} x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}"/>`;const anchor=({left:'start',right:'end',center:'middle'})[n.align]||'middle',tx=anchor==='start'?x+3:anchor==='end'?x+w-3:x+w/2;const fFamily=n.fontFamily?`font-family="${attr(n.fontFamily)}"`:'';return `${shape}${n.image?`<image href="${attr(n.image)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip-${attr(b.id)}-${attr(n.id)})" pointer-events="none"/>${n.shape==='none'?'':(n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`)}`:''}${n.text?`<text data-node-text-id="${attr(n.id)}" class="map-node-text ${sel?'map-node-selected':''}" x="${tx}" y="${y+h/2}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${(n.textHtml != null ? 9 : (n.textSize||9)) * Number(getFontScale())}" fill="${n.textHtml != null ? '#202a3a' : attr(n.textColor||'#202a3a')}" font-weight="${n.textHtml != null ? 'normal' : (n.bold?'bold':'normal')}" font-style="${n.textHtml != null ? 'normal' : (n.italic?'italic':'normal')}" text-decoration="${n.textHtml != null ? 'none' : (n.underline?'underline':'none')}" ${n.textOutlineWidth>0?`stroke="${attr(n.textOutlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(n.textOutlineWidth)||0))}" paint-order="stroke fill" stroke-linejoin="round"`:n.textHtml == null && n.highlightColor?`stroke="${attr(n.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily} pointer-events="none">${mapRichHtmlToSvg(n.textHtml ?? esc(n.text))}</text>`:''}${sel?`<rect data-node-resize="${attr(n.id)}" x="${x+w-4}" y="${y+h-4}" width="8" height="8" rx="1" fill="#ffffff" stroke="#315fd3" stroke-width="1.5" style="cursor:nwse-resize;pointer-events:all"/>`:''}`}).join('')}${b.texts.map(t=>{const sel=chosen('text',t.id),fFamily=`font-family="${attr(t.fontFamily||globalFontInput?.value||'system-ui, sans-serif')}"`;return `<text data-map-text-id="${attr(t.id)}" class="map-independent-text ${sel?'map-independent-selected':''}" data-text-id="${attr(t.id)}" x="${(t.x!==undefined&&t.x!==null&&t.x!==''&&Number.isFinite(Number(t.x))?Number(t.x):150)}" y="${(t.y!==undefined&&t.y!==null&&t.y!==''&&Number.isFinite(Number(t.y))?Number(t.y):36)}" font-size="${(t.textHtml != null ? 6 : (t.size||6)) * Number(getFontScale())}" style="font-family:${attr(t.textHtml != null ? (globalFontInput?.value||'system-ui, sans-serif') : (t.fontFamily||globalFontInput?.value||'system-ui, sans-serif'))};font-size:${(t.textHtml != null ? 6 : (Number(t.size)||6)) * Number(getFontScale())}px;fill:${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))} !important" fill="${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))}" font-weight="${t.textHtml != null ? 'normal' : (t.bold?'bold':'normal')}" font-style="${t.textHtml != null ? 'normal' : (t.italic?'italic':'normal')}" text-decoration="${t.textHtml != null ? 'none' : (t.underline?'underline':'none')}" text-anchor="${({left:'start',right:'end',center:'middle'})[t.align]||t.align||'middle'}" ${(t.outlineColor||t.outlineWidth!=null||!t.highlightColor)?`stroke="${attr(t.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(t.outlineWidth??3)))}" paint-order="stroke fill" stroke-linejoin="round"`:''} ${t.textHtml == null && t.highlightColor?`stroke="${attr(t.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily}>${mapRichHtmlToSvg(t.textHtml ?? esc(t.text))}</text>`}).join('')}</svg></div><div class="map-resize-handle" role="separator" aria-label="드래그하여 지도 캔버스 높이 조절" tabindex="0" data-map-editor-only data-map-resize="${b.id}">캔버스 높이 조절</div></div>`;
+                return `<div class="map-frame-shell" data-map-shell="${b.id}"><div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:300 / ${H};position:relative">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노드 연결도" style="position:absolute;inset:0;width:100%;height:100%"><defs>${b.edges.map(e=>`<marker id="arrow-${attr(b.id)}-${attr(e.id)}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="${'M0,0 L0,6 L6,3 z'}" fill="${attr(e.color||'#64748b')}"/></marker>`).join('')}${b.nodes.filter(n=>n.image).map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,id=`mapclip-${b.id}-${n.id}`;let clip=n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`:n.shape==='round'?`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>`:n.shape==='none'?`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;return `<clipPath id="${attr(id)}">${clip}</clipPath>`}).join('')}</defs>${edges}${b.nodes.map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,sel=chosen('node',n.id),cls=`map-node-shape ${sel?'map-node-selected':''}`;const common=`data-node-id="${attr(n.id)}" class="${cls}" fill="${attr(n.fill||'#fff')}" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"`;let shape='';if(n.shape==='diamond')shape=`<polygon ${common} points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`;else if(n.shape==='ellipse')shape=`<ellipse ${common} cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`;else if(n.shape==='none')shape=`<rect data-node-id="${attr(n.id)}" class="${cls} map-node-coordinate" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" stroke="none"/>`;else shape=`<rect ${common} x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}"/>`;const anchor=({left:'start',right:'end',center:'middle'})[n.align]||'middle',tx=anchor==='start'?x+3:anchor==='end'?x+w-3:x+w/2;const fFamily=n.fontFamily?`font-family="${attr(n.fontFamily)}"`:'';return `${shape}${n.image?`<image href="${attr(n.image)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip-${attr(b.id)}-${attr(n.id)})" pointer-events="none"/>${n.shape==='none'?'':(n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`)}`:''}${n.text?`<text data-node-text-id="${attr(n.id)}" class="map-node-text ${sel?'map-node-selected':''}" x="${tx}" y="${y+h/2}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${(n.textHtml != null ? 9 : (n.textSize||9)) * Number(getFontScale())}" fill="${n.textHtml != null ? '#202a3a' : attr(n.textColor||'#202a3a')}" font-weight="${n.textHtml != null ? 'normal' : (n.bold?'bold':'normal')}" font-style="${n.textHtml != null ? 'normal' : (n.italic?'italic':'normal')}" text-decoration="${n.textHtml != null ? 'none' : (n.underline?'underline':'none')}" ${n.textOutlineWidth>0?`stroke="${attr(n.textOutlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(n.textOutlineWidth)||0))}" paint-order="stroke fill" stroke-linejoin="round"`:n.textHtml == null && n.highlightColor?`stroke="${attr(n.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily} pointer-events="none">${mapRichHtmlToSvg(n.textHtml ?? esc(n.text))}</text>`:''}${sel?`<rect data-node-resize="${attr(n.id)}" x="${x+w-4}" y="${y+h-4}" width="8" height="8" rx="1" fill="#ffffff" stroke="#315fd3" stroke-width="1.5" style="cursor:nwse-resize;pointer-events:all"/>`:''}`}).join('')}${b.texts.map(t=>{const sel=chosen('text',t.id),fFamily=`font-family="${attr(t.fontFamily||globalFontInput?.value||'system-ui, sans-serif')}"`;return `<text data-map-text-id="${attr(t.id)}" class="map-independent-text ${sel?'map-independent-selected':''}" data-text-id="${attr(t.id)}" x="${(t.x!==undefined&&t.x!==null&&t.x!==''&&Number.isFinite(Number(t.x))?Number(t.x):150)}" y="${(t.y!==undefined&&t.y!==null&&t.y!==''&&Number.isFinite(Number(t.y))?Number(t.y):36)}" font-size="${(t.textHtml != null ? 6 : (t.size||6)) * Number(getFontScale())}" style="font-family:${attr(t.textHtml != null ? (globalFontInput?.value||'system-ui, sans-serif') : (t.fontFamily||globalFontInput?.value||'system-ui, sans-serif'))};font-size:${(t.textHtml != null ? 6 : (Number(t.size)||6)) * Number(getFontScale())}px;fill:${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))} !important" fill="${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))}" font-weight="${t.textHtml != null ? 'normal' : (t.bold?'bold':'normal')}" font-style="${t.textHtml != null ? 'normal' : (t.italic?'italic':'normal')}" text-decoration="${t.textHtml != null ? 'none' : (t.underline?'underline':'none')}" text-anchor="${({left:'start',right:'end',center:'middle'})[t.align]||t.align||'middle'}" ${(t.outlineColor||t.outlineWidth!=null||!t.highlightColor)?`stroke="${attr(t.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(t.outlineWidth??3)))}" paint-order="stroke fill" stroke-linejoin="round"`:''} ${t.textHtml == null && t.highlightColor?`stroke="${attr(t.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily}>${mapRichHtmlToSvg(t.textHtml ?? esc(t.text))}</text>`}).join('')}</svg></div><div class="map-resize-handle" role="separator" aria-label="드래그하여 캔버스 높이 조절" tabindex="0" data-map-editor-only data-map-resize="${b.id}">캔버스 높이 조절</div></div>`;
             }
 
             function renderBlock(b) {
@@ -3140,13 +3128,13 @@ const ICONS = {
                     b.words.splice(idx, 1);
                     renderAll();
                 } else if (action === 'add-node') {
-                    b.nodes ||= []; const n={id:uid(),x:120+Math.random()*60,y:120+Math.random()*60,w:32,h:22,shape:'rect',fill:'#ffffff',stroke:'#3976df',strokeWidth:2,image:'',text:'노드',textColor:'#202a3a',textSize:12}; b.nodes.push(n); selectedMapItem={blockId:b.id,kind:'node',itemId:n.id}; renderAll();
+                    b.nodes ||= []; const n={id:uid(),x:120+Math.random()*60,y:70+Math.random()*60,w:32,h:22,shape:'rect',fill:'#ffffff',stroke:'#3976df',strokeWidth:2,image:'',text:'노드',textColor:'#202a3a',textSize:12}; b.nodes.push(n); selectedMapItem={blockId:b.id,kind:'node',itemId:n.id}; renderAll();
                 } else if (action === 'remove-node') {
                     const removed=b.nodes.splice(idx,1)[0]; b.edges=(b.edges||[]).filter(e=>e.from!==removed?.id&&e.to!==removed?.id); renderAll();
                 } else if (action === 'add-edge') {
                     b.edges ||= []; if(b.nodes.length>=2){const ed={id:uid(),from:b.nodes[0].id,to:b.nodes[1].id,color:'#64748b',width:2,style:'solid',arrow:'end',label:''};b.edges.push(ed);selectedMapItem={blockId:b.id,kind:'edge',itemId:ed.id};} renderAll();
                 } else if (action === 'remove-edge') { b.edges.splice(idx,1); renderAll();
-                } else if (action === 'add-map-text') { b.texts ||= []; const t={id:uid(),text:'텍스트',x:150,y:150,size:12,color:'#222222',bold:false,italic:false,align:'middle'};b.texts.push(t);selectedMapItem={blockId:b.id,kind:'text',itemId:t.id};renderAll();
+                } else if (action === 'add-map-text') { b.texts ||= []; const t={id:uid(),text:'텍스트',x:120+Math.random()*60,y:70+Math.random()*60,size:12,color:'#222222',bold:false,italic:false,align:'middle'};b.texts.push(t);selectedMapItem={blockId:b.id,kind:'text',itemId:t.id};renderAll();
                 } else if (action === 'remove-map-text') { b.texts.splice(idx,1); renderAll();
                 } else if (action === 'add-photo') {
                     b.photos.push({
@@ -3211,7 +3199,7 @@ const ICONS = {
                         if(file.size>12*1024*1024)throw new Error('이미지 파일은 12MB 이하로 선택하세요.');
                         const dataUrl=await readImageFileAsDataURL(file); const b=getBlock(fileInput.dataset.uploadId);
                         if(b&&b.type==='map'){b.backgroundImage=dataUrl;const urlField=$(`[data-map-canvas-field="backgroundImage"][data-map-block="${b.id}"]`,$('#block-list'));if(urlField)urlField.value='';renderAll();}
-                    } catch(err) { console.error('지도 배경 이미지 업로드 실패:',err); alert(err.message||'이미지 파일을 읽지 못했습니다.'); }
+                    } catch(err) { console.error('배경 이미지 업로드 실패:',err); alert(err.message||'이미지 파일을 읽지 못했습니다.'); }
                     finally {fileInput.value='';fileInput.disabled=false;delete fileInput.dataset.reading;}
                 })();
             });
@@ -3684,9 +3672,7 @@ const ICONS = {
                 if (button.dataset.format) {
                     const formatRange = selection?.rangeCount ? selection.getRangeAt(0).cloneRange() : null;
                     if (button.dataset.format === 'bold' && formatRange && !formatRange.collapsed && editable.dataset.edit === 'doc-title') {
-                        // The preview title is an h1, which is bold by browser default.
-                        // Apply an explicit normal weight when toggling bold off so the
-                        // preview does not inherit the h1's default bold styling.
+                
                         const startNode = formatRange.startContainer.nodeType === 1 ? formatRange.startContainer : formatRange.startContainer.parentElement;
                         const endNode = formatRange.endContainer.nodeType === 1 ? formatRange.endContainer : formatRange.endContainer.parentElement;
                         const nearestWeight = node => {
@@ -3870,7 +3856,7 @@ const ICONS = {
                     editable.focus({ preventScroll: true });
                     const selection = window.getSelection();
                     if (selection) { selection.removeAllRanges(); selection.addRange(range); }
-                    // execCommand가 블록 요소를 문단 안에 잘못 중첩하지 않도록 편집기 삽입 명령을 사용한다.
+                   
                     const inserted = document.execCommand('insertHTML', false, html);
                     if (!inserted) {
                         range.deleteContents();
@@ -4150,7 +4136,7 @@ const ICONS = {
                 const key = parts[parts.length - 1];
                 const modifiers = new Set(parts.slice(0, -1));
                 if (!/^[a-z]$/.test(key) || [...modifiers].some(m => !['ctrl','shift','alt'].includes(m)) || modifiers.size !== parts.length - 1) return null;
-                if (!modifiers.size) return null; // 문자 단독 등록은 허용하지 않음
+                if (!modifiers.size) return null; 
                 if (modifiers.has('ctrl') && !modifiers.has('alt') && !modifiers.has('shift') && RESERVED_CTRL_KEYS.has(key.toUpperCase())) return null;
                 if (modifiers.has('ctrl') && modifiers.has('shift') && !modifiers.has('alt') && RESERVED_CTRL_SHIFT_KEYS.has(key.toUpperCase())) return null;
                 const ordered = ['ctrl','alt','shift'].filter(m => modifiers.has(m)).map(m => m === 'ctrl' ? 'Ctrl' : m === 'alt' ? 'Alt' : 'Shift');
@@ -4628,7 +4614,7 @@ const ICONS = {
                 if (!el || !el.dataset.id || !el.dataset.key) return false;
                 const b = getBlock(el.dataset.id), key = el.dataset.key, val = el.value;
                 if (!b) return false;
-                // Route quiz choices first. Never let a choice input fall through to generic fields.
+       
                 const optionMatch = key.match(/^q-(\d+)-opt-(\d+)$/);
                 if (optionMatch) {
                     const qi = Number(optionMatch[1]), oi = Number(optionMatch[2]);
@@ -4694,8 +4680,7 @@ const ICONS = {
             }
             $('#block-list').addEventListener('input', e => {
                 const el=e.target;
-                // 노드 내부 텍스트는 일반 필드 처리보다 먼저 데이터에 직접 반영한다.
-                // 편집창의 값이 렌더링 중 기본 노드명으로 덮어써지는 문제를 방지한다.
+           
                 const nodeTextMatch = (el.dataset.key || '').match(/^node-(\d+)-text$/);
                 if (nodeTextMatch) {
                     const b = getBlock(el.dataset.id);
@@ -4804,7 +4789,7 @@ const ICONS = {
             document.addEventListener('pointercancel',()=>{movingMapItem=null;resizingMapNode=null;resizingMapCanvas=null;});
             $('#preview').addEventListener('keydown',e=>{const handle=e.target.closest('[data-map-resize]');if(!handle||!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const b=getBlock(handle.dataset.mapResize);if(!b)return;b.canvasHeight=Math.max(150,Math.min(600,(Number(b.canvasHeight)||300)+(e.key==='ArrowUp'?-10:10)));selectedMapItem={blockId:b.id,kind:'canvas'};renderAll();});
             $('#preview').addEventListener('click',e=>{
-                // 패널은 지도 레이아웃 내부에 있으므로 클릭이 미리보기 선택 해제까지 전파되지 않게 한다.
+             
                 if(e.target.closest('.map-inline-colors')) return;
                 if(suppressMapClickAfterDrag) { suppressMapClickAfterDrag=false; e.preventDefault(); e.stopPropagation(); return; }
                 const edge=e.target.closest('[data-edge-id]');
@@ -4906,8 +4891,7 @@ const ICONS = {
                 const fontFamily = globalFontInput?.value || 'system-ui, -apple-system, "Noto Sans KR", sans-serif';
                 const worksheetBg = worksheetBgInput?.value || '#ffffff';
                 const exportCssUrl = 'https://kimgreentea.github.io/kimnokcha/tool/quiz/oncheck.css';
-                // Layout and theme styles are provided by the external stylesheet.
-                // Keep only user-selected values inline so each exported worksheet preserves its settings.
+    
                 const fontsForExport = [...customFonts];
                 if (customFont?.name && customFont?.url && !fontsForExport.some(f => f.name === customFont.name)) fontsForExport.push(customFont);
                 const customFontCss = fontsForExport.map(font => font.url.includes('.css') ? `@import url('${font.url.replace(/'/g, '%27')}');` : `@font-face{font-family:'${font.name.replace(/['\\]/g, '')}';src:url('${font.url.replace(/'/g, '%27')}') format('woff2');font-display:swap;}`).join('\n');
