@@ -2446,8 +2446,8 @@ const ICONS = {
                     base.backgroundFit = 'cover';
                     base.canvasHeight = 200;
                     base.coordinateUnit = 'pt';
-                    base.nodes = [{id:uid(), x:66, y:55, w:42, h:30, shape:'rect', fill:'#ffffff', stroke:'#3976df', strokeWidth:2, image:'', text:'노드 1', textColor:'#202a3a', textSize:12}, {id:uid(), x:204, y:155, w:45, h:35, shape:'ellipse', fill:'#ffffff', stroke:'#1a9b7a', strokeWidth:2, image:'', text:'노드 2', textColor:'#202a3a', textSize:12}];
-                    base.edges = [{id:uid(), from:null, to:null, color:'#64748b', width:2, style:'solid', arrow:'end', label:''}];
+                    base.nodes = [{id:uid(), x:66, y:55, w:42, h:30, shape:'rect', fill:'#ffffff', stroke:'#3976df', strokeWidth:2, image:'', text:'노드 1', textColor:'#202a3a', textSize:12,          "textOutlineWidth": 2}, {id:uid(), x:204, y:155, w:45, h:35, shape:'ellipse', fill:'#ffffff', stroke:'#1a9b7a', strokeWidth:2, image:'', text:'노드 2', textColor:'#202a3a', textSize:12,"textOutlineWidth": 2}];
+                    base.edges = [{id:uid(), from:null, to:null, color:'#64748b', width:2, style:'solid', arrow:'end', label:'관계', labelSize:12}];
                     base.texts = [{id:uid(), text:'텍스트', x:150, y:36, size:12, color:'#222222', bold:false, italic:false, align:'middle'}];
                     base.edges[0].from=base.nodes[0].id; base.edges[0].to=base.nodes[1].id;
                 }
@@ -2495,6 +2495,10 @@ const ICONS = {
                 preview.style.setProperty('--font-scale', String(next));
                 if (Number.isFinite(ratio) && ratio > 0 && Math.abs(ratio - 1) > 0.00001) {
                     preview.querySelectorAll('.map-frame svg text, .map-frame svg tspan').forEach(el => {
+                        const targetSize = Number(el.getAttribute('data-map-font-target'));
+                        if (Number.isFinite(targetSize) && targetSize > 0) {
+                            el.setAttribute('data-map-font-target', String(targetSize * ratio));
+                        }
                         const attrSize = el.getAttribute('font-size');
                         if (attrSize) el.setAttribute('font-size', scaleSvgFontValue(attrSize, ratio));
                         const inlineSize = el.style?.fontSize;
@@ -2669,10 +2673,23 @@ const ICONS = {
 
             function ensureMapTextHtml(item, key, styleObject = {}) {
                 const htmlKey = key + 'Html';
-                if (item[htmlKey] != null) return;
+                const baseFontSize = (Number(styleObject.fontSize) || 12) * 4 / 3;
+                if (item[htmlKey] != null) {
+                    // 기존 문서에 남아 있는 이전 기본 글자 크기를 현재 항목 설정과 맞춘다.
+                    // 가장 바깥쪽 span은 기본 서식을 담고, 내부의 별도 서식은 그대로 유지한다.
+                    const root = document.createElement('div');
+                    root.innerHTML = String(item[htmlKey]);
+                    Array.from(root.children).forEach(child => {
+                        if (child.tagName === 'SPAN' && child.style?.fontSize) {
+                            child.style.fontSize = `${baseFontSize}px`;
+                        }
+                    });
+                    item[htmlKey] = root.innerHTML;
+                    return;
+                }
                 const styles = [];
                 if (styleObject.fontFamily) styles.push(`font-family:${styleObject.fontFamily}`);
-                if (styleObject.fontSize) styles.push(`font-size:${styleObject.fontSize}px`);
+                styles.push(`font-size:${baseFontSize}px`);
                 if (styleObject.color) styles.push(`color:${styleObject.color}`);
                 if (styleObject.bold) styles.push('font-weight:bold');
                 if (styleObject.italic) styles.push('font-style:italic');
@@ -2690,7 +2707,7 @@ const ICONS = {
                 b.edges.forEach(ed => {
                     if (ed.label && ed.labelColor == null) ed.labelColor = ed.color || '#64748b';
                     ensureMapTextHtml(ed, 'label', {
-                        fontFamily:ed.labelFontFamily || '', fontSize:Number(ed.labelSize) || 5,
+                        fontFamily:ed.labelFontFamily || '', fontSize:Number(ed.labelSize) || 12,
                         color:ed.labelColor || '#64748b', bold:!!ed.labelBold, italic:!!ed.labelItalic, underline:!!ed.labelUnderline
                     });
                 });
@@ -2698,7 +2715,7 @@ const ICONS = {
                     fontFamily:t.fontFamily || '', fontSize:Number(t.size) || 6,
                     color:t.color || '#222222', bold:!!t.bold, italic:!!t.italic, underline:!!t.underline, backgroundColor:t.highlightColor || ''
                 }));
-                const nodeName = (n, i) => String(n.text || '').replace(/\s+/g, ' ').trim() || `노드 ${i + 1}`;
+                const nodeName = (n, i) => `노드 ${i + 1}`;
                 const selected = (kind, id) => selectedMapItem?.blockId === b.id && selectedMapItem?.kind === kind && selectedMapItem?.itemId === id;
                 const nodeOptions = chosen => b.nodes.map((n,j)=>`<option value="${attr(n.id)}" ${chosen===n.id?'selected':''}>${esc(nodeName(n,j))}</option>`).join('');
                 return `<p class="small"></p>
@@ -2724,7 +2741,7 @@ const ICONS = {
                     const nodeName = id => {
                         const index = (b.nodes || []).findIndex(n => n.id === id);
                         if (index < 0) return '미지정';
-                        return String(b.nodes[index].text || '').replace(/\s+/g, ' ').trim() || `노드 ${index + 1}`;
+                        return `노드 ${index + 1}`;
                     };
                     summary.textContent = `${nodeName(edge.from)} → ${nodeName(edge.to)}`;
                 });
@@ -2870,12 +2887,12 @@ const ICONS = {
                     addColor('fill','채우기',n.fill||'#ffffff'); addColor('stroke','도형 테두리 색',n.stroke||'#3976df');
                     addField('strokeWidth','도형 테두리 두께',Number(n.strokeWidth??2),[],'number');
                     addColor('textOutlineColor','글자 테두리 색',n.textOutlineColor||'#ffffff');
-                    addField('textOutlineWidth','글자 테두리 두께',Number(n.textOutlineWidth??0),[],'number');
+                    addField('textOutlineWidth','글자 테두리 두께',Number(n.textOutlineWidth??2),[],'number');
                     addField('image','URL',n.image||'','', 'text');
                     addImageUpload();
                 } else if(sel.kind==='edge') {
                     const ed=sel.item;
-                    const nodeOptions=sel.b.nodes.map((n,i)=>[n.id,String(n.text||'').trim()||`노드 ${i+1}`]);
+                    const nodeOptions=sel.b.nodes.map((n,i)=>[n.id,`노드 ${i+1}`]);
                     addField('from','시작',ed.from,nodeOptions);
                     addField('to','끝',ed.to,nodeOptions);
                     addColor('color','선 색',ed.color||'#64748b');
@@ -2951,10 +2968,49 @@ const ICONS = {
                 try {
                     const temp=document.createElement('div'); temp.innerHTML=renderMapSvg(b);
                     const replacement=temp.firstElementChild;
-                    if(replacement && current.parentNode) current.replaceWith(replacement);
+                    if(replacement && current.parentNode) {
+                        current.replaceWith(replacement);
+                        syncMapSvgTextSizes(replacement);
+                    }
                 } finally {
                     refreshingMapVisual = false;
                 }
+            }
+            let mapTextSizeObserver = null;
+            function syncMapSvgTextSizes(root = $('#preview')) {
+                if (!root) return;
+                const svgs = root.matches?.('.map-frame svg') ? [root] : Array.from(root.querySelectorAll?.('.map-frame svg') || []);
+                svgs.forEach(svg => {
+                    if (typeof ResizeObserver !== 'undefined') {
+                        if (!mapTextSizeObserver) {
+                            mapTextSizeObserver = new ResizeObserver(entries => {
+                                entries.forEach(entry => syncMapSvgTextSizes(entry.target));
+                            });
+                        }
+                        mapTextSizeObserver.observe(svg);
+                    }
+                    const viewBox = svg.viewBox?.baseVal;
+                    const rect = svg.getBoundingClientRect();
+                    const scale = viewBox?.width ? Math.min(rect.width / viewBox.width, rect.height / viewBox.height) : 0;
+                    if (!(scale > 0) || !Number.isFinite(scale)) return;
+                    const textElements = Array.from(svg.querySelectorAll('text, tspan'));
+                    // 먼저 원래 글자 크기를 저장해야 중첩된 em 크기가 기존 상위 글자 크기를 기준으로 계산된다.
+                    textElements.forEach(el => {
+                        if (!el.hasAttribute('data-map-font-target')) {
+                            const size = parseFloat(getComputedStyle(el).fontSize) || parseFloat(el.getAttribute('font-size')) || 16;
+                            el.setAttribute('data-map-font-target', String(size));
+                        }
+                    });
+                    textElements.forEach(el => {
+                        const target = Number(el.getAttribute('data-map-font-target'));
+                        if (!(target > 0) || !Number.isFinite(target)) return;
+                        // SVG의 viewBox 배율을 보정해 미리보기에서 실제 글자 크기가 설정값(px)에 맞도록 한다.
+                        // 글자 크기가 presentation attribute로만 지정된 노드/엣지 라벨에도 inline style을 적용해 CSS 덮어쓰기를 막는다.
+                        const scaled = target / scale;
+                        el.setAttribute('font-size', String(scaled));
+                        if (el.style) el.style.fontSize = `${scaled}px`;
+                    });
+                });
             }
             function mapRichHtmlToSvg(html) {
                 const root=document.createElement('div');
@@ -2971,7 +3027,7 @@ const ICONS = {
                     if(tag==='u') styles['text-decoration']='underline';
                     if(['s','strike','del'].includes(tag)) styles['text-decoration']='line-through';
                     if(css.fontFamily) styles['font-family']=css.fontFamily;
-                    if(css.fontSize) styles['font-size']=css.fontSize;
+                    if(css.fontSize) styles['font-size']=scaleSvgFontValue(css.fontSize, Number(getFontScale()) || 1);
                     if(css.color) styles.fill=css.color;
                     if(css.fontWeight) styles['font-weight']=css.fontWeight;
                     if(css.fontStyle) styles['font-style']=css.fontStyle;
@@ -3005,8 +3061,8 @@ const ICONS = {
                 const nodes=Object.fromEntries(b.nodes.map(n=>[n.id,n]));
                 const chosen = (kind,id) => selectedMapItem?.blockId===b.id && selectedMapItem?.kind===kind && selectedMapItem?.itemId===id;
                 const edgePoint=(node,toward)=>{const p=pos(node),cx=p.x+p.w/2,cy=p.y+p.h/2,dx=toward.x-cx,dy=toward.y-cy;if(!dx&&!dy)return {x:cx,y:cy};let t;if(node.shape==='ellipse'){const rx=Math.max(1,p.w/2),ry=Math.max(1,p.h/2);t=1/Math.sqrt(dx*dx/(rx*rx)+dy*dy/(ry*ry));}else if(node.shape==='diamond'){t=1/(Math.abs(dx)/Math.max(1,p.w/2)+Math.abs(dy)/Math.max(1,p.h/2));}else{const tx=Math.abs(dx)>0?(p.w/2)/Math.abs(dx):Infinity,ty=Math.abs(dy)>0?(p.h/2)/Math.abs(dy):Infinity;t=Math.min(tx,ty);}return {x:cx+dx*t,y:cy+dy*t};};
-                const edges=b.edges.map(e=>{const a=nodes[e.from],c=nodes[e.to];if(!a||!c)return '';const p=pos(a),q=pos(c),ac={x:p.x+p.w/2,y:p.y+p.h/2},cc={x:q.x+q.w/2,y:q.y+q.h/2},s=edgePoint(a,cc),t=edgePoint(c,ac),x1=s.x,y1=s.y,x2=t.x,y2=t.y;return `<g data-edge-id="${attr(e.id)}" class="map-edge-group ${chosen('edge',e.id)?'map-edge-selected':''}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${attr(e.color||'#64748b')}" stroke-width="${Number(e.width)||2}" ${e.style==='dashed'?'stroke-dasharray="8 5"':e.style==='dotted'?'stroke-dasharray="2 5"':''} ${e.arrow==='end'||e.arrow==='both'||!e.arrow?`marker-end="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''} ${e.arrow==='start'||e.arrow==='both'?`marker-start="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''}/>${e.label?`<text data-edge-label-id="${attr(e.id)}" x="${(x1+x2)/2}" y="${(y1+y2)/2-5}" text-anchor="${({left:'start',right:'end',center:'middle'})[e.labelAlign]||'middle'}" font-size="${5 * Number(getFontScale())}" fill="${attr(e.labelColor||'#64748b')}" ${Number(e.outlineWidth??3)>0?`paint-order="stroke fill" stroke="${attr(e.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(e.outlineWidth??3)||0))}" stroke-linejoin="round"`:''}>${mapRichHtmlToSvg(e.labelHtml ?? esc(e.label))}</text>`:''}</g>`}).join('');
-                return `<div class="map-frame-shell" data-map-shell="${b.id}"><div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:300 / ${H};position:relative">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노드 연결도" style="position:absolute;inset:0;width:100%;height:100%"><defs>${b.edges.map(e=>`<marker id="arrow-${attr(b.id)}-${attr(e.id)}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="${'M0,0 L0,6 L6,3 z'}" fill="${attr(e.color||'#64748b')}"/></marker>`).join('')}${b.nodes.filter(n=>n.image).map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,id=`mapclip-${b.id}-${n.id}`;let clip=n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`:n.shape==='round'?`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>`:n.shape==='none'?`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;return `<clipPath id="${attr(id)}">${clip}</clipPath>`}).join('')}</defs>${edges}${b.nodes.map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,sel=chosen('node',n.id),cls=`map-node-shape ${sel?'map-node-selected':''}`;const common=`data-node-id="${attr(n.id)}" class="${cls}" fill="${attr(n.fill||'#fff')}" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"`;let shape='';if(n.shape==='diamond')shape=`<polygon ${common} points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`;else if(n.shape==='ellipse')shape=`<ellipse ${common} cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`;else if(n.shape==='none')shape=`<rect data-node-id="${attr(n.id)}" class="${cls} map-node-coordinate" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" stroke="none"/>`;else shape=`<rect ${common} x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}"/>`;const anchor=({left:'start',right:'end',center:'middle'})[n.align]||'middle',tx=anchor==='start'?x+3:anchor==='end'?x+w-3:x+w/2;const fFamily=n.fontFamily?`font-family="${attr(n.fontFamily)}"`:'';return `${shape}${n.image?`<image href="${attr(n.image)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip-${attr(b.id)}-${attr(n.id)})" pointer-events="none"/>${n.shape==='none'?'':(n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`)}`:''}${n.text?`<text data-node-text-id="${attr(n.id)}" class="map-node-text ${sel?'map-node-selected':''}" x="${tx}" y="${y+h/2}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${(n.textHtml != null ? 9 : (n.textSize||9)) * Number(getFontScale())}" fill="${n.textHtml != null ? '#202a3a' : attr(n.textColor||'#202a3a')}" font-weight="${n.textHtml != null ? 'normal' : (n.bold?'bold':'normal')}" font-style="${n.textHtml != null ? 'normal' : (n.italic?'italic':'normal')}" text-decoration="${n.textHtml != null ? 'none' : (n.underline?'underline':'none')}" ${n.textOutlineWidth>0?`stroke="${attr(n.textOutlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(n.textOutlineWidth)||0))}" paint-order="stroke fill" stroke-linejoin="round"`:n.textHtml == null && n.highlightColor?`stroke="${attr(n.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily} pointer-events="none">${mapRichHtmlToSvg(n.textHtml ?? esc(n.text))}</text>`:''}${sel?`<rect data-node-resize="${attr(n.id)}" x="${x+w-4}" y="${y+h-4}" width="8" height="8" rx="1" fill="#ffffff" stroke="#315fd3" stroke-width="1.5" style="cursor:nwse-resize;pointer-events:all"/>`:''}`}).join('')}${b.texts.map(t=>{const sel=chosen('text',t.id),fFamily=`font-family="${attr(t.fontFamily||globalFontInput?.value||'system-ui, sans-serif')}"`;return `<text data-map-text-id="${attr(t.id)}" class="map-independent-text ${sel?'map-independent-selected':''}" data-text-id="${attr(t.id)}" x="${(t.x!==undefined&&t.x!==null&&t.x!==''&&Number.isFinite(Number(t.x))?Number(t.x):150)}" y="${(t.y!==undefined&&t.y!==null&&t.y!==''&&Number.isFinite(Number(t.y))?Number(t.y):36)}" font-size="${(t.textHtml != null ? 6 : (t.size||6)) * Number(getFontScale())}" style="font-family:${attr(t.textHtml != null ? (globalFontInput?.value||'system-ui, sans-serif') : (t.fontFamily||globalFontInput?.value||'system-ui, sans-serif'))};font-size:${(t.textHtml != null ? 6 : (Number(t.size)||6)) * Number(getFontScale())}px;fill:${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))} !important" fill="${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))}" font-weight="${t.textHtml != null ? 'normal' : (t.bold?'bold':'normal')}" font-style="${t.textHtml != null ? 'normal' : (t.italic?'italic':'normal')}" text-decoration="${t.textHtml != null ? 'none' : (t.underline?'underline':'none')}" text-anchor="${({left:'start',right:'end',center:'middle'})[t.align]||t.align||'middle'}" ${(t.outlineColor||t.outlineWidth!=null||!t.highlightColor)?`stroke="${attr(t.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(t.outlineWidth??3)))}" paint-order="stroke fill" stroke-linejoin="round"`:''} ${t.textHtml == null && t.highlightColor?`stroke="${attr(t.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily}>${mapRichHtmlToSvg(t.textHtml ?? esc(t.text))}</text>`}).join('')}</svg></div><div class="map-resize-handle" role="separator" aria-label="드래그하여 캔버스 높이 조절" tabindex="0" data-map-editor-only data-map-resize="${b.id}">캔버스 높이 조절</div></div>`;
+                const edges=b.edges.map(e=>{const a=nodes[e.from],c=nodes[e.to];if(!a||!c)return '';const p=pos(a),q=pos(c),ac={x:p.x+p.w/2,y:p.y+p.h/2},cc={x:q.x+q.w/2,y:q.y+q.h/2},s=edgePoint(a,cc),t=edgePoint(c,ac),x1=s.x,y1=s.y,x2=t.x,y2=t.y;return `<g data-edge-id="${attr(e.id)}" class="map-edge-group ${chosen('edge',e.id)?'map-edge-selected':''}"><line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${attr(e.color||'#64748b')}" stroke-width="${Number(e.width)||2}" ${e.style==='dashed'?'stroke-dasharray="8 5"':e.style==='dotted'?'stroke-dasharray="2 5"':''} ${e.arrow==='end'||e.arrow==='both'||!e.arrow?`marker-end="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''} ${e.arrow==='start'||e.arrow==='both'?`marker-start="url(#arrow-${attr(b.id)}-${attr(e.id)})"`:''}/>${e.label?`<text data-edge-label-id="${attr(e.id)}" x="${(x1+x2)/2}" y="${(y1+y2)/2-5}" text-anchor="${({left:'start',right:'end',center:'middle'})[e.labelAlign]||'middle'}" font-size="${(Number(e.labelSize)||12) * Number(getFontScale())}" fill="${attr(e.labelColor||'#64748b')}" ${Number(e.outlineWidth??3)>0?`paint-order="stroke fill" stroke="${attr(e.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(e.outlineWidth??3)||0))}" stroke-linejoin="round"`:''}>${mapRichHtmlToSvg(e.labelHtml ?? esc(e.label))}</text>`:''}</g>`}).join('');
+                return `<div class="map-frame-shell" data-map-shell="${b.id}"><div class="map-frame" data-map-id="${b.id}" style="aspect-ratio:300 / ${H};position:relative">${b.backgroundImage?`<img class="map-bg fit-${attr(b.backgroundFit||'cover')}" src="${attr(b.backgroundImage)}" alt="배경" onerror="this.style.display='none'">`:''}<svg viewBox="0 0 300 ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="노드 연결도" style="position:absolute;inset:0;width:100%;height:100%"><defs>${b.edges.map(e=>`<marker id="arrow-${attr(b.id)}-${attr(e.id)}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto-start-reverse"><path d="${'M0,0 L0,6 L6,3 z'}" fill="${attr(e.color||'#64748b')}"/></marker>`).join('')}${b.nodes.filter(n=>n.image).map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,id=`mapclip-${b.id}-${n.id}`;let clip=n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`:n.shape==='round'?`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>`:n.shape==='none'?`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;return `<clipPath id="${attr(id)}">${clip}</clipPath>`}).join('')}</defs>${edges}${b.nodes.map(n=>{const p=pos(n),x=p.x,y=p.y,w=p.w,h=p.h,sel=chosen('node',n.id),cls=`map-node-shape ${sel?'map-node-selected':''}`;const common=`data-node-id="${attr(n.id)}" class="${cls}" fill="${attr(n.fill||'#fff')}" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"`;let shape='';if(n.shape==='diamond')shape=`<polygon ${common} points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}"/>`;else if(n.shape==='ellipse')shape=`<ellipse ${common} cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}"/>`;else if(n.shape==='none')shape=`<rect data-node-id="${attr(n.id)}" class="${cls} map-node-coordinate" x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent" stroke="none"/>`;else shape=`<rect ${common} x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}"/>`;const anchor=({left:'start',right:'end',center:'middle'})[n.align]||'middle',tx=anchor==='start'?x+3:anchor==='end'?x+w-3:x+w/2;const fFamily=n.fontFamily?`font-family="${attr(n.fontFamily)}"`:'';return `${shape}${n.image?`<image href="${attr(n.image)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice" clip-path="url(#mapclip-${attr(b.id)}-${attr(n.id)})" pointer-events="none"/>${n.shape==='none'?'':(n.shape==='diamond'?`<polygon points="${x+w/2},${y} ${x+w},${y+h/2} ${x+w/2},${y+h} ${x},${y+h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:n.shape==='ellipse'?`<ellipse cx="${x+w/2}" cy="${y+h/2}" rx="${w/2}" ry="${h/2}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${n.shape==='round'?8:0}" fill="none" stroke="${attr(n.stroke||'#3976df')}" stroke-width="${n.strokeWidth||2}"/>`)}`:''}${n.text?`<text data-node-text-id="${attr(n.id)}" class="map-node-text ${sel?'map-node-selected':''}" x="${tx}" y="${y+h/2}" text-anchor="${anchor}" dominant-baseline="middle" font-size="${(Number(n.textSize)||12) * Number(getFontScale())}" fill="${n.textHtml != null ? '#202a3a' : attr(n.textColor||'#202a3a')}" font-weight="${n.textHtml != null ? 'normal' : (n.bold?'bold':'normal')}" font-style="${n.textHtml != null ? 'normal' : (n.italic?'italic':'normal')}" text-decoration="${n.textHtml != null ? 'none' : (n.underline?'underline':'none')}" ${n.textOutlineWidth>0?`stroke="${attr(n.textOutlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(n.textOutlineWidth)||0))}" paint-order="stroke fill" stroke-linejoin="round"`:n.textHtml == null && n.highlightColor?`stroke="${attr(n.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily} pointer-events="none">${mapRichHtmlToSvg(n.textHtml ?? esc(n.text))}</text>`:''}${sel?`<rect data-node-resize="${attr(n.id)}" x="${x+w-4}" y="${y+h-4}" width="8" height="8" rx="1" fill="#ffffff" stroke="#315fd3" stroke-width="1.5" style="cursor:nwse-resize;pointer-events:all"/>`:''}`}).join('')}${b.texts.map(t=>{const sel=chosen('text',t.id),fFamily=`font-family="${attr(t.fontFamily||globalFontInput?.value||'system-ui, sans-serif')}"`;return `<text data-map-text-id="${attr(t.id)}" class="map-independent-text ${sel?'map-independent-selected':''}" data-text-id="${attr(t.id)}" x="${(t.x!==undefined&&t.x!==null&&t.x!==''&&Number.isFinite(Number(t.x))?Number(t.x):150)}" y="${(t.y!==undefined&&t.y!==null&&t.y!==''&&Number.isFinite(Number(t.y))?Number(t.y):36)}" font-size="${(Number(t.size)||12) * Number(getFontScale())}" style="font-family:${attr(t.textHtml != null ? (globalFontInput?.value||'system-ui, sans-serif') : (t.fontFamily||globalFontInput?.value||'system-ui, sans-serif'))};font-size:${(Number(t.size)||12) * Number(getFontScale())}px;fill:${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))} !important" fill="${attr(t.textHtml != null ? '#222222' : (t.color||'#222'))}" font-weight="${t.textHtml != null ? 'normal' : (t.bold?'bold':'normal')}" font-style="${t.textHtml != null ? 'normal' : (t.italic?'italic':'normal')}" text-decoration="${t.textHtml != null ? 'none' : (t.underline?'underline':'none')}" text-anchor="${({left:'start',right:'end',center:'middle'})[t.align]||t.align||'middle'}" ${(t.outlineColor||t.outlineWidth!=null||!t.highlightColor)?`stroke="${attr(t.outlineColor||'#ffffff')}" stroke-width="${Math.max(0,Math.min(10,Number(t.outlineWidth??3)))}" paint-order="stroke fill" stroke-linejoin="round"`:''} ${t.textHtml == null && t.highlightColor?`stroke="${attr(t.highlightColor)}" stroke-width="5" paint-order="stroke fill" stroke-linejoin="round"`:''} ${fFamily}>${mapRichHtmlToSvg(t.textHtml ?? esc(t.text))}</text>`}).join('')}</svg></div><div class="map-resize-handle" role="separator" aria-label="드래그하여 캔버스 높이 조절" tabindex="0" data-map-editor-only data-map-resize="${b.id}">캔버스 높이 조절</div></div>`;
             }
 
             function renderBlock(b) {
@@ -3047,6 +3103,7 @@ const ICONS = {
                 if (customFont?.name && customFont?.url && !fontsForPreview.some(f => f.name === customFont.name)) fontsForPreview.push(customFont);
                 customFontStyle.textContent = fontsForPreview.map(font => font.url.includes('.css') ? `@import url('${font.url.replace(/'/g, '%27')}');` : `@font-face{font-family:'${font.name.replace(/['\\]/g, '')}';src:url('${font.url.replace(/'/g, '%27')}') format('woff2');font-display:swap;}`).join('\n');
                 if (fontsForPreview.some(f => f.name === globalFontInput.value)) preview.style.setProperty('--worksheet-font', `"${globalFontInput.value}", sans-serif`);
+                syncMapSvgTextSizes(preview);
                 preview.style.setProperty('--hero-bg', heroBgInput?.value || '#23385f');
                 preview.style.setProperty('--hero-color', '#ffffff');
                 preview.querySelectorAll('.hero').forEach(el => { el.style.background = heroBgInput?.value || '#23385f'; el.style.color = '#ffffff'; });
@@ -3132,7 +3189,7 @@ const ICONS = {
                 } else if (action === 'remove-node') {
                     const removed=b.nodes.splice(idx,1)[0]; b.edges=(b.edges||[]).filter(e=>e.from!==removed?.id&&e.to!==removed?.id); renderAll();
                 } else if (action === 'add-edge') {
-                    b.edges ||= []; if(b.nodes.length>=2){const ed={id:uid(),from:b.nodes[0].id,to:b.nodes[1].id,color:'#64748b',width:2,style:'solid',arrow:'end',label:''};b.edges.push(ed);selectedMapItem={blockId:b.id,kind:'edge',itemId:ed.id};} renderAll();
+                    b.edges ||= []; if(b.nodes.length>=2){const ed={id:uid(),from:b.nodes[0].id,to:b.nodes[1].id,color:'#64748b',width:2,style:'solid',arrow:'end',label:'관계',labelSize:12};b.edges.push(ed);selectedMapItem={blockId:b.id,kind:'edge',itemId:ed.id};} renderAll();
                 } else if (action === 'remove-edge') { b.edges.splice(idx,1); renderAll();
                 } else if (action === 'add-map-text') { b.texts ||= []; const t={id:uid(),text:'텍스트',x:120+Math.random()*60,y:70+Math.random()*60,size:12,color:'#222222',bold:false,italic:false,align:'middle'};b.texts.push(t);selectedMapItem={blockId:b.id,kind:'text',itemId:t.id};renderAll();
                 } else if (action === 'remove-map-text') { b.texts.splice(idx,1); renderAll();
@@ -4898,7 +4955,7 @@ const ICONS = {
                 const effectiveFont = fontsForExport.some(font => font.name === fontFamily) ? `\"${fontFamily}\",sans-serif` : fontFamily;
                 const mapBackgroundFitCss = `.map-frame{position:relative;overflow:hidden}.map-frame .map-bg{position:absolute;object-position:center;max-width:none;max-height:none}.map-frame .map-bg.fit-cover{inset:8px;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important;transform:none;object-fit:cover}.map-frame .map-bg.fit-contain{inset:8px;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important;transform:none;object-fit:contain}.map-frame .map-bg.fit-width{top:50%!important;right:0!important;bottom:auto!important;left:0!important;inset:auto 0 auto 0;width:100%!important;height:auto!important;max-width:none!important;max-height:none!important;transform:translateY(-50%)!important;object-fit:fill}.map-frame .map-bg.fit-height{top:0!important;right:auto!important;bottom:0!important;left:50%!important;inset:0 auto 0 50%;width:auto!important;height:100%!important;max-width:none!important;max-height:none!important;transform:translateX(-50%)!important;object-fit:fill}`;
                 const dynamicCss = `${customFontCss}:root{--font-scale:${scale};--worksheet-font:${effectiveFont};--worksheet-bg:${worksheetBg}} body{font-family:var(--worksheet-font);background:var(--worksheet-bg)}${mapBackgroundFitCss}`;
-                const script = `(function(){function grade(r){if(!r||r.type!=="radio"||!r.name||!r.checked)return;const q=r.closest(".quiz-q");if(!q)return;q.classList.remove("correct","wrong");q.querySelectorAll(".quiz-option-label").forEach(function(label){label.classList.remove("selected")});const label=r.closest(".quiz-option-label");if(label)label.classList.add("selected");q.classList.add(r.dataset.correct==="yes"?"correct":"wrong")}function findRadio(target){return target.closest('input[type="radio"][name^="learn-"]')||target.closest(".quiz-option-label")?.querySelector('input[type="radio"][name^="learn-"]')}document.addEventListener("change",function(e){if(e.target&&e.target.matches('input[type="radio"][name^="learn-"]'))grade(e.target)});document.addEventListener("click",function(e){const r=findRadio(e.target);if(!r)return;if(!r.checked){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}grade(r)})})();`;
+                const script = `(function(){var mapTextRO;function fitMapSvgText(svg){var vb=svg.viewBox&&svg.viewBox.baseVal,r=svg.getBoundingClientRect(),scale=vb&&vb.width?Math.min(r.width/vb.width,r.height/vb.height):0;if(!(scale>0)||!Number.isFinite(scale))return;var els=Array.from(svg.querySelectorAll("text,tspan"));els.forEach(function(el){if(!el.hasAttribute("data-map-font-target")){var n=parseFloat(getComputedStyle(el).fontSize)||parseFloat(el.getAttribute("font-size"))||16;el.setAttribute("data-map-font-target",String(n))}});els.forEach(function(el){var n=parseFloat(el.getAttribute("data-map-font-target"));if(!(n>0)||!Number.isFinite(n))return;var v=n/scale;el.setAttribute("font-size",String(v));if(el.style)el.style.fontSize=v+"px"})}function fitAllMapText(){document.querySelectorAll(".map-frame svg").forEach(fitMapSvgText)}function initMapTextSizing(){fitAllMapText();if(window.ResizeObserver){mapTextRO=new ResizeObserver(function(entries){entries.forEach(function(e){if(e.target.matches&&e.target.matches(".map-frame svg"))fitMapSvgText(e.target);else fitAllMapText()})});document.querySelectorAll(".map-frame svg").forEach(function(svg){mapTextRO.observe(svg)})}}function grade(r){if(!r||r.type!=="radio"||!r.name||!r.checked)return;const q=r.closest(".quiz-q");if(!q)return;q.classList.remove("correct","wrong");q.querySelectorAll(".quiz-option-label").forEach(function(label){label.classList.remove("selected")});const label=r.closest(".quiz-option-label");if(label)label.classList.add("selected");q.classList.add(r.dataset.correct==="yes"?"correct":"wrong")}function findRadio(target){return target.closest('input[type="radio"][name^="learn-"]')||target.closest(".quiz-option-label")?.querySelector('input[type="radio"][name^="learn-"]')}document.addEventListener("change",function(e){if(e.target&&e.target.matches('input[type="radio"][name^="learn-"]'))grade(e.target)});document.addEventListener("click",function(e){const r=findRadio(e.target);if(!r)return;if(!r.checked){r.checked=true;r.dispatchEvent(new Event("change",{bubbles:true}))}grade(r)});window.addEventListener("resize",fitAllMapText);if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initMapTextSizing);else requestAnimationFrame(initMapTextSizing)})();`;
                 const full = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><link rel="stylesheet" href="${exportCssUrl}"><style>${dynamicCss}</style></head><body data-theme="${theme}">${markup}<script>${script}<\/script></body></html>`;
                 const blob = new Blob([full], {
                         type: 'text/html;charset=utf-8'
