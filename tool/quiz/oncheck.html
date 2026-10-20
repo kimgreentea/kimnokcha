@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>학습지 메이커</title>
+    <title>에디터</title>
 <style>
     :root {
         --ink: #202a3a;
@@ -2149,7 +2149,7 @@
 
 <body>
     <header class="topbar">
-        <div class="brand">학습지 메이커</div>
+        <div class="brand">에디터</div>
         <div class="top-actions">
             <button class="btn dark" id="save-project">양식 저장</button>
             <button class="btn dark" id="load-project-btn">양식 불러오기</button>
@@ -2162,18 +2162,18 @@
         <section class="editor">
             <div class="settings-heading">
                 <div class="heading">
-                    <h2>학습지 설정</h2>
+                    <h2>페이지 설정</h2>
                 </div>
             </div>
             <div class="card">
             <div id="worksheet-settings-fields">
-                <div class="field"><label for="doc-kicker-editor">상단 문구</label><div id="doc-kicker-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="kicker" data-placeholder="상단 문구">학습지 상단 문구</div><input id="doc-kicker" type="hidden" value="학습지 상단 문구"></div>
-                <div class="field"><label for="doc-title-editor">학습지 제목</label><div id="doc-title-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="doc-title" data-placeholder="학습지 제목"><strong>학습지 제목</strong></div><input id="doc-title" type="hidden" value="학습지 제목"></div>
-                <div class="field"><label for="doc-subtitle-editor">학습지 부제</label><div id="doc-subtitle-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="subtitle" data-placeholder="학습지 부제">학습지 부제</div><input id="doc-subtitle" type="hidden" value="학습지 부제"></div>
+                <div class="field"><label for="doc-kicker-editor">상단 문구</label><div id="doc-kicker-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="kicker" data-placeholder="상단 문구">페이지 상단 문구</div><input id="doc-kicker" type="hidden" value="페이지 상단 문구"></div>
+                <div class="field"><label for="doc-title-editor">페이지 제목</label><div id="doc-title-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="doc-title" data-placeholder="페이지 제목"><strong>페이지 제목</strong></div><input id="doc-title" type="hidden" value="페이지 제목"></div>
+                <div class="field"><label for="doc-subtitle-editor">페이지 부제</label><div id="doc-subtitle-editor" class="editor-rich-input settings-rich-input" contenteditable="true" spellcheck="false" data-edit="subtitle" data-placeholder="페이지 부제">페이지 부제</div><input id="doc-subtitle" type="hidden" value="페이지 부제"></div>
             </div>
 
                 <div class="design-settings">
-                    <div class="settings-icon-grid" aria-label="학습지 디자인 설정">
+                    <div class="settings-icon-grid" aria-label="페이 디자인 설정">
                         <div class="setting-popover-wrap"><button class="btn setting-icon-btn" type="button" data-setting-toggle="setting-bg-popup" aria-expanded="false" title="상단 영역 배경색" aria-label="상단 영역 배경색"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <!-- 페인트통 (보라/인디고) -->
   <path d="m19 11-7-7-9 9 7 7 9-9Z" fill="#EEF2FF" stroke="#6366F1"/>
@@ -2246,8 +2246,8 @@
                 </div>
 
             </div>
-            <div class="heading block-list-heading" aria-label="학습지 편집 영역">
-                <h2>학습지 편집</h2><span id="block-count" class="small"></span><div class="block-list-controls"><button class="btn toolbar-icon-btn" id="editor-toggle-all-blocks" type="button" title="전체 영역 접기/펼치기" aria-label="전체 영역 접기/펼치기"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5-5 5 5M7 14l5 5 5-5"/></svg></button></div>
+            <div class="heading block-list-heading" aria-label="편집 영역">
+                <h2>영역 편집</h2><span id="block-count" class="small"></span><div class="block-list-controls"><button class="btn toolbar-icon-btn" id="editor-toggle-all-blocks" type="button" title="전체 영역 접기/펼치기" aria-label="전체 영역 접기/펼치기"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 10 5-5 5 5M7 14l5 5 5-5"/></svg></button></div>
             </div>
             <div id="block-list"></div>
 
@@ -2343,7 +2343,7 @@
                     <button class="btn toolbar-icon-btn" id="toolbar-collapse-toggle" type="button" title="툴바 접기" aria-label="툴바 접기" aria-expanded="true"><svg class="ui-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
                 </div>
                 <div id="toolbar-settings-panel" class="toolbar-settings-panel" hidden>
-                    <div class="toolbar-settings-head"><strong>즐겨 찾기</strong><button class="btn" id="toolbar-reset-settings" type="button" title="기본 배치로 초기화"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></button></div>
+                    <div class="toolbar-settings-head"><strong>즐겨찾기</strong><button class="btn" id="toolbar-reset-settings" type="button" title="기본 배치로 초기화"><svg class="ui-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></button></div>
                     
                     <div id="toolbar-config-list" class="toolbar-config-list"></div>
                 </div>
@@ -2601,7 +2601,7 @@ const ICONS = {
           <button class="btn" data-action="toggle-collapse" data-id="${b.id}" title="${collapsedBlocks.has(b.id) ? '영역 펼치기' : '영역 접기'}" aria-expanded="${!collapsedBlocks.has(b.id)}">${iconSvg(collapsedBlocks.has(b.id) ? 'chevronDown' : 'chevronUp', 17)}</button>
           <button class="btn" data-action="up" data-id="${b.id}" title="위로" aria-label="위로 이동">${iconSvg('arrowUp',16)}</button>
           <button class="btn" data-action="down" data-id="${b.id}" title="아래로" aria-label="아래로 이동">${iconSvg('arrowDown',16)}</button>
-          <button class="btn" data-action="clone" data-id="${b.id}"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <button class="btn" data-action="clone" data-id="${b.id}" title="복제"><svg class="ui-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   <!-- 뒤쪽 카드 -->
   <rect x="9" y="9" width="13" height="13" rx="2"/>
   <!-- 앞쪽 카드 (복제되는 대상) -->
@@ -4236,7 +4236,7 @@ const ICONS = {
                 list.innerHTML = toolbarOrder.map(id => {
                     const item = TOOLBAR_ITEMS.find(entry => entry[0] === id);
                     const shortcut = toolbarShortcuts[id] || '';
-                    return `<div class="toolbar-config-row" draggable="true" data-toolbar-config-item="${id}"><span class="toolbar-config-handle" aria-hidden="true" title="드래그하여 순서 변경">${iconSvg('grip',16)}</span><label class="toolbar-config-label"><input type="checkbox" data-toolbar-choice="${id}" ${toolbarCollapsedItems.includes(id)?'checked':''}><span>${item[1]}</span></label><span class="toolbar-config-move"><button type="button" class="btn" data-toolbar-move="up" data-toolbar-move-id="${id}" aria-label="${item[1]} 위로 이동" title="위로 이동">↑</button><button type="button" class="btn" data-toolbar-move="down" data-toolbar-move-id="${id}" aria-label="${item[1]} 아래로 이동" title="아래로 이동">↓</button></span><label class="toolbar-config-shortcut"><span>단축키</span><input type="text" readonly data-toolbar-shortcut="${id}" value="${attr(shortcut)}" placeholder="클릭 후 키 조합" aria-label="${item[1]} 단축키 설정. 클릭 후 키 조합을 누르세요." spellcheck="false" autocomplete="off" title="클릭한 뒤 Ctrl/Shift/Alt와 문자 조합을 누르세요. Delete는 해제, Esc는 취소"></label></div>`;
+                    return `<div class="toolbar-config-row" draggable="true" data-toolbar-config-item="${id}"><span class="toolbar-config-handle" aria-hidden="true" title="드래그하여 순서 변경">${iconSvg('grip',16)}</span><label class="toolbar-config-label"><input type="checkbox" data-toolbar-choice="${id}" ${toolbarCollapsedItems.includes(id)?'checked':''}><span>${item[1]}</span></label><span class="toolbar-config-move"><button type="button" class="btn" data-toolbar-move="up" data-toolbar-move-id="${id}" aria-label="${item[1]} 위로 이동" title="위로 이동">↑</button><button type="button" class="btn" data-toolbar-move="down" data-toolbar-move-id="${id}" aria-label="${item[1]} 아래로 이동" title="아래로 이동">↓</button></span><label class="toolbar-config-shortcut"><span>단축키</span><input type="text" readonly data-toolbar-shortcut="${id}" value="${attr(shortcut)}" placeholder="클릭 후 키 조합" aria-label="${item[1]} 단축키 설정. 클릭 후 키 조합을 누르세요." spellcheck="false" autocomplete="off" title="Delete로 해제, Esc로 취소"></label></div>`;
                 }).join('');
             }
             function applyToolbarLayout() {
@@ -4258,7 +4258,7 @@ const ICONS = {
                 TOOLBAR_ITEMS.forEach(([id,label]) => {
                     const group=toolbar.querySelector(`[data-toolbar-item="${id}"]`);
                     const button=group?.querySelector('button,select');
-                    if (button) button.title = toolbarShortcuts[id] ? `${label} · ${toolbarShortcuts[id]}` : `${label} · 단축키 없음`;
+                    if (button) button.title = toolbarShortcuts[id] ? `${label} | ${toolbarShortcuts[id]}` : `${label}`;
                 });
                 updatePreviewToggleLabel();
                 updateEditorToggleLabel();
@@ -4661,7 +4661,7 @@ const ICONS = {
                         renderAll();
                     }
                 } catch (err) {
-                    console.error('학습지 이미지 업로드 실패:', err);
+                    console.error('이미지 업로드 실패:', err);
                     alert(err.message || '이미지 파일을 읽지 못했습니다. 파일을 다시 선택해 주세요.');
                 } finally {
                     fileInput.value = ''; fileInput.disabled = false; delete fileInput.dataset.reading;
@@ -4963,7 +4963,7 @@ const ICONS = {
                     url = URL.createObjectURL(blob),
                     a = document.createElement('a');
                 a.href = url;
-                a.download = (title.trim() || '학습지').replace(/[\\/:*?"<>|]/g, '_') + '.html';
+                a.download = (title.trim() || '페이지').replace(/[\\/:*?"<>|]/g, '_') + '.html';
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
