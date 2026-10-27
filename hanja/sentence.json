@@ -830,11 +830,23 @@
     {
         "hanmun": "則非知之難也 處之則難也",
         "reading": "즉비지지난야 처지즉난야",
-        "meaning": "그러므로 앎은 어렵지 않다. 이를 대처함이 어렵다.",
+        "meaning": "그러므로 앎은 어렵지 않다. 아는 것을 다루는 것이야말로 어렵다.",
         "keyHanja": [
             {"hanja": "知", "meaning": "알다", "reading": "지"},
             {"hanja": "難", "meaning": "어렵다", "reading": "난"},
             {"hanja": "處", "meaning": "처리하다", "reading": "처"}
         ]
+    },
+
+    {
+        "hanmun": "燕雀安知鴻鵠之志哉",
+        "reading": "연작안지홍곡지지재",
+        "meaning": "제비나 참새가 어찌 기러기와 고니의 큰 뜻을 알겠는가.",
+        "keyHanja": [
+            {"hanja":"燕","meaning":"제비","reading":"연"},
+            {"hanja":"志","meaning":"뜻","reading":"지"}
+        ]
     }
+
+
 ]
