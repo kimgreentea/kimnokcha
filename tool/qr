@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR코드 생성기</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:#17243b;background:#f6f8fc}
+*{box-sizing:border-box}
+body{margin:0;padding:28px 18px 48px}
+.wrap{max-width:1120px;margin:auto}
+header{display:flex;align-items:center;gap:16px;margin:8px 0 28px}
+.logo{width:54px;height:54px;border-radius:15px;background:#e8f1ff;color:#1769e8;display:grid;place-items:center;font-size:30px}
+h1{font-size:29px;margin:0 0 4px}
+.sub{color:#64748b;margin:0}
+.layout{display:grid;grid-template-columns:1.15fr .9fr;gap:22px;align-items:start}
+.panel{background:#fff;border:1px solid #dce4f0;border-radius:14px;padding:24px;box-shadow:0 5px 20px #1d35570a}
+h2{font-size:19px;margin:0 0 18px}
+label,.label{display:block;font-weight:650;margin:18px 0 8px}
+textarea,select,input[type=text]{width:100%;border:1px solid #ccd7e6;border-radius:9px;padding:12px 14px;font:inherit;color:#17243b;background:white}
+textarea{min-height:145px;resize:vertical;line-height:1.6}
+textarea:focus,select:focus,input:focus{outline:2px solid #9fc2ff;border-color:#347cf0}
+.hint,.muted{font-size:13px;color:#718096}
+.count{text-align:right;margin-top:5px}
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.level{border:1px solid #d7e0ed;border-radius:9px;padding:11px 8px;cursor:pointer;text-align:center;font-size:14px}
+.level:has(input:checked){border-color:#347cf0;background:#eff6ff;color:#155fd1}
+.level input{accent-color:#1769e8}
+.level small{display:block;color:#718096;margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.colorbox{display:flex;align-items:center;gap:9px;border:1px solid #d7e0ed;border-radius:9px;padding:8px 10px}
+input[type=color]{width:34px;height:32px;border:0;background:none;padding:0;cursor:pointer}
+.colorbox input[type=text]{border:0;padding:5px;min-width:0}
+button{font:inherit;font-weight:700;border-radius:9px;padding:13px 16px;cursor:pointer;border:1px solid #d7e0ed;background:#fff;color:#20324d}
+button.primary{background:#1769e8;color:#fff;border-color:#1769e8}
+button:disabled{opacity:.45;cursor:not-allowed}
+.generate{width:100%;margin-top:22px;font-size:17px}
+.preview{display:flex;align-items:center;justify-content:center;min-height:350px;border:1px dashed #d8e2f0;border-radius:12px;background:#fbfcff;padding:18px}
+#qrcode{display:flex;align-items:center;justify-content:center;max-width:100%;overflow:auto}
+#qrcode canvas,#qrcode img{max-width:100%;height:auto}
+.placeholder{color:#94a3b8;text-align:center}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.info{margin-top:16px;background:#f3f7fd;border:1px solid #e0e9f5;border-radius:9px;padding:13px;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.status{min-height:22px;color:#c0392b;font-size:13px;margin-top:9px}
+@media(max-width:760px){body{padding:18px 12px 32px}.layout{grid-template-columns:1fr}.panel{padding:18px}h1{font-size:24px}.levels{gap:5px}.level{font-size:13px;padding:9px 3px}.preview{min-height:280px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">▦</div><div><h1>QR코드 생성기</h1><p class="sub">문자열을 입력하면 QR코드를 만들고 이미지로 저장할 수 있습니다.</p></div></header>
+<main class="layout">
+<section class="panel">
+<h2>✎ 문자열 입력</h2>
+<textarea id="content" placeholder="QR코드에 담을 문자열을 입력하세요.&#10;예) https://example.com, 안녕하세요, 123456"></textarea>
+<div class="count muted"><span id="charCount">0</span>자 입력</div>
+
+<label>오류 정정 수준</label>
+<div class="levels">
+<label class="level"><input type="radio" name="level" value="L"> L <small>약 7%</small></label>
+<label class="level"><input type="radio" name="level" value="M" checked> M <small>약 15%</small></label>
+<label class="level"><input type="radio" name="level" value="Q"> Q <small>약 25%</small></label>
+<label class="level"><input type="radio" name="level" value="H"> H <small>약 30%</small></label>
+</div>
+
+<label for="size">출력 크기</label>
+<select id="size">
+<option value="200">200 × 200 px</option>
+<option value="300" selected>300 × 300 px</option>
+<option value="400">400 × 400 px</option>
+<option value="600">600 × 600 px</option>
+<option value="800">800 × 800 px</option>
+</select>
+
+<label>색상</label>
+<div class="row">
+<div><span class="muted">QR코드 색상</span><div class="colorbox"><input id="dark" type="color" value="#000000"><input id="darkHex" type="text" value="#000000" maxlength="7" aria-label="QR코드 색상 코드"></div></div>
+<div><span class="muted">배경 색상</span><div class="colorbox"><input id="light" type="color" value="#ffffff"><input id="lightHex" type="text" value="#ffffff" maxlength="7" aria-label="배경 색상 코드"></div></div>
+</div>
+<button class="primary generate" id="generate">▦ QR코드 생성하기</button>
+<div class="status" id="status" role="status"></div>
+</section>
+
+<section class="panel">
+<h2>▦ QR코드 미리보기</h2>
+<div class="preview"><div id="qrcode"><div class="placeholder">문자열을 입력하고<br>QR코드 생성하기를 눌러주세요.</div></div></div>
+<div class="info">ⓘ 생성된 QR코드를 스캔하면 입력한 문자열을 읽을 수 있습니다.</div>
+<div class="actions">
+<button class="primary" id="download" disabled>⬇ PNG 다운로드</button>
+<button id="copyImage" disabled>▢ 이미지 복사</button>
+</div>
+<div class="info"><strong>입력된 문자열</strong><div id="resultText" style="margin-top:8px;white-space:pre-wrap;overflow-wrap:anywhere;color:#334155">아직 생성된 QR코드가 없습니다.</div></div>
+<div class="hint" style="margin-top:14px;line-height:1.7">TIP<br>• 오류 정정 수준이 높을수록 QR코드가 복원할 수 있는 손상량이 늘어납니다.<br>• 문자열이 길수록 QR 패턴이 복잡해지고 인식이 어려워질 수 있습니다.<br>• 한글은 UTF-8로 인코딩되어 저장됩니다.</div>
+</section>
+</main>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+let generated = false;
+
+function syncColor(colorId, hexId){
+  $(colorId).addEventListener('input',()=>{$(hexId).value=$(colorId).value;});
+  $(hexId).addEventListener('change',()=>{
+    const v=$(hexId).value.trim();
+    if(/^#[0-9a-fA-F]{6}$/.test(v)) $(colorId).value=v;
+    else $(hexId).value=$(colorId).value;
+  });
+}
+syncColor('dark','darkHex'); syncColor('light','lightHex');
+$('content').addEventListener('input',()=>{$('charCount').textContent=[...$('content').value].length;});
+function selectedLevel(){
+  const v=document.querySelector('input[name="level"]:checked').value;
+  return QRCode.CorrectLevel[v];
+}
+function makeQR(){
+  const text=$('content').value;
+  $('status').textContent='';
+  if(!text){$('status').textContent='문자열을 먼저 입력하세요.';return;}
+  if(typeof QRCode==='undefined'){$('status').textContent='QR 생성 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하세요.';return;}
+  const size=Number($('size').value);
+  const host=$('qrcode');
+  host.innerHTML='';
+  try{
+    new QRCode(host,{text,width:size,height:size,colorDark:$('dark').value,colorLight:$('light').value,correctLevel:selectedLevel()});
+    generated=true;
+    $('download').disabled=false;
+    $('copyImage').disabled=false;
+    $('resultText').textContent=text;
+  }catch(e){
+    generated=false;$('download').disabled=true;$('copyImage').disabled=true;
+    $('status').textContent='QR코드를 생성하지 못했습니다. 문자열이 너무 길 수 있습니다.';
+  }
+  setTimeout(()=>{
+    if(!host.querySelector('canvas,img')){
+      generated=false;$('download').disabled=true;$('copyImage').disabled=true;
+      $('status').textContent='QR코드 생성에 실패했습니다. 문자열 길이를 줄여주세요.';
+    }
+  },100);
+}
+$('generate').addEventListener('click',makeQR);
+$('download').addEventListener('click',()=>{
+  const canvas=$('qrcode').querySelector('canvas');
+  const img=$('qrcode').querySelector('img');
+  let url=canvas?canvas.toDataURL('image/png'):img?.src;
+  if(!url)return;
+  const a=document.createElement('a');a.href=url;a.download='qrcode.png';a.click();
+});
+$('copyImage').addEventListener('click',async()=>{
+  const canvas=$('qrcode').querySelector('canvas');
+  if(!canvas)return;
+  try{
+    const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+    await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
+    $('status').style.color='#16834a';$('status').textContent='QR코드 이미지를 클립보드에 복사했습니다.';
+  }catch(e){
+    $('status').style.color='#c0392b';$('status').textContent='이미지 복사를 지원하지 않는 환경입니다. PNG 다운로드를 이용하세요.';
+  }
+});
+$('content').value='https://example.com';
+$('charCount').textContent=$('content').value.length;
+makeQR();
+</script>
+</body>
+</html>
