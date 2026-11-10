@@ -46,7 +46,7 @@ button{cursor:pointer;color:inherit}
 .sw-path{background:repeating-linear-gradient(45deg,#8c795d 0 6px,#a08c6b 6px 8px)}
 .sw-sand{background:radial-gradient(circle at 30% 30%,#e1cb91 0 1px,transparent 2px),radial-gradient(circle at 70% 70%,#d1b77a 0 1px,transparent 2px),#c4a972}
 .tool-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:10px}
-.left-panel .tool small,.left-panel .panel-head small,.left-panel .panel-footer,.left-panel .tool-note,.left-panel .hint-line{display:none!important}
+.left-panel .tool small,.left-panel .panel-head small,.left-panel .panel-footer,.left-panel .tool-note{display:none!important}
 .editor-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:12px}.editor-tabs button{border:1px solid #344055;border-radius:7px;background:#202a39;color:#aeb9ca;padding:8px 4px;font-size:10px;cursor:pointer}.editor-tabs button.active{border-color:#c59b58;background:#70563266;color:#ffe1a9}.editor-pane[hidden]{display:none!important}.asset-license-note{margin-top:12px;padding:9px;border:1px solid #334258;border-radius:7px;color:#9eabc0;font-size:9px;line-height:1.6}.asset-license-note a{color:#dfbd7d}
 .asset-pack-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:10px}.asset-pack-tabs button{border:1px solid #344055;border-radius:7px;background:#202a39;color:#aeb9ca;padding:7px;font-size:10px;cursor:pointer}.asset-pack-tabs button.active{border-color:#c59b58;background:#70563266;color:#ffe1a9}
 .center{min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -78,7 +78,6 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
 .field textarea{min-height:78px;resize:vertical;line-height:1.5}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.empty-inspector{padding:25px 10px;text-align:center;color:var(--muted);font-size:11px;line-height:1.7}
 .branch-row{border:1px solid #39465a;border-radius:8px;background:#141b26;padding:9px;margin:8px 0}.branch-row-head{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#f0d3a2;font-size:10px;font-weight:800}.branch-row .field{margin:7px 0}.branch-row .btn{padding:5px 8px;font-size:10px}.branch-outcome{border-left:2px solid #795f3c;padding:3px 0 5px 9px;margin:8px 0}.branch-note{font-size:9px;color:var(--muted);line-height:1.5;margin:5px 0}
 .object-list{display:grid;gap:5px;max-height:220px;overflow:auto}
 .object-row{display:flex;align-items:center;gap:8px;padding:7px 8px;background:#202938;border:1px solid transparent;border-radius:7px;text-align:left;font-size:11px}
@@ -91,8 +90,8 @@ body.play-mode .layout{grid-template-columns:minmax(0,1fr) 278px;max-width:1400p
 body.play-mode .left-panel,body.play-mode .editor-toolbar{display:none}
 body.play-mode .play-panel{display:block}body.play-mode #inspectorPanel{display:none}
 body.play-mode .right-panel{min-height:0}
-body.play-mode .map-settings-bar{display:none}body.play-mode .right-tabs,body.play-mode #settingsPanel{display:none!important}.right-tabs{grid-template-columns:repeat(2,1fr);margin:12px 13px 0}.right-panel .panel-body[hidden]{display:none!important}.settings-panel .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end;margin-bottom:12px}.settings-panel .field{margin-bottom:12px}.settings-panel textarea{min-height:64px;resize:vertical}.settings-panel .object-list{margin-bottom:6px}
-body.play-mode .right-panel>.panel-head,body.play-mode #gameGoalStat,body.play-mode #moveLabel,body.play-mode #movePad,body.play-mode #actionBtn,body.play-mode #hintBtn,body.play-mode #mapDimensions,body.play-mode #restartBtn,body.play-mode .play-panel .panel-footer,body.play-mode .mobile-hint{display:none!important}
+body.play-mode .map-settings-bar{display:none}body.play-mode .right-tabs,body.play-mode #settingsPanel,body.play-mode #mapSettingsPanel{display:none!important}.right-tabs{grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 13px 0}.right-panel .panel-body[hidden]{display:none!important}.settings-panel .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end;margin-bottom:12px}.settings-panel .field{margin-bottom:12px}.settings-panel textarea{min-height:64px;resize:vertical}.settings-panel .object-list{margin-bottom:6px}.object-list-section{margin-top:0;padding-top:0;border-top:0}
+body.play-mode .right-panel>.panel-head,body.play-mode #moveLabel,body.play-mode #movePad,body.play-mode #actionBtn,body.play-mode #mapDimensions,body.play-mode #restartBtn,body.play-mode .play-panel .panel-footer,body.play-mode .mobile-hint{display:none!important}
 body.play-mode #exportRestartBtn{display:inline-flex!important;margin-left:auto}
 body.play-mode #journalList{max-height:none;overflow:visible}
 .play-stat{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #303b4e;padding:10px 0;font-size:11px}
@@ -123,7 +122,6 @@ body.play-mode #journalList{max-height:none;overflow:visible}
 .keypad button:hover{border-color:var(--accent)}.keypad-spacer{min-height:38px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#252f40;border:1px solid #69758b;border-radius:8px;padding:10px 15px;z-index:20;font-size:11px;box-shadow:var(--shadow);transition:.2s}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.hint-line{font-size:10px;color:#c1a578;background:#6b512a22;border:1px solid #87673e55;padding:8px;border-radius:7px;margin-top:10px}
 .mobile-hint{display:none}
 @media(max-width:700px){.map-settings-advanced-grid{grid-template-columns:1fr}.map-settings-advanced-grid>.field:first-child,.map-settings-advanced-grid .map-entrances{grid-column:1}}
 @media(max-width:1050px){.layout{grid-template-columns:205px minmax(0,1fr)}.right-panel{grid-column:1/-1;min-height:0}.right-panel .panel-body{display:grid;grid-template-columns:1fr 1fr;gap:12px}.right-panel .panel-head{grid-column:1/-1}body.play-mode .layout{grid-template-columns:minmax(0,1fr)}body.play-mode .right-panel .panel-body{display:block}}
@@ -134,7 +132,6 @@ body.play-mode #journalList{max-height:none;overflow:visible}
 <body>
 <header class="topbar">
   <div class="brand"><div class="brand-mark">E</div><div><strong>ESCAPE FORGE</strong><small>ROOM DESIGN STUDIO</small></div></div>
-  <div class="project-name">PROJECT <input id="projectTitleTop" value="폐관 후의 도서관" aria-label="프로젝트 이름"></div>
   <div class="top-spacer"></div>
   <div class="mode-switch">
     <button class="btn active" id="editModeBtn">편집</button>
@@ -194,6 +191,7 @@ body.play-mode #journalList{max-height:none;overflow:visible}
         <button class="tile-choice" data-tile="floor_checker"><canvas class="tile-swatch" data-preview-tile="floor_checker" width="48" height="48"></canvas>체커 타일</button>
         <button class="tile-choice" data-tile="metal"><canvas class="tile-swatch" data-preview-tile="metal" width="48" height="48"></canvas>금속 바닥</button>
       </div>
+      <button class="btn" id="fillAllTilesBtn" style="width:100%;margin-top:9px">선택한 타일로 전체 채우기</button>
       </div>
       <div class="editor-pane" data-editor-content="objects" hidden>
       <div class="section-label" style="margin-top:19px">중요 오브젝트</div>
@@ -316,13 +314,22 @@ body.play-mode #journalList{max-height:none;overflow:visible}
   </main>
 
   <aside class="panel right-panel">
-    <div class="panel-head"><strong id="rightHeading">오브젝트 속성</strong><small id="rightSub"></small></div>
-    <div class="editor-tabs right-tabs" id="rightTabs"><button class="active" data-right-tab="object">오브젝트 속성</button><button data-right-tab="settings">게임 설정</button></div>
+    <div class="panel-head"><strong id="rightHeading">오브젝트 설정</strong><small id="rightSub"></small></div>
+    <div class="editor-tabs right-tabs" id="rightTabs">
+      <button data-right-tab="settings">게임 설정</button>
+      <button data-right-tab="map">현재 맵 설정</button>
+      <button class="active" data-right-tab="object">오브젝트 설정</button>
+    </div>
     <div class="panel-body" id="inspectorPanel">
-      <div class="empty-inspector">맵에서 오브젝트를 선택하거나<br>왼쪽 도구로 새 오브젝트를 배치하세요.</div>
+      <div id="objectEditor"></div>
+      <div class="object-list-section">
+        <div class="section-label">현재 맵 오브젝트 목록</div>
+        <div class="object-list" id="objectList"></div>
+      </div>
     </div>
     <div class="panel-body settings-panel" id="settingsPanel" hidden>
       <div class="section-label">게임 설정</div>
+      <div class="field"><label for="projectTitleTop">프로젝트 이름</label><input id="projectTitleTop" value="폐관 후의 도서관" aria-label="프로젝트 이름"></div>
       <div class="field"><label for="mapIntro">게임 시작 안내문 (모든 맵 공통)</label><textarea id="mapIntro" placeholder="게임을 시작할 때 나올 안내문"></textarea></div>
       <div class="field"><label for="startMapSelect">플레이 시작 맵</label><select id="startMapSelect"></select></div>
       <div class="section-label">엔딩 문구</div>
@@ -331,8 +338,11 @@ body.play-mode #journalList{max-height:none;overflow:visible}
       <div class="field"><label for="endFailTitle">실패 제목</label><input id="endFailTitle" placeholder="탈출 실패"></div>
       <div class="field"><label for="endFailText">실패 기본 본문 (오브젝트에 설명이 없을 때)</label><textarea id="endFailText" placeholder="위험한 선택으로 게임에 실패했다."></textarea></div>
       <div class="section-label">맵 관리</div>
-      <div class="field-row"><button class="btn" id="addMapBtn">＋ 새 맵</button><button class="btn danger" id="deleteMapBtn">현재 맵 삭제</button></div>
-
+      <div class="field-row"><button class="btn" id="addMapBtn">＋ 새 맵</button><button class="btn" id="duplicateMapBtn">맵 복제</button><button class="btn danger" id="deleteMapBtn">현재 맵 삭제</button></div>
+    </div>
+    <div class="panel-body settings-panel" id="mapSettingsPanel" hidden>
+      <div class="section-label">맵 관리</div>
+      <div class="field-row"><button class="btn" id="addMapFromMapBtn">＋ 새 맵</button><button class="btn" id="duplicateMapFromMapBtn">맵 복제</button><button class="btn danger" id="deleteMapFromMapBtn">현재 맵 삭제</button></div>
       <div class="section-label">현재 맵</div>
       <div class="field"><label for="mapSelect">현재 맵</label><select id="mapSelect"></select></div>
       <div class="field"><label for="mapName">맵 이름</label><input id="mapName" value="도서관"></div>
@@ -344,12 +354,11 @@ body.play-mode #journalList{max-height:none;overflow:visible}
         <div class="field"><label for="mapH">세로 타일</label><input id="mapH" type="number" min="7" max="18" value="11"></div>
       </div>
       <button class="btn" id="resizeMap" style="width:100%">맵 크기 적용</button>
-      <div class="section-label" style="margin-top:16px">맵 오브젝트 목록</div><div class="object-list" id="settingsObjectList"></div>
+      <div class="section-label" style="margin-top:16px">현재 맵 오브젝트 목록</div><div class="object-list" id="settingsObjectList"></div>
     </div>
     <div class="play-panel">
       <div class="panel-body">
         <div class="play-stat"><span>진행 시간</span><strong id="timerValue">00:00</strong></div>
-        <div class="play-stat" id="gameGoalStat"><span>목표</span><strong>황동 열쇠 찾기</strong></div>
         <div class="section-label">소지품</div>
         <div class="inventory" id="inventoryList"><span class="no-data">아직 획득한 아이템이 없습니다.</span></div>
         <div class="section-label" style="margin-top:17px">단서 수첩</div>
@@ -359,7 +368,6 @@ body.play-mode #journalList{max-height:none;overflow:visible}
           <button class="up" data-move="up">▲</button><button class="left" data-move="left">◀</button><button class="down" data-move="down">▼</button><button class="right" data-move="right">▶</button>
         </div>
         <button class="action-btn" id="actionBtn">조사하기 · E</button>
-        <button class="btn" id="hintBtn" style="width:100%;margin-top:7px">힌트 보기</button>
         <button class="btn" id="restartBtn" style="width:100%;margin-top:7px">게임 다시 시작</button>
       </div>
       <div class="panel-footer">가까이 다가가서 조사하면 단서와 아이템을 찾을 수 있습니다.</div>
@@ -845,6 +853,7 @@ function drawFaceWallDoor(o,x,y){
   const WOOD='#8a6646',WOODL='#c3a16d',WOODD='#5a3f2a',GOLDH='#d8b25a',VOID='#16101c';
   const panel=(a,b,w,h)=>{g.strokeStyle=WOODL;g.lineWidth=1;g.strokeRect(a+.5,b+.5,w-1,h-1);g.fillStyle='rgba(0,0,0,.14)';g.fillRect(a+1,b+h-3,w-2,2)};
   g.save();g.imageSmoothingEnabled=false;
+  // Door seen from the front (wall with floor in front of it): the same design for every door function.
   if(!faceWallAt(o.x,o.y+1)){
     g.fillStyle=p.edge;g.fillRect(x+4,y+2,40,46);g.fillStyle=p.hi;g.fillRect(x+4,y+2,40,3);
     if(!open){
@@ -860,6 +869,35 @@ function drawFaceWallDoor(o,x,y){
   }
   const dir=!faceWallAt(o.x,o.y-1)?'s':!faceWallAt(o.x+1,o.y)?'w':!faceWallAt(o.x-1,o.y)?'e':null;
   if(!dir){g.restore();return false}
+  // Same-map passage in a side wall: a doorway through the wall with the leaf standing in the opening.
+  if(dir!=='s'&&o.doorMode==='same'){
+    const THR='#7a6f61',THRD='#5b5247',THRL='#9a8f7e',IRON='#3b3a40';
+    // jambs above and below the opening continue the wall
+    g.fillStyle=p.edge;g.fillRect(x,y,TILE,6);g.fillRect(x,y+TILE-6,TILE,6);
+    g.fillStyle=p.hi;g.fillRect(x+1,y,TILE-2,2);g.fillRect(x+1,y+TILE-6,TILE-2,2);
+    g.fillStyle=p.shade;g.fillRect(x,y+6,TILE,1);g.fillRect(x,y+TILE-7,TILE,1);
+    // threshold floor of the opening
+    g.fillStyle=THR;g.fillRect(x,y+7,TILE,TILE-14);
+    g.fillStyle=THRL;g.fillRect(x,y+7,TILE,1);g.fillStyle=THRD;g.fillRect(x,y+TILE-8,TILE,1);
+    g.fillStyle='rgba(0,0,0,.12)';for(let i=4;i<TILE;i+=10)g.fillRect(x+i,y+9,1,TILE-18);
+    if(!open){
+      g.fillStyle='rgba(0,0,0,.28)';g.fillRect(x+14,y+8,20,TILE-16);   // soft shadow around the leaf
+      g.fillStyle=WOOD;g.fillRect(x+17,y+7,14,TILE-14);                  // leaf
+      g.fillStyle=WOODL;g.fillRect(x+17,y+7,2,TILE-14);g.fillStyle=WOODD;g.fillRect(x+29,y+7,2,TILE-14);g.fillRect(x+23,y+9,1,TILE-18);
+      g.fillStyle=IRON;g.fillRect(x+17,y+13,14,3);g.fillRect(x+17,y+TILE-16,14,3);
+      g.fillStyle='#8b8a92';[[19,14],[28,14],[19,TILE-15],[28,TILE-15]].forEach(([a,b])=>g.fillRect(x+a,y+b,1,1));
+      g.fillStyle=GOLDH;g.fillRect(x+25,y+22,4,5);g.fillStyle='#4a3a1a';g.fillRect(x+26,y+24,1,2);
+    }else{
+      g.fillStyle='rgba(0,0,0,.2)';g.fillRect(x,y+15,TILE,TILE-30);
+      // leaf turned parallel to the passage, resting against the upper jamb
+      g.fillStyle=WOODD;g.fillRect(x+3,y+7,TILE-6,9);g.fillStyle=WOOD;g.fillRect(x+3,y+7,TILE-6,7);g.fillStyle=WOODL;g.fillRect(x+3,y+7,TILE-6,1);
+      g.fillStyle=WOODD;g.fillRect(x+16,y+7,1,7);g.fillRect(x+31,y+7,1,7);
+      g.fillStyle=IRON;g.fillRect(x+7,y+7,3,7);g.fillRect(x+38,y+7,3,7);
+      g.fillStyle=GOLDH;g.fillRect(x+22,y+10,4,2);
+    }
+    g.restore();return true;
+  }
+  // Original side-wall / top-edge doors (other maps, no function).
   let fx,fy,fw,fh,lx,ly,lw,lh;
   if(dir==='s'){fx=x+4;fy=y+1;fw=40;fh=19;lx=x+6;ly=y+3;lw=36;lh=15}
   else if(dir==='w'){fx=x+28;fy=y+4;fw=19;fh=40;lx=x+30;ly=y+6;lw=15;lh=36}
@@ -876,6 +914,7 @@ function drawFaceWallDoor(o,x,y){
   }
   g.restore();return true;
 }
+
 
 // ===== Natural ground tiles: seamless (no tile border), cached variants, soft grass/dirt/sand/snow transitions =====
 const NATURE_PRI={water:-1,path:0,dirt:1,sand:2,moss:3,grass:4,snow:5,ice:6};
@@ -1096,6 +1135,45 @@ function drawFancyFloor(x,y,t){
     floorTrim(x,y,t,'#2b323a');
   }
 }
+// ===== Lava: cooled basalt plates separated by glowing molten cracks, with molten pools.
+// The pattern is computed from world pixel coordinates, so neighbouring lava tiles join seamlessly.
+const lavaTileCache=new Map();
+function lavaTileCanvas(tx,ty){
+  const key=tx+','+ty,hit=lavaTileCache.get(key);if(hit)return hit;
+  const c=document.createElement('canvas');c.width=c.height=TILE;const g=c.getContext('2d');
+  const img=g.createImageData(TILE,TILE),d=img.data,C=27,H=wallHash;
+  const rgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const col={};['#fff0b0','#ffc54a','#ff8a2a','#e4561c','#8f2a12','#ffe9a0','#ffc04a','#c8360f','#3b1d17','#44221a','#35191a','#5b2c20','#6e3a28','#ff9a3a','#2a120f','#7a2c14'].forEach(h=>col[h]=rgb(h));
+  const feat=(cx,cy)=>[cx*C+Math.floor(H(cx,cy+11)*(C-4))+2,cy*C+Math.floor(H(cx+57,cy)*(C-4))+2];
+  for(let y=0;y<TILE;y++)for(let x=0;x<TILE;x++){
+    const wx=tx*TILE+x+Math.round(Math.sin((ty*TILE+y)*.21)*1.6),wy=ty*TILE+y+Math.round(Math.sin((tx*TILE+x)*.17)*1.6);
+    const cx0=Math.floor(wx/C),cy0=Math.floor(wy/C);let d1=1e9,d2=1e9,n1=null,f1=null;
+    for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const f=feat(cx0+i,cy0+j),dd=Math.hypot(wx-f[0],wy-f[1]);if(dd<d1){d2=d1;d1=dd;n1=[cx0+i,cy0+j];f1=f}else if(dd<d2)d2=dd}
+    const diff=d2-d1,hc=H(n1[0],n1[1]+3),pool=hc>.78,hh=H(tx*TILE+x,ty*TILE+y);
+    let k;
+    if(pool){
+      const t=d1/(C*.6);k=t<.22?'#ffe9a0':t<.45?'#ffc04a':t<.72?'#ff8a2a':'#e4561c';
+      if(Math.sin((wx+wy)*.33+hc*20)>.82)k='#c8360f';
+      if(diff<2.4&&t>.7)k='#c8360f';
+    }else{
+      if(diff<.9)k='#fff0b0';else if(diff<1.8)k='#ffc54a';else if(diff<2.6)k='#ff8a2a';else if(diff<3.4)k='#e4561c';else if(diff<4.4)k='#8f2a12';
+      else{
+        const base=hc<.33?'#3b1d17':hc<.66?'#44221a':'#35191a';k=base;
+        if((wx-f1[0])+(wy-f1[1])<-C*.38)k='#5b2c20';
+        if(hh>.93)k='#6e3a28';else if(hh<.03)k='#2a120f';
+        if(diff<6&&hh>.6)k='#7a2c14';
+        if(hh>.992)k='#ff9a3a';
+      }
+    }
+    const c0=col[k],i=(y*TILE+x)*4;d[i]=c0[0];d[i+1]=c0[1];d[i+2]=c0[2];d[i+3]=255;
+  }
+  g.putImageData(img,0,0);
+  // bubbles on molten areas
+  for(let b=0;b<3;b++){const bx=Math.floor(H(tx*5+b,ty+1)*36)+6,by=Math.floor(H(tx+2,ty*5+b)*36)+6,px=g.getImageData(bx,by,1,1).data;if(px[0]>230&&px[1]>120){g.fillStyle='#fff2b8';g.fillRect(bx-1,by-1,3,3);g.fillStyle='#ff8a2a';g.fillRect(bx,by,1,1)}}
+  lavaTileCache.set(key,c);return c;
+}
+function drawLavaTile(x,y){ctx.drawImage(lavaTileCanvas(x,y),x*TILE,y*TILE)}
+// Ground next to lava is scorched, then lit orange by the heat.
 function drawLavaGlow(){
   if(mode==='preview'||!project.grid)return;
   const g=ctx;
@@ -1105,8 +1183,9 @@ function drawLavaGlow(){
       const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=project.w||ny>=project.h)continue;
       const n=project.grid[ny][nx];if(n==='lava'||isWallTile(n))continue;
       const px=nx*TILE,py=ny*TILE;
-      const gr=dx?g.createLinearGradient(dx>0?px:px+TILE,0,dx>0?px+16:px+TILE-16,0):g.createLinearGradient(0,dy>0?py:py+TILE,0,dy>0?py+16:py+TILE-16);
-      gr.addColorStop(0,'rgba(255,110,30,.34)');gr.addColorStop(1,'rgba(255,110,30,0)');g.fillStyle=gr;g.fillRect(px,py,TILE,TILE);
+      const edge=(len)=>dx?g.createLinearGradient(dx>0?px:px+TILE,0,dx>0?px+len:px+TILE-len,0):g.createLinearGradient(0,dy>0?py:py+TILE,0,dy>0?py+len:py+TILE-len);
+      let gr=edge(9);gr.addColorStop(0,'rgba(26,10,6,.55)');gr.addColorStop(1,'rgba(26,10,6,0)');g.fillStyle=gr;g.fillRect(px,py,TILE,TILE);
+      gr=edge(22);gr.addColorStop(0,'rgba(255,120,40,.38)');gr.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gr;g.fillRect(px,py,TILE,TILE);
     }
   }
 }
@@ -1153,7 +1232,7 @@ function drawFloor(x,y,t){
   }else if(t==='ice'){
     drawVariantTile(x,y,t);
   }else if(t==='lava'){
-    drawVariantTile(x,y,t);
+    drawLavaTile(x,y);
   }else if(t==='marble'){
     drawFancyFloor(x,y,t);
   }else if(t==='floor_tile'){
@@ -1597,7 +1676,10 @@ function objectCell(o){const r=mode==='play'&&isNpc(o)?npcRuntime[o.id]:null;ret
 function initNpcRuntime(){npcRuntime={};for(const o of project.objects.filter(isNpc)){npcRuntime[o.id]={x:o.x,y:o.y,direction:o.direction||'down',homeX:o.x,homeY:o.y,nextMoveAt:Date.now()+500+Math.random()*900,walkUntil:0,pathIndex:0,pathStep:1}}}
 function isWallTile(tile){return tile==='wall'||String(tile||'').startsWith('wall_')}
 function isBlockingTile(tile){return isWallTile(tile)||['water','lava'].includes(tile)}
-function canNpcStep(npc,x,y){if(x<=0||y<=0||x>=project.w-1||y>=project.h-1||isBlockingTile(project.grid[y]?.[x]))return false;if((player.x===x&&player.y===y))return false;return !project.objects.some(o=>{if(o.id===npc.id)return false;const p=objectCell(o);return p.x===x&&p.y===y&&o.solid&&((o.type==='chest'||o.kind==='chest')||!opened[o.id])})}
+function sameMapDoorAt(x,y){return project.objects.find(o=>(o.type==='door'||o.kind==='door')&&o.doorMode==='same'&&!o.mapLinkId&&o.x===x&&o.y===y)||null}
+function isSameMapDoorOpenAt(x,y){const door=sameMapDoorAt(x,y);return !!(door&&opened[door.id])}
+function isBlockedTerrainAt(x,y){const tile=project.grid?.[y]?.[x];return isBlockingTile(tile)&&!(isWallTile(tile)&&isSameMapDoorOpenAt(x,y))}
+function canNpcStep(npc,x,y){if(x<=0||y<=0||x>=project.w-1||y>=project.h-1||isBlockedTerrainAt(x,y))return false;if((player.x===x&&player.y===y))return false;return !project.objects.some(o=>{if(o.id===npc.id)return false;const p=objectCell(o);return p.x===x&&p.y===y&&o.solid&&((o.type==='chest'||o.kind==='chest')||!opened[o.id])})}
 function stepNpcMovement(){const now=Date.now();let moved=false;for(const o of project.objects.filter(isNpc)){const r=npcRuntime[o.id];if(!r)continue;const mode=o.moveMode||'static';if(mode==='static'||now<r.nextMoveAt)continue;let target=null;
   if(mode==='random'){const radius=Math.max(1,Math.min(12,Number(o.moveRadius)||3)),candidates=[[0,-1],[1,0],[0,1],[-1,0]].map(([dx,dy])=>({x:r.x+dx,y:r.y+dy,dx,dy})).filter(p=>Math.abs(p.x-r.homeX)+Math.abs(p.y-r.homeY)<=radius&&canNpcStep(o,p.x,p.y));if(candidates.length)target=candidates[Math.floor(Math.random()*candidates.length)];r.nextMoveAt=now+850+Math.random()*1000;
   }else if(mode==='patrol'){const path=Array.isArray(o.patrolPath)?o.patrolPath:[];if(path.length){let goal=path[Math.min(r.pathIndex,path.length-1)],dx=goal.x-r.x,dy=goal.y-r.y;if(!dx&&!dy){if(o.patrolStyle==='pingpong'&&path.length>1){if(r.pathIndex===path.length-1)r.pathStep=-1;else if(r.pathIndex===0)r.pathStep=1;r.pathIndex+=r.pathStep}else r.pathIndex=(r.pathIndex+1)%path.length;goal=path[r.pathIndex];dx=goal.x-r.x;dy=goal.y-r.y}const dirs=Math.abs(dx)>=Math.abs(dy)?[[Math.sign(dx),0],[0,Math.sign(dy)]]:[[0,Math.sign(dy)],[Math.sign(dx),0]];for(const [sx,sy] of dirs){if(sx||sy){const x=r.x+sx,y=r.y+sy;if(canNpcStep(o,x,y)){target={x,y,dx:sx,dy:sy};break}}}r.nextMoveAt=now+650;}}
@@ -1682,7 +1764,7 @@ function handleEditorCell(cell){
     if(hit){toast('이미 오브젝트가 있는 칸입니다. 선택 모드에서 편집하세요.');return}
     pushUndo();
     const id='o'+Date.now();
-    const actualKind=placeKind;const base={id,kind:actualKind,name:({bookcase:'새 책장',desk:'새 책상',painting:'새 액자',window:'새 창문',bed:'새 침대',sofa:'새 소파',table:'새 원탁',fireplace:'새 벽난로',mirror:'새 거울',signpost:'새 표지판',well:'새 우물',campfire:'새 모닥불',rock:'새 바위',bush:'새 덤불',mailbox:'새 우체통',tombstone:'새 묘비',chest:'새 보관함',door:'새 문',npc:'새 인물',lamp:'새 램프',plant:'새 화분',statue:'새 석상',crate:'새 나무 상자',chair:'새 의자',blackboard:'새 칠판',tree:'새 나무',bench:'새 벤치',fountain:'새 분수',flower:'새 꽃밭',wardrobe:'새 옷장',vase:'새 꽃병',clock:'새 벽시계'})[placeKind]||'새 오브젝트',x:placeCell.x,y:placeCell.y,type:placeKind==='chest'?'chest':placeKind==='door'?'door':placeKind==='npc'?'npc':'clue',description:'이 오브젝트를 조사했을 때 표시할 내용을 입력하세요.',solid:!['painting','window','mirror','flower','clock'].includes(placeKind),code:placeKind==='chest'?'1234':'',reward:placeKind==='chest'?'열쇠':'',direction:'down',spriteStyle:'asset-000',walkAnimation:false,moveMode:'static',moveRadius:3,patrolPath:[],patrolStyle:'loop',found:false};
+    const actualKind=placeKind;const base={id,kind:actualKind,name:({bookcase:'새 책장',desk:'새 책상',painting:'새 액자',window:'새 창문',bed:'새 침대',sofa:'새 소파',table:'새 원탁',fireplace:'새 벽난로',mirror:'새 거울',signpost:'새 표지판',well:'새 우물',campfire:'새 모닥불',rock:'새 바위',bush:'새 덤불',mailbox:'새 우체통',tombstone:'새 묘비',chest:'새 보관함',door:'새 문',npc:'새 인물',lamp:'새 램프',plant:'새 화분',statue:'새 석상',crate:'새 나무 상자',chair:'새 의자',blackboard:'새 칠판',tree:'새 나무',bench:'새 벤치',fountain:'새 분수',flower:'새 꽃밭',wardrobe:'새 옷장',vase:'새 꽃병',clock:'새 벽시계'})[placeKind]||'새 오브젝트',x:placeCell.x,y:placeCell.y,type:placeKind==='chest'?'chest':placeKind==='door'?'door':placeKind==='npc'?'npc':'clue',description:placeKind==='door'?'':'이 오브젝트를 조사했을 때 표시할 내용을 입력하세요.',solid:!['painting','window','mirror','flower','clock'].includes(placeKind),code:placeKind==='chest'?'1234':'',reward:placeKind==='chest'?'열쇠':'',direction:'down',spriteStyle:'asset-000',walkAnimation:false,moveMode:'static',moveRadius:3,patrolPath:[],patrolStyle:'loop',found:false};
     project.objects.push(base);selectedObjectId=id;renderInspector();renderMap();toast('오브젝트를 배치했습니다. 속성을 편집하세요.');return;
   }
   if(hit&&eraseMode){pushUndo();project.objects=project.objects.filter(o=>o.id!==hit.id);selectedObjectId=null;renderInspector();renderMap();toast('오브젝트를 삭제했습니다.');return}
@@ -1729,17 +1811,21 @@ function endEditorPointer(){pointerPainting=false;pointerPaintUndoSaved=false;if
 canvas.addEventListener('pointerup',endEditorPointer);
 canvas.addEventListener('pointercancel',endEditorPointer);
 
-let inspectorUndoSnapshot=null,inspectorEditDirty=false;
-function isInspectorInput(el){return !!el?.matches?.('#objName,#objVariant,#objShowName,#objType,#objComplete,#objRequiredItem,#objEntrance,#objCode,#objReward,#objSolid,#objMapLink,#npcDirection,#npcSpriteStyle,#npcWalkAnimation,#npcMoveMode,#npcMoveRadius,#npcPatrolStyle,#playerSpriteStyle,#playerDirection,[data-dialog-page],[data-branch-field],[data-branch-message-page],[data-outcome-field]')}
+let inspectorUndoSnapshot=null,inspectorEditDirty=false,objectClipboard=null;
+function isInspectorInput(el){return !!el?.matches?.('#objName,#objVariant,#objShowName,#objType,#objComplete,#objRequiredItem,#objEntrance,#objCode,#objReward,#objSolid,#objMapLink,#objDoorMode,#objDoorDirection,#objDoorState,#npcDirection,#npcSpriteStyle,#npcWalkAnimation,#npcMoveMode,#npcMoveRadius,#npcPatrolStyle,#playerSpriteStyle,#playerDirection,[data-dialog-page],[data-branch-field],[data-branch-message-page],[data-outcome-field]')}
 function finishInspectorEdit(){if(inspectorEditDirty&&inspectorUndoSnapshot){undoStack.push(inspectorUndoSnapshot);if(undoStack.length>50)undoStack.shift();redoStack=[]}inspectorUndoSnapshot=null;inspectorEditDirty=false}
 function applyInspectorObjectValues(){
   if(selectedObjectId==='__player__'){const old=project.playerSprite||{};project.playerSprite={...old,spriteStyle:$('playerSpriteStyle').value,direction:$('playerDirection').value};delete project.playerSprite.gender;delete project.playerSprite.ageGroup;renderMap();return}
   const current=project.objects.find(x=>x.id===selectedObjectId);if(!current)return;
   current.name=$('objName').value.trim();if($('objVariant')){const vv=$('objVariant').value;if(vv==='default')delete current.variant;else current.variant=vv}if($('objShowName').checked)current.showName=true;else delete current.showName;current.type=$('objType').value;current.completeOnInteract=$('objComplete').checked;
   current.dialogPages=Array.from($('dialogPageEditor').querySelectorAll('[data-dialog-page]')).map(input=>input.value);current.description=current.dialogPages.join('\n');
-  if(current.type==='door'){const es0=$('objEntrance').value,wasEdge=current.entranceStyle==='edge';current.requiredItem=(es0==='edge'&&!wasEdge)?'':($('objRequiredItem').value.trim()||(es0==='edge'?'':'황동 열쇠'));if(es0==='edge'&&!wasEdge)$('objRequiredItem').value='';const eb=$('expandEdgeBtn');if(eb)eb.style.display=es0==='edge'?'':'none'}
-  if(current.type==='door'){const es=$('objEntrance').value;if(es==='auto')delete current.entranceStyle;else{current.entranceStyle=es;if(es==='edge')current.solid=true}}
-  current.code=$('objCode').value.trim();current.reward=$('objReward').value.trim();current.solid=$('objSolid').checked;current.mapLinkId=$('objMapLink').value||null;
+  if(current.type==='door'){
+    const es0=$('objEntrance').value;current.requiredItem=$('objRequiredItem').value.trim();
+    current.doorMode=$('objDoorMode').value;current.doorDirection=$('objDoorDirection').value;current.doorState=$('objDoorState').value;
+    const eb=$('expandEdgeBtn');if(eb)eb.style.display=es0==='edge'?'':'none';
+    const es=$('objEntrance').value;if(es==='auto')delete current.entranceStyle;else{current.entranceStyle=es;if(es==='edge')current.solid=true}
+  }
+  current.code=$('objCode').value.trim();current.reward=$('objReward').value.trim();current.solid=$('objSolid').checked;current.mapLinkId=current.type==='door'&&$('objDoorMode').value!=='map'?null:($('objMapLink').value||null);
   current.branches=Array.from($('branchList').querySelectorAll('.branch-row')).map(row=>{const messagePages=Array.from(row.querySelectorAll('[data-branch-message-page]')).map(input=>input.value);return {condition:row.querySelector('[data-branch-field="condition"]').value,value:row.querySelector('[data-branch-field="value"]').value.trim(),message:messagePages.join('\n'),messagePages,outcomes:Array.from(row.querySelectorAll('.branch-outcome')).map(outcome=>({action:outcome.querySelector('[data-outcome-field="action"]').value,reward:outcome.querySelector('[data-outcome-field="reward"]').value.trim(),newName:outcome.querySelector('[data-outcome-field="newName"]').value.trim()}))}});
   if(current.kind==='npc'||current.type==='npc'){current.direction=$('npcDirection').value;current.spriteStyle=$('npcSpriteStyle').value;delete current.gender;delete current.ageGroup;current.walkAnimation=$('npcWalkAnimation').checked;current.moveMode=$('npcMoveMode').value;current.moveRadius=clampInt($('npcMoveRadius').value,1,12);current.patrolStyle=$('npcPatrolStyle').value}
   current.kind=current.type==='chest'?'chest':current.type==='door'?'door':current.type==='npc'?'npc':current.kind;
@@ -1772,10 +1858,10 @@ function syncBranchEditorUI(wrap){wrap.querySelectorAll('.branch-row').forEach(r
 function objectVariantField(o){const list=OBJ_ART.variantsOf(o.kind);if(list.length<2)return '';return `<div class="field"><label>모양</label><select id="objVariant">${list.map(v=>`<option value="${escapeAttr(v.id)}" ${(o.variant||'default')===v.id?'selected':''}>${escapeHtml(v.label)}</option>`).join('')}</select></div>`}
 function renderInspectorInner(){
   finishInspectorEdit();
-  const wrap=$('inspectorPanel'),o=project.objects.find(x=>x.id===selectedObjectId);
-  $('rightHeading').textContent='오브젝트 속성';$('rightSub').textContent='';
-  if(selectedObjectId==='__player__'){const a=project.playerSprite||{spriteStyle:'asset-000',direction:'down'};$('rightHeading').textContent='플레이어 캐릭터';$('rightSub').textContent='PLAYER';wrap.innerHTML=`<div><div class="tool-note">업로드한 캐릭터 40종 중 하나를 선택합니다.</div><div class="field"><label>캐릭터</label><select id="playerSpriteStyle">${downloadedCharacterOptions()}</select><label>시작 방향</label><select id="playerDirection"><option value="down">아래</option><option value="up">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></div><div class="tool-note">맵에서 시작 위치 캐릭터를 드래그해 위치도 옮길 수 있습니다.</div></div>`;bindInspectorAutoApply(wrap);$('playerSpriteStyle').value=a.spriteStyle||'asset-000';$('playerDirection').value=a.direction||'down';return}
-  if(!o){wrap.innerHTML='<div class="empty-inspector">맵에서 오브젝트를 선택하거나<br>왼쪽 도구로 새 오브젝트를 배치하세요.</div>';return}
+  const wrap=$('objectEditor'),o=project.objects.find(x=>x.id===selectedObjectId);
+  $('rightHeading').textContent='오브젝트 설정';$('rightSub').textContent='';
+  if(selectedObjectId==='__player__'){const a=project.playerSprite||{spriteStyle:'asset-000',direction:'down'};$('rightHeading').textContent='플레이어 캐릭터';$('rightSub').textContent='PLAYER';wrap.innerHTML=`<div><div class="tool-note">업로드한 캐릭터 40종 중 하나를 선택합니다.</div><div class="field"><label>캐릭터</label><select id="playerSpriteStyle">${downloadedCharacterOptions()}</select><label>시작 방향</label><select id="playerDirection"><option value="down">아래</option><option value="up">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select></div><div class="tool-note">맵에서 시작 위치 캐릭터를 드래그해 위치도 옮길 수 있습니다.</div></div>`;bindInspectorAutoApply(wrap);$('playerSpriteStyle').value=a.spriteStyle||'asset-000';$('playerDirection').value=a.direction||'down';renderCurrentMapObjectList('objectList');return}
+  if(!o){wrap.innerHTML='';renderCurrentMapObjectList('objectList');return}
   wrap.innerHTML=`
     <div>
       <div class="field"><label>오브젝트 이름</label><input id="objName" value="${escapeAttr(o.name)}"></div>
@@ -1783,20 +1869,19 @@ function renderInspectorInner(){
       <div class="field"><label><input id="objShowName" type="checkbox" ${o.showName?'checked':''} style="width:auto;vertical-align:middle"> 화면에 이름 표시</label></div>
       <div class="field"><label>이벤트 유형</label><select id="objType"><option value="clue">단서 조사</option><option value="chest">암호 상자</option><option value="door">잠긴 문 / 출구</option><option value="npc">인물 대화</option><option value="complete">게임 완료</option></select></div>
       <div class="field" id="completeField"><label><input id="objComplete" type="checkbox" ${o.completeOnInteract||o.type==="complete"?"checked":""} style="width:auto;vertical-align:middle"> 조사 성공 시 게임 완료 처리</label></div>
-      <div class="field" id="requiredItemField" style="${o.type==="door"?"":"display:none"}"><label>필요 아이템 (문 잠금 해제)</label><input id="objRequiredItem" value="${escapeAttr(o.entranceStyle==='edge'?(o.requiredItem||''):(o.requiredItem||'황동 열쇠'))}" placeholder="예: 황동 열쇠 (맵 끝 이동 칸은 비우면 잠금 없음)"></div>
+      <div class="field" id="requiredItemField" style="${o.type==="door"?"":"display:none"}"><label>필요 아이템 (문 잠금 해제)</label><input id="objRequiredItem" value="${escapeAttr(o.requiredItem||'')}" placeholder="예: 황동 열쇠 (맵 끝 이동 칸은 비우면 잠금 없음)"></div>
       <div class="field"><label>기본 조사 문구 / 대화</label><div class="branch-note">조건에 맞는 분기가 없을 때 표시합니다. 분기가 실행되면 분기에 적은 내용만 나오고, 분기 내용을 비워 두면 이 문구가 대신 나옵니다.</div><div id="dialogPageEditor">${renderObjectDialoguePages(o)}</div><button class="btn" id="addDialogPage" type="button">＋ 페이지 추가</button></div>
       <div class="field"><label>조건별 분기</label><div class="branch-note">분기는 위에서부터 확인합니다. 조건에 맞는 첫 분기만 실행하고, 이때 기본 조사 문구와 문·상자의 기본 안내 문구는 함께 나오지 않습니다.</div><div id="branchList">${renderBranchRows(o)}</div><button class="btn" id="addEventBranch" type="button">＋ 분기 추가</button></div>
       <div class="field" id="npcMotionField"><label>인물 캐릭터</label><select id="npcSpriteStyle">${downloadedCharacterOptions()}</select><label>인물 바라보는 방향</label><select id="npcDirection"><option value="down">아래</option><option value="up">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select><label id="npcIdleWalkField"><input id="npcWalkAnimation" type="checkbox" ${o.walkAnimation?'checked':''} style="width:auto;vertical-align:middle"> 제자리 걷기 애니메이션 (정지 시)</label><label>이동 방식</label><select id="npcMoveMode"><option value="static">정지</option><option value="random">랜덤 이동</option><option value="patrol">순찰 경로</option></select><div id="npcRadiusField"><label>랜덤 이동 범위 (타일)</label><input id="npcMoveRadius" type="number" min="1" max="12" value="${Number(o.moveRadius)||3}"></div><div id="npcPatrolField"><label>순찰 방식</label><select id="npcPatrolStyle"><option value="loop">반복</option><option value="pingpong">왕복</option></select><div class="tool-note" id="patrolPathStatus"></div><button class="btn" id="patrolEditBtn" type="button">맵에서 순찰 지점 배치</button> <button class="btn" id="patrolClearBtn" type="button">경로 지우기</button></div></div>
-      <div class="field" id="codeField"><label>정답 암호</label><input id="objCode" maxlength="8" value="${escapeAttr(o.code||'')}" placeholder="예: 2413"></div>
+      <div class="field" id="codeField"><label id="codeFieldLabel">정답 암호</label><input id="objCode" maxlength="8" value="${escapeAttr(o.code||'')}" placeholder="비워 두면 암호 없이 열립니다."></div>
       <div class="field" id="rewardField"><label>성공 보상 아이템</label><input id="objReward" value="${escapeAttr(o.reward||'')}" placeholder="예: 황동 열쇠"></div>
-      <div class="field" id="entranceField" style="${o.type==='door'?'':'display:none'}"><label>출입구 모양</label><select id="objEntrance"><option value="auto">자동 (놓은 곳에 맞춤)</option><option value="door">일반 문</option><option value="gate">대문 (울타리 문)</option><option value="cave">동굴 입구</option><option value="stairs">지하 계단</option><option value="edge">맵 끝 이동 칸 (보이지 않음)</option></select><div class="tool-note">자동: 울타리 위는 대문, 바위 언덕 위는 동굴 입구, 그 밖은 일반 문입니다. 맵 끝 이동 칸은 그 칸으로 걸어 들어가면 바로 이동하며, 필요 아이템을 비우면 잠금이 없습니다. 목적지 맵에도 이 맵으로 연결된 이동 칸을 두면 반대편 같은 위치에 도착합니다.</div><button class="btn" id="expandEdgeBtn" type="button" style="${o.entranceStyle==='edge'?'':'display:none'}">이 가장자리 한 줄 전체로 확장</button></div>
-      <div class="field" id="mapLinkField"><label>문 연결 목적지 맵</label><select id="objMapLink"><option value="">연결 안 함</option>${project.maps.filter(m=>m.id!==project.currentMapId).map(m=>`<option value="${escapeAttr(m.id)}">${escapeHtml(m.name)}</option>`).join('')}</select></div>
+      <div class="field" id="entranceField" style="${o.type==='door'?'':'display:none'}"><label>출입구 모양</label><select id="objEntrance"><option value="auto">자동 (놓은 곳에 맞춤)</option><option value="door">일반 문</option><option value="gate">대문 (울타리 문)</option><option value="cave">동굴 입구</option><option value="stairs">지하 계단</option><option value="edge">맵 끝 이동 칸 (보이지 않음)</option></select><div class="tool-note">자동: 울타리 위는 대문, 바위 언덕 위는 동굴 입구, 그 밖은 일반 문입니다.</div><button class="btn" id="expandEdgeBtn" type="button" style="${o.entranceStyle==='edge'?'':'display:none'}">이 가장자리 한 줄 전체로 확장</button></div>
+      <div class="field" id="doorModeField" style="${o.type==='door'?'':'display:none'}"><label>문 기능</label><select id="objDoorMode"><option value="map">다른 맵으로 이동</option><option value="same">같은 맵 연결 통로</option><option value="none">이동 기능 없음</option></select><div class="tool-note">같은 맵 연결 통로는 벽 타일 위에 문을 배치합니다. 문이 열리면 해당 타일의 벽 충돌만 해제되고, 닫히면 복구됩니다. 출구·입구 좌표는 지정하지 않습니다.</div></div>
+      <div class="field" id="mapLinkField" style="${o.type==='door'&&(o.doorMode||(o.mapLinkId?'map':'none'))==='map'?'':'display:none'}"><label>문 연결 목적지 맵</label><select id="objMapLink"><option value="">연결 안 함</option>${project.maps.filter(m=>m.id!==project.currentMapId).map(m=>`<option value="${escapeAttr(m.id)}">${escapeHtml(m.name)}</option>`).join('')}</select></div>
+      <div class="field" id="sameMapDoorSettings" style="${o.type==='door'&&o.doorMode==='same'?'':'display:none'}"><label>통과 방향</label><select id="objDoorDirection"><option value="both">양방향</option><option value="leftToRight">왼쪽 → 오른쪽</option><option value="rightToLeft">오른쪽 → 왼쪽</option><option value="upToDown">위쪽 → 아래쪽</option><option value="downToUp">아래쪽 → 위쪽</option></select><label>문 상태</label><select id="objDoorState"><option value="toggle">열고 닫기</option><option value="autoClose">통과하면 자동 닫힘</option><option value="persistent">한 번 열면 계속 열림</option><option value="initialOpen">처음부터 열림</option></select><div class="tool-note">방향은 문이 놓인 벽을 가로지르는 방향으로 선택합니다. 문 양쪽에 이동 가능한 바닥 타일이 있어야 통과할 수 있습니다.</div></div>
       <div class="field"><label><input id="objSolid" type="checkbox" ${o.solid?'checked':''} style="width:auto;vertical-align:middle"> 이동을 막는 오브젝트</label></div>
-      <div class="inspector-actions"><button class="btn danger" id="deleteObj">삭제</button></div>
+      <div class="inspector-actions"><button class="btn" id="copyObj">복사</button><button class="btn" id="pasteObj">붙여넣기</button><button class="btn danger" id="deleteObj">삭제</button></div>
       <div class="tool-note" id="inspectorNote"></div>
-    </div>
-    <div>
-      <div class="section-label">맵 오브젝트 목록</div><div class="object-list" id="objectList"></div>
     </div>`;
   bindInspectorAutoApply(wrap);
   syncBranchEditorUI(wrap);
@@ -1809,13 +1894,16 @@ function renderInspectorInner(){
     wrap.querySelectorAll('[data-branch-field="condition"]').forEach(select=>{let option=select.querySelector('option[value="puzzleSolved"]');if(isChest&&!option){option=document.createElement('option');option.value='puzzleSolved';option.textContent='이 오브젝트의 암호가 풀림';select.insertBefore(option,select.querySelector('option[value="always"]'))}else if(!isChest&&option){if(select.value==='puzzleSolved')select.value='always';option.remove()}});
     $('completeField').style.display=['clue','npc','door','chest'].includes(type)?'':'none';
     $('requiredItemField').style.display=isDoor?'':'none';$('entranceField').style.display=isDoor?'':'none';
+    $('doorModeField').style.display=isDoor?'':'none';
+    $('mapLinkField').style.display=isDoor&&$('objDoorMode').value==='map'?'':'none';
+    $('sameMapDoorSettings').style.display=isDoor&&$('objDoorMode').value==='same'?'':'none';
     $('npcMotionField').style.display=(o.kind==='npc'||type==='npc')?'':'none';
     $('npcIdleWalkField').style.display=$('npcMoveMode').value==='static'?'':'none';$('npcRadiusField').style.display=$('npcMoveMode').value==='random'?'':'none';$('npcPatrolField').style.display=$('npcMoveMode').value==='patrol'?'':'none';$('patrolPathStatus').textContent=`순찰 지점: ${(o.patrolPath||[]).map((p,i)=>`${i+1}. ${p.x},${p.y}`).join(' · ')||'없음'}`;$('patrolEditBtn').textContent=patrolEditObjectId===o.id?'순찰 지점 배치 완료':'맵에서 순찰 지점 배치';
-    $('codeField').style.display=isChest?'':'none';$('rewardField').style.display=isChest?'':'none';
-    $('mapLinkField').style.display=isDoor?'':'none';
-    $('inspectorNote').textContent=isChest?'정답 암호를 입력하면 보상 아이템을 지급합니다.':isDoor?'필요 아이템을 가진 상태에서 조사하면 연결된 맵으로 이동하거나 게임을 완료합니다.':type==='complete'?'조사하면 게임을 완료합니다.':type==='npc'?'대화 문구를 입력하면 플레이 중 인물과 대화할 수 있습니다.':'조사 문구는 단서와 일지 기록에 사용됩니다.';
+    $('codeField').style.display=(isChest||isDoor)?'':'none';$('codeFieldLabel').textContent=isDoor?'문 비밀번호 (선택 사항)':'정답 암호';$('rewardField').style.display=isChest?'':'none';
+    $('mapLinkField').style.display=isDoor&&$('objDoorMode').value==='map'?'':'none';
+    $('inspectorNote').textContent=isChest?'정답 암호를 입력하면 보상 아이템을 지급합니다.':isDoor?'필요 아이템이 있고, 비밀번호를 설정했다면 정답을 입력해야 문이 열립니다. 연결되지 않은 문은 아무 동작도 하지 않습니다.':type==='complete'?'조사하면 게임을 완료합니다.':type==='npc'?'대화 문구를 입력하면 플레이 중 인물과 대화할 수 있습니다.':'조사 문구는 단서와 일지 기록에 사용됩니다.';
   };
-  $('objType').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};$('npcMoveMode').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};syncInspectorFields();
+  $('objType').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};$('objDoorMode').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};$('npcMoveMode').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};syncInspectorFields();
   $('patrolEditBtn').onclick=()=>{patrolEditObjectId=patrolEditObjectId===o.id?null:o.id;setSelectionMode();renderInspector();renderMap();if(patrolEditObjectId)toast('맵을 클릭해 순찰 지점을 차례로 추가하세요.')};$('patrolClearBtn').onclick=()=>{pushUndo();o.patrolPath=[];patrolEditObjectId=null;renderInspector();renderMap();toast('순찰 경로를 지웠습니다.')};
   $('addEventBranch').onclick=()=>{finishInspectorEdit();pushUndo();o.branches=Array.isArray(o.branches)?o.branches:[];o.branches.push({condition:'always',value:'',message:'',outcomes:[{action:'dialog',reward:'',newName:''}]});renderInspector();renderMap()};
   wrap.querySelectorAll('[data-move-branch]').forEach(btn=>btn.onclick=()=>{finishInspectorEdit();const [i,d]=btn.dataset.moveBranch.split(':').map(Number),arr=o.branches||[],j=i+d;if(j<0||j>=arr.length)return;pushUndo();[arr[i],arr[j]]=[arr[j],arr[i]];renderInspector();renderMap()});
@@ -1827,31 +1915,52 @@ function renderInspectorInner(){
   $('addDialogPage').onclick=()=>{finishInspectorEdit();pushUndo();o.dialogPages=objectDialoguePages(o);o.dialogPages.push('');o.description=o.dialogPages.join('\n');renderInspector();renderMap()};
   wrap.querySelectorAll('[data-delete-dialog-page]').forEach(btn=>btn.onclick=()=>{finishInspectorEdit();pushUndo();o.dialogPages=objectDialoguePages(o);if(o.dialogPages.length>1)o.dialogPages.splice(Number(btn.dataset.deleteDialogPage),1);o.description=o.dialogPages.join('\n');renderInspector();renderMap()});
   $('objMapLink').value=o.mapLinkId||'';
-  $('objectList').innerHTML=project.objects.map(x=>`<button class="object-row ${x.id===o.id?'active':''}" data-select="${escapeAttr(x.id)}">${escapeHtml(x.name||'')}<small>${x.x}, ${x.y}</small></button>`).join('');
-  $('objectList').querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{selectedObjectId=b.dataset.select;renderInspector();renderMap()});
+  $('objDoorMode').value=o.doorMode||(o.mapLinkId?'map':'none');
+  $('objDoorDirection').value=o.doorDirection||'both';
+  $('objDoorState').value=o.doorState||'toggle';
+  syncInspectorFields();
+  renderCurrentMapObjectList('objectList');
+  $('copyObj').onclick=()=>{objectClipboard=clone(o);toast('오브젝트를 복사했습니다.');};$('pasteObj').onclick=pasteCopiedObject;
   $('deleteObj').onclick=()=>{pushUndo();project.objects=project.objects.filter(x=>x.id!==selectedObjectId);selectedObjectId=null;renderInspector();renderMap();renderIncomingEntrances();toast('오브젝트를 삭제했습니다.')};
 }
 let rightTab='object',lastTabSelected=null,settingsListSig=null;
 function showRightTab(tab){
-  rightTab=tab==='settings'?'settings':'object';
-  $('inspectorPanel').hidden=rightTab!=='object';$('settingsPanel').hidden=rightTab!=='settings';
+  rightTab=['settings','map','object'].includes(tab)?tab:'object';
+  $('inspectorPanel').hidden=rightTab!=='object';
+  $('settingsPanel').hidden=rightTab!=='settings';
+  $('mapSettingsPanel').hidden=rightTab!=='map';
   document.querySelectorAll('[data-right-tab]').forEach(b=>b.classList.toggle('active',b.dataset.rightTab===rightTab));
-  if(rightTab==='settings'){$('rightHeading').textContent='게임 설정';$('rightSub').textContent=''}
+  const labels={object:['오브젝트 설정',''],settings:['게임 설정',''],map:['현재 맵 설정','']};
+  $('rightHeading').textContent=labels[rightTab][0];$('rightSub').textContent=labels[rightTab][1];
+}
+function renderCurrentMapObjectList(boxId){
+  const box=$(boxId);if(!box)return;
+  box.innerHTML=project.objects.length?project.objects.map(x=>`<button class="object-row ${x.id===selectedObjectId?'active':''}" data-select="${escapeAttr(x.id)}">${escapeHtml(x.name||'(이름 없음)')}<small>${x.x}, ${x.y}</small></button>`).join(''):'<div class="no-data">현재 맵에 배치된 오브젝트가 없습니다.</div>';
+  box.querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{
+    selectedObjectId=b.dataset.select;
+    showRightTab('object');
+    renderInspector();
+    renderMap();
+  });
 }
 function renderSettingsObjectList(force){
   const box=$('settingsObjectList');if(!box)return;
-  if(rightTab!=='settings'&&!force){settingsListSig=null;return}
   const sig=JSON.stringify(project.objects.map(o=>[o.id,o.name,o.x,o.y]))+'|'+selectedObjectId;
   if(!force&&sig===settingsListSig)return;settingsListSig=sig;
-  box.innerHTML=project.objects.length?project.objects.map(x=>`<button class="object-row ${x.id===selectedObjectId?'active':''}" data-select="${escapeAttr(x.id)}">${escapeHtml(x.name||'(이름 없음)')}<small>${x.x}, ${x.y}</small></button>`).join(''):'<div class="no-data">배치된 오브젝트가 없습니다.</div>';
-  box.querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{selectedObjectId=b.dataset.select;renderInspector();renderMap()});
+  renderCurrentMapObjectList('settingsObjectList');
 }
-function setRightTab(tab){showRightTab(tab);if(rightTab==='settings')renderSettingsObjectList(true);else renderInspector()}
+function setRightTab(tab){
+  showRightTab(tab);
+  if(rightTab==='settings')renderSettingsObjectList(true);
+  else if(rightTab==='map')renderSettingsObjectList(true);
+  else renderInspector();
+}
 function renderInspector(){
   if(selectedObjectId&&selectedObjectId!==lastTabSelected&&rightTab!=='object')showRightTab('object');
   lastTabSelected=selectedObjectId;
   renderInspectorInner();
-  if(rightTab==='settings'){$('rightHeading').textContent='게임 설정';$('rightSub').textContent=''}
+  const headingMap={object:'오브젝트 설정',settings:'게임 설정',map:'현재 맵 설정'};
+  $('rightHeading').textContent=headingMap[rightTab];
   renderSettingsObjectList(true);
 }
 function clampInt(v,min,max){return Math.max(min,Math.min(max,parseInt(v,10)||0))}
@@ -1959,7 +2068,7 @@ function setMode(next){
   $('stageStatus').textContent=mode==='edit'?'편집 모드':'플레이 모드';
   $('startOverlay').hidden=true;$('dialogOverlay').hidden=true;$('puzzleOverlay').hidden=true;$('winOverlay').hidden=true;$('failOverlay').hidden=true;
   if(mode==='play'){saveActiveMap();$('mapSelect').disabled=true;$('startMapSelect').disabled=true;resetGame();$('mapSelect').value=project.currentMapId;$('mapName').value=project.mapName||'';$('mapIntro').value=project.intro||'';$('mapEntryMessage').value=project.entryMessage||'';$('startOverlay').hidden=false;$('stageStatus').textContent='게임 준비';$('rightHeading').textContent='게임 상태';$('rightSub').textContent='ADVENTURE';}
-  else{$('mapSelect').disabled=false;$('startMapSelect').disabled=false;$('mapSelect').value=project.currentMapId;$('mapName').value=project.mapName||'';$('mapIntro').value=project.intro||'';$('mapEntryMessage').value=project.entryMessage||'';stopTimer();setSelectionMode();$('rightHeading').textContent='오브젝트 속성';$('rightSub').textContent='';renderInspector()}
+  else{$('mapSelect').disabled=false;$('startMapSelect').disabled=false;$('mapSelect').value=project.currentMapId;$('mapName').value=project.mapName||'';$('mapIntro').value=project.intro||'';$('mapEntryMessage').value=project.entryMessage||'';stopTimer();setSelectionMode();$('rightHeading').textContent='오브젝트 설정';$('rightSub').textContent='';renderInspector()}
   renderMap();
 }
 function resetGame(){
@@ -1970,7 +2079,7 @@ function resetGame(){
     project.grid=clone(first.grid);project.start=clone(first.start);project.objects=clone(first.objects);
     project.subtitle=first.subtitle;project.entryMessage=first.entryMessage||'';
   }
-  player={x:project.start.x,y:project.start.y,direction:project.playerSprite?.direction||'down',walkUntil:0};initNpcRuntime();inventory=[];journal=[];journalSeen=new Set();opened={};runtimeObjectNames={};elapsed=0;won=false;failed=false;clockStarted=false;activePuzzle=null;codeInput='';
+  player={x:project.start.x,y:project.start.y,direction:project.playerSprite?.direction||'down',walkUntil:0};initNpcRuntime();inventory=[];journal=[];journalSeen=new Set();opened={};doorTransit=null;project.objects.filter(o=>(o.type==='door'||o.kind==='door')&&o.doorMode==='same'&&o.doorState==='initialOpen').forEach(o=>opened[o.id]=true);runtimeObjectNames={};elapsed=0;won=false;failed=false;clockStarted=false;activePuzzle=null;codeInput='';
   $('introText').innerHTML=escapeHtml(project.intro||'이 방을 탈출하라.').replace(/\n/g,'<br>');
   $('dialogOverlay').hidden=true;$('puzzleOverlay').hidden=true;$('winOverlay').hidden=true;$('failOverlay').hidden=true;
   renderGameSidebar();$('timerValue').textContent='00:00';renderMap();
@@ -1993,15 +2102,33 @@ function renderGameSidebar(){
 }
 function isBlocked(x,y){
   if(x<0||y<0||x>=project.w||y>=project.h)return true;
-  if(isBlockingTile(project.grid[y][x]))return true;
+  if(isBlockedTerrainAt(x,y))return true;
   return project.objects.some(o=>{const p=objectCell(o);return p.x===x&&p.y===y&&o.solid&&((o.type==='chest'||o.kind==='chest')||!opened[o.id])});
 }
+function sameMapDoorEntryAllowed(door,dx,dy){
+  const direction=door.doorDirection||'both';
+  if(direction==='both')return true;
+  return (direction==='leftToRight'&&dx===1&&dy===0)||(direction==='rightToLeft'&&dx===-1&&dy===0)||(direction==='upToDown'&&dx===0&&dy===1)||(direction==='downToUp'&&dx===0&&dy===-1);
+}
+let doorTransit=null;
 function move(dir){
   if(mode!=='play'||!clockStarted||won||failed||!$('dialogOverlay').hidden||!$('puzzleOverlay').hidden)return;
   const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[dir];if(!d)return;
   player.direction=dir;const nx=player.x+d[0],ny=player.y+d[1];
+  if(doorTransit){
+    if(nx!==doorTransit.exitX||ny!==doorTransit.exitY){player.walkUntil=0;renderMap();return;}
+  }
   if(project.objects.some(o=>{if(o.kind!=='door'||o.entranceStyle!=='edge')return false;const c=objectCell(o);return c.x===nx&&c.y===ny})){player.walkUntil=0;renderMap();interact();return}
-  if(!isBlocked(nx,ny)){player.x=nx;player.y=ny;player.walkUntil=Date.now()+260;scheduleCharacterAnimation()}else player.walkUntil=0;renderMap();
+  const enteringDoor=sameMapDoorAt(nx,ny);
+  if(enteringDoor&&opened[enteringDoor.id]&&!sameMapDoorEntryAllowed(enteringDoor,d[0],d[1])){player.walkUntil=0;renderMap();return;}
+  if(!isBlocked(nx,ny)){
+    const previousDoor=sameMapDoorAt(player.x,player.y);
+    player.x=nx;player.y=ny;player.walkUntil=Date.now()+260;scheduleCharacterAnimation();
+    if(enteringDoor&&opened[enteringDoor.id]&&(enteringDoor.doorDirection||'both')!=='both')doorTransit={id:enteringDoor.id,exitX:nx+d[0],exitY:ny+d[1]};
+    else if(doorTransit&&doorTransit.exitX===nx&&doorTransit.exitY===ny)doorTransit=null;
+    if(previousDoor&&previousDoor.doorState==='autoClose'){opened[previousDoor.id]=false;doorTransit=null;}
+  }else player.walkUntil=0;
+  renderMap();
 }
 function eventBranchMatches(branch,o){
   const value=safeText(branch.value).trim();
@@ -2036,6 +2163,30 @@ function runObjectBranch(o,branch){
   }
   return true;
 }
+function showSameMapDoorMessage(o){
+  const defaultPlaceholder='이 오브젝트를 조사했을 때 표시할 내용을 입력하세요.';
+  const pages=objectDialoguePages(o).filter(page=>safeText(page).trim()&&safeText(page).trim()!==defaultPlaceholder);
+  if(pages.length)showDialog(objectDisplayName(o),pages);
+}
+function activateSameMapDoor(o){
+  const state=o.doorState||'toggle';
+  if(opened[o.id]){
+    if(state==='toggle'){opened[o.id]=false;doorTransit=null;renderMap();}
+    showSameMapDoorMessage(o);
+    return;
+  }
+  opened[o.id]=true;renderMap();
+  showSameMapDoorMessage(o);
+}
+function unlockDoor(o){
+  if(o.mapLinkId){
+    const destination=project.maps.find(m=>m.id===o.mapLinkId);
+    if(destination){const sourceMapId=project.currentMapId,arrival=findMapArrival(destination,sourceMapId,o),facing=faceDoorFromArrival(destination,arrival),entryMessage=typeof destination.entryMessage==='string'?destination.entryMessage:'연결된 출입구 앞에 도착했다. 주변을 조사해 보자.';saveActiveMap();loadMap(destination.id);player={x:arrival.x,y:arrival.y,direction:facing,walkUntil:0};initNpcRuntime();scheduleCharacterAnimation();renderMap();if(entryMessage.trim())showDialog(destination.name,entryMessage);return true;}
+  }
+  if(o.doorMode==='same'){activateSameMapDoor(o);return true;}
+  if(o.completeOnInteract){finishObjectEvent(o);return true;}
+  return true;
+}
 function interact(){
   if(mode!=='play'||!clockStarted||won||failed)return;
   const step={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[player.direction]||[0,1],frontX=player.x+step[0],frontY=player.y+step[1];
@@ -2043,25 +2194,28 @@ function interact(){
   const completeEvent=o.completeOnInteract||o.type==='complete';
   const finishGame=(message)=>finishObjectEvent(o,message);
   const branch=(o.branches||[]).find(b=>eventBranchMatches(b,o));
-  if(branch){runObjectBranch(o,branch);return}
+  if(branch&&!(o.type==='door'&&safeText(o.code).trim())&&!(o.type==='door'&&o.doorMode==='same')){runObjectBranch(o,branch);return}
   if(o.type==='chest'){
     if(opened[o.id]){showDialog(objectDisplayName(o),'이미 열린 보관함이다.');return}
     activePuzzle=o;codeInput='';$('puzzleTitle').textContent=objectDisplayName(o);$('puzzleDesc').textContent='단서를 조합해 암호를 입력하라.';updateCodeDisplay();$('puzzleOverlay').hidden=false;$('codeDisplay').focus();$('codeDisplay').select();return;
   }
   if(o.type==='door'){
-    const required=o.requiredItem||(o.entranceStyle==='edge'?'':'황동 열쇠');
+    if(o.doorMode==='same'&&opened[o.id]){activateSameMapDoor(o);return;}
+    if(safeText(o.code).trim()){
+      activePuzzle=o;codeInput='';$('puzzleTitle').textContent=objectDisplayName(o);$('puzzleDesc').textContent='문 비밀번호를 입력하라.';updateCodeDisplay();$('puzzleOverlay').hidden=false;$('codeDisplay').focus();$('codeDisplay').select();return;
+    }
+    const required=safeText(o.requiredItem).trim();
     if(required&&!inventory.includes(required)){
       showDialog(objectDisplayName(o),`문은 잠겨 있다. ${required}이(가) 필요하다.`);return;
     }
-    opened[o.id]=true;
-    // A connected door is a map transition. Completion only applies to an
-    // unlinked exit, so a stale legacy completion flag cannot swallow travel.
-    if(o.mapLinkId){
-      const destination=project.maps.find(m=>m.id===o.mapLinkId);
-      if(destination){const sourceMapId=project.currentMapId,arrival=findMapArrival(destination,sourceMapId,o),facing=faceDoorFromArrival(destination,arrival),entryMessage=typeof destination.entryMessage==='string'?destination.entryMessage:'연결된 출입구 앞에 도착했다. 주변을 조사해 보자.';saveActiveMap();loadMap(destination.id);player={x:arrival.x,y:arrival.y,direction:facing,walkUntil:0};initNpcRuntime();scheduleCharacterAnimation();renderMap();if(entryMessage.trim())showDialog(destination.name,entryMessage);return}
+    if(o.doorMode==='same'){
+      if(o.doorState==='toggle'&&opened[o.id]){activateSameMapDoor(o);return;}
+      if(opened[o.id]&&o.doorState!=='toggle'){activateSameMapDoor(o);return;}
+      unlockDoor(o);return;
     }
+    if(o.mapLinkId){opened[o.id]=true;unlockDoor(o);return;}
     if(completeEvent){finishGame();return;}
-    finishGame();return;
+    return;
   }
   if(completeEvent){finishGame();return;}
   const showed=showObjectDialog(o);if(showed)addJournalOnce(o.id,objectDialoguePages(o).join('\n'));
@@ -2084,7 +2238,18 @@ function submitCode(){
   if(!activePuzzle)return;
   const normalizeCode=value=>safeText(value).trim().toUpperCase();
   if(normalizeCode(codeInput)===normalizeCode(activePuzzle.code||'')){
-    const o=activePuzzle;opened[o.id]=true;o.found=true;
+    const o=activePuzzle;
+    $('puzzleOverlay').hidden=true;activePuzzle=null;
+    if(o.type==='door'){
+      const required=safeText(o.requiredItem).trim();
+      if(required&&!inventory.includes(required)){renderMap();showDialog(objectDisplayName(o),`문 비밀번호는 맞지만 ${required}이(가) 필요하다.`);return;}
+      const doorBranch=o.doorMode==='same'?null:(o.branches||[]).find(b=>eventBranchMatches(b,o));if(doorBranch){opened[o.id]=true;o.found=true;runObjectBranch(o,doorBranch);return;}
+      o.found=true;
+      if(o.doorMode==='same'){unlockDoor(o);return;}
+      if(o.mapLinkId){opened[o.id]=true;unlockDoor(o);return;}
+      if(o.completeOnInteract){won=true;stopTimer();applyEndingTexts();$('winText').textContent=o.description||project.endWinText||`${o.name}의 암호를 풀어 게임을 완료했다.`;$('winOverlay').hidden=false;return;}
+      showDialog(objectDisplayName(o),objectDialoguePages(o));return;
+    }
     if(o.reward&&!inventory.includes(o.reward))inventory.push(o.reward);
     // The default exit accepts the brass key; custom reward names are also tracked.
     if(o.reward==='황동 열쇠'&&!inventory.includes('황동 열쇠'))inventory.push('황동 열쇠');
@@ -2098,10 +2263,6 @@ function submitCode(){
 }
 function updateCodeDisplay(){$('codeDisplay').value=codeInput}
 function addCode(char){const next=safeText(char).toUpperCase().replace(/[^A-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');if(next&&codeInput.length<8){codeInput+=next;updateCodeDisplay()}}
-function hint(){
-  if(mode!=='play')return;
-  showDialog('힌트','책장에 적힌 순서를 먼저 확인하자. 책상 위 기록에는 각 상징에 대응하는 숫자가 적혀 있다. 순서대로 숫자를 나열하면 네 자리 암호가 된다.');
-}
 function formatTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 function saveProject(){saveActiveMap();try{localStorage.setItem('escapeForgeProject',JSON.stringify(project));localStorage.setItem('escapeForgeManualSavedAt',String(Date.now()));toast('이 브라우저에 프로젝트를 저장했습니다.')}catch(e){toast('저장 공간을 사용할 수 없습니다. 프로젝트 JSON으로 내보내세요.')}}
 function download(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
@@ -2122,7 +2283,7 @@ function exportGameHTML(){
   const data=JSON.stringify(exportProject).replace(/</g,'\\u003c');
   let doc='<!doctype html>\n'+document.documentElement.outerHTML;
   doc=doc.replace('<head>','<head><script>window.__ESCAPE_PROJECT='+data+';window.__ESCAPE_STANDALONE=true;<\/script>');
-  doc=doc.replace('</head>','<style>.topbar,.project-name,.brand-sub,.stage-head,.map-settings-bar,.mode-switch,.top-actions,.left-panel,.editor-toolbar,#backEditBtn,#failBackEditBtn,.right-panel>.panel-head,#gameGoalStat,#moveLabel,#movePad,#actionBtn,#hintBtn,#mapDimensions,#restartBtn,.play-panel .panel-footer,.mobile-hint{display:none!important}.layout{grid-template-columns:minmax(0,1fr) 278px!important;max-width:1400px!important}#exportRestartBtn{display:inline-flex!important;margin-left:auto}#journalList{max-height:none!important;overflow:visible!important}body{background:#10141d!important}</style></head>');
+  doc=doc.replace('</head>','<style>.topbar,.project-name,.brand-sub,.stage-head,.map-settings-bar,.mode-switch,.top-actions,.left-panel,.editor-toolbar,#backEditBtn,#failBackEditBtn,.right-panel>.panel-head,#moveLabel,#movePad,#actionBtn,#mapDimensions,#restartBtn,.play-panel .panel-footer,.mobile-hint{display:none!important}.layout{grid-template-columns:minmax(0,1fr) 278px!important;max-width:1400px!important}#exportRestartBtn{display:inline-flex!important;margin-left:auto}#journalList{max-height:none!important;overflow:visible!important}body{background:#10141d!important}</style></head>');
   download('escape-room-game.html',doc,'text/html;charset=utf-8');
   toast('플레이 가능한 게임 HTML을 내보냈습니다.');
 }
@@ -2228,6 +2389,31 @@ one(1,4,'wall_fence');one(2,4,'wall_fence');one(3,4,'wall_fence');one(4,4,'wall_
   }
   return {w,h,grid,objects,name,subtitle,intro,entryMessage,start};
 }
+function duplicateCurrentMap(){
+  if(mode!=='edit')return;
+  saveActiveMap();const source=project.maps.find(m=>m.id===project.currentMapId);if(!source)return;
+  pushUndo();const id='map'+Date.now()+'_'+Math.random().toString(36).slice(2,6),copy=clone(source);copy.id=id;copy.name=`${source.name} 복사본`;
+  const idMap=new Map();copy.objects.forEach((o,i)=>{const old=o.id,newId=`${id}_o${i+1}`;idMap.set(old,newId);o.id=newId;});
+  copy.objects.forEach(o=>{if(o.mapLinkId===source.id)o.mapLinkId=id;});
+  project.maps.push(copy);loadMap(id);$('mapName').value=copy.name;showRightTab('map');toast('현재 맵을 복제했습니다.');
+}
+function pasteCopiedObject(){
+  if(mode!=='edit'||!objectClipboard){toast('먼저 복사할 오브젝트를 선택하세요.');return;}
+  const source=objectClipboard;let target=null;
+  for(let radius=1;radius<Math.max(project.w,project.h)&&!target;radius++){
+    for(let dy=-radius;dy<=radius&&!target;dy++)for(let dx=-radius;dx<=radius&&!target;dx++){
+      if(Math.abs(dx)!==radius&&Math.abs(dy)!==radius)continue;const x=source.x+dx,y=source.y+dy;
+      if(x>0&&y>0&&x<project.w-1&&y<project.h-1&&!project.objects.some(o=>o.x===x&&o.y===y)){target={x,y};}
+    }
+  }
+  if(!target){toast('붙여넣을 빈 칸이 없습니다.');return;}
+  pushUndo();const copy=clone(source);copy.id='o'+Date.now()+'_'+Math.random().toString(36).slice(2,5);copy.x=target.x;copy.y=target.y;copy.found=false;delete copy.runtimeName;project.objects.push(copy);selectedObjectId=copy.id;renderInspector();renderMap();toast('오브젝트를 붙여넣었습니다.');
+}
+function fillAllTiles(){
+  if(mode!=='edit')return;if(!confirm(`현재 맵의 모든 칸을 선택한 타일(${selectedTile})로 채울까요?`))return;
+  pushUndo();for(let y=0;y<project.h;y++)for(let x=0;x<project.w;x++)project.grid[y][x]=getPaintedTile(project.grid[y][x],x,y,selectedTile,false);
+  renderMap();toast('맵 전체를 선택한 타일로 채웠습니다.');
+}
 function createMapFromTemplate(template){
   const id='map'+Date.now(),number=project.maps.length+1,d=buildTemplateMap(template,id,number);
   const m={id,name:d.name,w:d.w,h:d.h,grid:d.grid,start:d.start,objects:d.objects,subtitle:d.subtitle,intro:d.intro,entryMessage:d.entryMessage};
@@ -2254,15 +2440,17 @@ function bindEvents(){
   $('mapName').onchange=e=>{project.mapName=e.target.value.trim()||'새 맵';const m=project.maps.find(x=>x.id===project.currentMapId);if(m)m.name=project.mapName;$('mapSelect').querySelector(`option[value="${CSS.escape(project.currentMapId)}"]`).textContent=project.mapName;$('startMapSelect').querySelector(`option[value="${CSS.escape(project.currentMapId)}"]`).textContent=project.mapName};
   $('mapIntro').addEventListener('input',e=>{project.intro=e.target.value;saveActiveMap();scheduleRecoverySave()});
   $('mapEntryMessage').addEventListener('input',e=>{project.entryMessage=e.target.value;saveActiveMap();scheduleRecoverySave()});
-  $('addMapBtn').onclick=()=>{$('mapTemplateDialog').hidden=false};
+  $('addMapBtn').onclick=()=>{$('mapTemplateDialog').hidden=false};$('addMapFromMapBtn').onclick=()=>{$('mapTemplateDialog').hidden=false};$('duplicateMapBtn').onclick=duplicateCurrentMap;$('duplicateMapFromMapBtn').onclick=duplicateCurrentMap;$('fillAllTilesBtn').onclick=fillAllTiles;
   $('cancelMapTemplate').onclick=closeMapTemplateDialog;$('mapTemplateDialog').addEventListener('click',e=>{if(e.target===$('mapTemplateDialog'))closeMapTemplateDialog()});
   document.querySelectorAll('[data-map-template]').forEach(b=>b.onclick=()=>createMapFromTemplate(b.dataset.mapTemplate));
-  $('deleteMapBtn').onclick=()=>{
+  const deleteCurrentMap=()=>{
     if(project.maps.length<=1){toast('최소 한 개의 맵은 남겨야 합니다.');return}
     const id=project.currentMapId;if(!confirm('현재 맵을 삭제할까요? 이 맵으로 연결된 문은 연결이 해제됩니다.'))return;
     project.maps=project.maps.filter(m=>m.id!==id);project.maps.forEach(m=>m.objects.forEach(o=>{if(o.mapLinkId===id)o.mapLinkId=null}));
     const next=project.maps[0].id;if(project.startMapId===id){project.startMapId=next;initialMapId=next}project.currentMapId=next;loadMap(next);renderAll();
   };
+  $('deleteMapBtn').onclick=deleteCurrentMap;
+  $('deleteMapFromMapBtn').onclick=deleteCurrentMap;
   $('selectTool').onclick=setSelectionMode;
   $('paintTool').onclick=()=>{selectionMode=false;placing=false;placingStart=false;eraseMode=false;$('selectTool').classList.remove('active');$('startPointTool').classList.remove('active');document.querySelectorAll('.tool[data-object]').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tile-choice').forEach(b=>b.classList.toggle('active',b.dataset.tile===selectedTile));$('paintTool').classList.add('active');$('eraseTool').classList.remove('active')};
   $('startPointTool').onclick=()=>placingStart?setSelectionMode():setStartPlacement(true);
@@ -2285,7 +2473,7 @@ function bindEvents(){
   const blankRight=document.createElement('span');blankRight.className='keypad-spacer';$('keypad').appendChild(blankRight);
   $('replayBtn').onclick=()=>{resetGame();$('introTitle').textContent=project.title;$('introText').innerHTML=escapeHtml(project.intro||'이 방을 탈출하라.').replace(/\\n/g,'<br>');$('startOverlay').hidden=false};$('backEditBtn').onclick=()=>setMode('edit');
   const restartGame=()=>{resetGame();$('introTitle').textContent=project.title;$('introText').innerHTML=escapeHtml(project.intro||'이 방을 탈출하라.').replace(/\\n/g,'<br>');$('startOverlay').hidden=false};
-  $('actionBtn').onclick=interact;$('hintBtn').onclick=hint;$('restartBtn').onclick=restartGame;$('exportRestartBtn').onclick=restartGame;
+  $('actionBtn').onclick=interact;$('restartBtn').onclick=restartGame;$('exportRestartBtn').onclick=restartGame;
   document.querySelectorAll('[data-move]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();move(b.dataset.move)})});
   window.addEventListener('keydown',e=>{
     if(e.key==='Escape'){
