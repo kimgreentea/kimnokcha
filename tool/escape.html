@@ -4,130 +4,1494 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#10141d">
-<title>ESCAPE FORGE · 방탈출 제작실</title>
+<title>ESCAPE FORGE</title>
 <style>
-:root{--bg:#10141d;--panel:#191f2b;--panel2:#202838;--line:#303b4e;--text:#edf2fa;--muted:#94a1b5;--accent:#d9ad66;--accent2:#f0cb8b;--green:#7cc7a2;--red:#e27e7e;--blue:#85aee8;--shadow:0 18px 50px #0007}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 50% -20%,#28334a 0,#151b27 43%,#10141d 100%);color:var(--text);font:14px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;color:inherit}
-.topbar{height:68px;display:flex;align-items:center;gap:18px;padding:0 22px;border-bottom:1px solid #ffffff12;background:#111722dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
-.brand{display:flex;align-items:center;gap:11px;min-width:220px}
-.brand-mark{width:34px;height:34px;border:1px solid #b78a50;border-radius:9px;display:grid;place-items:center;color:var(--accent2);font-weight:900;background:linear-gradient(145deg,#3a2d23,#1b202b);box-shadow:inset 0 0 15px #d8a25322}
-.brand strong{letter-spacing:2px;font-size:13px;display:block}.brand small{color:var(--muted);font-size:10px;letter-spacing:1.5px}
-.project-name{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.project-name input{width:180px;background:transparent;border:0;border-bottom:1px solid #465166;padding:5px;color:var(--text);outline:none}
-.top-spacer{flex:1}
-.mode-switch,.top-actions{display:flex;gap:7px;align-items:center}
-.btn{border:1px solid var(--line);background:#202838;border-radius:8px;padding:8px 12px;font-size:12px;transition:.15s}
-.btn:hover{border-color:#8f7858;background:#293346}.btn.primary{background:linear-gradient(135deg,#b98548,#d8ad6e);border-color:#e6c18a;color:#201911;font-weight:800}.btn.ghost{background:transparent}.btn.danger{color:#f0a0a0}.btn.active{border-color:var(--accent);color:var(--accent2);background:#6c512b33}
-.layout{display:grid;grid-template-columns:242px minmax(0,1fr) 278px;gap:12px;padding:14px;max-width:1600px;margin:auto;min-height:calc(100vh - 68px)}
-.panel{background:linear-gradient(180deg,#1b2330,#171e29);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
-.panel-head{padding:14px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
-.panel-head strong{font-size:12px;letter-spacing:.7px}.panel-head small{font-size:10px;color:var(--muted)}
-.panel-body{padding:13px}
-.section-label{font-size:10px;letter-spacing:1.4px;color:#8492a8;text-transform:uppercase;margin:7px 0 9px;font-weight:800}
-.tool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.tool{border:1px solid #344055;border-radius:8px;background:#222c3c;padding:9px 8px;text-align:left;min-height:57px;display:flex;gap:8px;align-items:center;font-size:11px}
-.tool .tool-icon{font-size:19px;width:24px;text-align:center}.tool small{display:block;color:var(--muted);font-size:9px}
-.tool:hover,.tool.active{border-color:var(--accent);background:#5d492b44}
-.tile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.tile-choice{background:#222c3c;border:1px solid #344055;border-radius:7px;padding:6px 3px;text-align:center;font-size:10px}
-.tile-swatch{width:34px;height:27px;border-radius:4px;margin:0 auto 5px;border:1px solid #ffffff30}
-.tile-swatch{display:block;image-rendering:pixelated;background:#10141d}
-.tool canvas.tool-icon{width:38px;height:38px;flex:none;border-radius:4px;image-rendering:pixelated;background:#10141d}
-.sw-floor{background:repeating-linear-gradient(0deg,#76583f 0 5px,#896849 5px 7px)}
-.sw-wall{background:repeating-linear-gradient(90deg,#475165 0 6px,#59657b 6px 8px)}
-.sw-rug{background:repeating-linear-gradient(45deg,#79444a 0 5px,#a45e54 5px 8px)}
-.sw-water{background:repeating-linear-gradient(0deg,#294d68 0 5px,#386a84 5px 8px)}
-.sw-stone{background:repeating-linear-gradient(45deg,#666b74 0 5px,#858891 5px 8px)}
-.sw-moss{background:radial-gradient(ellipse at 30% 35%,#77905b 0 3px,transparent 4px),repeating-linear-gradient(0deg,#46543d 0 6px,#56684a 6px 9px)}
-.sw-metal{background:repeating-linear-gradient(90deg,#3f5964 0 6px,#67808a 6px 8px)}
-.sw-grass{background:radial-gradient(ellipse at 25% 30%,#86a965 0 3px,transparent 4px),radial-gradient(ellipse at 70% 75%,#718c53 0 4px,transparent 5px),#4f6846}
-.sw-path{background:repeating-linear-gradient(45deg,#8c795d 0 6px,#a08c6b 6px 8px)}
-.sw-sand{background:radial-gradient(circle at 30% 30%,#e1cb91 0 1px,transparent 2px),radial-gradient(circle at 70% 70%,#d1b77a 0 1px,transparent 2px),#c4a972}
-.tool-note{font-size:10px;color:var(--muted);line-height:1.6;margin-top:10px}
-.left-panel .tool small,.left-panel .panel-head small,.left-panel .panel-footer,.left-panel .tool-note{display:none!important}
-.editor-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:12px}.editor-tabs button{border:1px solid #344055;border-radius:7px;background:#202a39;color:#aeb9ca;padding:8px 4px;font-size:10px;cursor:pointer}.editor-tabs button.active{border-color:#c59b58;background:#70563266;color:#ffe1a9}.editor-pane[hidden]{display:none!important}.asset-license-note{margin-top:12px;padding:9px;border:1px solid #334258;border-radius:7px;color:#9eabc0;font-size:9px;line-height:1.6}.asset-license-note a{color:#dfbd7d}
-.asset-pack-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:10px}.asset-pack-tabs button{border:1px solid #344055;border-radius:7px;background:#202a39;color:#aeb9ca;padding:7px;font-size:10px;cursor:pointer}.asset-pack-tabs button.active{border-color:#c59b58;background:#70563266;color:#ffe1a9}
-.center{min-width:0;display:flex;flex-direction:column;gap:10px}
-.map-settings-bar{display:grid;grid-template-columns:minmax(150px,.75fr) minmax(150px,.75fr) minmax(220px,1.5fr);gap:10px;align-items:end;padding:9px 12px;background:#171e29;border:1px solid var(--line);border-radius:9px}.map-settings-title{grid-column:1/-1;color:#d6b77f;font-size:10px;font-weight:800;letter-spacing:1px}.map-settings-bar .field{margin:0}.map-settings-bar textarea{box-sizing:border-box;min-height:30px;height:30px;resize:none}.map-settings-bar label{display:block;font-size:10px;color:#aab6c8;margin-bottom:5px}.map-settings-bar input,.map-settings-bar select,.map-settings-bar textarea{width:100%;background:#101722;border:1px solid #39465a;border-radius:7px;color:var(--text);padding:7px 9px;outline:none;font-size:12px}.map-settings-advanced{grid-column:1/-1;border-top:1px solid #303b4e;padding-top:8px}.map-settings-advanced summary{cursor:pointer;color:#aab6c8;font-size:11px}.map-settings-advanced-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;padding-top:10px}.map-settings-advanced-grid .field-row{margin:0}.map-settings-advanced-grid .field-row .field{flex:1;min-width:0}.map-settings-advanced-grid .field{min-width:0}.map-settings-advanced-grid .map-entrances{grid-column:1/-1}.map-settings-advanced-grid .map-entrances .object-list{max-height:130px;overflow:auto}
-.export-only-actions{display:none}
-.stage-head{display:flex;align-items:center;gap:12px;padding:3px 4px}
-.stage-head>div:first-child{display:none}
-body:not(.play-mode) .stage-card .canvas-tag{display:none}
-.stage-head h1{font-size:15px;margin:0;font-weight:750;letter-spacing:.3px}.stage-head p{margin:2px 0 0;color:var(--muted);font-size:10px}
-.stage-status{display:none}
-.map-settings-advanced-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.map-settings-advanced-grid>.field:first-child,.map-settings-advanced-grid .map-entrances{grid-column:1/-1}
-.map-settings-advanced-grid>.field,.map-settings-advanced-grid>.field-row{min-width:0}
-.map-settings-advanced-grid>.field-row>.btn,.map-settings-advanced-grid>#resizeMap{height:34px;align-self:end}
-.map-settings-advanced-grid .field-row{align-items:end}
-.stage-card{border:1px solid #3b4659;border-radius:12px;background:linear-gradient(145deg,#202a3a,#131a25);padding:14px;box-shadow:var(--shadow);min-height:0;display:flex;flex-direction:column}
-.game-frame{position:relative;max-width:100%;margin:auto;width:100%;display:flex;justify-content:center;align-items:center;overflow:hidden;border-radius:8px;background:#0b1017;border:1px solid #485268;box-shadow:0 8px 32px #0009}
-canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:pan-y}
-.canvas-tag{position:absolute;left:12px;top:10px;background:#0c121ccc;border:1px solid #ffffff26;color:#d5dce8;border-radius:5px;padding:4px 7px;font-size:9px;letter-spacing:1px;pointer-events:none}
-.canvas-help{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;padding:10px 2px 1px}
-.keycap{display:inline-block;padding:2px 5px;border:1px solid #59667a;border-bottom-width:2px;border-radius:4px;color:#e3eaf4;background:#263145;font-size:9px;margin:0 2px}
-.editor-toolbar{display:flex;align-items:center;gap:7px;padding:8px 10px;background:#171e29;border:1px solid var(--line);border-radius:9px}
-.editor-toolbar .sep{height:22px;width:1px;background:var(--line);margin:0 3px}
-.editor-toolbar small{color:var(--muted);font-size:10px;margin-left:auto}
-.right-panel{min-height:440px}
-.field{display:grid;gap:5px;margin:10px 0}.field label{font-size:10px;color:#aab6c8}
-.field input,.field select,.field textarea{width:100%;background:#101722;border:1px solid #39465a;border-radius:7px;color:var(--text);padding:8px 9px;outline:none;font-size:12px}
-.map-settings-bar #mapEntryMessage{box-sizing:border-box;height:32px;min-height:32px;padding:8px 9px;line-height:normal;resize:none}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
-.field textarea{min-height:78px;resize:vertical;line-height:1.5}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.branch-row{border:1px solid #39465a;border-radius:8px;background:#141b26;padding:9px;margin:8px 0}.branch-row-head{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#f0d3a2;font-size:10px;font-weight:800}.branch-row .field{margin:7px 0}.branch-row .btn{padding:5px 8px;font-size:10px}.branch-outcome{border-left:2px solid #795f3c;padding:3px 0 5px 9px;margin:8px 0}.branch-note{font-size:9px;color:var(--muted);line-height:1.5;margin:5px 0}
-.object-list{display:grid;gap:5px;max-height:220px;overflow:auto}
-.object-row{display:flex;align-items:center;gap:8px;padding:7px 8px;background:#202938;border:1px solid transparent;border-radius:7px;text-align:left;font-size:11px}
-.object-row.active{border-color:var(--accent);background:#51402b55}
-.object-row .ico{font-size:16px}.object-row small{margin-left:auto;color:var(--muted);font-size:9px}
-.inspector-actions{display:flex;gap:7px;margin-top:12px}
-.inspector-actions .btn{flex:1}
-.play-panel{display:none}
-body.play-mode .layout{grid-template-columns:minmax(0,1fr) 278px;max-width:1400px}
-body.play-mode .left-panel,body.play-mode .editor-toolbar{display:none}
-body.play-mode .play-panel{display:block}body.play-mode #inspectorPanel{display:none}
-body.play-mode .right-panel{min-height:0}
-body.play-mode .map-settings-bar{display:none}body.play-mode .right-tabs,body.play-mode #settingsPanel,body.play-mode #mapSettingsPanel{display:none!important}.right-tabs{grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 13px 0}.right-panel .panel-body[hidden]{display:none!important}.settings-panel .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end;margin-bottom:12px}.settings-panel .field{margin-bottom:12px}.settings-panel textarea{min-height:64px;resize:vertical}.settings-panel .object-list{margin-bottom:6px}.object-list-section{margin-top:0;padding-top:0;border-top:0}
-body.play-mode .right-panel>.panel-head,body.play-mode #moveLabel,body.play-mode #movePad,body.play-mode #actionBtn,body.play-mode #mapDimensions,body.play-mode #restartBtn,body.play-mode .play-panel .panel-footer,body.play-mode .mobile-hint{display:none!important}
-body.play-mode #exportRestartBtn{display:inline-flex!important;margin-left:auto}
-body.play-mode #journalList{max-height:none;overflow:visible}
-.play-stat{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #303b4e;padding:10px 0;font-size:11px}
-.play-stat span{color:var(--muted)}.play-stat strong{color:#f0d3a2}
-.inventory{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
-.item-chip{border:1px solid #6a593f;background:#43352266;color:#f0d5a6;padding:5px 7px;border-radius:6px;font-size:10px}
-.journal{display:grid;gap:7px;max-height:210px;overflow:auto}
-.journal-entry{font-size:10px;color:#c5cfdd;background:#202938;border-left:2px solid #b88c53;padding:7px 8px;line-height:1.55}
-.no-data{color:#78869a;font-size:10px}
-.dpad{display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(2,37px);gap:5px;justify-content:center;margin:14px auto 8px}
-.dpad button{background:#263247;border:1px solid #46546a;border-radius:7px;font-size:16px;touch-action:none}
-.dpad button:active{background:#6b5434}.dpad .up{grid-column:2}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}
-.action-btn{width:100%;background:#76552d;border:1px solid #bd9359;color:#fff1d9;font-weight:800;padding:11px;border-radius:8px;margin-top:5px}
-.panel-footer{padding:11px 14px;color:#8491a4;font-size:9px;border-top:1px solid var(--line);line-height:1.6}
-.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#080c13b8;z-index:3;padding:18px}
-.overlay[hidden]{display:none}
-.template-overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;background:#080c13c9;backdrop-filter:blur(5px)}.template-overlay[hidden]{display:none}.template-dialog{width:min(760px,100%);max-height:90vh;overflow:auto;background:linear-gradient(155deg,#293448,#171f2d);border:1px solid #78839766;border-radius:14px;padding:22px;box-shadow:0 25px 70px #000b}.template-dialog h2{font-family:Georgia,serif;margin:0 0 5px}.template-dialog>p{font-size:12px;color:var(--muted);margin:0 0 16px}.template-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.template-card{display:grid;grid-template-columns:74px 1fr;align-items:center;gap:12px;text-align:left;background:#202938;border:1px solid #3b485d;border-radius:10px;padding:12px}.template-card:hover{border-color:var(--accent);background:#51402b44}.template-art{width:74px;height:64px;border-radius:7px;display:grid;place-items:center;font-size:28px;background:linear-gradient(145deg,#50634b,#273847);border:1px solid #ffffff20}.template-card strong{display:block;font-size:13px}.template-card small{display:block;margin-top:4px;color:var(--muted);font-size:10px;line-height:1.45}.template-actions{display:flex;justify-content:flex-end;margin-top:14px}
-.modal{width:min(400px,100%);background:linear-gradient(160deg,#293448,#171f2d);border:1px solid #78839766;border-radius:12px;padding:22px;box-shadow:0 25px 70px #000b;text-align:center}
-.modal-kicker{color:var(--accent2);font-size:9px;letter-spacing:2px;font-weight:800}
-.modal h2{font-family:Georgia,serif;font-size:25px;margin:9px 0 8px;letter-spacing:.3px}
-.modal p{color:#c1cad8;font-size:12px;line-height:1.75;margin:8px 0 17px;white-space:pre-line}
-.modal .btn{min-width:115px}.modal-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
-.dialog-pagebar{position:relative;display:flex;align-items:center;justify-content:center;gap:10px}.dialog-pagebar>small{position:absolute;left:0;color:var(--muted);font-size:10px}.dialog-pagebar .modal-actions{margin:0 auto}
-.dialog-edit-page{border:1px solid #39465a;border-radius:8px;background:#141b26;padding:8px;margin:7px 0}.dialog-edit-page .branch-row-head{margin-bottom:6px}.dialog-edit-page textarea{width:100%;background:#101722;border:1px solid #39465a;border-radius:7px;color:var(--text);padding:8px 9px;outline:none;font-size:12px;min-height:68px;resize:vertical;line-height:1.5}
-.code-display{display:block;width:100%;font:22px/1.2 ui-monospace,monospace;letter-spacing:5px;text-align:center;color:#f2d5a4;background:#0c121c;border:1px solid #556176;border-radius:8px;padding:12px;margin:12px 0;outline:none}.code-display:focus{border-color:var(--accent)}
-.keypad{display:none!important;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px auto;max-width:240px}
-.keypad button{background:#2a3548;border:1px solid #536078;border-radius:7px;padding:10px;font-size:16px}
-.keypad button:hover{border-color:var(--accent)}.keypad-spacer{min-height:38px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#252f40;border:1px solid #69758b;border-radius:8px;padding:10px 15px;z-index:20;font-size:11px;box-shadow:var(--shadow);transition:.2s}
-.toast.show{opacity:1;transform:translate(-50%,0)}
-.mobile-hint{display:none}
-@media(max-width:700px){.map-settings-advanced-grid{grid-template-columns:1fr}.map-settings-advanced-grid>.field:first-child,.map-settings-advanced-grid .map-entrances{grid-column:1}}
-@media(max-width:1050px){.layout{grid-template-columns:205px minmax(0,1fr)}.right-panel{grid-column:1/-1;min-height:0}.right-panel .panel-body{display:grid;grid-template-columns:1fr 1fr;gap:12px}.right-panel .panel-head{grid-column:1/-1}body.play-mode .layout{grid-template-columns:minmax(0,1fr)}body.play-mode .right-panel .panel-body{display:block}}
-@media(max-width:700px){.topbar{height:auto;min-height:60px;padding:9px 12px;gap:8px;flex-wrap:wrap}.brand{min-width:unset;flex:1}.brand small,.project-name{display:none}.top-actions{width:100%;justify-content:flex-end}.top-actions .btn{padding:7px 9px;font-size:10px}.mode-switch{margin-left:auto}.layout{display:flex;flex-direction:column;padding:8px;gap:9px}.left-panel{order:2}.center{order:1}.right-panel{order:3}.stage-card{padding:7px}.stage-head{padding:2px}.stage-status{font-size:9px}.editor-toolbar{flex-wrap:wrap}.editor-toolbar small{width:100%;margin:0}.map-settings-bar{grid-template-columns:1fr 1fr}.map-settings-title{grid-column:1/-1}.map-settings-bar .field:last-child{grid-column:1/-1}.right-panel .panel-body{display:block}.panel-body{padding:10px}.tool-grid{grid-template-columns:repeat(4,1fr)}.tool{display:grid;justify-items:center;text-align:center;padding:7px 3px;min-height:58px;gap:2px}.tool .tool-icon{width:auto}.tool small{display:none}.tile-grid{grid-template-columns:repeat(4,1fr)}.mobile-hint{display:block}.canvas-help{font-size:9px}.canvas-help .desktop-only{display:none}body.play-mode .layout{display:flex}body.play-mode .center{order:1}body.play-mode .right-panel{order:2}}
-@media(max-width:380px){.tool-grid{grid-template-columns:repeat(2,1fr)}.brand strong{font-size:11px}.dpad{transform:scale(.93)}}
+    :root {
+        --bg: #10141d;
+        --panel: #191f2b;
+        --panel2: #202838;
+        --line: #303b4e;
+        --text: #edf2fa;
+        --muted: #94a1b5;
+        --accent: #d9ad66;
+        --accent2: #f0cb8b;
+        --green: #7cc7a2;
+        --red: #e27e7e;
+        --blue: #85aee8;
+        --shadow: 0 18px 50px #0007
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    body {
+        margin: 0;
+        background: radial-gradient(ellipse at 50% -20%, #28334a 0, #151b27 43%, #10141d 100%);
+        color: var(--text);
+        font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+        min-height: 100vh
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font: inherit
+    }
+
+    button {
+        cursor: pointer;
+        color: inherit
+    }
+
+    .topbar {
+        height: 68px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 22px;
+        border-bottom: 1px solid #ffffff12;
+        background: #111722dd;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        backdrop-filter: blur(12px)
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 220px
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+        border: 1px solid #b78a50;
+        border-radius: 9px;
+        display: grid;
+        place-items: center;
+        color: var(--accent2);
+        font-weight: 900;
+        background: linear-gradient(145deg, #3a2d23, #1b202b);
+        box-shadow: inset 0 0 15px #d8a25322
+    }
+
+    .brand strong {
+        letter-spacing: 2px;
+        font-size: 13px;
+        display: block
+    }
+
+    .brand small {
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 1.5px
+    }
+
+    .project-name {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px
+    }
+
+    .project-name input {
+        width: 180px;
+        background: transparent;
+        border: 0;
+        border-bottom: 1px solid #465166;
+        padding: 5px;
+        color: var(--text);
+        outline: none
+    }
+
+    .top-spacer {
+        flex: 1
+    }
+
+    .mode-switch,
+    .top-actions {
+        display: flex;
+        gap: 7px;
+        align-items: center
+    }
+
+    .btn {
+        border: 1px solid var(--line);
+        background: #202838;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 12px;
+        transition: .15s
+    }
+
+    .btn:hover {
+        border-color: #8f7858;
+        background: #293346
+    }
+
+    .btn.primary {
+        background: linear-gradient(135deg, #b98548, #d8ad6e);
+        border-color: #e6c18a;
+        color: #201911;
+        font-weight: 800
+    }
+
+    .btn.ghost {
+        background: transparent
+    }
+
+    .btn.danger {
+        color: #f0a0a0
+    }
+
+    .btn.active {
+        border-color: var(--accent);
+        color: var(--accent2);
+        background: #6c512b33
+    }
+
+    .layout {
+        display: grid;
+        grid-template-columns: 242px minmax(0, 1fr) 278px;
+        gap: 12px;
+        padding: 14px;
+        max-width: 1600px;
+        margin: auto;
+        min-height: calc(100vh - 68px)
+    }
+
+    .panel {
+        background: linear-gradient(180deg, #1b2330, #171e29);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        overflow: hidden
+    }
+
+    .panel-head {
+        padding: 14px 15px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+    }
+
+    .panel-head strong {
+        font-size: 12px;
+        letter-spacing: .7px
+    }
+
+    .panel-head small {
+        font-size: 10px;
+        color: var(--muted)
+    }
+
+    .panel-body {
+        padding: 13px
+    }
+
+    .section-label {
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        color: #8492a8;
+        text-transform: uppercase;
+        margin: 7px 0 9px;
+        font-weight: 800
+    }
+
+    .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px
+    }
+
+    .tool {
+        border: 1px solid #344055;
+        border-radius: 8px;
+        background: #222c3c;
+        padding: 9px 8px;
+        text-align: left;
+        min-height: 57px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 11px
+    }
+
+    .tool .tool-icon {
+        font-size: 19px;
+        width: 24px;
+        text-align: center
+    }
+
+    .tool small {
+        display: block;
+        color: var(--muted);
+        font-size: 9px
+    }
+
+    .tool:hover,
+    .tool.active {
+        border-color: var(--accent);
+        background: #5d492b44
+    }
+
+    .tile-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px
+    }
+
+    .tile-choice {
+        background: #222c3c;
+        border: 1px solid #344055;
+        border-radius: 7px;
+        padding: 6px 3px;
+        text-align: center;
+        font-size: 10px
+    }
+
+    .tile-swatch {
+        width: 34px;
+        height: 27px;
+        border-radius: 4px;
+        margin: 0 auto 5px;
+        border: 1px solid #ffffff30
+    }
+
+    .tile-swatch {
+        display: block;
+        image-rendering: pixelated;
+        background: #10141d
+    }
+
+    .tool canvas.tool-icon {
+        width: 38px;
+        height: 38px;
+        flex: none;
+        border-radius: 4px;
+        image-rendering: pixelated;
+        background: #10141d
+    }
+
+    .sw-floor {
+        background: repeating-linear-gradient(0deg, #76583f 0 5px, #896849 5px 7px)
+    }
+
+    .sw-wall {
+        background: repeating-linear-gradient(90deg, #475165 0 6px, #59657b 6px 8px)
+    }
+
+    .sw-rug {
+        background: repeating-linear-gradient(45deg, #79444a 0 5px, #a45e54 5px 8px)
+    }
+
+    .sw-water {
+        background: repeating-linear-gradient(0deg, #294d68 0 5px, #386a84 5px 8px)
+    }
+
+    .sw-stone {
+        background: repeating-linear-gradient(45deg, #666b74 0 5px, #858891 5px 8px)
+    }
+
+    .sw-moss {
+        background: radial-gradient(ellipse at 30% 35%, #77905b 0 3px, transparent 4px), repeating-linear-gradient(0deg, #46543d 0 6px, #56684a 6px 9px)
+    }
+
+    .sw-metal {
+        background: repeating-linear-gradient(90deg, #3f5964 0 6px, #67808a 6px 8px)
+    }
+
+    .sw-grass {
+        background: radial-gradient(ellipse at 25% 30%, #86a965 0 3px, transparent 4px), radial-gradient(ellipse at 70% 75%, #718c53 0 4px, transparent 5px), #4f6846
+    }
+
+    .sw-path {
+        background: repeating-linear-gradient(45deg, #8c795d 0 6px, #a08c6b 6px 8px)
+    }
+
+    .sw-sand {
+        background: radial-gradient(circle at 30% 30%, #e1cb91 0 1px, transparent 2px), radial-gradient(circle at 70% 70%, #d1b77a 0 1px, transparent 2px), #c4a972
+    }
+
+    .tool-note {
+        font-size: 10px;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-top: 10px
+    }
+
+    .left-panel .tool small,
+    .left-panel .panel-head small,
+    .left-panel .panel-footer,
+    .left-panel .tool-note {
+        display: none !important
+    }
+
+    .editor-tabs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 5px;
+        margin-bottom: 12px
+    }
+
+    .editor-tabs button {
+        border: 1px solid #344055;
+        border-radius: 7px;
+        background: #202a39;
+        color: #aeb9ca;
+        padding: 8px 4px;
+        font-size: 10px;
+        cursor: pointer
+    }
+
+    .editor-tabs button.active {
+        border-color: #c59b58;
+        background: #70563266;
+        color: #ffe1a9
+    }
+
+    .editor-pane[hidden] {
+        display: none !important
+    }
+
+    .asset-license-note {
+        margin-top: 12px;
+        padding: 9px;
+        border: 1px solid #334258;
+        border-radius: 7px;
+        color: #9eabc0;
+        font-size: 9px;
+        line-height: 1.6
+    }
+
+    .asset-license-note a {
+        color: #dfbd7d
+    }
+
+    .asset-pack-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 5px;
+        margin-bottom: 10px
+    }
+
+    .asset-pack-tabs button {
+        border: 1px solid #344055;
+        border-radius: 7px;
+        background: #202a39;
+        color: #aeb9ca;
+        padding: 7px;
+        font-size: 10px;
+        cursor: pointer
+    }
+
+    .asset-pack-tabs button.active {
+        border-color: #c59b58;
+        background: #70563266;
+        color: #ffe1a9
+    }
+
+    .center {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px
+    }
+
+    .map-settings-bar {
+        display: grid;
+        grid-template-columns: minmax(150px, .75fr) minmax(150px, .75fr) minmax(220px, 1.5fr);
+        gap: 10px;
+        align-items: end;
+        padding: 9px 12px;
+        background: #171e29;
+        border: 1px solid var(--line);
+        border-radius: 9px
+    }
+
+    .map-settings-title {
+        grid-column: 1/-1;
+        color: #d6b77f;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px
+    }
+
+    .map-settings-bar .field {
+        margin: 0
+    }
+
+    .map-settings-bar textarea {
+        box-sizing: border-box;
+        min-height: 30px;
+        height: 30px;
+        resize: none
+    }
+
+    .map-settings-bar label {
+        display: block;
+        font-size: 10px;
+        color: #aab6c8;
+        margin-bottom: 5px
+    }
+
+    .map-settings-bar input,
+    .map-settings-bar select,
+    .map-settings-bar textarea {
+        width: 100%;
+        background: #101722;
+        border: 1px solid #39465a;
+        border-radius: 7px;
+        color: var(--text);
+        padding: 7px 9px;
+        outline: none;
+        font-size: 12px
+    }
+
+    .map-settings-advanced {
+        grid-column: 1/-1;
+        border-top: 1px solid #303b4e;
+        padding-top: 8px
+    }
+
+    .map-settings-advanced summary {
+        cursor: pointer;
+        color: #aab6c8;
+        font-size: 11px
+    }
+
+    .map-settings-advanced-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        align-items: end;
+        padding-top: 10px
+    }
+
+    .map-settings-advanced-grid .field-row {
+        margin: 0
+    }
+
+.map-settings-advanced-grid .field-row button {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+    .map-settings-advanced-grid .field-row .field {
+        flex: 1;
+        min-width: 0
+    }
+
+    .map-settings-advanced-grid .field {
+        min-width: 0
+    }
+
+    .map-settings-advanced-grid .map-entrances {
+        grid-column: 1/-1
+    }
+
+    .map-settings-advanced-grid .map-entrances .object-list {
+        max-height: 130px;
+        overflow: auto
+    }
+
+    .export-only-actions {
+        display: none
+    }
+
+    .stage-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 3px 4px
+    }
+
+    .stage-head>div:first-child {
+        display: none
+    }
+
+    body:not(.play-mode) .stage-card .canvas-tag {
+        display: none
+    }
+
+    .stage-head h1 {
+        font-size: 15px;
+        margin: 0;
+        font-weight: 750;
+        letter-spacing: .3px
+    }
+
+    .stage-head p {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 10px
+    }
+
+    .stage-status {
+        display: none
+    }
+
+    .map-settings-advanced-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px
+    }
+
+    .map-settings-advanced-grid>.field:first-child,
+    .map-settings-advanced-grid .map-entrances {
+        grid-column: 1/-1
+    }
+
+    .map-settings-advanced-grid>.field,
+    .map-settings-advanced-grid>.field-row {
+        min-width: 0
+    }
+
+    .map-settings-advanced-grid>.field-row>.btn,
+    .map-settings-advanced-grid>#resizeMap {
+        height: 34px;
+        align-self: end
+    }
+
+    .map-settings-advanced-grid .field-row {
+        align-items: end
+    }
+
+    .stage-card {
+        border: 1px solid #3b4659;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #202a3a, #131a25);
+        padding: 14px;
+        box-shadow: var(--shadow);
+        min-height: 0;
+        display: flex;
+        flex-direction: column
+    }
+
+    .game-frame {
+        position: relative;
+        max-width: 100%;
+        margin: auto;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 8px;
+        background: #0b1017;
+        border: 1px solid #485268;
+        box-shadow: 0 8px 32px #0009
+    }
+
+    canvas {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        touch-action: pan-y
+    }
+
+    .canvas-tag {
+        position: absolute;
+        left: 12px;
+        top: 10px;
+        background: #0c121ccc;
+        border: 1px solid #ffffff26;
+        color: #d5dce8;
+        border-radius: 5px;
+        padding: 4px 7px;
+        font-size: 9px;
+        letter-spacing: 1px;
+        pointer-events: none
+    }
+
+    .canvas-help {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        padding: 10px 2px 1px
+    }
+
+    .keycap {
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid #59667a;
+        border-bottom-width: 2px;
+        border-radius: 4px;
+        color: #e3eaf4;
+        background: #263145;
+        font-size: 9px;
+        margin: 0 2px
+    }
+
+    .editor-toolbar {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 10px;
+        background: #171e29;
+        border: 1px solid var(--line);
+        border-radius: 9px
+    }
+
+    .editor-toolbar .sep {
+        height: 22px;
+        width: 1px;
+        background: var(--line);
+        margin: 0 3px
+    }
+
+    .editor-toolbar small {
+        color: var(--muted);
+        font-size: 10px;
+        margin-left: auto
+    }
+
+    .right-panel {
+        min-height: 440px
+    }
+
+    .field {
+        display: grid;
+        gap: 5px;
+        margin: 10px 0
+    }
+
+    .field label {
+        font-size: 10px;
+        color: #aab6c8
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+        width: 100%;
+        background: #101722;
+        border: 1px solid #39465a;
+        border-radius: 7px;
+        color: var(--text);
+        padding: 8px 9px;
+        outline: none;
+        font-size: 12px
+    }
+
+    .map-settings-bar #mapEntryMessage {
+        box-sizing: border-box;
+        height: 32px;
+        min-height: 32px;
+        padding: 8px 9px;
+        line-height: normal;
+        resize: none
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+        border-color: var(--accent)
+    }
+
+    .field textarea {
+        min-height: 78px;
+        resize: vertical;
+        line-height: 1.5
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px
+    }
+
+    .branch-row {
+        border: 1px solid #39465a;
+        border-radius: 8px;
+        background: #141b26;
+        padding: 9px;
+        margin: 8px 0
+    }
+
+    .branch-row-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        color: #f0d3a2;
+        font-size: 10px;
+        font-weight: 800
+    }
+
+    .branch-row .field {
+        margin: 7px 0
+    }
+
+    .branch-row .btn {
+        padding: 5px 8px;
+        font-size: 10px
+    }
+
+    .branch-outcome {
+        border-left: 2px solid #795f3c;
+        padding: 3px 0 5px 9px;
+        margin: 8px 0
+    }
+
+    .branch-note {
+        font-size: 9px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 5px 0
+    }
+
+    .object-list {
+        display: grid;
+        gap: 5px;
+        max-height: 220px;
+        overflow: auto
+    }
+
+    .object-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 8px;
+        background: #202938;
+        border: 1px solid transparent;
+        border-radius: 7px;
+        text-align: left;
+        font-size: 11px
+    }
+
+    .object-row.active {
+        border-color: var(--accent);
+        background: #51402b55
+    }
+
+    .object-row .ico {
+        font-size: 16px
+    }
+
+    .object-row small {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 9px
+    }
+
+    .inspector-actions {
+        display: flex;
+        gap: 7px;
+        margin-top: 12px
+    }
+
+    .inspector-actions .btn {
+        flex: 1
+    }
+
+    .play-panel {
+        display: none
+    }
+
+    body.play-mode .layout {
+        grid-template-columns: minmax(0, 1fr) 278px;
+        max-width: 1400px
+    }
+
+    body.play-mode .left-panel,
+    body.play-mode .editor-toolbar {
+        display: none
+    }
+
+    body.play-mode .play-panel {
+        display: block
+    }
+
+    body.play-mode #inspectorPanel {
+        display: none
+    }
+
+    body.play-mode .right-panel {
+        min-height: 0
+    }
+
+    body.play-mode .map-settings-bar {
+        display: none
+    }
+
+    body.play-mode .right-tabs,
+    body.play-mode #settingsPanel,
+    body.play-mode #mapSettingsPanel {
+        display: none !important
+    }
+
+    .right-tabs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin: 12px 13px 0
+    }
+
+    .right-panel .panel-body[hidden] {
+        display: none !important
+    }
+
+    .settings-panel .field-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        align-items: end;
+        margin-bottom: 12px
+    }
+
+    .settings-panel .field {
+        margin-bottom: 12px
+    }
+
+    .settings-panel textarea {
+        min-height: 64px;
+        resize: vertical
+    }
+
+    .settings-panel .object-list {
+        margin-bottom: 6px
+    }
+
+    .object-list-section {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0
+    }
+
+    body.play-mode .right-panel>.panel-head,
+    body.play-mode #moveLabel,
+    body.play-mode #movePad,
+    body.play-mode #actionBtn,
+    body.play-mode #mapDimensions,
+    body.play-mode #restartBtn,
+    body.play-mode .play-panel .panel-footer,
+    body.play-mode .mobile-hint {
+        display: none !important
+    }
+
+    body.play-mode #exportRestartBtn {
+        display: inline-flex !important;
+        margin-left: auto
+    }
+
+    body.play-mode #journalList {
+        max-height: none;
+        overflow: visible
+    }
+
+    .play-stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #303b4e;
+        padding: 10px 0;
+        font-size: 11px
+    }
+
+    .play-stat span {
+        color: var(--muted)
+    }
+
+    .play-stat strong {
+        color: #f0d3a2
+    }
+
+    .inventory {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-height: 34px
+    }
+
+    .item-chip {
+        border: 1px solid #6a593f;
+        background: #43352266;
+        color: #f0d5a6;
+        padding: 5px 7px;
+        border-radius: 6px;
+        font-size: 10px
+    }
+
+    .journal {
+        display: grid;
+        gap: 7px;
+        max-height: 210px;
+        overflow: auto
+    }
+
+    .journal-entry {
+        font-size: 10px;
+        color: #c5cfdd;
+        background: #202938;
+        border-left: 2px solid #b88c53;
+        padding: 7px 8px;
+        line-height: 1.55
+    }
+
+    .no-data {
+        color: #78869a;
+        font-size: 10px
+    }
+
+    .dpad {
+        display: grid;
+        grid-template-columns: repeat(3, 42px);
+        grid-template-rows: repeat(2, 37px);
+        gap: 5px;
+        justify-content: center;
+        margin: 14px auto 8px
+    }
+
+    .dpad button {
+        background: #263247;
+        border: 1px solid #46546a;
+        border-radius: 7px;
+        font-size: 16px;
+        touch-action: none
+    }
+
+    .dpad button:active {
+        background: #6b5434
+    }
+
+    .dpad .up {
+        grid-column: 2
+    }
+
+    .dpad .left {
+        grid-column: 1;
+        grid-row: 2
+    }
+
+    .dpad .down {
+        grid-column: 2;
+        grid-row: 2
+    }
+
+    .dpad .right {
+        grid-column: 3;
+        grid-row: 2
+    }
+
+    .action-btn {
+        width: 100%;
+        background: #76552d;
+        border: 1px solid #bd9359;
+        color: #fff1d9;
+        font-weight: 800;
+        padding: 11px;
+        border-radius: 8px;
+        margin-top: 5px
+    }
+
+    .panel-footer {
+        padding: 11px 14px;
+        color: #8491a4;
+        font-size: 9px;
+        border-top: 1px solid var(--line);
+        line-height: 1.6
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: #080c13b8;
+        z-index: 3;
+        padding: 18px
+    }
+
+    .overlay[hidden] {
+        display: none
+    }
+
+    .template-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 30;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        background: #080c13c9;
+        backdrop-filter: blur(5px)
+    }
+
+    .template-overlay[hidden] {
+        display: none
+    }
+
+    .template-dialog {
+        width: min(760px, 100%);
+        max-height: 90vh;
+        overflow: auto;
+        background: linear-gradient(155deg, #293448, #171f2d);
+        border: 1px solid #78839766;
+        border-radius: 14px;
+        padding: 22px;
+        box-shadow: 0 25px 70px #000b
+    }
+
+    .template-dialog h2 {
+        font-family: Georgia, serif;
+        margin: 0 0 5px
+    }
+
+    .template-dialog>p {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0 0 16px
+    }
+
+    .template-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px
+    }
+
+    .template-card {
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        align-items: center;
+        gap: 12px;
+        text-align: left;
+        background: #202938;
+        border: 1px solid #3b485d;
+        border-radius: 10px;
+        padding: 12px
+    }
+
+    .template-card:hover {
+        border-color: var(--accent);
+        background: #51402b44
+    }
+
+    .template-art {
+        width: 74px;
+        height: 64px;
+        border-radius: 7px;
+        display: grid;
+        place-items: center;
+        font-size: 28px;
+        background: linear-gradient(145deg, #50634b, #273847);
+        border: 1px solid #ffffff20
+    }
+
+    .template-card strong {
+        display: block;
+        font-size: 13px
+    }
+
+    .template-card small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.45
+    }
+
+    .template-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 14px
+    }
+
+    .modal {
+        width: min(400px, 100%);
+        background: linear-gradient(160deg, #293448, #171f2d);
+        border: 1px solid #78839766;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 25px 70px #000b;
+        text-align: center
+    }
+
+    .modal-kicker {
+        color: var(--accent2);
+        font-size: 9px;
+        letter-spacing: 2px;
+        font-weight: 800
+    }
+
+    .modal h2 {
+        font-family: Georgia, serif;
+        font-size: 25px;
+        margin: 9px 0 8px;
+        letter-spacing: .3px
+    }
+
+    .modal p {
+        color: #c1cad8;
+        font-size: 12px;
+        line-height: 1.75;
+        margin: 8px 0 17px;
+        white-space: pre-line
+    }
+
+    .modal .btn {
+        min-width: 115px
+    }
+
+    .modal-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap
+    }
+
+    .dialog-pagebar {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px
+    }
+
+    .dialog-pagebar>small {
+        position: absolute;
+        left: 0;
+        color: var(--muted);
+        font-size: 10px
+    }
+
+    .dialog-pagebar .modal-actions {
+        margin: 0 auto
+    }
+
+    .dialog-edit-page {
+        border: 1px solid #39465a;
+        border-radius: 8px;
+        background: #141b26;
+        padding: 8px;
+        margin: 7px 0
+    }
+
+    .dialog-edit-page .branch-row-head {
+        margin-bottom: 6px
+    }
+
+    .dialog-edit-page textarea {
+        width: 100%;
+        background: #101722;
+        border: 1px solid #39465a;
+        border-radius: 7px;
+        color: var(--text);
+        padding: 8px 9px;
+        outline: none;
+        font-size: 12px;
+        min-height: 68px;
+        resize: vertical;
+        line-height: 1.5
+    }
+
+    .code-display {
+        display: block;
+        width: 100%;
+        font: 22px/1.2 ui-monospace, monospace;
+        letter-spacing: 5px;
+        text-align: center;
+        color: #f2d5a4;
+        background: #0c121c;
+        border: 1px solid #556176;
+        border-radius: 8px;
+        padding: 12px;
+        margin: 12px 0;
+        outline: none
+    }
+
+    .code-display:focus {
+        border-color: var(--accent)
+    }
+
+    .keypad {
+        display: none !important;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin: 12px auto;
+        max-width: 240px
+    }
+
+    .keypad button {
+        background: #2a3548;
+        border: 1px solid #536078;
+        border-radius: 7px;
+        padding: 10px;
+        font-size: 16px
+    }
+
+    .keypad button:hover {
+        border-color: var(--accent)
+    }
+
+    .keypad-spacer {
+        min-height: 38px
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translate(-50%, 20px);
+        opacity: 0;
+        pointer-events: none;
+        background: #252f40;
+        border: 1px solid #69758b;
+        border-radius: 8px;
+        padding: 10px 15px;
+        z-index: 20;
+        font-size: 11px;
+        box-shadow: var(--shadow);
+        transition: .2s
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0)
+    }
+
+    .mobile-hint {
+        display: none
+    }
+
+    @media(max-width:700px) {
+        .map-settings-advanced-grid {
+            grid-template-columns: 1fr
+        }
+
+        .map-settings-advanced-grid>.field:first-child,
+        .map-settings-advanced-grid .map-entrances {
+            grid-column: 1
+        }
+    }
+
+    @media(max-width:1050px) {
+        .layout {
+            grid-template-columns: 205px minmax(0, 1fr)
+        }
+
+        .right-panel {
+            grid-column: 1/-1;
+            min-height: 0
+        }
+
+        .right-panel .panel-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .right-panel .panel-head {
+            grid-column: 1/-1
+        }
+
+        body.play-mode .layout {
+            grid-template-columns: minmax(0, 1fr)
+        }
+
+        body.play-mode .right-panel .panel-body {
+            display: block
+        }
+    }
+
+    @media(max-width:700px) {
+        .topbar {
+            height: auto;
+            min-height: 60px;
+            padding: 9px 12px;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .brand {
+            min-width: unset;
+            flex: 1
+        }
+
+        .brand small,
+        .project-name {
+            display: none
+        }
+
+        .top-actions {
+            width: 100%;
+            justify-content: flex-end
+        }
+
+        .top-actions .btn {
+            padding: 7px 9px;
+            font-size: 10px
+        }
+
+        .mode-switch {
+            margin-left: auto
+        }
+
+        .layout {
+            display: flex;
+            flex-direction: column;
+            padding: 8px;
+            gap: 9px
+        }
+
+        .left-panel {
+            order: 2
+        }
+
+        .center {
+            order: 1
+        }
+
+        .right-panel {
+            order: 3
+        }
+
+        .stage-card {
+            padding: 7px
+        }
+
+        .stage-head {
+            padding: 2px
+        }
+
+        .stage-status {
+            font-size: 9px
+        }
+
+        .editor-toolbar {
+            flex-wrap: wrap
+        }
+
+        .editor-toolbar small {
+            width: 100%;
+            margin: 0
+        }
+
+        .map-settings-bar {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .map-settings-title {
+            grid-column: 1/-1
+        }
+
+        .map-settings-bar .field:last-child {
+            grid-column: 1/-1
+        }
+
+        .right-panel .panel-body {
+            display: block
+        }
+
+        .panel-body {
+            padding: 10px
+        }
+
+        .tool-grid {
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .tool {
+            display: grid;
+            justify-items: center;
+            text-align: center;
+            padding: 7px 3px;
+            min-height: 58px;
+            gap: 2px
+        }
+
+        .tool .tool-icon {
+            width: auto
+        }
+
+        .tool small {
+            display: none
+        }
+
+        .tile-grid {
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .mobile-hint {
+            display: block
+        }
+
+        .canvas-help {
+            font-size: 9px
+        }
+
+        .canvas-help .desktop-only {
+            display: none
+        }
+
+        body.play-mode .layout {
+            display: flex
+        }
+
+        body.play-mode .center {
+            order: 1
+        }
+
+        body.play-mode .right-panel {
+            order: 2
+        }
+    }
+
+    @media(max-width:380px) {
+        .tool-grid {
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        .brand strong {
+            font-size: 11px
+        }
+
+        .dpad {
+            transform: scale(.93)
+        }
+    }
+
+
+
+/* 맵 설정 탭의 맵 관리 버튼 행만 3열로 고정 */
+#mapSettingsPanel > .field-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px;
+    width: 100%;
+}
+#mapSettingsPanel > .field-row > button {
+    width: 100%;
+    min-width: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    white-space: nowrap;
+}
+/* 게임 설정 탭의 맵 관리 버튼 행도 3열로 고정 */
+#settingsPanel > .field-row {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px;
+    width: 100%;
+}
+#settingsPanel > .field-row > button {
+    width: 100%;
+    min-width: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    white-space: nowrap;
+}
 </style>
+
 </head>
 <body>
 <header class="topbar">
@@ -164,7 +1528,7 @@ body.play-mode #journalList{max-height:none;overflow:visible}
         <button class="tile-choice" data-tile="wall_house"><canvas class="tile-swatch" data-preview-tile="wall_house" width="48" height="48"></canvas>집 외벽 (지붕)</button>
         <button class="tile-choice" data-tile="wall_rock"><canvas class="tile-swatch" data-preview-tile="wall_rock" width="48" height="48"></canvas>바위 언덕</button>
         <button class="tile-choice" data-tile="wall_fence"><canvas class="tile-swatch" data-preview-tile="wall_fence" width="48" height="48"></canvas>울타리</button>
-        <div class="tool-note" style="grid-column:1/-1">울타리 위에 바닥 타일을 칠하면 울타리는 그대로 두고 아래 바닥만 바뀝니다. 울타리를 없애려면 지우개를 쓰세요.</div>
+       
       </div>
       <div class="section-label" style="margin-top:18px">바닥 타일</div>
       <div class="tile-grid">
@@ -305,7 +1669,7 @@ body.play-mode #journalList{max-height:none;overflow:visible}
         </div>
       </div>
       <div class="canvas-help">
-        <span class="desktop-only">이동 <b class="keycap">W</b><b class="keycap">A</b><b class="keycap">S</b><b class="keycap">D</b> / <b class="keycap">↑</b><b class="keycap">←</b><b class="keycap">↓</b><b class="keycap">→</b> · 조사 <b class="keycap">E</b> 또는 <b class="keycap">SPACE</b></span>
+        <span class="desktop-only">이동 <b class="keycap">W</b><b class="keycap">A</b><b class="keycap">S</b><b class="keycap">D</b> / <b class="keycap">↑</b><b class="keycap">←</b><b class="keycap">↓</b><b class="keycap">→</b> | 조사 <b class="keycap">E</b> / <b class="keycap">SPACE</b></span>
         <span class="mobile-hint">아래 방향 버튼으로 이동하고 조사 버튼을 누르세요.</span>
         <span id="mapDimensions">15 × 11</span>
         <button class="btn export-only-actions" id="exportRestartBtn" style="white-space:nowrap;padding:5px 9px;font-size:10px">게임 다시 시작</button>
@@ -367,7 +1731,7 @@ body.play-mode #journalList{max-height:none;overflow:visible}
         <div class="dpad" id="movePad">
           <button class="up" data-move="up">▲</button><button class="left" data-move="left">◀</button><button class="down" data-move="down">▼</button><button class="right" data-move="right">▶</button>
         </div>
-        <button class="action-btn" id="actionBtn">조사하기 · E</button>
+        <button class="action-btn" id="actionBtn">조사하기 E</button>
         <button class="btn" id="restartBtn" style="width:100%;margin-top:7px">게임 다시 시작</button>
       </div>
       <div class="panel-footer">가까이 다가가서 조사하면 단서와 아이템을 찾을 수 있습니다.</div>
@@ -596,7 +1960,7 @@ const objectColors={bed:'#6a8fc8',sofa:'#c4524a',table:'#b57a47',fireplace:'#7f8
 function safeText(s){return String(s??'')}
 function objectDisplayName(o){return runtimeObjectNames[o.id]??safeText(o.name)}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)}
-function setCanvasSize(){canvas.width=project.w*TILE;canvas.height=project.h*TILE;$('mapDimensions').textContent=project.w+' × '+project.h;$('coordLabel').textContent=`타일 ${project.w} × ${project.h} · 타일 크기 ${TILE}px`;renderMap()}
+function setCanvasSize(){canvas.width=project.w*TILE;canvas.height=project.h*TILE;$('mapDimensions').textContent=project.w+' × '+project.h;$('coordLabel').textContent=`타일 ${project.w} × ${project.h} | 타일 크기 ${TILE}px`;renderMap()}
 // ===== Face-wall style (정면 벽면): top surface where a wall is backed by more wall, front face where it borders floor =====
 const WALL_PAL={
   wall:{base:'#414b5e',hi:'#596579',shade:'#303b4c',edge:'#202a38',grain:'#718096'},
@@ -1870,13 +3234,13 @@ function renderInspectorInner(){
       <div class="field"><label>이벤트 유형</label><select id="objType"><option value="clue">단서 조사</option><option value="chest">암호 상자</option><option value="door">잠긴 문 / 출구</option><option value="npc">인물 대화</option><option value="complete">게임 완료</option></select></div>
       <div class="field" id="completeField"><label><input id="objComplete" type="checkbox" ${o.completeOnInteract||o.type==="complete"?"checked":""} style="width:auto;vertical-align:middle"> 조사 성공 시 게임 완료 처리</label></div>
       <div class="field" id="requiredItemField" style="${o.type==="door"?"":"display:none"}"><label>필요 아이템 (문 잠금 해제)</label><input id="objRequiredItem" value="${escapeAttr(o.requiredItem||'')}" placeholder="예: 황동 열쇠 (맵 끝 이동 칸은 비우면 잠금 없음)"></div>
-      <div class="field"><label>기본 조사 문구 / 대화</label><div class="branch-note">조건에 맞는 분기가 없을 때 표시합니다. 분기가 실행되면 분기에 적은 내용만 나오고, 분기 내용을 비워 두면 이 문구가 대신 나옵니다.</div><div id="dialogPageEditor">${renderObjectDialoguePages(o)}</div><button class="btn" id="addDialogPage" type="button">＋ 페이지 추가</button></div>
-      <div class="field"><label>조건별 분기</label><div class="branch-note">분기는 위에서부터 확인합니다. 조건에 맞는 첫 분기만 실행하고, 이때 기본 조사 문구와 문·상자의 기본 안내 문구는 함께 나오지 않습니다.</div><div id="branchList">${renderBranchRows(o)}</div><button class="btn" id="addEventBranch" type="button">＋ 분기 추가</button></div>
+      <div class="field"><label>기본 조사 문구 / 대화</label><div id="dialogPageEditor">${renderObjectDialoguePages(o)}</div><button class="btn" id="addDialogPage" type="button">＋ 페이지 추가</button></div>
+      <div class="field"><label>조건별 분기</label><div id="branchList">${renderBranchRows(o)}</div><button class="btn" id="addEventBranch" type="button">＋ 분기 추가</button></div>
       <div class="field" id="npcMotionField"><label>인물 캐릭터</label><select id="npcSpriteStyle">${downloadedCharacterOptions()}</select><label>인물 바라보는 방향</label><select id="npcDirection"><option value="down">아래</option><option value="up">위</option><option value="left">왼쪽</option><option value="right">오른쪽</option></select><label id="npcIdleWalkField"><input id="npcWalkAnimation" type="checkbox" ${o.walkAnimation?'checked':''} style="width:auto;vertical-align:middle"> 제자리 걷기 애니메이션 (정지 시)</label><label>이동 방식</label><select id="npcMoveMode"><option value="static">정지</option><option value="random">랜덤 이동</option><option value="patrol">순찰 경로</option></select><div id="npcRadiusField"><label>랜덤 이동 범위 (타일)</label><input id="npcMoveRadius" type="number" min="1" max="12" value="${Number(o.moveRadius)||3}"></div><div id="npcPatrolField"><label>순찰 방식</label><select id="npcPatrolStyle"><option value="loop">반복</option><option value="pingpong">왕복</option></select><div class="tool-note" id="patrolPathStatus"></div><button class="btn" id="patrolEditBtn" type="button">맵에서 순찰 지점 배치</button> <button class="btn" id="patrolClearBtn" type="button">경로 지우기</button></div></div>
       <div class="field" id="codeField"><label id="codeFieldLabel">정답 암호</label><input id="objCode" maxlength="8" value="${escapeAttr(o.code||'')}" placeholder="비워 두면 암호 없이 열립니다."></div>
       <div class="field" id="rewardField"><label>성공 보상 아이템</label><input id="objReward" value="${escapeAttr(o.reward||'')}" placeholder="예: 황동 열쇠"></div>
-      <div class="field" id="entranceField" style="${o.type==='door'?'':'display:none'}"><label>출입구 모양</label><select id="objEntrance"><option value="auto">자동 (놓은 곳에 맞춤)</option><option value="door">일반 문</option><option value="gate">대문 (울타리 문)</option><option value="cave">동굴 입구</option><option value="stairs">지하 계단</option><option value="edge">맵 끝 이동 칸 (보이지 않음)</option></select><div class="tool-note">자동: 울타리 위는 대문, 바위 언덕 위는 동굴 입구, 그 밖은 일반 문입니다.</div><button class="btn" id="expandEdgeBtn" type="button" style="${o.entranceStyle==='edge'?'':'display:none'}">이 가장자리 한 줄 전체로 확장</button></div>
-      <div class="field" id="doorModeField" style="${o.type==='door'?'':'display:none'}"><label>문 기능</label><select id="objDoorMode"><option value="map">다른 맵으로 이동</option><option value="same">같은 맵 연결 통로</option><option value="none">이동 기능 없음</option></select><div class="tool-note">같은 맵 연결 통로는 벽 타일 위에 문을 배치합니다. 문이 열리면 해당 타일의 벽 충돌만 해제되고, 닫히면 복구됩니다. 출구·입구 좌표는 지정하지 않습니다.</div></div>
+      <div class="field" id="entranceField" style="${o.type==='door'?'':'display:none'}"><label>출입구 모양</label><select id="objEntrance"><option value="auto">자동 (놓은 곳에 맞춤)</option><option value="door">일반 문</option><option value="gate">대문 (울타리 문)</option><option value="cave">동굴 입구</option><option value="stairs">지하 계단</option><option value="edge">맵 끝 이동 칸 (보이지 않음)</option></select><button class="btn" id="expandEdgeBtn" type="button" style="${o.entranceStyle==='edge'?'':'display:none'}">이 가장자리 한 줄 전체로 확장</button></div>
+      <div class="field" id="doorModeField" style="${o.type==='door'?'':'display:none'}"><label>문 기능</label><select id="objDoorMode"><option value="map">다른 맵으로 이동</option><option value="same">같은 맵 연결 통로</option><option value="none">이동 기능 없음</option></select></div>
       <div class="field" id="mapLinkField" style="${o.type==='door'&&(o.doorMode||(o.mapLinkId?'map':'none'))==='map'?'':'display:none'}"><label>문 연결 목적지 맵</label><select id="objMapLink"><option value="">연결 안 함</option>${project.maps.filter(m=>m.id!==project.currentMapId).map(m=>`<option value="${escapeAttr(m.id)}">${escapeHtml(m.name)}</option>`).join('')}</select></div>
       <div class="field" id="sameMapDoorSettings" style="${o.type==='door'&&o.doorMode==='same'?'':'display:none'}"><label>통과 방향</label><select id="objDoorDirection"><option value="both">양방향</option><option value="leftToRight">왼쪽 → 오른쪽</option><option value="rightToLeft">오른쪽 → 왼쪽</option><option value="upToDown">위쪽 → 아래쪽</option><option value="downToUp">아래쪽 → 위쪽</option></select><label>문 상태</label><select id="objDoorState"><option value="toggle">열고 닫기</option><option value="autoClose">통과하면 자동 닫힘</option><option value="persistent">한 번 열면 계속 열림</option><option value="initialOpen">처음부터 열림</option></select><div class="tool-note">방향은 문이 놓인 벽을 가로지르는 방향으로 선택합니다. 문 양쪽에 이동 가능한 바닥 타일이 있어야 통과할 수 있습니다.</div></div>
       <div class="field"><label><input id="objSolid" type="checkbox" ${o.solid?'checked':''} style="width:auto;vertical-align:middle"> 이동을 막는 오브젝트</label></div>
@@ -1901,7 +3265,7 @@ function renderInspectorInner(){
     $('npcIdleWalkField').style.display=$('npcMoveMode').value==='static'?'':'none';$('npcRadiusField').style.display=$('npcMoveMode').value==='random'?'':'none';$('npcPatrolField').style.display=$('npcMoveMode').value==='patrol'?'':'none';$('patrolPathStatus').textContent=`순찰 지점: ${(o.patrolPath||[]).map((p,i)=>`${i+1}. ${p.x},${p.y}`).join(' · ')||'없음'}`;$('patrolEditBtn').textContent=patrolEditObjectId===o.id?'순찰 지점 배치 완료':'맵에서 순찰 지점 배치';
     $('codeField').style.display=(isChest||isDoor)?'':'none';$('codeFieldLabel').textContent=isDoor?'문 비밀번호 (선택 사항)':'정답 암호';$('rewardField').style.display=isChest?'':'none';
     $('mapLinkField').style.display=isDoor&&$('objDoorMode').value==='map'?'':'none';
-    $('inspectorNote').textContent=isChest?'정답 암호를 입력하면 보상 아이템을 지급합니다.':isDoor?'필요 아이템이 있고, 비밀번호를 설정했다면 정답을 입력해야 문이 열립니다. 연결되지 않은 문은 아무 동작도 하지 않습니다.':type==='complete'?'조사하면 게임을 완료합니다.':type==='npc'?'대화 문구를 입력하면 플레이 중 인물과 대화할 수 있습니다.':'조사 문구는 단서와 일지 기록에 사용됩니다.';
+    $('inspectorNote').textContent=isChest?'정답 암호를 입력하면 보상 아이템을 지급합니다.':isDoor?'필요 아이템이 있고, 비밀번호를 설정했다면 정답을 입력해야 문이 열립니다. ':type==='complete'?'조사하면 게임을 완료합니다.':type==='npc'?'대화 문구를 입력하면 플레이 중 인물과 대화할 수 있습니다.':'조사 문구는 단서와 일지 기록에 사용됩니다.';
   };
   $('objType').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};$('objDoorMode').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};$('npcMoveMode').onchange=()=>{syncInspectorFields();applyInspectorObjectValues()};syncInspectorFields();
   $('patrolEditBtn').onclick=()=>{patrolEditObjectId=patrolEditObjectId===o.id?null:o.id;setSelectionMode();renderInspector();renderMap();if(patrolEditObjectId)toast('맵을 클릭해 순찰 지점을 차례로 추가하세요.')};$('patrolClearBtn').onclick=()=>{pushUndo();o.patrolPath=[];patrolEditObjectId=null;renderInspector();renderMap();toast('순찰 경로를 지웠습니다.')};
@@ -2282,6 +3646,8 @@ function exportGameHTML(){
   }
   const data=JSON.stringify(exportProject).replace(/</g,'\\u003c');
   let doc='<!doctype html>\n'+document.documentElement.outerHTML;
+  const gameTitle=String(exportProject.title||'ESCAPE FORGE').replace(/[&<>\"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]));
+  doc=doc.replace(/<title>[\s\S]*?<\/title>/i,'<title>'+gameTitle+'</title>');
   doc=doc.replace('<head>','<head><script>window.__ESCAPE_PROJECT='+data+';window.__ESCAPE_STANDALONE=true;<\/script>');
   doc=doc.replace('</head>','<style>.topbar,.project-name,.brand-sub,.stage-head,.map-settings-bar,.mode-switch,.top-actions,.left-panel,.editor-toolbar,#backEditBtn,#failBackEditBtn,.right-panel>.panel-head,#moveLabel,#movePad,#actionBtn,#mapDimensions,#restartBtn,.play-panel .panel-footer,.mobile-hint{display:none!important}.layout{grid-template-columns:minmax(0,1fr) 278px!important;max-width:1400px!important}#exportRestartBtn{display:inline-flex!important;margin-left:auto}#journalList{max-height:none!important;overflow:visible!important}body{background:#10141d!important}</style></head>');
   download('escape-room-game.html',doc,'text/html;charset=utf-8');
@@ -2294,9 +3660,9 @@ function resizeMap(){
 }
 function undo(){const v=undoStack.pop();if(!v){toast('되돌릴 작업이 없습니다.');return}redoStack.push(editorSnapshot());applyEditorSnapshot(v);toast('이전 작업으로 되돌렸습니다.')}
 function redo(){const v=redoStack.pop();if(!v){toast('다시 실행할 작업이 없습니다.');return}undoStack.push(editorSnapshot());applyEditorSnapshot(v);toast('작업을 다시 실행했습니다.')}
-function resetMap(){if(!confirm('맵을 기본 상태로 되돌릴까요? 현재 타일과 오브젝트 배치가 사라집니다.'))return;pushUndo();const d=createDefaultProject();project.grid=d.grid;project.objects=d.objects;project.start=d.start;project.w=d.w;project.h=d.h;selectedObjectId=null;renderAll()}
+function resetMap(){if(!confirm('맵을 기본 상태로 되돌립니다.'))return;pushUndo();const d=createDefaultProject();project.grid=d.grid;project.objects=d.objects;project.start=d.start;project.w=d.w;project.h=d.h;selectedObjectId=null;renderAll()}
 function resetAllSettings(){
-  if(!confirm('프로젝트, 모든 맵과 배치, 게임 설정, 저장 데이터를 기본값으로 초기화할까요?'))return;
+  if(!confirm('프로젝트, 모든 맵과 배치, 게임 설정, 저장 데이터를 기본값으로 초기화합니다.'))return;
   stopTimer();mode='edit';project=createDefaultProject();ensureMaps();selectedObjectId=null;selectedTile='floor';placeKind='bookcase';placing=false;placingStart=false;eraseMode=false;selectionMode=true;undoStack=[];redoStack=[];
   resetGame();saveActiveMap();
   try{localStorage.setItem('escapeForgeProject',JSON.stringify(project));localStorage.setItem('escapeForgeManualSavedAt',String(Date.now()));localStorage.removeItem('escapeForgeRecovery')}catch(e){}
@@ -2410,7 +3776,7 @@ function pasteCopiedObject(){
   pushUndo();const copy=clone(source);copy.id='o'+Date.now()+'_'+Math.random().toString(36).slice(2,5);copy.x=target.x;copy.y=target.y;copy.found=false;delete copy.runtimeName;project.objects.push(copy);selectedObjectId=copy.id;renderInspector();renderMap();toast('오브젝트를 붙여넣었습니다.');
 }
 function fillAllTiles(){
-  if(mode!=='edit')return;if(!confirm(`현재 맵의 모든 칸을 선택한 타일(${selectedTile})로 채울까요?`))return;
+  if(mode!=='edit')return;if(!confirm(`현재 맵의 모든 칸을 선택한 타일(${selectedTile})로 채웁니다.`))return;
   pushUndo();for(let y=0;y<project.h;y++)for(let x=0;x<project.w;x++)project.grid[y][x]=getPaintedTile(project.grid[y][x],x,y,selectedTile,false);
   renderMap();toast('맵 전체를 선택한 타일로 채웠습니다.');
 }
@@ -2423,7 +3789,7 @@ const EXAMPLE_LABELS={library:'기본 맵',empty:'빈 방',classroom:'교실',pl
 function openExampleDialog(){if(mode==='play'){toast('편집 모드에서 예시 맵을 고르세요.');return}$('exampleMapDialog').hidden=false}
 function closeExampleDialog(){$('exampleMapDialog').hidden=true}
 function applyExampleMap(key){
-  if(!confirm(`현재 맵을 "${EXAMPLE_LABELS[key]||'예시 맵'}" 예시로 바꿀까요? 현재 타일과 오브젝트 배치가 사라집니다. (Ctrl+Z로 되돌릴 수 있습니다)`))return;
+  if(!confirm(`현재 맵을 "${EXAMPLE_LABELS[key]||'예시 맵'}"로/으로 바꿉니다.`))return;
   pushUndo();
   const d=key==='library'?createDefaultProject():buildTemplateMap(key,project.currentMapId,project.maps.length);
   project.grid=d.grid;project.objects=d.objects;project.start=d.start;project.w=d.w;project.h=d.h;project.subtitle=d.subtitle||project.subtitle;project.intro=d.intro||project.intro;project.entryMessage=d.entryMessage||project.entryMessage;
@@ -2445,7 +3811,7 @@ function bindEvents(){
   document.querySelectorAll('[data-map-template]').forEach(b=>b.onclick=()=>createMapFromTemplate(b.dataset.mapTemplate));
   const deleteCurrentMap=()=>{
     if(project.maps.length<=1){toast('최소 한 개의 맵은 남겨야 합니다.');return}
-    const id=project.currentMapId;if(!confirm('현재 맵을 삭제할까요? 이 맵으로 연결된 문은 연결이 해제됩니다.'))return;
+    const id=project.currentMapId;if(!confirm('현재 맵을 삭제합니다.'))return;
     project.maps=project.maps.filter(m=>m.id!==id);project.maps.forEach(m=>m.objects.forEach(o=>{if(o.mapLinkId===id)o.mapLinkId=null}));
     const next=project.maps[0].id;if(project.startMapId===id){project.startMapId=next;initialMapId=next}project.currentMapId=next;loadMap(next);renderAll();
   };
@@ -2500,7 +3866,7 @@ async function initialize(){
   
   bindEvents();
   try{const saved=localStorage.getItem('escapeForgeProject');if(saved&&!window.__ESCAPE_STANDALONE){const s=JSON.parse(saved);if(s.grid&&s.objects)project=s}}catch(e){}
-  if(!window.__ESCAPE_STANDALONE){try{const raw=localStorage.getItem('escapeForgeRecovery'),rec=raw&&JSON.parse(raw),manual=Number(localStorage.getItem('escapeForgeManualSavedAt')||0);if(rec?.project&&rec.savedAt>manual&&confirm('자동 복구 데이터가 있습니다. 복구하시겠습니까?'))project=rec.project}catch(e){}}
+  if(!window.__ESCAPE_STANDALONE){try{const raw=localStorage.getItem('escapeForgeRecovery'),rec=raw&&JSON.parse(raw),manual=Number(localStorage.getItem('escapeForgeManualSavedAt')||0);if(rec?.project&&rec.savedAt>manual&&confirm('자동 저장 데이터를 불러옵니다.'))project=rec.project}catch(e){}}
   drawPalettePreviews();
   renderAll();
   if(window.__ESCAPE_STANDALONE){setMode('play')}
