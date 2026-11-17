@@ -1,1 +1,128 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>오늘의 한자</title> <style>@import url(https://fonts.googleapis.com/css2?family=Klee+One&family=LXGW+WenKai+TC&family=Noto+Serif+TC:wght@200..900&family=Shippori+Mincho&display=swap);@font-face{font-family:"Myeongwon";src:url(https://cdn.jsdelivr.net/gh/Project-Noonnu/2607131254@4/4/Hangeuljaemin4-RegularI.woff2)format("woff2");font-weight:100;font-display:swap}*{box-sizing:border-box}body{margin:0;background:#111;color:#fff;font-family:"Noto Serif KR",serif;overflow:hidden}.slide{width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5vw;text-align:center}.hanmun{font-size:160px;line-height:1.5;font-family:"Klee One";margin-bottom:15px;white-space:pre-line}.meaning,.reading{font-size:80px;margin-bottom:30px;white-space:pre-line}.meaning{font-size:65px;line-height:1.5;color:#ddd}.keyHanja{display:flex;justify-content:center;gap:25px;flex-wrap:wrap}.hanjaCard{min-width:130px;padding:15px 25px;//border:1px solid #555;border-radius:12px;background:#1c1c1c}.hanja{font-size:65px;font-family:"Klee One";font-weight:100}.hanjaMeaning{font-size:35px;color:#bbb;margin-top:3px}.hanjaReading{font-size:40px;margin-top:5px}.fontSelect,.page{position:fixed;bottom:20px;display:flex;align-items:center;gap:6px;font-family:sans-serif;color:#888}.page{right:30px}#pageInput{width:55px;padding:5px;border:0;border-radius:5px;font-size:16px;text-align:center}.fontSelect{left:30px}</style> </head><body><div class="slide"><div class="hanmun" id="hanmun"></div><div class="reading" id="reading"></div><div class="meaning" id="meaning"></div><div class="keyHanja" id="keyHanja"></div></div><div class="page"><input type="number" id="pageInput" min="1" ><span id="totalPages"></span></div><div class="fontSelect"><select id="fontSelect"><option value='Klee One'> Klee One </option><option value='"LXGW WenKai TC", serif'> LXGW WenKai TC </option><option value= 'Myeongwon'> 명원체 </option><option value='Noto Serif TC'> Noto Serif TC </option><option value='Shippori Mincho'> Shippori Mincho </option><option value='Noto Serif KR'> 기본 </option></select></div> <script>let sentences=[],current=Number(localStorage.getItem("hanjaPage"))||0;fetch("https://kimgreentea.github.io/kimnokcha/hanja/sentence.json").then(e=>e.json()).then(e=>{sentences=e,current>=sentences.length&&(current=sentences.length-1),showSlide()}).catch(e=>{console.error("JSON 불러오기 실패:",e)});const hanmun=document.getElementById("hanmun"),reading=document.getElementById("reading"),meaning=document.getElementById("meaning"),keyHanja=document.getElementById("keyHanja"),pageInput=document.getElementById("pageInput"),totalPages=document.getElementById("totalPages");function showSlide(){const e=sentences[current];hanmun.textContent=e.hanmun,reading.textContent=e.reading||"",meaning.textContent=e.meaning||"",keyHanja.innerHTML="",(e.keyHanja||[]).forEach(e=>{const n=document.createElement("div");n.className="hanjaCard",n.innerHTML=`\n            <div class="hanja">\n                ${e.hanja}\n            </div>\n            <div class="hanjaMeaning">\n                ${e.meaning}\n            </div>\n            <div class="hanjaReading">\n                ${e.reading}\n            </div>\n        `,keyHanja.appendChild(n)}),pageInput.value=current+1,totalPages.textContent=`/ ${sentences.length}`,localStorage.setItem("hanjaPage",current)}function nextSlide(){current<sentences.length-1&&(current++,showSlide())}function previousSlide(){current>0&&(current--,showSlide())}pageInput.addEventListener("keydown",function(e){if("Enter"!==e.key)return;const n=Number(pageInput.value);n>=1&&n<=sentences.length?(current=n-1,showSlide()):pageInput.value=current+1}),document.addEventListener("keydown",function(e){document.activeElement!==pageInput&&("ArrowRight"!==e.key&&" "!==e.key&&"Enter"!==e.key||nextSlide(),"ArrowLeft"===e.key&&previousSlide())});const slide=document.querySelector(".slide");let touchStartX=0,touchEndX=0,isTouching=!1;slide.addEventListener("touchstart",function(e){isTouching=!0,touchStartX=e.touches[0].clientX},{passive:!0}),slide.addEventListener("touchstart",function(e){touchStartX=e.touches[0].clientX,touchStartY=e.touches[0].clientY},{passive:!0}),slide.addEventListener("touchend",function(e){const n=e.changedTouches[0].clientX,t=e.changedTouches[0].clientY,a=n-touchStartX,c=t-touchStartY;Math.abs(a)>Math.abs(c)?a<-50?nextSlide():a>50?previousSlide():nextSlide():c>50?previousSlide():nextSlide()},{passive:!0});let selectedFont="";document.getElementById("fontSelect").addEventListener("change",function(){selectedFont=this.value,document.querySelectorAll(".hanja").forEach(e=>{e.style.fontFamily=selectedFont}),document.querySelectorAll(".hanmun").forEach(e=>{e.style.fontFamily=selectedFont})});</script> </body></html>
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>오늘의 한자</title> <style>@import url(https://fonts.googleapis.com/css2?family=Klee+One&family=LXGW+WenKai+TC&family=Noto+Serif+TC:wght@200..900&family=Shippori+Mincho&display=swap);@font-face{font-family:"Myeongwon";src:url(https://cdn.jsdelivr.net/gh/Project-Noonnu/2607131254@4/4/Hangeuljaemin4-RegularI.woff2)format("woff2");font-weight:100;font-display:swap}*{box-sizing:border-box}body{margin:0;background:#111;color:#fff;font-family:"Noto Serif KR",serif;overflow:hidden}.slide{width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5vw;text-align:center}.hanmun{font-size:160px;line-height:1.5;font-family:"Klee One";margin-bottom:15px;white-space:pre-line}.meaning,.reading{font-size:80px;margin-bottom:30px;white-space:pre-line}.meaning{font-size:65px;line-height:1.5;color:#ddd}.keyHanja{display:flex;justify-content:center;gap:25px;flex-wrap:wrap}.hanjaCard{min-width:130px;padding:15px 25px;//border:1px solid #555;border-radius:12px;background:#1c1c1c}.hanja{font-size:65px;font-family:"Klee One";font-weight:100}.hanjaMeaning{font-size:35px;color:#bbb;margin-top:3px}.hanjaReading{font-size:40px;margin-top:5px}.fontSelect,.page{position:fixed;bottom:20px;display:flex;align-items:center;gap:6px;font-family:sans-serif;color:#888}.page{right:30px}#pageInput{width:55px;padding:5px;border:0;border-radius:5px;font-size:16px;text-align:center}.fontSelect{left:30px}</style> </head><body><div class="slide"><div class="hanmun" id="hanmun"></div><div class="reading" id="reading"></div><div class="meaning" id="meaning"></div><div class="keyHanja" id="keyHanja"></div></div><div class="page"><input type="number" id="pageInput" min="1" ><span id="totalPages"></span></div><div class="fontSelect"><select id="fontSelect"><option value='Klee One'> Klee One </option><option value='"LXGW WenKai TC", serif'> LXGW WenKai TC </option><option value= 'Myeongwon'> 명원체 </option><option value='Noto Serif TC'> Noto Serif TC </option><option value='Shippori Mincho'> Shippori Mincho </option><option value='Noto Serif KR'> 기본 </option></select></div> <script>let sentences=[],current=Number(localStorage.getItem("hanjaPage"))||0;fetch("https://kimgreentea.github.io/kimnokcha/hanja/sentence.json").then(e=>e.json()).then(e=>{sentences=e,current>=sentences.length&&(current=sentences.length-1),showSlide()}).catch(e=>{console.error("JSON 불러오기 실패:",e)});const hanmun=document.getElementById("hanmun"),reading=document.getElementById("reading"),meaning=document.getElementById("meaning"),keyHanja=document.getElementById("keyHanja"),pageInput=document.getElementById("pageInput"),totalPages=document.getElementById("totalPages");function showSlide(){const e=sentences[current];hanmun.textContent=e.hanmun,reading.textContent=e.reading||"",meaning.textContent=e.meaning||"",keyHanja.innerHTML="",(e.keyHanja||[]).forEach(e=>{const n=document.createElement("div");n.className="hanjaCard",n.innerHTML=`\n            <div class="hanja">\n                ${e.hanja}\n            </div>\n            <div class="hanjaMeaning">\n                ${e.meaning}\n            </div>\n            <div class="hanjaReading">\n                ${e.reading}\n            </div>\n        `,keyHanja.appendChild(n)}),pageInput.value=current+1,totalPages.textContent=`/ ${sentences.length}`,localStorage.setItem("hanjaPage",current)}function nextSlide(){current<sentences.length-1&&(current++,showSlide())}function previousSlide(){current>0&&(current--,showSlide())}pageInput.addEventListener("keydown",function(e){if("Enter"!==e.key)return;const n=Number(pageInput.value);n>=1&&n<=sentences.length?(current=n-1,showSlide()):pageInput.value=current+1}),document.addEventListener("keydown",function(e){document.activeElement!==pageInput&&("ArrowRight"!==e.key&&" "!==e.key&&"Enter"!==e.key||nextSlide(),"ArrowLeft"===e.key&&previousSlide())});const slide=document.querySelector(".slide");let touchStartX=0,touchEndX=0,isTouching=!1;slide.addEventListener("touchstart",function(e){isTouching=!0,touchStartX=e.touches[0].clientX},{passive:!0}),slide.addEventListener("touchstart",function(e){touchStartX=e.touches[0].clientX,touchStartY=e.touches[0].clientY},{passive:!0}),slide.addEventListener("touchend",function(e){const n=e.changedTouches[0].clientX,t=e.changedTouches[0].clientY,a=n-touchStartX,c=t-touchStartY;Math.abs(a)>Math.abs(c)?a<-50?nextSlide():a>50?previousSlide():nextSlide():c>50?previousSlide():nextSlide()},{passive:!0});let selectedFont="";document.getElementById("fontSelect").addEventListener("change",function(){selectedFont=this.value,document.querySelectorAll(".hanja").forEach(e=>{e.style.fontFamily=selectedFont}),document.querySelectorAll(".hanmun").forEach(e=>{e.style.fontFamily=selectedFont})});</script> 
+<style>
+
+.inline-editor {
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  white-space: pre-wrap;
+  overflow: hidden;
+  resize: none;
+  width: 100%;
+  min-height: 1em;
+}
+.hanjaCard .inline-editor {
+  text-align: center;
+}
+</style>
+
+<script>
+(() => {
+  const slide = document.querySelector(".slide");
+  let activeEditor = null;
+
+  const editableSelector = [
+    "#hanmun", "#reading", "#meaning", ".meaning",
+    ".hanja", ".hanjaMeaning", ".hanjaReading"
+  ].join(",");
+
+  function finishEdit(save = true) {
+    if (!activeEditor) return;
+
+    const editor = activeEditor;
+    const original = editor.dataset.original;
+    const value = editor.value;
+    const replacement = document.createElement(editor.dataset.tag || "div");
+    replacement.className = editor.dataset.className || "";
+    if (editor.dataset.id) replacement.id = editor.dataset.id;
+    replacement.textContent = save ? value : original;
+
+    activeEditor = null;
+    editor.replaceWith(replacement);
+  }
+
+  function startEdit(target) {
+    if (activeEditor) finishEdit(true);
+
+    const editor = document.createElement("textarea");
+    const style = getComputedStyle(target);
+
+    editor.className = "inline-editor";
+    editor.value = target.textContent;
+    editor.dataset.original = target.textContent;
+    editor.dataset.tag = target.tagName.toLowerCase();
+    editor.dataset.className = target.className;
+    editor.dataset.id = target.id || "";
+
+    editor.style.fontFamily = style.fontFamily;
+    editor.style.fontSize = style.fontSize;
+    editor.style.fontWeight = style.fontWeight;
+    editor.style.lineHeight = style.lineHeight;
+    editor.style.color = style.color;
+    editor.style.textAlign = style.textAlign;
+    editor.style.width = "100%";
+    editor.style.minHeight = style.height === "auto" ? "1em" : style.height;
+
+    target.replaceWith(editor);
+    activeEditor = editor;
+
+    const fitHeight = () => {
+      editor.style.height = "auto";
+      editor.style.height = Math.max(editor.scrollHeight, parseFloat(style.fontSize) * 1.5) + "px";
+    };
+
+    editor.addEventListener("input", fitHeight);
+    editor.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        finishEdit(false);
+      }
+
+      if (event.key === "Enter") {
+        event.stopPropagation();
+      }
+    });
+
+    editor.addEventListener("blur", () => {
+      if (activeEditor === editor) finishEdit(true);
+    });
+
+    fitHeight();
+    editor.focus();
+    editor.setSelectionRange(editor.value.length, editor.value.length);
+  }
+
+  slide.addEventListener("dblclick", event => {
+    const target = event.target.closest(editableSelector);
+    if (!target || target.classList.contains("inline-editor")) return;
+    event.preventDefault();
+    startEdit(target);
+  });
+
+  document.addEventListener("keydown", event => {
+    if (activeEditor && event.target === activeEditor) {
+      if (["ArrowRight", "ArrowLeft", " "].includes(event.key)) {
+        event.stopPropagation();
+      }
+    }
+  }, true);
+
+  slide.addEventListener("touchend", event => {
+    if (activeEditor) {
+      event.stopImmediatePropagation();
+    }
+  }, true);
+})();
+</script>
+
+</body></html>
