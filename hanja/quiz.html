@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>테스트</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap');
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;color:#222;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+main{width:min(560px,calc(100% - 28px));margin:28px auto;background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 18px #00000010}
+h1{font-size:22px;text-align:center;margin:0 0 8px}
+.sub{text-align:center;color:#777;font-size:14px;margin-bottom:24px}
+
+.meta{display:flex;justify-content:space-between;color:#666;font-size:13px}
+.card{height:260px;border:1px solid #e5e5e5;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:#fff}
+#hanja{font-family:"Klee One",serif;font-size:clamp(110px,28vw,170px);line-height:1}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+button{border:1px solid transparent;border-radius:14px;padding:17px 10px;font-size:17px;font-weight:650;letter-spacing:-.02em;cursor:pointer;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
+button:active{transform:scale(.98)}
+.grade-yes{background:#243b35;color:#fff;box-shadow:0 3px 8px #243b3520}
+.grade-yes:hover{background:#1b302a;box-shadow:0 5px 12px #243b3528}
+.grade-no{background:#fff;color:#8b4545;border-color:#e6d7d7}
+.grade-no:hover{background:#faf4f4;border-color:#d8bcbc}
+.restart{background:#263b35;color:#fff;font-size:15px;padding:13px 24px;margin-top:24px;border-radius:12px}
+.restart:hover{background:#1b302a}
+.result{text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.result h1{margin-bottom:4px}
+.hidden{display:none !important}
+@media(max-width:420px){main{padding:18px}.card{height:230px}}
+</style>
+</head>
+<body>
+<main>
+  <section id="quiz">
+
+    <div class="card"><div id="hanja">漢</div></div>
+    <div class="actions">
+      <button class="grade-yes" id="yes">✓ </button>
+      <button class="grade-no" id="no">✕ </button>
+    </div>
+  </section>
+  <section id="result" class="result hidden">
+    <h1>완료</h1>
+    <button class="restart" id="restart">다시</button>
+  </section>
+</main>
+<script>
+(() => {
+  const params = new URLSearchParams(location.search);
+  const encoded = params.get("data");
+  const $ = id => document.getElementById(id);
+  let items = [];
+  try {
+    if (!encoded) throw new Error("데이터 없음");
+    items = encoded.split(",").map(x => x.trim());
+    if (!Array.isArray(items) || items.length < 1 || items.length > 10 || items.some(x => typeof x !== "string" || !x)) {
+      throw new Error("데이터 형식 오류");
+    }
+  } catch (e) {
+    $("quiz").innerHTML = '<h1>학습지의 QR 코드를 스캔해 주세요.</h1>';
+    return;
+  }
+
+  const sourceItems = [...items];
+
+  function pickRandomThree() {
+    const shuffled = [...sourceItems];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, Math.min(3, shuffled.length));
+  }
+
+  items = pickRandomThree();
+  let index = 0;
+  let grades = Array(items.length).fill(null);
+
+  function render() {
+    $("hanja").textContent = items[index];
+    $("yes").style.outline = grades[index] === true ? "3px solid #25834b" : "none";
+    $("no").style.outline = grades[index] === false ? "3px solid #c33" : "none";
+  }
+
+  function grade(value) {
+    grades[index] = value;
+    if (value === false || index === items.length - 1) {
+      showResult();
+    } else {
+      index++;
+      render();
+    }
+  }
+
+  function showResult() {
+    $("quiz").classList.add("hidden");
+    $("result").classList.remove("hidden");
+  }
+
+  function restartQuiz() {
+    items = pickRandomThree();
+    index = 0;
+    grades = Array(items.length).fill(null);
+    $("result").classList.add("hidden");
+    $("quiz").classList.remove("hidden");
+    render();
+  }
+
+  $("yes").addEventListener("click", () => grade(true));
+  $("no").addEventListener("click", () => grade(false));
+  $("restart").addEventListener("click", restartQuiz);
+  render();
+})();
+</script>
+</body>
+</html>
