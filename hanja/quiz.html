@@ -8,40 +8,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap');
 *{box-sizing:border-box}
 body{margin:0;background:#f3f4f6;color:#222;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
-main{width:min(560px,calc(100% - 28px));margin:28px auto;background:#fff;border-radius:16px;padding:14px;box-shadow:0 4px 18px #00000010}
+main{width:min(560px,calc(100% - 28px));margin:28px auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 4px 18px #00000010}
 h1{font-size:22px;text-align:center;margin:0 0 8px}
 .sub{text-align:center;color:#777;font-size:14px;margin-bottom:24px}
-
-.meta{display:flex;justify-content:space-between;color:#666;font-size:13px}
-.card{height:260px;border:1px solid #e5e5e5;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:#fff}
+.card{height:250px;border:1px solid #e5e5e5;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;background:#fff}
 #hanja{font-family:"Klee One",serif;font-size:clamp(110px,28vw,170px);line-height:1}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-button{border:1px solid transparent;border-radius:14px;padding:17px 10px;font-size:17px;font-weight:650;letter-spacing:-.02em;cursor:pointer;transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
-button:active{transform:scale(.98)}
-.grade-yes{background:#243b35;color:#fff;box-shadow:0 3px 8px #243b3520}
-.grade-yes:hover{background:#1b302a;box-shadow:0 5px 12px #243b3528}
-.grade-no{background:#fff;color:#8b4545;border-color:#e6d7d7}
-.grade-no:hover{background:#faf4f4;border-color:#d8bcbc}
-.restart{background:#263b35;color:#fff;font-size:15px;padding:13px 24px;margin-top:24px;border-radius:12px}
-.restart:hover{background:#1b302a}
+.answer-form{display:grid;gap:12px}
+.field{display:grid;grid-template-columns:54px 1fr;align-items:center;gap:10px}
+.field label{font-size:15px;color:#555}
+.field input{width:100%;min-width:0;border:1px solid #dcdfe3;border-radius:10px;padding:14px 12px;font-size:17px;outline:none}
+.field input:focus{border-color:#527b70;box-shadow:0 0 0 3px #527b7018}
+.enter-guide{text-align:center;color:#888;font-size:13px;margin:4px 0 0}
 .result{text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .result h1{margin-bottom:4px}
-.hidden{display:none !important}
-@media(max-width:420px){main{padding:18px}.card{height:230px}}
+.result p{color:#666;font-size:14px;margin:8px 0 0}
+.restart{background:#263b35;color:#fff;font-size:15px;padding:13px 24px;margin-top:24px;border:0;border-radius:12px;cursor:pointer}
+.restart:hover{background:#1b302a}
+.hidden{display:none!important}
+@media(max-width:420px){main{padding:18px}.card{height:220px}}
 </style>
 </head>
 <body>
 <main>
   <section id="quiz">
-
-    <div class="card"><div id="hanja">漢</div></div>
-    <div class="actions">
-      <button class="grade-yes" id="yes">✓ </button>
-      <button class="grade-no" id="no">✕ </button>
-    </div>
+ 
+    <div class="card"><div id="hanja"></div></div>
+    <form class="answer-form" id="answerForm" autocomplete="off">
+      <div class="field">
+        <label for="answerInput">정답</label>
+        <input id="answerInput" type="text"  required>
+      </div>
+          </form>
   </section>
   <section id="result" class="result hidden">
-
+    <h1 id="resultTitle">통과</h1>
+    <p id="resultMessage"></p>
     <button class="restart" id="restart">다시</button>
   </section>
 </main>
@@ -50,22 +51,24 @@ button:active{transform:scale(.98)}
   const params = new URLSearchParams(location.search);
   const encoded = params.get("data");
   const $ = id => document.getElementById(id);
-  let items = [];
+  let selectedHanja = [];
+  let wordData = [];
+
   try {
     if (!encoded) throw new Error("데이터 없음");
-    items = encoded.split(",").map(x => x.trim());
-    if (!Array.isArray(items) || items.length < 1 || items.length > 10 || items.some(x => typeof x !== "string" || !x)) {
+    selectedHanja = encoded.split(",").map(x => x.trim()).filter(Boolean);
+    if (selectedHanja.length < 1 || selectedHanja.length > 10) {
       throw new Error("데이터 형식 오류");
     }
   } catch (e) {
-    $("quiz").innerHTML = '<h1>학습지의 QR 코드를 스캔해 주세요.</h1>';
+    $("quiz").innerHTML = '<h1>퀴즈를 열 수 없습니다.</h1><p class="sub">학습지의 QR 코드를 다시 스캔해 주세요.</p>';
     return;
   }
 
-  const sourceItems = [...items];
+  const sourceHanja = [...selectedHanja];
 
   function pickRandomThree() {
-    const shuffled = [...sourceItems];
+    const shuffled = [...sourceHanja];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -73,44 +76,84 @@ button:active{transform:scale(.98)}
     return shuffled.slice(0, Math.min(3, shuffled.length));
   }
 
-  items = pickRandomThree();
+  function normalize(value) {
+    return String(value ?? "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  let items = [];
   let index = 0;
-  let grades = Array(items.length).fill(null);
 
   function render() {
-    $("hanja").textContent = items[index];
-    $("yes").style.outline = grades[index] === true ? "3px solid #25834b" : "none";
-    $("no").style.outline = grades[index] === false ? "3px solid #c33" : "none";
+    $("hanja").textContent = items[index].hanja;
+    $("answerInput").value = "";
+    $("answerInput").focus();
   }
 
-  function grade(value) {
-    grades[index] = value;
-    if (value === false || index === items.length - 1) {
-      showResult();
-    } else {
-      index++;
-      render();
+  function submitAnswer() {
+    const answer = normalize($("answerInput").value);
+    if (!answer) {
+      $("answerInput").focus();
+      return;
     }
+
+    const current = items[index];
+    const expected = normalize(`${current.meaning} ${current.reading}`);
+    const correct = answer === expected;
+
+    if (!correct) {
+      showResult(false);
+      return;
+    }
+
+    if (index === items.length - 1) {
+      showResult(true);
+      return;
+    }
+
+    index++;
+    render();
   }
 
-  function showResult() {
+  function showResult(passed) {
     $("quiz").classList.add("hidden");
+    $("resultTitle").textContent = passed ? "통과" : "실패";
+    $("resultMessage").textContent = passed ? "" : "";
     $("result").classList.remove("hidden");
   }
 
   function restartQuiz() {
-    items = pickRandomThree();
+    items = pickRandomThree().map(hanja => wordData.find(w => w.hanja === hanja)).filter(Boolean);
     index = 0;
-    grades = Array(items.length).fill(null);
     $("result").classList.add("hidden");
     $("quiz").classList.remove("hidden");
     render();
   }
 
-  $("yes").addEventListener("click", () => grade(true));
-  $("no").addEventListener("click", () => grade(false));
+  $("answerForm").addEventListener("submit", event => {
+    event.preventDefault();
+    submitAnswer();
+  });
+
   $("restart").addEventListener("click", restartQuiz);
-  render();
+
+  async function init() {
+    try {
+      const response = await fetch("https://kimgreentea.github.io/kimnokcha/hanja/words.json");
+      if (!response.ok) throw new Error("words.json을 불러올 수 없습니다.");
+      wordData = await response.json();
+
+      const missing = sourceHanja.filter(hanja => !wordData.some(w => w.hanja === hanja));
+      if (missing.length) throw new Error("한자 정보를 찾을 수 없습니다: " + missing.join(", "));
+
+      items = pickRandomThree().map(hanja => wordData.find(w => w.hanja === hanja));
+      render();
+    } catch (error) {
+      $("quiz").innerHTML = '<h1>퀴즈를 불러오지 못했습니다.</h1><p class="sub">한자 정보 파일을 확인해 주세요.</p>';
+      console.error(error);
+    }
+  }
+
+  init();
 })();
 </script>
 </body>
