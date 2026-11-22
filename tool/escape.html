@@ -1490,6 +1490,10 @@
     padding-right: 4px;
     white-space: nowrap;
 }
+.tile-style-note{font-size:10px;line-height:1.55;color:#94a1b5;margin:-2px 0 9px}
+.tile-style-global{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid #344055;border-radius:8px;background:#202938;color:#e4ebf5;font-size:12px;cursor:pointer}
+.tile-style-global input{width:16px;height:16px;flex:none;margin:0;accent-color:#d9ad66}
+.tile-style-global:has(input:checked){border-color:#c59b58;background:#70563233;color:#ffe1a9}
 </style>
 
 </head>
@@ -1556,6 +1560,9 @@
         <button class="tile-choice" data-tile="metal"><canvas class="tile-swatch" data-preview-tile="metal" width="48" height="48"></canvas>금속 바닥</button>
       </div>
       <button class="btn" id="fillAllTilesBtn" style="width:100%;margin-top:9px">선택한 타일로 전체 채우기</button>
+      <div class="section-label" style="margin-top:17px">타일 그래픽</div>
+
+      <label class="tile-style-global"><input type="checkbox" id="v5TileStyleToggle"> <span>자연스러운 모양</span></label>
       </div>
       <div class="editor-pane" data-editor-content="objects" hidden>
       <div class="section-label" style="margin-top:19px">중요 오브젝트</div>
@@ -1694,6 +1701,7 @@
     <div class="panel-body settings-panel" id="settingsPanel" hidden>
       <div class="section-label">게임 설정</div>
       <div class="field"><label for="projectTitleTop">프로젝트 이름</label><input id="projectTitleTop" value="폐관 후의 도서관" aria-label="프로젝트 이름"></div>
+
       <div class="field"><label for="mapIntro">게임 시작 안내문 (모든 맵 공통)</label><textarea id="mapIntro" placeholder="게임을 시작할 때 나올 안내문"></textarea></div>
       <div class="field"><label for="startMapSelect">플레이 시작 맵</label><select id="startMapSelect"></select></div>
       <div class="section-label">엔딩 문구</div>
@@ -1830,6 +1838,12 @@ const downloadedCharacterImages = DOWNLOADED_CHARACTER_SHEETS.map(src=>{const im
 
 const downloadedCharacterOptions=()=>Array.from({length:40},(_,i)=>{const id=`asset-${String(i).padStart(3,'0')}`;return `<option value="${id}">캐릭터 ${String(i+1).padStart(2,'0')}</option>`}).join('');
 const clone=o=>JSON.parse(JSON.stringify(o));
+const V5_TILE_STYLE_TYPES=['water','grass','path','dirt','sand','moss','snow','ice','lava'];
+const defaultTileAppearance=()=>false;
+function normalizeTileAppearance(value){
+  if(typeof value==='boolean')return value;
+  return V5_TILE_STYLE_TYPES.some(type=>value?.[type]===true);
+}
 function createDefaultProject(){
   const w=18,h=13,grid=Array.from({length:h},(_,y)=>Array.from({length:w},(_,x)=>(x===0||y===0||x===w-1||y===h-1)?'wall':'floor_darkwood'));
   // 넓은 중앙 통로와 좌우 열람 구역을 바닥 패턴으로 구분한다.
@@ -1837,7 +1851,7 @@ function createDefaultProject(){
   for(let y=3;y<=9;y++)for(let x=8;x<=9;x++)grid[y][x]='rug';
  
  
-  return {title:'폐관 후의 도서관',subtitle:'첫 번째 방',intro:'폐관한 도서관의 출입문이 잠겼다. 중앙 열람실과 양쪽 서가를 조사해 사서가 남긴 단서를 찾아라.',w,h,grid,start:{x:8,y:11},objects:[
+  return {title:'폐관 후의 도서관',subtitle:'첫 번째 방',intro:'폐관한 도서관의 출입문이 잠겼다. 중앙 열람실과 양쪽 서가를 조사해 사서가 남긴 단서를 찾아라.',w,h,grid,start:{x:8,y:11},v5TileStyleEnabled:defaultTileAppearance(),objects:[
     {id:'o1',kind:'bookcase',name:'분류 서가',x:3,y:3,type:'clue',description:'책등에 달과 별, 해와 비 모양의 분류표가 붙어 있다.\n“사서는 달, 별, 해, 비의 순서로 책을 정리했다.”',solid:true,code:'',reward:'',found:false},
     {id:'o2',kind:'desk',name:'사서의 열람 책상',x:8,y:9,type:'clue',description:'책상 서랍에 사서의 메모가 남아 있다.\n“달은 2, 별은 4, 해는 1, 비는 3.”\n서가의 분류 순서를 숫자로 바꾸면 보관함의 암호가 된다.',solid:true,code:'',reward:'',found:false},
     {id:'o3',kind:'painting',name:'도서관 설립자 초상화',x:9,y:0,type:'clue',description:'액자 뒷면에 짧은 문장이 적혀 있다.\n“기억은 순서에 있다. 먼저 읽은 것이 먼저 온다.”',solid:false,code:'',reward:'',found:false,variant:'portrait'}, 
@@ -1930,7 +1944,10 @@ function ensureMaps(){
     project.defaultContentVersion=7;
   }
   if(!project.currentMapId)project.currentMapId=project.maps[0].id;
-  project.maps.forEach(m=>{if(typeof m.entryMessage!=='string')m.entryMessage=`${m.name||'맵'}에 도착했다. 주변을 조사해 보자.`});
+  const legacyTileAppearance=project.maps.some(m=>normalizeTileAppearance(m.tileAppearance))||normalizeTileAppearance(project.tileAppearance);
+  if(typeof project.v5TileStyleEnabled!=='boolean')project.v5TileStyleEnabled=legacyTileAppearance;
+  delete project.tileAppearance;
+  project.maps.forEach(m=>{delete m.tileAppearance;if(typeof m.entryMessage!=='string')m.entryMessage=`${m.name||'맵'}에 도착했다. 주변을 조사해 보자.`});
   const activeMap=project.maps.find(m=>m.id===project.currentMapId);if(activeMap){if(typeof project.entryMessage!=='string')project.entryMessage=activeMap.entryMessage||'';if(typeof project.intro!=='string')project.intro=activeMap.intro||''}
   if(!project.startMapId||!project.maps.some(m=>m.id===project.startMapId))project.startMapId=project.currentMapId;
   project.playerSprite=project.playerSprite||{spriteStyle:'asset-000',direction:'down'};
@@ -2374,7 +2391,7 @@ function drawShore(x,y){
   const types=[];let any=false;
   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
     const n=(dx||dy)?terrainOf(project.grid[y+dy]?.[x+dx]):null;
-    const ok=n&&NATURE_PRI[n]!==undefined&&NATURE_PRI[n]>=0;types.push(ok?n:'');if(ok)any=true;
+    const ok=n&&NATURE_PRI[n]!==undefined&&NATURE_PRI[n]>=0&&!isV5BlendPair('water',n);types.push(ok?n:'');if(ok)any=true;
   }
   if(!any)return;
   ctx.drawImage(shoreOverlay(types,((x%3)+3)%3,((y%3)+3)%3),x*TILE,y*TILE);
@@ -2382,13 +2399,174 @@ function drawShore(x,y){
 function drawNatureTile(x,y,t){
   const v=Math.floor(wallHash(x*13+7,y*31+5)*12);
   ctx.drawImage(natureCanvas(t,v),x*TILE,y*TILE);
+  drawTerrainBlend(x,y,t,v);
   if(t==='water')drawShore(x,y);else drawTerrainFringe(x,y,t);
+}
+function isV5BlendPair(a,b){
+  return project?.v5TileStyleEnabled===true&&V5_TILE_STYLE_TYPES.includes(a)&&V5_TILE_STYLE_TYPES.includes(b)&&a!==b;
+}
+const _mixRgb=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+function hasV5BlendNeighbor(x,y,t){
+  if(!project?.grid)return false;
+  for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){
+    const n=terrainOf(project.grid[y+dy]?.[x+dx]);
+    if(n&&n!==t&&BLENDABLE_NATURE_TYPES.has(n)&&isV5BlendPair(t,n))return true;
+  }
+  return false;
+}
+const terrainBlendCache=new Map();
+const BLENDABLE_NATURE_TYPES=new Set(['water','path','dirt','sand','moss','grass','snow','ice','lava']);
+const terrainBlendSalt={path:1.7,dirt:3.1,sand:4.6,moss:6.2,grass:7.9,snow:9.4,ice:11.1,lava:13.3,water:15.2};
+// Smooth value noise (-1..1) in world pixels; `off` gives every terrain its own lattice so borders never line up.
+function _vnoise(wx,wy,size,off){
+  const gx=Math.floor(wx/size),gy=Math.floor(wy/size),fx=wx/size-gx,fy=wy/size-gy,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy);
+  const a=wallHash(gx+off,gy+off*3),b=wallHash(gx+1+off,gy+off*3),c=wallHash(gx+off,gy+1+off*3),d=wallHash(gx+1+off,gy+1+off*3);
+  return ((a+(b-a)*u)*(1-v)+(c+(d-c)*u)*v)*2-1;
+}
+const BLEND_DISK=(()=>{const R=36,pts=[];for(let dy=-R;dy<=R;dy+=4)for(let dx=-R;dx<=R;dx+=4)if(dx*dx+dy*dy<=R*R)pts.push([dx,dy]);return pts})();
+function terrainBlendOverlay(tx,ty,t,types,v){
+  const appearanceKey=project?.v5TileStyleEnabled===true?'1':'0';
+  const key=tx+','+ty+'|'+t+'|'+types.join(',')+'|'+v+'|'+appearanceKey,hit=terrainBlendCache.get(key);if(hit)return hit;
+  const c=document.createElement('canvas');c.width=c.height=TILE;
+  const g=c.getContext('2d'),img=g.createImageData(TILE,TILE),d=img.data;
+  const cells=[{cx:0,cy:0,t}];
+  for(let cy=-1;cy<=1;cy++)for(let cx=-1;cx<=1;cx++){
+    if(!cx&&!cy)continue;
+    const n=types[(cy+1)*3+(cx+1)];
+    if(n&&BLENDABLE_NATURE_TYPES.has(n))cells.push({cx,cy,t:n});
+  }
+  const candidates=[...new Set(cells.map(cell=>cell.t))];
+  if(candidates.length<2){terrainBlendCache.set(key,c);return c}
+  const lavaData=candidates.includes('lava')?lavaBasePixels(tx,ty):null;
+  for(const cell of cells){
+    const nx=tx+cell.cx,ny=ty+cell.cy;
+    const nv=(cell.cx===0&&cell.cy===0)?v:Math.floor(wallHash(nx*13+7,ny*31+5)*12);
+    cell.nx=nx;cell.ny=ny;
+    // Lava is a world-space pattern, so the pattern of this very tile continues seamlessly; other terrains repeat their own texture.
+    cell.data=cell.t==='lava'?lavaData:natureCanvas(cell.t,nv).getContext('2d').getImageData(0,0,TILE,TILE).data;
+  }
+  // Low-resolution coverage field per terrain type, sampled from the real map in world coordinates.
+  const G=4,N=TILE/G+1,fields=new Map(candidates.map(name=>[name,new Float32Array(N*N)]));
+  const mapCellCache=new Map();
+  const tileTypeAt=(cx,cy)=>{
+    const k=cx+','+cy;
+    if(mapCellCache.has(k))return mapCellCache.get(k);
+    // Outside the map the terrain simply continues the nearest edge tile, so borders stay ragged all the way to the edge.
+    const ccx=Math.max(0,Math.min(project.w-1,cx)),ccy=Math.max(0,Math.min(project.h-1,cy));
+    const value=terrainOf(project.grid[ccy]?.[ccx]);
+    const result=BLENDABLE_NATURE_TYPES.has(value)&&(value===t||isV5BlendPair(t,value))?value:'';
+    mapCellCache.set(k,result);return result;
+  };
+  for(let gy=0;gy<N;gy++)for(let gx=0;gx<N;gx++){
+    // The sampling position is bent by a smooth world-space warp, so a tile-aligned border becomes a curved, organic outline.
+    const wx0=tx*TILE+gx*G,wy0=ty*TILE+gy*G;
+    const wx=wx0+_vnoise(wx0,wy0,52,901)*14+_vnoise(wx0,wy0,22,917)*5,wy=wy0+_vnoise(wx0,wy0,52,953)*14+_vnoise(wx0,wy0,22,967)*5;
+    const counts=new Map(candidates.map(name=>[name,0]));
+    for(const [dx,dy] of BLEND_DISK){
+      const name=tileTypeAt(Math.floor((wx+dx)/TILE),Math.floor((wy+dy)/TILE));
+      if(counts.has(name))counts.set(name,counts.get(name)+1);
+    }
+    const index=gy*N+gx;
+    for(const name of candidates)fields.get(name)[index]=counts.get(name);
+  }
+  const fieldAt=(field,x,y)=>{
+    const fx=x/G,fy=y/G,x0=Math.floor(fx),y0=Math.floor(fy),x1=Math.min(N-1,x0+1),y1=Math.min(N-1,y0+1),ax=fx-x0,ay=fy-y0;
+    const a=field[y0*N+x0]*(1-ax)+field[y0*N+x1]*ax;
+    const b=field[y1*N+x0]*(1-ax)+field[y1*N+x1]*ax;
+    return a*(1-ay)+b*ay;
+  };
+  const nearestCell=(name,wx,wy)=>{
+    let near=null,best=Infinity;
+    for(const cell of cells){
+      if(cell.t!==name)continue;
+      const left=cell.nx*TILE,top=cell.ny*TILE;
+      const dx=Math.max(left-wx,0,wx-(left+TILE-1));
+      const dy=Math.max(top-wy,0,wy-(top+TILE-1));
+      const dist=dx*dx+dy*dy;
+      if(dist<best){best=dist;near=cell}
+    }
+    return near;
+  };
+  const texAt=(cell,x,y)=>{const p=cell.data,j=(y*TILE+x)*4;return [p[j],p[j+1],p[j+2]]};
+  // Irregular, multi-scale noise: big lobes + small bites + per-pixel grain. Every terrain has its own offset.
+  const jitter=(name,wx,wy)=>{
+    const off=Math.round((terrainBlendSalt[name]||2.3)*10);
+    // domain warp: the border bends sideways, so patches become tongues, bays and peninsulas instead of round blobs
+    const X=wx+_vnoise(wx,wy,46,off+101)*14,Y=wy+_vnoise(wx,wy,46,off+173)*14;
+    // some stretches of the border are rough, others calm
+    const rough=.55+.9*(_vnoise(wx,wy,64,off+211)*.5+.5);
+    return (_vnoise(X,Y,70,off+57)*22+rough*(_vnoise(X,Y,30,off)*36+_vnoise(X,Y,15,off+31)*20+_vnoise(X,Y,8,off+7)*18+_vnoise(X,Y,4,off+19)*10)+(wallHash(wx*7+off,wy*13+3)-.5)*15)*.67;
+  };
+  const RANGE=36,PX=4.6;   // ~4.6 coverage counts per pixel of distance from the border
+  // Water and lava get a proper edge: foam / wet ground, cooled crust / embers / scorched ground.
+  const edgeFx=(A,B,px,h,h2,rgb)=>{
+    if(A==='water'&&B!=='water'){
+      if(px<.8)return _mixRgb(rgb,[20,60,72],.55);
+      if(px<3.6)return h>.45?_mixRgb(rgb,[236,250,252],.82):_mixRgb(rgb,[140,214,228],.4);
+      if(px<7.5)return _mixRgb(rgb,[140,214,228],.3*(1-(px-3.6)/3.9));
+    }
+    if(B==='water'&&A!=='water'&&A!=='lava'){
+      if(px<3.2)return _mixRgb(rgb,[44,96,110],.34*(1-px/3.2)+(h2>.9?.12:0));
+    }
+    if(A==='lava'&&B!=='lava'){
+      if(px<2.2)return _mixRgb(rgb,[30,14,12],.82);
+      if(px<5)return h>.58?[255,150+Math.floor(h2*60),50]:_mixRgb(rgb,[37,18,15],.5*(1-(px-2.2)/2.8));
+    }
+    if(B==='lava'&&A!=='lava'){
+      if(px<7){const m=1-px/7;return _mixRgb(rgb,[38,24,20],Math.min(.85,.62*m*m+(h2>.82?.16*m:0)))}
+      if(px<12){return (h>.987)?[255,150,60]:_mixRgb(rgb,[255,128,44],.11*(1-px/12))}
+    }
+    return null;
+  };
+  for(let y=0;y<TILE;y++)for(let x=0;x<TILE;x++){
+    const wx=tx*TILE+x,wy=ty*TILE+y;
+    let first='',second='',firstScore=-Infinity,secondScore=-Infinity,covered=0;
+    for(const name of candidates){
+      const count=fieldAt(fields.get(name),x,y);
+      covered+=count;
+      if(count<=0)continue;
+      const score=count+jitter(name,wx,wy);
+      if(score>firstScore){second=first;secondScore=firstScore;first=name;firstScore=score}
+      else if(score>secondScore){second=name;secondScore=score}
+    }
+    if(!first||covered<BLEND_DISK.length*0.72)continue;
+    const diff=second?Math.max(0,firstScore-secondScore):Infinity;
+    // Near the border each pixel randomly belongs to either side (dithering), so the edge is ragged instead of a smooth gradient.
+    let chosen=first,other=second;
+    if(second){
+      const hr=wallHash(wx*3+11,wy*5+7);
+      // dithered band next to the border + a few stray pixels / blobs further out
+      if(diff<RANGE&&hr<.5*Math.pow(1-diff/RANGE,.8)){chosen=second;other=first}
+      else if(diff<RANGE*2&&((hr>.97&&wallHash(wx*11+2,wy*7+9)>.3)||(_vnoise(wx,wy,9,23)>.62&&hr>.5))){chosen=second;other=first}
+    }
+    const cell=nearestCell(chosen,wx,wy);
+    if(!cell)continue;
+    let rgb=texAt(cell,x,y),changed=chosen!==t;
+    if(other){
+      const fx=edgeFx(chosen,other,diff/PX,wallHash(wx*5+3,wy*11+17),wallHash(wx*13+5,wy*3+29),rgb);
+      if(fx){rgb=fx;changed=true}
+    }
+    if(!changed)continue;
+    const j=(y*TILE+x)*4;
+    d[j]=rgb[0];d[j+1]=rgb[1];d[j+2]=rgb[2];d[j+3]=255;
+  }
+  g.putImageData(img,0,0);terrainBlendCache.set(key,c);return c;
+}
+function drawTerrainBlend(x,y,t,v){
+  if(mode==='preview'||!project.grid||!BLENDABLE_NATURE_TYPES.has(t))return;
+  const types=Array(9).fill('');let any=false;
+  for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+    if(!dx&&!dy)continue;
+    const n=terrainOf(project.grid[y+dy]?.[x+dx]);
+    if(n&&n!==t&&BLENDABLE_NATURE_TYPES.has(n)&&isV5BlendPair(t,n)){types[(dy+1)*3+(dx+1)]=n;any=true}
+  }
+  if(any)ctx.drawImage(terrainBlendOverlay(x,y,t,types,v),x*TILE,y*TILE);
 }
 const FRINGE_COLORS={ice:['#bfe4ee','#6fa9c4','#f0fcff'],path:['#a68f6b','#7d6a50','#c8b48f'],grass:['#62a05a','#3f7a3b','#82c478'],snow:['#eef5f9','#a9c0d3','#ffffff'],moss:['#4d8b5e','#2f6444','#86c98f'],sand:['#e6cf98','#b49660','#f4e6b8'],dirt:['#a67c52','#6f4e32','#c19a69']};
 function drawTerrainFringe(x,y,t){
   if(mode==='preview'||!project.grid)return;
   const pri=NATURE_PRI[t],g=ctx,px=x*TILE,py=y*TILE,water=t==='water';
-  const nb=(dx,dy)=>{const n=terrainOf(project.grid[y+dy]?.[x+dx]);return n&&NATURE_PRI[n]!==undefined&&NATURE_PRI[n]>pri?n:null};
+  const nb=(dx,dy)=>{const n=terrainOf(project.grid[y+dy]?.[x+dx]);return n&&NATURE_PRI[n]!==undefined&&NATURE_PRI[n]>pri&&!isV5BlendPair(t,n)?n:null};
   g.save();g.imageSmoothingEnabled=false;
   const side=(n,dx,dy)=>{
     const [base,dark,light]=FRINGE_COLORS[n],edge=dy?(py+(dy>0?TILE:0)):(px+(dx>0?TILE:0));
@@ -2536,7 +2714,43 @@ function lavaTileCanvas(tx,ty){
   for(let b=0;b<3;b++){const bx=Math.floor(H(tx*5+b,ty+1)*36)+6,by=Math.floor(H(tx+2,ty*5+b)*36)+6,px=g.getImageData(bx,by,1,1).data;if(px[0]>230&&px[1]>120){g.fillStyle='#fff2b8';g.fillRect(bx-1,by-1,3,3);g.fillStyle='#ff8a2a';g.fillRect(bx,by,1,1)}}
   lavaTileCache.set(key,c);return c;
 }
-function drawLavaTile(x,y){ctx.drawImage(lavaTileCanvas(x,y),x*TILE,y*TILE)}
+const lavaBaseCache=new Map(),lavaBaseCanvasCache=new Map();
+const lavaRgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+function lavaBasePixels(tx,ty){
+  const key=tx+','+ty,hit=lavaBaseCache.get(key);if(hit)return hit;
+  const d=new Uint8ClampedArray(TILE*TILE*4),C=27,H=wallHash,col={};
+  ['#fff0b0','#ffc54a','#ff8a2a','#e4561c','#8f2a12','#ffe9a0','#ffc04a','#c8360f','#3b1d17','#44221a','#35191a','#5b2c20','#6e3a28','#ff9a3a','#2a120f','#7a2c14'].forEach(h=>col[h]=lavaRgb(h));
+  const feat=(cx,cy)=>[cx*C+Math.floor(H(cx,cy+11)*(C-4))+2,cy*C+Math.floor(H(cx+57,cy)*(C-4))+2];
+  for(let y=0;y<TILE;y++)for(let x=0;x<TILE;x++){
+    const wx=tx*TILE+x+Math.round(Math.sin((ty*TILE+y)*.21)*1.6),wy=ty*TILE+y+Math.round(Math.sin((tx*TILE+x)*.17)*1.6);
+    const cx0=Math.floor(wx/C),cy0=Math.floor(wy/C);let d1=1e9,d2=1e9,n1=null,f1=null;
+    for(let j=-1;j<=1;j++)for(let i=-1;i<=1;i++){const f=feat(cx0+i,cy0+j),dd=Math.hypot(wx-f[0],wy-f[1]);if(dd<d1){d2=d1;d1=dd;n1=[cx0+i,cy0+j];f1=f}else if(dd<d2)d2=dd}
+    const diff=d2-d1,hc=H(n1[0],n1[1]+3),pool=hc>.78,hh=H(tx*TILE+x,ty*TILE+y);let k;
+    if(pool){const t=d1/(C*.6);k=t<.22?'#ffe9a0':t<.45?'#ffc04a':t<.72?'#ff8a2a':'#e4561c';if(Math.sin((wx+wy)*.33+hc*20)>.82)k='#c8360f';if(diff<2.4&&t>.7)k='#c8360f'}
+    else{
+      if(diff<.9)k='#fff0b0';else if(diff<1.8)k='#ffc54a';else if(diff<2.6)k='#ff8a2a';else if(diff<3.4)k='#e4561c';else if(diff<4.4)k='#8f2a12';
+      else{const base=hc<.33?'#3b1d17':hc<.66?'#44221a':'#35191a';k=base;if((wx-f1[0])+(wy-f1[1])<-C*.38)k='#5b2c20';if(hh>.93)k='#6e3a28';else if(hh<.03)k='#2a120f';if(diff<6&&hh>.6)k='#7a2c14';if(hh>.992)k='#ff9a3a'}
+    }
+    const c0=col[k],i=(y*TILE+x)*4;d[i]=c0[0];d[i+1]=c0[1];d[i+2]=c0[2];d[i+3]=255;
+  }
+  lavaBaseCache.set(key,d);return d;
+}
+function lavaBaseCanvas(tx,ty){
+  const key=tx+','+ty,hit=lavaBaseCanvasCache.get(key);if(hit)return hit;
+  const c=document.createElement('canvas');c.width=c.height=TILE;
+  const g=c.getContext('2d'),img=g.createImageData(TILE,TILE);
+  img.data.set(lavaBasePixels(tx,ty));g.putImageData(img,0,0);
+  lavaBaseCanvasCache.set(key,c);return c;
+}
+// Lava and its neighbouring natural terrain now use the same world-space blend field.
+function drawLavaTile(x,y){
+  if(project?.v5TileStyleEnabled===true){
+    ctx.drawImage(lavaBaseCanvas(x,y),x*TILE,y*TILE);
+    drawTerrainBlend(x,y,'lava',0);
+  }else{
+    ctx.drawImage(lavaTileCanvas(x,y),x*TILE,y*TILE);
+  }
+}
 // Ground next to lava is scorched, then lit orange by the heat.
 function drawLavaGlow(){
   if(mode==='preview'||!project.grid)return;
@@ -2545,7 +2759,7 @@ function drawLavaGlow(){
     if(project.grid[y][x]!=='lava')continue;
     for(const [dx,dy] of [[0,-1],[0,1],[-1,0],[1,0]]){
       const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=project.w||ny>=project.h)continue;
-      const n=project.grid[ny][nx];if(n==='lava'||isWallTile(n))continue;
+      const n=project.grid[ny][nx];if(n==='lava'||isWallTile(n)||isV5BlendPair('lava',terrainOf(n)))continue;
       const px=nx*TILE,py=ny*TILE;
       const edge=(len)=>dx?g.createLinearGradient(dx>0?px:px+TILE,0,dx>0?px+len:px+TILE-len,0):g.createLinearGradient(0,dy>0?py:py+TILE,0,dy>0?py+len:py+TILE-len);
       let gr=edge(9);gr.addColorStop(0,'rgba(26,10,6,.55)');gr.addColorStop(1,'rgba(26,10,6,0)');g.fillStyle=gr;g.fillRect(px,py,TILE,TILE);
@@ -2594,7 +2808,10 @@ function drawFloor(x,y,t){
   }else if(t==='brick'){
     drawBrickFloor(x,y);
   }else if(t==='ice'){
-    drawVariantTile(x,y,t);
+    // Keep the original ice appearance when the global V5 style is off.
+    // When enabled, render ice through the same natural-terrain blend path as the other V5 terrain types.
+    if(project?.v5TileStyleEnabled===true)drawNatureTile(x,y,t);
+    else drawVariantTile(x,y,t);
   }else if(t==='lava'){
     drawLavaTile(x,y);
   }else if(t==='marble'){
@@ -3422,7 +3639,7 @@ function renderAll(){
   updateCanvasTag();
   $('projectTitleTop').value=project.title;$('stageTitle').textContent=project.title;$('stageSubtitle').textContent=project.subtitle||'방탈출 게임';
   $('introTitle').textContent=project.title;$('introText').innerHTML=escapeHtml(project.intro||'이 방을 탈출하라.').replace(/\n/g,'<br>');
-  $('mapW').value=project.w;$('mapH').value=project.h;setCanvasSize();renderInspector();renderGameSidebar();
+  $('mapW').value=project.w;$('mapH').value=project.h;$('v5TileStyleToggle').checked=project.v5TileStyleEnabled===true;setCanvasSize();renderInspector();renderGameSidebar();
 }
 function updateCanvasTag(){const mapNo=Math.max(1,project.maps.findIndex(m=>m.id===project.currentMapId)+1),mapName=project.mapName||project.maps.find(m=>m.id===project.currentMapId)?.name||'현재 맵';$('canvasTag').textContent=window.__ESCAPE_STANDALONE&&mode==='play'?mapName:`MAP ${String(mapNo).padStart(2,'0')} / ${mode==='edit'?'EDIT':'PLAY'}`}
 function setMode(next){
@@ -3798,6 +4015,10 @@ function applyExampleMap(key){
 function bindEvents(){
   document.querySelectorAll('[data-editor-tab]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-editor-tab]').forEach(b=>b.classList.toggle('active',b===button));document.querySelectorAll('[data-editor-content]').forEach(p=>p.hidden=p.dataset.editorContent!==button.dataset.editorTab)}));
   document.querySelectorAll('[data-tile]').forEach(b=>b.addEventListener('click',()=>setTileTool(b.dataset.tile)));
+  $('v5TileStyleToggle').addEventListener('change',e=>{
+    pushUndo();project.v5TileStyleEnabled=e.currentTarget.checked===true;
+    terrainBlendCache.clear();renderMap();scheduleRecoverySave();
+  });
   document.querySelectorAll('[data-object]').forEach(b=>b.addEventListener('click',()=>setObjectTool(b.dataset.object)));
   $('editModeBtn').onclick=()=>setMode('edit');$('playModeBtn').onclick=()=>setMode('play');
   $('projectTitleTop').addEventListener('input',e=>{project.title=e.target.value;$('stageTitle').textContent=project.title;$('introTitle').textContent=project.title});
