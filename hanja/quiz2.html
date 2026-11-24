@@ -164,7 +164,9 @@ h1{font-size:22px;text-align:center;margin:0 0 8px}
 
   function updateCountdown() {
     const remaining = Math.max(0, Math.ceil((unlockAt - Date.now()) / 1000));
-    $("resultMessage").textContent = `${remaining}초 후 다시 도전할 수 있습니다.`;
+    $("resultMessage").textContent = remaining === 0
+      ? "지금 다시 도전할 수 있습니다."
+      : `${remaining}초 후 다시 도전할 수 있습니다.`;
     $("restart").disabled = remaining > 0;
     if (remaining <= 0 && countdownInterval) {
       clearInterval(countdownInterval);
