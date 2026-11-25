@@ -34,7 +34,7 @@ h1{font-size:22px;text-align:center;margin:0 0 8px}
 <main>
   <section id="quiz">
 
-    <div class="card"><div id="hanja">漢</div></div>
+    <div class="card"><div id="hanja"></div></div>
     <form class="answer-form" id="answerForm" autocomplete="off">
       <div class="field">
         <label for="answerInput">정답</label>
@@ -70,7 +70,7 @@ h1{font-size:22px;text-align:center;margin:0 0 8px}
       throw new Error("데이터 형식 오류");
     }
   } catch (e) {
-    $("quiz").innerHTML = '<h1>퀴즈를 열 수 없습니다.</h1><p class="sub">학습지의 QR 코드를 다시 스캔해 주세요.</p>';
+    $("quiz").innerHTML = '<h1>QR 코드를 스캔해주세요.</h1>';
     return;
   }
 
@@ -141,7 +141,7 @@ h1{font-size:22px;text-align:center;margin:0 0 8px}
     if (countdownInterval) clearInterval(countdownInterval);
     $("quiz").classList.add("hidden");
     $("resultTitle").textContent = passed ? "통과" : "오답";
-    $("restart").classList.toggle("hidden", passed);
+    $("restart").classList.remove("hidden");
     $("resultMessage").textContent = "";
     $("result").classList.remove("hidden");
 
